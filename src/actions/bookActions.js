@@ -1,7 +1,7 @@
 
 import axios from 'axios'
 
-import { READ_BOOKS_SUCCESFUL, READ_BOOKS_FAILURE, READ_BOOKS_PENDING} from '../constants/actionTypes';
+import { READ_BOOKS_SUCCESSFUL, READ_BOOKS_FAILURE, READ_BOOKS_PENDING} from '../constants/actionTypes';
 
 export const readBooks = () => {
   return dispatch => {
@@ -22,7 +22,7 @@ export const readBooks = () => {
 
 const _readBookSuccess = (res) => {
     return {
-        type: READ_BOOKS_SUCCESFUL,
+        type: READ_BOOKS_SUCCESSFUL,
         data:  res.data
     };
 }
@@ -30,7 +30,7 @@ const _readBookSuccess = (res) => {
 const _readBookFailed = (error) => {
     return {
         type: READ_BOOKS_FAILURE,
-        error  
+        error
     };
 }
 

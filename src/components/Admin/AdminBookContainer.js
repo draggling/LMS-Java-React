@@ -1,28 +1,26 @@
 "use strict"
 
+// WIP NAE NAE
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import BookRender from './BookRender';
-import Header from './Header';
 import * as bookActions from '../actions/bookActions';
+import BookRender from './BookRender';
 
-const BookContainer = (props) => {
+const AdminBookContainer = (props) => {
 
     useEffect(() => {
         const { actions } = props;
         actions.readBooks();
     }, [] );
+
+
     return(
         <div>
-            <Header/>
-           <div>
             <BookRender {...props} />
-            </div>
         </div>
-
     );
 }
 
@@ -38,11 +36,11 @@ function mapDispatchToProps(dispatch){
     }
 }
 
-BookContainer.propTypes = {
+AdminBookContainer.propTypes = {
     actions: PropTypes.object
 };
 
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-    )(BookContainer);
+    )(AdminBookContainer);
