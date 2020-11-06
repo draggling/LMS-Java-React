@@ -3,21 +3,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const BookRender = ({ bookData }) => {
+const BranchRender = ({ branchData }) => {
 
-    function createBookRow(book){
+    function createBranchRow(branch){
         return (
-            <tr key={book.book_id}>
-                <td> {book.book_id} </td>
-                <td> {book.title} </td>
-                <td> {book.author} </td>
+            <tr key={branch.branchId}>
+                <td> {branch.branchId} </td>
+                <td> {branch.branchName} </td>
+                <td> {branch.branchAddress} </td>
             </tr>
         );
     }
 
     let content = '';
 
-    if(!bookData || bookData.requestPending){
+    if(!branchData || branchData.requestPending){
         content = (
             <div className="d-flex justify-content-center">
                 <div className="spinner-border" role="status">
@@ -26,43 +26,45 @@ const BookRender = ({ bookData }) => {
             </div>
         );
     }
-
-
-    if(bookData && bookData.requestSuccessful){
+    console.log(branchData);
+    if(branchData && branchData.requestSuccessful){
+        console.log("start123");
         content =
             (<table className="table">
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Title</th>
-                        <th>Author</th>
+                        <th>Name</th>
+                        <th>Address</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {bookData.books.map((book) => createBookRow(book))}
+                    {branchData.branches.map((branch) => createBranchRow(branch))}
                 </tbody>
             </table>)
+        console.log("end123");
     }
 
-    if(bookData && bookData.requestFailed){
+    if(branchData && branchData.requestFailed){
+        console.log("data failed but not null");
         content =
         (
             <div className="alert alert-danger" role="alert">
-                Error while loading books!
+                Error while loading branches!
             </div>
         )
     }
 
     return(
         <div>
-            <h1>Books</h1>
+            <h1>Branches</h1>
             {content}
         </div>
     );
 }
 
-BookRender.propTypes = {
-    bookData: PropTypes.object
+BranchRender.propTypes = {
+    branchData: PropTypes.object
 };
 
-export default BookRender;
+export default BranchRender;
