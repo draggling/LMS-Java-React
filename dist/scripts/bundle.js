@@ -37143,7 +37143,156 @@ var _readBookStarted = function _readBookStarted() {
     };
 };
 
-},{"../constants/actionTypes":113,"axios":7}],108:[function(require,module,exports){
+},{"../constants/actionTypes":116,"axios":7}],108:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactRouterDom = require('react-router-dom');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var AdminHeader = function AdminHeader() {
+    return _react2.default.createElement(
+        'nav',
+        { className: 'navbar navbar-inverse' },
+        _react2.default.createElement(
+            'div',
+            { className: 'container-fluid' },
+            _react2.default.createElement(
+                'ul',
+                { className: 'list-inline' },
+                _react2.default.createElement(
+                    'li',
+                    { className: 'list-inline-item' },
+                    _react2.default.createElement(
+                        _reactRouterDom.Link,
+                        { to: '/', className: 'navbar-brand' },
+                        _react2.default.createElement('img', { width: '90px', height: '30px', src: 'images/logo.png' })
+                    )
+                ),
+                _react2.default.createElement(
+                    'li',
+                    { className: 'list-inline-item' },
+                    _react2.default.createElement(
+                        _reactRouterDom.Link,
+                        { to: '/', replace: true },
+                        'Home'
+                    )
+                ),
+                _react2.default.createElement(
+                    'li',
+                    { className: 'list-inline-item' },
+                    _react2.default.createElement(
+                        _reactRouterDom.Link,
+                        { to: '/AdminHome', replace: true },
+                        'Books'
+                    )
+                ),
+                _react2.default.createElement(
+                    'li',
+                    { className: 'list-inline-item' },
+                    _react2.default.createElement(
+                        _reactRouterDom.Link,
+                        { to: '/AdminHome', replace: true },
+                        'Authors'
+                    )
+                ),
+                _react2.default.createElement(
+                    'li',
+                    { className: 'list-inline-item' },
+                    _react2.default.createElement(
+                        _reactRouterDom.Link,
+                        { to: '/AdminHome', replace: true },
+                        'Publishers'
+                    )
+                ),
+                _react2.default.createElement(
+                    'li',
+                    { className: 'list-inline-item' },
+                    _react2.default.createElement(
+                        _reactRouterDom.Link,
+                        { to: '/AdminHome', replace: true },
+                        'Genres'
+                    )
+                ),
+                _react2.default.createElement(
+                    'li',
+                    { className: 'list-inline-item' },
+                    _react2.default.createElement(
+                        _reactRouterDom.Link,
+                        { to: '/AdminHome', replace: true },
+                        'Borrowers'
+                    )
+                ),
+                _react2.default.createElement(
+                    'li',
+                    { className: 'list-inline-item' },
+                    _react2.default.createElement(
+                        _reactRouterDom.Link,
+                        { to: '/AdminHome', replace: true },
+                        'Branches'
+                    )
+                ),
+                _react2.default.createElement(
+                    'li',
+                    { className: 'list-inline-item' },
+                    _react2.default.createElement(
+                        _reactRouterDom.Link,
+                        { to: '/AdminHome', replace: true },
+                        'Loans'
+                    )
+                )
+            )
+        )
+    );
+};
+
+exports.default = AdminHeader;
+
+},{"react":85,"react-router-dom":79}],109:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _AdminHeader = require('./AdminHeader.js');
+
+var _AdminHeader2 = _interopRequireDefault(_AdminHeader);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var AdminHome = function AdminHome() {
+    return _react2.default.createElement(
+        'div',
+        null,
+        _react2.default.createElement(_AdminHeader2.default, null),
+        _react2.default.createElement(
+            'div',
+            { className: 'jumbotron' },
+            _react2.default.createElement(
+                'h1',
+                null,
+                'Administrator Library Home'
+            )
+        )
+    );
+};
+
+exports.default = AdminHome;
+
+},{"./AdminHeader.js":108,"react":85}],110:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -37159,10 +37308,6 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRouterDom = require('react-router-dom');
 
-var _Header = require('./Header.js');
-
-var _Header2 = _interopRequireDefault(_Header);
-
 var _Home = require('./Home.js');
 
 var _Home2 = _interopRequireDefault(_Home);
@@ -37171,6 +37316,10 @@ var _BookContainer = require('./BookContainer');
 
 var _BookContainer2 = _interopRequireDefault(_BookContainer);
 
+var _AdminHome = require('./AdminHome.js');
+
+var _AdminHome2 = _interopRequireDefault(_AdminHome);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -37178,6 +37327,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+//import Header from './Header.js';
+
+
+//import AdminHeader from './AdminHeader.js'
 
 var App = exports.App = function (_React$Component) {
     _inherits(App, _React$Component);
@@ -37194,12 +37348,12 @@ var App = exports.App = function (_React$Component) {
             return _react2.default.createElement(
                 'div',
                 null,
-                _react2.default.createElement(_Header2.default, null),
                 _react2.default.createElement(
                     _reactRouterDom.Switch,
                     null,
                     _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/', component: _Home2.default }),
-                    _react2.default.createElement(_reactRouterDom.Route, { path: '/books', component: _BookContainer2.default })
+                    _react2.default.createElement(_reactRouterDom.Route, { path: '/books', component: _BookContainer2.default }),
+                    _react2.default.createElement(_reactRouterDom.Route, { path: '/AdminHome', component: _AdminHome2.default })
                 )
             );
         }
@@ -37208,7 +37362,7 @@ var App = exports.App = function (_React$Component) {
     return App;
 }(_react2.default.Component);
 
-},{"./BookContainer":109,"./Header.js":111,"./Home.js":112,"react":85,"react-router-dom":79}],109:[function(require,module,exports){
+},{"./AdminHome.js":109,"./BookContainer":111,"./Home.js":114,"react":85,"react-router-dom":79}],111:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -37235,6 +37389,10 @@ var _BookRender = require('./BookRender');
 
 var _BookRender2 = _interopRequireDefault(_BookRender);
 
+var _Header = require('./Header');
+
+var _Header2 = _interopRequireDefault(_Header);
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -37250,7 +37408,12 @@ var BookContainer = function BookContainer(props) {
     return _react2.default.createElement(
         'div',
         null,
-        _react2.default.createElement(_BookRender2.default, props)
+        _react2.default.createElement(_Header2.default, null),
+        _react2.default.createElement(
+            'div',
+            null,
+            _react2.default.createElement(_BookRender2.default, props)
+        )
     );
 };
 
@@ -37272,7 +37435,7 @@ BookContainer.propTypes = {
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(BookContainer);
 
-},{"../actions/bookActions":107,"./BookRender":110,"prop-types":46,"react":85,"react-redux":68,"redux":90}],110:[function(require,module,exports){
+},{"../actions/bookActions":107,"./BookRender":112,"./Header":113,"prop-types":46,"react":85,"react-redux":68,"redux":90}],112:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -37402,7 +37565,7 @@ BookRender.propTypes = {
 
 exports.default = BookRender;
 
-},{"prop-types":46,"react":85}],111:[function(require,module,exports){
+},{"prop-types":46,"react":85}],113:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -37453,6 +37616,33 @@ var Header = function Header() {
                         { to: '/books', replace: true },
                         'Books'
                     )
+                ),
+                _react2.default.createElement(
+                    'li',
+                    { className: 'list-inline-item' },
+                    _react2.default.createElement(
+                        _reactRouterDom.Link,
+                        { to: '/', replace: true },
+                        'Librarian_Home'
+                    )
+                ),
+                _react2.default.createElement(
+                    'li',
+                    { className: 'list-inline-item' },
+                    _react2.default.createElement(
+                        _reactRouterDom.Link,
+                        { to: '/', replace: true },
+                        'Borrower_Home'
+                    )
+                ),
+                _react2.default.createElement(
+                    'li',
+                    { className: 'list-inline-item' },
+                    _react2.default.createElement(
+                        _reactRouterDom.Link,
+                        { to: '/AdminHome', replace: true },
+                        'Administrator_Home'
+                    )
                 )
             )
         )
@@ -37461,34 +37651,129 @@ var Header = function Header() {
 
 exports.default = Header;
 
-},{"react":85,"react-router-dom":79}],112:[function(require,module,exports){
+},{"react":85,"react-router-dom":79}],114:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _react = require("react");
+var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
+
+var _header = require('./header.js');
+
+var _header2 = _interopRequireDefault(_header);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var Home = function Home() {
     return _react2.default.createElement(
-        "div",
-        { className: "jumbotron" },
+        'div',
+        null,
+        _react2.default.createElement(_header2.default, null),
         _react2.default.createElement(
-            "h1",
-            null,
-            "Library Management System"
+            'div',
+            { className: 'jumbotron' },
+            _react2.default.createElement(
+                'h1',
+                null,
+                'Library Management System'
+            )
         )
     );
 };
 
 exports.default = Home;
 
-},{"react":85}],113:[function(require,module,exports){
+},{"./header.js":115,"react":85}],115:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactRouterDom = require('react-router-dom');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Header = function Header() {
+    return _react2.default.createElement(
+        'nav',
+        { className: 'navbar navbar-inverse' },
+        _react2.default.createElement(
+            'div',
+            { className: 'container-fluid' },
+            _react2.default.createElement(
+                'ul',
+                { className: 'list-inline' },
+                _react2.default.createElement(
+                    'li',
+                    { className: 'list-inline-item' },
+                    _react2.default.createElement(
+                        _reactRouterDom.Link,
+                        { to: '/', className: 'navbar-brand' },
+                        _react2.default.createElement('img', { width: '90px', height: '30px', src: 'images/logo.png' })
+                    )
+                ),
+                _react2.default.createElement(
+                    'li',
+                    { className: 'list-inline-item' },
+                    _react2.default.createElement(
+                        _reactRouterDom.Link,
+                        { to: '/', replace: true },
+                        'Home'
+                    )
+                ),
+                _react2.default.createElement(
+                    'li',
+                    { className: 'list-inline-item' },
+                    _react2.default.createElement(
+                        _reactRouterDom.Link,
+                        { to: '/books', replace: true },
+                        'Books'
+                    )
+                ),
+                _react2.default.createElement(
+                    'li',
+                    { className: 'list-inline-item' },
+                    _react2.default.createElement(
+                        _reactRouterDom.Link,
+                        { to: '/', replace: true },
+                        'Librarian_Home'
+                    )
+                ),
+                _react2.default.createElement(
+                    'li',
+                    { className: 'list-inline-item' },
+                    _react2.default.createElement(
+                        _reactRouterDom.Link,
+                        { to: '/', replace: true },
+                        'Borrower_Home'
+                    )
+                ),
+                _react2.default.createElement(
+                    'li',
+                    { className: 'list-inline-item' },
+                    _react2.default.createElement(
+                        _reactRouterDom.Link,
+                        { to: '/AdminHome', replace: true },
+                        'Administrator_Home'
+                    )
+                )
+            )
+        )
+    );
+};
+
+exports.default = Header;
+
+},{"react":85,"react-router-dom":79}],116:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -37498,7 +37783,7 @@ var READ_BOOKS_SUCCESFUL = exports.READ_BOOKS_SUCCESFUL = 'READ_BOOKS_SUCCESFUL'
 var READ_BOOKS_PENDING = exports.READ_BOOKS_PENDING = 'READ_BOOKS_PENDING';
 var READ_BOOKS_FAILURE = exports.READ_BOOKS_FAILURE = 'READ_BOOKS_FAILURE';
 
-},{}],114:[function(require,module,exports){
+},{}],117:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -37533,7 +37818,7 @@ _reactDom2.default.render(_react2.default.createElement(
   )
 ), document.getElementById('app'));
 
-},{"./components/App.js":108,"./store/configureStore":117,"react":85,"react-dom":50,"react-redux":68,"react-router-dom":79}],115:[function(require,module,exports){
+},{"./components/App.js":110,"./store/configureStore":120,"react":85,"react-dom":50,"react-redux":68,"react-router-dom":79}],118:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -37562,7 +37847,7 @@ function bookReducer() {
   }
 }
 
-},{"../constants/actionTypes":113}],116:[function(require,module,exports){
+},{"../constants/actionTypes":116}],119:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -37583,7 +37868,7 @@ var rootReducer = (0, _redux.combineReducers)({
 
 exports.default = rootReducer;
 
-},{"./bookReducer":115,"redux":90}],117:[function(require,module,exports){
+},{"./bookReducer":118,"redux":90}],120:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -37616,4 +37901,4 @@ function configureStore(initialState) {
 
 exports.default = configureStore;
 
-},{"../reducers":116,"redux":90,"redux-immutable-state-invariant":86,"redux-thunk":89}]},{},[114]);
+},{"../reducers":119,"redux":90,"redux-immutable-state-invariant":86,"redux-thunk":89}]},{},[117]);
