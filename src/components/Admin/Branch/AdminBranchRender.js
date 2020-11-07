@@ -2,21 +2,14 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Button } from 'reactstrap';
+import { MDBDataTable } from 'mdbreact';
+import DeleteModal from '../../Modal/AdminBranch/DeleteModal';
+import UpdateModal from '../../Modal/AdminBranch/UpdateModal';
+import CreateModal from '../../Modal/AdminBranch/CreateModal';
 
-const BranchRender = ({ branchData }) => {
-
-    function createBranchRow(branch){
-        return (
-            <tr key={branch.branchId}>
-                <td> {branch.branchId} </td>
-                <td> {branch.branchName} </td>
-                <td> {branch.branchAddress} </td>
-            </tr>
-        );
-    }
-
-    let content = '';
-
+const AdminBranchRender = ({ branchData, handleRefresh, handleDelete, handleUpdate, handleCreate}) => {
+    let content = "";
     if(!branchData || branchData.requestPending){
         content = (
             <div className="d-flex justify-content-center">
@@ -26,27 +19,54 @@ const BranchRender = ({ branchData }) => {
             </div>
         );
     }
-    console.log(branchData);
     if(branchData && branchData.requestSuccessful){
-        console.log("start123");
-        content =
-            (<table className="table">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Address</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {branchData.branches.map((branch) => createBranchRow(branch))}
-                </tbody>
-            </table>)
-        console.log("end123");
+        let data = {
+          columns: [
+            {
+              label: 'Branch Id',
+              field: 'branchId',
+              sort: 'asc'
+            },
+            {
+              label: 'Branch Name',
+              field: 'branchName',
+              sort: 'asc'
+            },
+            {
+              label: 'Branch Address',
+              field: 'branchAddress',
+              sort: 'asc'
+          },
+            {
+              label: 'Update',
+              field: 'update',
+              sort: 'asc'
+            },
+            {
+              label: 'Delete',
+              field: 'delete',
+              sort: 'asc'
+            },
+          ],
+          rows: getTableBodyContent()}
+        return (
+          <React.Fragment>
+            <div className="mainblock">
+            <CreateModal buttonLabel="Create New Branch" handleCreate={handleCreate} handleRefresh={handleRefresh} />
+            <Button onClick={() => handleRefresh()}>Refresh Data</Button>{' '}
+            <MDBDataTable
+              striped
+              bordered
+              small
+              responsive
+              data={data}
+            />
+            </div>
+          </React.Fragment>
+        );
     }
 
     if(branchData && branchData.requestFailed){
-        console.log("data failed but not null");
         content =
         (
             <div className="alert alert-danger" role="alert">
@@ -54,17 +74,37 @@ const BranchRender = ({ branchData }) => {
             </div>
         )
     }
+  function getTableBodyContent() {
+      return branchData.branches.map(obj => {
+      // Deep Clone object to avoid adding to it while mapping over it during map
+        let newObj = JSON.parse(JSON.stringify(obj));
 
-    return(
-        <div>
-            <h1>Branches</h1>
-            {content}
+
+        newObj.update = <div>
+        <UpdateModal buttonLabel="Update" handleUpdate={handleUpdate} handleRefresh={handleRefresh} id={newObj.branchId} currentBranchName={newObj.branchName} currentBranchAddress={newObj.branchAddress} />
         </div>
-    );
+
+        newObj.delete = <div>
+        <DeleteModal buttonLabel="Delete" handleDelete={handleDelete} handleRefresh={handleRefresh} id={newObj.branchId}/>
+        </div>
+      return newObj
+    });
+
+  }
+  return(
+      <div>
+          <h1>Branches</h1>
+          {content}
+      </div>
+  );
 }
 
-BranchRender.propTypes = {
-    branchData: PropTypes.object
+AdminBranchRender.propTypes = {
+  branchData: PropTypes.object,
+  handleRefresh: PropTypes.func,
+  handleDelete: PropTypes.func,
+  handleUpdate: PropTypes.func,
+  handleCreate: PropTypes.func
 };
 
-export default BranchRender;
+export default AdminBranchRender;

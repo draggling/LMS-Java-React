@@ -10,9 +10,8 @@ import AdminBranchRender from './AdminBranchRender';
 import AdminHeader from '../AdminHeader';
 
 const AdminBranchContainer = (props) => {
-
+    const { actions} = props;
     useEffect(() => {
-        const { actions } = props;
         actions.readBranches();
     }, [] );
 
@@ -22,7 +21,13 @@ const AdminBranchContainer = (props) => {
             <div className="jumbotron">
                 <h1>Branches</h1>
             </div>
-                <AdminBranchRender {...props} />
+                <AdminBranchRender
+                {...props}
+                handleRefresh={() => actions.readBranches()}
+                handleDelete={(id) => actions.deleteBranch(id)}
+                handleUpdate={(id, branchName, branchAddress) => actions.updateBranch(id, branchName, branchAddress)}
+                handleCreate={(branchName, branchAddress) => actions.createBranch(branchName, branchAddress)}
+                />
         </div>
 
     );
