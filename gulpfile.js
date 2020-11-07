@@ -1,13 +1,13 @@
 "use strict";
 
-var gulp = require('gulp'); // gulp 
+var gulp = require('gulp'); // gulp
 var connect = require('gulp-connect'); // server connection
 var open = require('gulp-open'); // opens server
 var browserify = require('browserify'); // converts to browser readable
 var babelify = require("babelify"); // converts js to babel
 var source = require('vinyl-source-stream'); // creates stream that can be copy-pasted to another location
 var concat = require('gulp-concat'); // combines files e.g. css html jss
-var lint = require('gulp-eslint'); // 
+var lint = require('gulp-eslint'); //
 
 var config = {
 	port: 8080,
@@ -18,7 +18,8 @@ var config = {
 		images: './src/images/*',
 		css: [
       		'node_modules/bootstrap/dist/css/bootstrap.min.css',
-      		'node_modules/bootstrap/dist/css/bootstrap-theme.min.css'
+      		'node_modules/bootstrap/dist/css/bootstrap-theme.min.css',
+			'./src/css/*.css'
     	],
 		dist: './dist',
 		mainJs: './src/main.js'
