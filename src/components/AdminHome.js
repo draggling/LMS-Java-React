@@ -1,17 +1,17 @@
 "use strict"
 
 import React from 'react';
-import Header from './header.js';
-const Home = () => {
+import AdminHeader from './AdminHeader.js';
+const AdminHome = () => {
         return(
             <div>
-                <Header/>
+                <AdminHeader/>
                 <div className="jumbotron">
-                    <h1>Library Management System</h1>
+                    <h1>Administrator Library Home</h1>
                 </div>
             </div>
 
         );
 }
 
-export default Home;
+export default AdminHome;

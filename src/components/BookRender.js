@@ -22,14 +22,14 @@ const BookRender = ({ bookData }) => {
             <div className="d-flex justify-content-center">
                 <div className="spinner-border" role="status">
                     <span className="sr-only">Loading...</span>
-                </div> 
+                </div>
             </div>
         );
     }
-    
 
-    if(bookData && bookData.requestSucessful){
-        content = 
+
+    if(bookData && bookData.requestSuccessful){
+        content =
             (<table className="table">
                 <thead>
                     <tr>
@@ -40,19 +40,19 @@ const BookRender = ({ bookData }) => {
                 </thead>
                 <tbody>
                     {bookData.books.map((book) => createBookRow(book))}
-                </tbody>    
+                </tbody>
             </table>)
     }
 
     if(bookData && bookData.requestFailed){
-        content = 
+        content =
         (
             <div className="alert alert-danger" role="alert">
                 Error while loading books!
             </div>
         )
     }
-        
+
     return(
         <div>
             <h1>Books</h1>
