@@ -39,6 +39,7 @@ const AdminBranchContainer = (props) => {
 function mapStateToProps(state) {
 	return {
 		branchData: state.branchReducer.branchData,
+		requestInfo: state.branchReducer.requestInfo,
 	};
 }
 
