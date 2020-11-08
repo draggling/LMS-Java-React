@@ -105,7 +105,7 @@ export default function branchReducer(state = {}, action) {
 				},
 				requestInfo: {
 					...state.requestInfo,
-					updateBranchFailed: true,
+					updateFailed: true,
 					updating: false,
 				},
 			};

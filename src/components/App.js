@@ -8,6 +8,7 @@ import Home from './Home.js';
 import BookContainer from './BookContainer';
 import AdminHome from './Admin/AdminHome.js';
 import AdminBranch from './Admin/Branch/AdminBranchContainer';
+import AdminPublisher from './Admin/Publisher/AdminPublisherContainer';
 //import AdminHeader from './Admin/AdminHeader.js'
 
 export class App extends React.Component {
@@ -19,6 +20,7 @@ export class App extends React.Component {
 					<Route path="/books" component={BookContainer} />
 					<Route path="/AdminHome" component={AdminHome} />
 					<Route path="/AdminBranch" component={AdminBranch} />
+					<Route path="/AdminPublisher" component={AdminPublisher} />
 				</Switch>
 			</div>
 		);

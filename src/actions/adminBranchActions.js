@@ -69,6 +69,7 @@ export const updateBranch = (id, branchName, branchAddress) => {
 
 export const createBranch = (branchName, branchAddress) => {
 	return (dispatch) => {
+		dispatch(_createBranchRequest());
 		return axios
 			.post(ADMIN_PORT + 'addLibraryBranch', {
 				branchName: branchName,
