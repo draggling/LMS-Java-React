@@ -1,4 +1,4 @@
-"use strict"
+'use strict';
 
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
@@ -10,46 +10,49 @@ import AdminBranchRender from './AdminBranchRender';
 import AdminHeader from '../AdminHeader';
 
 const AdminBranchContainer = (props) => {
-    const { actions} = props;
-    useEffect(() => {
-        actions.readBranches();
-    }, [] );
+	const { actions } = props;
+	useEffect(() => {
+		actions.readBranches();
+	}, []);
 
-    return(
-        <div>
-            <AdminHeader/>
-            <div className="jumbotron">
-                <h1>Branches</h1>
-            </div>
-                <AdminBranchRender
-                {...props}
-                handleRefresh={() => actions.readBranches()}
-                handleDelete={(id) => actions.deleteBranch(id)}
-                handleUpdate={(id, branchName, branchAddress) => actions.updateBranch(id, branchName, branchAddress)}
-                handleCreate={(branchName, branchAddress) => actions.createBranch(branchName, branchAddress)}
-                />
-        </div>
+	return (
+		<div>
+			<AdminHeader />
+			<div className="jumbotron">
+				<h1>Branches</h1>
+			</div>
+			<AdminBranchRender
+				{...props}
+				handleRefresh={() => actions.readBranches()}
+				handleDelete={(id) => actions.deleteBranch(id)}
+				handleUpdate={(id, branchName, branchAddress) =>
+					actions.updateBranch(id, branchName, branchAddress)
+				}
+				handleCreate={(branchName, branchAddress) =>
+					actions.createBranch(branchName, branchAddress)
+				}
+			/>
+		</div>
+	);
+};
 
-    );
+function mapStateToProps(state) {
+	return {
+		branchData: state.branchReducer.branchData,
+	};
 }
 
-function mapStateToProps(state){
-    return {
-        branchData: state.branchReducer.branchData
-    }
-}
-
-function mapDispatchToProps(dispatch){
-    return {
-        actions: bindActionCreators(adminBranchActions, dispatch)
-    }
+function mapDispatchToProps(dispatch) {
+	return {
+		actions: bindActionCreators(adminBranchActions, dispatch),
+	};
 }
 
 AdminBranchContainer.propTypes = {
-    actions: PropTypes.object
+	actions: PropTypes.object,
 };
 
 export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-    )(AdminBranchContainer);
+	mapStateToProps,
+	mapDispatchToProps
+)(AdminBranchContainer);

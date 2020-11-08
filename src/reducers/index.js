@@ -3,8 +3,8 @@ import bookReducer from './bookReducer';
 import branchReducer from './branchReducer';
 
 const rootReducer = combineReducers({
-  bookReducer,
-  branchReducer,
+	bookReducer,
+	branchReducer,
 });
 
 export default rootReducer;
