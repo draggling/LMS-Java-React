@@ -15,6 +15,20 @@ import {
 
 export default function branchReducer(state = {}, action) {
 	switch (action.type) {
+		case READ_BRANCHES_PENDING:
+			return {
+				...state,
+				requestInfo: { ...state.requestInfo, readPending: true },
+			};
+		case READ_BRANCHES_FAILURE:
+			return {
+				...state,
+				requestInfo: {
+					...state.requestInfo,
+					readFailed: true,
+					readPending: false,
+				},
+			};
 		case READ_BRANCHES_SUCCESSFUL:
 			return {
 				...state,
@@ -22,16 +36,11 @@ export default function branchReducer(state = {}, action) {
 					branches: action.data,
 				},
 				requestInfo: {
+					...state.requestInfo,
+					readFailed: false,
 					readSuccessful: true,
 					readPending: false,
 				},
-			};
-		case READ_BRANCHES_PENDING:
-			return { ...state, requestInfo: { readPending: true } };
-		case READ_BRANCHES_FAILURE:
-			return {
-				...state,
-				requestInfo: { readFailed: true, readPending: false },
 			};
 		case DELETE_BRANCH_REQUEST:
 			return {
@@ -40,9 +49,10 @@ export default function branchReducer(state = {}, action) {
 					...state.branchData,
 				},
 				requestInfo: {
+					...state.requestInfo,
 					deleting: true,
-					deleteBranchFailed: false,
-					deleteSuccess: true,
+					deleteFailed: false,
+					deleteSuccess: false,
 				},
 			};
 		case DELETE_BRANCH_FAILURE:
@@ -52,7 +62,8 @@ export default function branchReducer(state = {}, action) {
 					...state.branchData,
 				},
 				requestInfo: {
-					deleteBranchFailed: true,
+					...state.requestInfo,
+					deleteFailed: true,
 					deleting: false,
 				},
 			};
@@ -64,9 +75,10 @@ export default function branchReducer(state = {}, action) {
 				...state,
 				branchData: {
 					...state.branchData,
+					branches: newBranches,
 				},
 				requestInfo: {
-					branches: newBranches,
+					...state.requestInfo,
 					deleteSuccess: true,
 					deleting: false,
 				},
@@ -79,9 +91,10 @@ export default function branchReducer(state = {}, action) {
 					...state.branchData,
 				},
 				requestInfo: {
+					...state.requestInfo,
 					updating: true,
-					updateBranchFailed: false,
-					updateSuccess: true,
+					updateFailed: false,
+					updateSuccess: false,
 				},
 			};
 		case UPDATE_BRANCH_FAILURE:
@@ -91,6 +104,7 @@ export default function branchReducer(state = {}, action) {
 					...state.branchData,
 				},
 				requestInfo: {
+					...state.requestInfo,
 					updateBranchFailed: true,
 					updating: false,
 				},
@@ -104,6 +118,7 @@ export default function branchReducer(state = {}, action) {
 						...state.branchData,
 					},
 					requestInfo: {
+						...state.requestInfo,
 						//updatedSuccess: true,
 						//updating: false,
 					},
@@ -121,6 +136,7 @@ export default function branchReducer(state = {}, action) {
 						branches: updatedBranches,
 					},
 					requestInfo: {
+						...state.requestInfo,
 						updateSuccess: true,
 						updating: false,
 					},
@@ -134,8 +150,9 @@ export default function branchReducer(state = {}, action) {
 					...state.branchData,
 				},
 				requestInfo: {
+					...state.requestInfo,
 					creating: true,
-					createBranchFailed: false,
+					createFailed: false,
 					createSuccess: false,
 				},
 			};
@@ -146,7 +163,8 @@ export default function branchReducer(state = {}, action) {
 					...state.branchData,
 				},
 				requestInfo: {
-					createBranchFailed: true,
+					...state.requestInfo,
+					createFailed: true,
 					creating: false,
 				},
 			};
@@ -162,6 +180,7 @@ export default function branchReducer(state = {}, action) {
 					branches: updatedBranchArray,
 				},
 				requestInfo: {
+					...state.requestInfo,
 					createSuccess: true,
 					creating: false,
 				},
