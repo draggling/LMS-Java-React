@@ -60086,7 +60086,7 @@ var _createBorrowerFailed = function _createBorrowerFailed(error) {
 	};
 };
 
-},{"../constants/actionTypes":299,"../constants/connections":300,"axios":9}],273:[function(require,module,exports){
+},{"../constants/actionTypes":305,"../constants/connections":306,"axios":9}],273:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -60242,7 +60242,161 @@ var _createBranchFailed = function _createBranchFailed(error) {
 	};
 };
 
-},{"../constants/actionTypes":299,"../constants/connections":300,"axios":9}],274:[function(require,module,exports){
+},{"../constants/actionTypes":305,"../constants/connections":306,"axios":9}],274:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+exports.createGenre = exports.updateGenre = exports.deleteGenre = exports.readGenres = undefined;
+
+var _axios = require('axios');
+
+var _axios2 = _interopRequireDefault(_axios);
+
+var _actionTypes = require('../constants/actionTypes');
+
+var _connections = require('../constants/connections');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var readGenres = exports.readGenres = function readGenres() {
+	return function (dispatch) {
+		dispatch(_readGenreStarted());
+		return _axios2.default.get(_connections.ADMIN_PORT + 'getGenres').then(function (res) {
+			dispatch(_readGenreSuccess(res));
+		}).catch(function (error) {
+			console.log(error);
+			dispatch(_readGenreFailed(error));
+		});
+	};
+};
+
+var deleteGenre = exports.deleteGenre = function deleteGenre(genreId) {
+	return function (dispatch) {
+		dispatch(_deleteGenreRequest());
+		return _axios2.default.delete(_connections.ADMIN_PORT + 'deleteGenre', {
+			data: { genreId: genreId }
+		}).then(function (res) {
+			dispatch(_deleteGenreSuccess(res));
+		}).catch(function (error) {
+			console.log(error);
+			dispatch(_deleteGenreFailed(error));
+		});
+	};
+};
+
+var updateGenre = exports.updateGenre = function updateGenre(genreId, genreName) {
+	return function (dispatch) {
+		dispatch(_updateGenreRequest());
+		return _axios2.default.put(_connections.ADMIN_PORT + 'updateGenre', {
+			genreId: genreId,
+			genreName: genreName
+		}).then(function (res) {
+			dispatch(_updateGenreSuccess(res));
+		}).catch(function (error) {
+			console.log(error);
+			dispatch(_updateGenreFailed(error));
+		});
+	};
+};
+
+var createGenre = exports.createGenre = function createGenre(genreName) {
+	return function (dispatch) {
+		dispatch(_createGenreRequest());
+		return _axios2.default.post(_connections.ADMIN_PORT + 'addGenre', {
+			genreName: genreName
+		}).then(function (res) {
+			dispatch(_createGenreSuccess(res));
+		}).catch(function (error) {
+			console.log(error);
+			dispatch(_createGenreFailed(error));
+		});
+	};
+};
+
+var _readGenreSuccess = function _readGenreSuccess(res) {
+	return {
+		type: _actionTypes.READ_GENRES_SUCCESSFUL,
+		data: res.data
+	};
+};
+
+var _readGenreFailed = function _readGenreFailed(error) {
+	return {
+		type: _actionTypes.READ_GENRES_FAILURE,
+		error: error
+	};
+};
+
+var _readGenreStarted = function _readGenreStarted() {
+	return {
+		type: _actionTypes.READ_GENRES_PENDING
+	};
+};
+
+var _deleteGenreRequest = function _deleteGenreRequest() {
+	return {
+		type: _actionTypes.DELETE_GENRE_REQUEST
+	};
+};
+
+var _deleteGenreSuccess = function _deleteGenreSuccess(res) {
+	return {
+		type: _actionTypes.DELETE_GENRE_SUCCESSFUL,
+		data: res.data,
+		deletedId: res.data.genreId
+	};
+};
+
+var _deleteGenreFailed = function _deleteGenreFailed(error) {
+	return {
+		type: _actionTypes.DELETE_GENRE_FAILURE,
+		error: error
+	};
+};
+
+var _updateGenreRequest = function _updateGenreRequest() {
+	return {
+		type: _actionTypes.UPDATE_GENRE_REQUEST
+	};
+};
+
+var _updateGenreSuccess = function _updateGenreSuccess(res) {
+	return {
+		type: _actionTypes.UPDATE_GENRE_SUCCESSFUL,
+		updatedGenre: res.data
+	};
+};
+
+var _updateGenreFailed = function _updateGenreFailed(error) {
+	return {
+		type: _actionTypes.UPDATE_GENRE_FAILURE,
+		error: error
+	};
+};
+
+var _createGenreRequest = function _createGenreRequest() {
+	return {
+		type: _actionTypes.CREATE_GENRE_REQUEST
+	};
+};
+
+var _createGenreSuccess = function _createGenreSuccess(res) {
+	return {
+		type: _actionTypes.CREATE_GENRE_SUCCESSFUL,
+		createdGenre: res.data
+	};
+};
+
+var _createGenreFailed = function _createGenreFailed(error) {
+	return {
+		type: _actionTypes.CREATE_GENRE_FAILURE,
+		error: error
+	};
+};
+
+},{"../constants/actionTypes":305,"../constants/connections":306,"axios":9}],275:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -60400,7 +60554,7 @@ var _createPublisherFailed = function _createPublisherFailed(error) {
 	};
 };
 
-},{"../constants/actionTypes":299,"../constants/connections":300,"axios":9}],275:[function(require,module,exports){
+},{"../constants/actionTypes":305,"../constants/connections":306,"axios":9}],276:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -60449,7 +60603,7 @@ var _readBookStarted = function _readBookStarted() {
 	};
 };
 
-},{"../constants/actionTypes":299,"axios":9}],276:[function(require,module,exports){
+},{"../constants/actionTypes":305,"axios":9}],277:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -60537,7 +60691,7 @@ var AdminHeader = function AdminHeader() {
 					{ className: 'list-inline-item' },
 					_react2.default.createElement(
 						_reactRouterDom.Link,
-						{ to: '/AdminHome', replace: true },
+						{ to: '/AdminGenre', replace: true },
 						'Genres'
 					)
 				),
@@ -60566,7 +60720,7 @@ var AdminHeader = function AdminHeader() {
 
 exports.default = AdminHeader;
 
-},{"react":147,"react-router-dom":134}],277:[function(require,module,exports){
+},{"react":147,"react-router-dom":134}],278:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -60602,7 +60756,7 @@ var AdminHome = function AdminHome() {
 
 exports.default = AdminHome;
 
-},{"./AdminHeader.js":276,"react":147}],278:[function(require,module,exports){
+},{"./AdminHeader.js":277,"react":147}],279:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -60695,7 +60849,7 @@ AdminBorrowerContainer.propTypes = {
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(AdminBorrowerContainer);
 
-},{"../../../actions/adminBorrowerActions.js":272,"../AdminHeader":276,"./AdminBorrowerRender":279,"prop-types":94,"react":147,"react-redux":123,"redux":248}],279:[function(require,module,exports){
+},{"../../../actions/adminBorrowerActions.js":272,"../AdminHeader":277,"./AdminBorrowerRender":280,"prop-types":94,"react":147,"react-redux":123,"redux":248}],280:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -60876,7 +61030,7 @@ AdminBorrowerRender.propTypes = {
 
 exports.default = AdminBorrowerRender;
 
-},{"../../Modal/AdminBorrower/CreateModal":289,"../../Modal/AdminBorrower/DeleteModal":290,"../../Modal/AdminBorrower/UpdateModal":291,"mdbreact":62,"prop-types":94,"react":147,"reactstrap":241}],280:[function(require,module,exports){
+},{"../../Modal/AdminBorrower/CreateModal":292,"../../Modal/AdminBorrower/DeleteModal":293,"../../Modal/AdminBorrower/UpdateModal":294,"mdbreact":62,"prop-types":94,"react":147,"reactstrap":241}],281:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -60969,7 +61123,7 @@ AdminBranchContainer.propTypes = {
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(AdminBranchContainer);
 
-},{"../../../actions/adminBranchActions.js":273,"../AdminHeader":276,"./AdminBranchRender":281,"prop-types":94,"react":147,"react-redux":123,"redux":248}],281:[function(require,module,exports){
+},{"../../../actions/adminBranchActions.js":273,"../AdminHeader":277,"./AdminBranchRender":282,"prop-types":94,"react":147,"react-redux":123,"redux":248}],282:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -61144,7 +61298,269 @@ AdminBranchRender.propTypes = {
 
 exports.default = AdminBranchRender;
 
-},{"../../Modal/AdminBranch/CreateModal":292,"../../Modal/AdminBranch/DeleteModal":293,"../../Modal/AdminBranch/UpdateModal":294,"mdbreact":62,"prop-types":94,"react":147,"reactstrap":241}],282:[function(require,module,exports){
+},{"../../Modal/AdminBranch/CreateModal":295,"../../Modal/AdminBranch/DeleteModal":296,"../../Modal/AdminBranch/UpdateModal":297,"mdbreact":62,"prop-types":94,"react":147,"reactstrap":241}],283:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = require('prop-types');
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _reactRedux = require('react-redux');
+
+var _redux = require('redux');
+
+var _adminGenreActions = require('../../../actions/adminGenreActions.js');
+
+var adminGenreActions = _interopRequireWildcard(_adminGenreActions);
+
+var _AdminGenreRender = require('./AdminGenreRender');
+
+var _AdminGenreRender2 = _interopRequireDefault(_AdminGenreRender);
+
+var _AdminHeader = require('../AdminHeader');
+
+var _AdminHeader2 = _interopRequireDefault(_AdminHeader);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var AdminGenreContainer = function AdminGenreContainer(props) {
+	var actions = props.actions;
+
+	(0, _react.useEffect)(function () {
+		actions.readGenres();
+	}, []);
+
+	return _react2.default.createElement(
+		'div',
+		null,
+		_react2.default.createElement(_AdminHeader2.default, null),
+		_react2.default.createElement(
+			'div',
+			{ className: 'jumbotron' },
+			_react2.default.createElement(
+				'h1',
+				null,
+				'Genres'
+			)
+		),
+		_react2.default.createElement(_AdminGenreRender2.default, _extends({}, props, {
+			handleRefresh: function handleRefresh() {
+				return actions.readGenres();
+			},
+			handleDelete: function handleDelete(genreId) {
+				return actions.deleteGenre(genreId);
+			},
+			handleUpdate: function handleUpdate(genreId, genreName) {
+				return actions.updateGenre(genreId, genreName);
+			},
+			handleCreate: function handleCreate(genreName) {
+				return actions.createGenre(genreName);
+			}
+		}))
+	);
+};
+
+function mapStateToProps(state) {
+	return {
+		genreData: state.genreReducer.genreData,
+		requestInfo: state.genreReducer.requestInfo
+	};
+}
+
+function mapDispatchToProps(dispatch) {
+	return {
+		actions: (0, _redux.bindActionCreators)(adminGenreActions, dispatch)
+	};
+}
+
+AdminGenreContainer.propTypes = {
+	actions: _propTypes2.default.object
+};
+
+exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(AdminGenreContainer);
+
+},{"../../../actions/adminGenreActions.js":274,"../AdminHeader":277,"./AdminGenreRender":284,"prop-types":94,"react":147,"react-redux":123,"redux":248}],284:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = require('prop-types');
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _reactstrap = require('reactstrap');
+
+var _mdbreact = require('mdbreact');
+
+var _DeleteModal = require('../../Modal/AdminGenre/DeleteModal');
+
+var _DeleteModal2 = _interopRequireDefault(_DeleteModal);
+
+var _UpdateModal = require('../../Modal/AdminGenre/UpdateModal');
+
+var _UpdateModal2 = _interopRequireDefault(_UpdateModal);
+
+var _CreateModal = require('../../Modal/AdminGenre/CreateModal');
+
+var _CreateModal2 = _interopRequireDefault(_CreateModal);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var AdminGenreRender = function AdminGenreRender(_ref) {
+	var genreData = _ref.genreData,
+	    handleRefresh = _ref.handleRefresh,
+	    handleDelete = _ref.handleDelete,
+	    handleUpdate = _ref.handleUpdate,
+	    handleCreate = _ref.handleCreate,
+	    requestInfo = _ref.requestInfo;
+
+	var content = '';
+	if (!genreData || requestInfo.readPending) {
+		content = _react2.default.createElement(
+			'div',
+			{ className: 'd-flex justify-content-center' },
+			_react2.default.createElement(
+				'div',
+				{ className: 'spinner-border', role: 'status' },
+				_react2.default.createElement(
+					'span',
+					{ className: 'sr-only' },
+					'Loading...'
+				)
+			)
+		);
+	}
+	if (genreData && requestInfo.readSuccessful) {
+		var data = {
+			columns: [{
+				label: 'Genre Id',
+				field: 'genreId',
+				sort: 'asc'
+			}, {
+				label: 'Genre Name',
+				field: 'genreName',
+				sort: 'asc'
+			}, {
+				label: 'Update',
+				field: 'update',
+				sort: 'asc'
+			}, {
+				label: 'Delete',
+				field: 'delete',
+				sort: 'asc'
+			}],
+			rows: getTableBodyContent()
+		};
+		return _react2.default.createElement(
+			_react2.default.Fragment,
+			null,
+			_react2.default.createElement(
+				'div',
+				{ className: 'mainblock' },
+				_react2.default.createElement(_CreateModal2.default, {
+					buttonLabel: 'Create New Genre',
+					handleCreate: handleCreate,
+					handleRefresh: handleRefresh
+				}),
+				_react2.default.createElement(
+					_reactstrap.Button,
+					{ onClick: function onClick() {
+							return handleRefresh();
+						} },
+					'Refresh Data'
+				),
+				' ',
+				_react2.default.createElement(_mdbreact.MDBDataTable, {
+					striped: true,
+					bordered: true,
+					small: true,
+					responsive: true,
+					data: data
+				})
+			)
+		);
+	}
+
+	if (genreData && requestInfo.readFailed) {
+		content = _react2.default.createElement(
+			'div',
+			{ className: 'alert alert-danger', role: 'alert' },
+			'Error while loading genrees!'
+		);
+	}
+	function getTableBodyContent() {
+		return genreData.genres.map(function (obj) {
+			// Deep Clone object to avogenreId adding to it while mapping over it during map
+			var newObj = JSON.parse(JSON.stringify(obj));
+
+			newObj.update = _react2.default.createElement(
+				'div',
+				null,
+				_react2.default.createElement(_UpdateModal2.default, {
+					buttonLabel: 'Update',
+					handleUpdate: handleUpdate,
+					handleRefresh: handleRefresh,
+					genreId: newObj.genreId,
+					currentGenreName: newObj.genreName
+				})
+			);
+
+			newObj.delete = _react2.default.createElement(
+				'div',
+				null,
+				_react2.default.createElement(_DeleteModal2.default, {
+					buttonLabel: 'Delete',
+					handleDelete: handleDelete,
+					handleRefresh: handleRefresh,
+					genreId: newObj.genreId,
+					currentGenreName: newObj.genreName
+				})
+			);
+			return newObj;
+		});
+	}
+	return _react2.default.createElement(
+		'div',
+		null,
+		_react2.default.createElement(
+			'h1',
+			null,
+			'Genres'
+		),
+		content
+	);
+};
+
+AdminGenreRender.propTypes = {
+	genreData: _propTypes2.default.object,
+	handleRefresh: _propTypes2.default.func,
+	handleDelete: _propTypes2.default.func,
+	handleUpdate: _propTypes2.default.func,
+	handleCreate: _propTypes2.default.func,
+	requestInfo: _propTypes2.default.object
+};
+
+exports.default = AdminGenreRender;
+
+},{"../../Modal/AdminGenre/CreateModal":298,"../../Modal/AdminGenre/DeleteModal":299,"../../Modal/AdminGenre/UpdateModal":300,"mdbreact":62,"prop-types":94,"react":147,"reactstrap":241}],285:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -61237,7 +61653,7 @@ AdminPublisherContainer.propTypes = {
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(AdminPublisherContainer);
 
-},{"../../../actions/adminPublisherActions.js":274,"../AdminHeader":276,"./AdminPublisherRender":283,"prop-types":94,"react":147,"react-redux":123,"redux":248}],283:[function(require,module,exports){
+},{"../../../actions/adminPublisherActions.js":275,"../AdminHeader":277,"./AdminPublisherRender":286,"prop-types":94,"react":147,"react-redux":123,"redux":248}],286:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -61418,7 +61834,7 @@ AdminPublisherRender.propTypes = {
 
 exports.default = AdminPublisherRender;
 
-},{"../../Modal/AdminPublisher/CreateModal":295,"../../Modal/AdminPublisher/DeleteModal":296,"../../Modal/AdminPublisher/UpdateModal":297,"mdbreact":62,"prop-types":94,"react":147,"reactstrap":241}],284:[function(require,module,exports){
+},{"../../Modal/AdminPublisher/CreateModal":301,"../../Modal/AdminPublisher/DeleteModal":302,"../../Modal/AdminPublisher/UpdateModal":303,"mdbreact":62,"prop-types":94,"react":147,"reactstrap":241}],287:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -61458,6 +61874,10 @@ var _AdminPublisherContainer = require('./Admin/Publisher/AdminPublisherContaine
 
 var _AdminPublisherContainer2 = _interopRequireDefault(_AdminPublisherContainer);
 
+var _AdminGenreContainer = require('./Admin/Genre/AdminGenreContainer');
+
+var _AdminGenreContainer2 = _interopRequireDefault(_AdminGenreContainer);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -61494,7 +61914,8 @@ var App = exports.App = function (_React$Component) {
 					_react2.default.createElement(_reactRouterDom.Route, { path: '/AdminHome', component: _AdminHome2.default }),
 					_react2.default.createElement(_reactRouterDom.Route, { path: '/AdminBorrower', component: _AdminBorrowerContainer2.default }),
 					_react2.default.createElement(_reactRouterDom.Route, { path: '/AdminBranch', component: _AdminBranchContainer2.default }),
-					_react2.default.createElement(_reactRouterDom.Route, { path: '/AdminPublisher', component: _AdminPublisherContainer2.default })
+					_react2.default.createElement(_reactRouterDom.Route, { path: '/AdminPublisher', component: _AdminPublisherContainer2.default }),
+					_react2.default.createElement(_reactRouterDom.Route, { path: '/AdminGenre', component: _AdminGenreContainer2.default })
 				)
 			);
 		}
@@ -61503,7 +61924,7 @@ var App = exports.App = function (_React$Component) {
 	return App;
 }(_react2.default.Component);
 
-},{"./Admin/AdminHome.js":277,"./Admin/Borrower/AdminBorrowerContainer":278,"./Admin/Branch/AdminBranchContainer":280,"./Admin/Publisher/AdminPublisherContainer":282,"./BookContainer":285,"./Home.js":288,"react":147,"react-router-dom":134}],285:[function(require,module,exports){
+},{"./Admin/AdminHome.js":278,"./Admin/Borrower/AdminBorrowerContainer":279,"./Admin/Branch/AdminBranchContainer":281,"./Admin/Genre/AdminGenreContainer":283,"./Admin/Publisher/AdminPublisherContainer":285,"./BookContainer":288,"./Home.js":291,"react":147,"react-router-dom":134}],288:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -61574,7 +61995,7 @@ BookContainer.propTypes = {
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(BookContainer);
 
-},{"../actions/bookActions":275,"./BookRender":286,"./Header":287,"prop-types":94,"react":147,"react-redux":123,"redux":248}],286:[function(require,module,exports){
+},{"../actions/bookActions":276,"./BookRender":289,"./Header":290,"prop-types":94,"react":147,"react-redux":123,"redux":248}],289:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -61703,7 +62124,7 @@ BookRender.propTypes = {
 
 exports.default = BookRender;
 
-},{"prop-types":94,"react":147}],287:[function(require,module,exports){
+},{"prop-types":94,"react":147}],290:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -61793,7 +62214,7 @@ var Header = function Header() {
 
 exports.default = Header;
 
-},{"react":147,"react-router-dom":134}],288:[function(require,module,exports){
+},{"react":147,"react-router-dom":134}],291:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -61829,7 +62250,7 @@ var Home = function Home() {
 
 exports.default = Home;
 
-},{"./header.js":298,"react":147}],289:[function(require,module,exports){
+},{"./header.js":304,"react":147}],292:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -61990,7 +62411,7 @@ CreateModal.propTypes = {
 
 exports.default = CreateModal;
 
-},{"prop-types":94,"react":147,"reactstrap":241}],290:[function(require,module,exports){
+},{"prop-types":94,"react":147,"reactstrap":241}],293:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -62127,7 +62548,7 @@ DeleteModal.propTypes = {
 
 exports.default = DeleteModal;
 
-},{"prop-types":94,"react":147,"reactstrap":241}],291:[function(require,module,exports){
+},{"prop-types":94,"react":147,"reactstrap":241}],294:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -62296,7 +62717,7 @@ UpdateModal.propTypes = {
 
 exports.default = UpdateModal;
 
-},{"prop-types":94,"react":147,"reactstrap":241}],292:[function(require,module,exports){
+},{"prop-types":94,"react":147,"reactstrap":241}],295:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -62437,7 +62858,7 @@ CreateModal.propTypes = {
 
 exports.default = CreateModal;
 
-},{"prop-types":94,"react":147,"reactstrap":241}],293:[function(require,module,exports){
+},{"prop-types":94,"react":147,"reactstrap":241}],296:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -62562,7 +62983,7 @@ DeleteModal.propTypes = {
 
 exports.default = DeleteModal;
 
-},{"prop-types":94,"react":147,"reactstrap":241}],294:[function(require,module,exports){
+},{"prop-types":94,"react":147,"reactstrap":241}],297:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -62709,7 +63130,359 @@ UpdateModal.propTypes = {
 
 exports.default = UpdateModal;
 
-},{"prop-types":94,"react":147,"reactstrap":241}],295:[function(require,module,exports){
+},{"prop-types":94,"react":147,"reactstrap":241}],298:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactstrap = require('reactstrap');
+
+var _propTypes = require('prop-types');
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var CreateModal = function CreateModal(props) {
+	var buttonLabel = props.buttonLabel,
+	    handleRefresh = props.handleRefresh,
+	    handleCreate = props.handleCreate;
+
+	var newGenreName = '';
+
+	function createGenre(newGenreName) {
+		handleCreate(newGenreName);
+		toggle(); //need to figure out how to make create button be unpressed
+	}
+
+	function handleNameChange(e) {
+		newGenreName = e.target.value;
+	}
+
+	var _useState = (0, _react.useState)(false),
+	    _useState2 = _slicedToArray(_useState, 2),
+	    modal = _useState2[0],
+	    setModal = _useState2[1];
+
+	var toggle = function toggle() {
+		return setModal(!modal);
+	};
+
+	return _react2.default.createElement(
+		'div',
+		null,
+		_react2.default.createElement(
+			_reactstrap.Button,
+			{ color: 'primary', onClick: toggle },
+			buttonLabel
+		),
+		_react2.default.createElement(
+			_reactstrap.Modal,
+			{ isOpen: modal, toggle: toggle },
+			_react2.default.createElement(
+				_reactstrap.ModalHeader,
+				{ toggle: toggle },
+				'Create Genre'
+			),
+			_react2.default.createElement(
+				_reactstrap.ModalBody,
+				null,
+				_react2.default.createElement(
+					_reactstrap.Form,
+					null,
+					_react2.default.createElement(
+						_reactstrap.FormGroup,
+						null,
+						_react2.default.createElement(
+							_reactstrap.Label,
+							{ 'for': 'formGenreName' },
+							' Genre Name'
+						),
+						_react2.default.createElement(_reactstrap.Input, {
+							type: 'text',
+							name: 'genreName',
+							id: 'formGenreName',
+							placeholder: 'New Genre Name',
+							onChange: handleNameChange
+						})
+					)
+				),
+				_react2.default.createElement(
+					_reactstrap.Button,
+					{
+						color: 'primary',
+						className: 'twobuttons',
+						onClick: function onClick() {
+							createGenre(newGenreName);
+						}
+					},
+					'Create'
+				),
+				_react2.default.createElement(
+					_reactstrap.Button,
+					{
+						color: 'danger',
+						className: 'twobuttons',
+						onClick: toggle
+					},
+					'Cancel'
+				)
+			)
+		)
+	);
+};
+
+CreateModal.propTypes = {
+	buttonLabel: _propTypes2.default.string,
+	handleRefresh: _propTypes2.default.func,
+	handleCreate: _propTypes2.default.func
+};
+
+exports.default = CreateModal;
+
+},{"prop-types":94,"react":147,"reactstrap":241}],299:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactstrap = require('reactstrap');
+
+var _propTypes = require('prop-types');
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var DeleteModal = function DeleteModal(props) {
+	var buttonLabel = props.buttonLabel,
+	    currentGenreName = props.currentGenreName,
+	    handleDelete = props.handleDelete,
+	    handleRefresh = props.handleRefresh,
+	    genreId = props.genreId;
+
+	var _useState = (0, _react.useState)(false),
+	    _useState2 = _slicedToArray(_useState, 2),
+	    modal = _useState2[0],
+	    setModal = _useState2[1];
+
+	function deleteGenre(genreId) {
+		handleDelete(genreId);
+		//handleRefresh();
+		toggle();
+	}
+
+	var toggle = function toggle() {
+		return setModal(!modal);
+	};
+
+	return _react2.default.createElement(
+		'div',
+		null,
+		_react2.default.createElement(
+			_reactstrap.Button,
+			{ color: 'danger', onClick: toggle },
+			buttonLabel
+		),
+		_react2.default.createElement(
+			_reactstrap.Modal,
+			{ isOpen: modal, toggle: toggle },
+			_react2.default.createElement(
+				_reactstrap.ModalHeader,
+				{ toggle: toggle },
+				'Are you sure you want to delete the genre?'
+			),
+			_react2.default.createElement(
+				_reactstrap.ModalBody,
+				null,
+				_react2.default.createElement(
+					_reactstrap.Form,
+					null,
+					_react2.default.createElement(
+						_reactstrap.FormGroup,
+						null,
+						_react2.default.createElement(
+							_reactstrap.Label,
+							{ 'for': 'genreName' },
+							'Name:'
+						),
+						_react2.default.createElement(_reactstrap.Input, { plaintext: true, defaultValue: currentGenreName })
+					),
+					_react2.default.createElement(
+						_reactstrap.Button,
+						{
+							color: 'primary',
+							className: 'twobuttons',
+							onClick: function onClick() {
+								deleteGenre(genreId);
+							}
+						},
+						'Yes'
+					),
+					_react2.default.createElement(
+						_reactstrap.Button,
+						{
+							color: 'danger',
+							className: 'twobuttons',
+							onClick: toggle
+						},
+						'No'
+					)
+				)
+			)
+		)
+	);
+};
+
+DeleteModal.propTypes = {
+	buttonLabel: _propTypes2.default.string,
+	handleDelete: _propTypes2.default.func,
+	handleRefresh: _propTypes2.default.func,
+	genreId: _propTypes2.default.number,
+	currentGenreName: _propTypes2.default.string
+};
+
+exports.default = DeleteModal;
+
+},{"prop-types":94,"react":147,"reactstrap":241}],300:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactstrap = require('reactstrap');
+
+var _propTypes = require('prop-types');
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var UpdateModal = function UpdateModal(props) {
+	var buttonLabel = props.buttonLabel,
+	    currentGenreName = props.currentGenreName,
+	    handleRefresh = props.handleRefresh,
+	    handleUpdate = props.handleUpdate,
+	    genreId = props.genreId;
+
+	var newGenreName = currentGenreName;
+
+	function updateGenre(genreId, newGenreName) {
+		handleUpdate(genreId, newGenreName);
+		//handleRefresh(); //Causes the weird update issue where the genreData contains only requestPending because books is being loaded again
+		toggle(); //need to figure out how to make update button be unpressed
+	}
+
+	function handleNameChange(e) {
+		newGenreName = e.target.value;
+	}
+
+	var _useState = (0, _react.useState)(false),
+	    _useState2 = _slicedToArray(_useState, 2),
+	    modal = _useState2[0],
+	    setModal = _useState2[1];
+
+	var toggle = function toggle() {
+		return setModal(!modal);
+	};
+
+	return _react2.default.createElement(
+		'div',
+		null,
+		_react2.default.createElement(
+			_reactstrap.Button,
+			{ color: 'primary', onClick: toggle },
+			buttonLabel
+		),
+		_react2.default.createElement(
+			_reactstrap.Modal,
+			{ isOpen: modal, toggle: toggle },
+			_react2.default.createElement(
+				_reactstrap.ModalHeader,
+				{ toggle: toggle },
+				'Update Genre'
+			),
+			_react2.default.createElement(
+				_reactstrap.ModalBody,
+				null,
+				_react2.default.createElement(
+					_reactstrap.Form,
+					null,
+					_react2.default.createElement(
+						_reactstrap.FormGroup,
+						null,
+						_react2.default.createElement(
+							_reactstrap.Label,
+							{ 'for': 'formGenreName' },
+							'Genre Name'
+						),
+						_react2.default.createElement(_reactstrap.Input, {
+							type: 'text',
+							name: 'genreName',
+							genreId: 'formGenreName',
+							defaultValue: currentGenreName,
+							onChange: handleNameChange
+						})
+					)
+				),
+				_react2.default.createElement(
+					_reactstrap.Button,
+					{
+						color: 'primary',
+						className: 'twobuttons',
+						onClick: function onClick() {
+							updateGenre(genreId, newGenreName);
+						}
+					},
+					'Update'
+				),
+				_react2.default.createElement(
+					_reactstrap.Button,
+					{
+						color: 'danger',
+						className: 'twobuttons',
+						onClick: toggle
+					},
+					'Cancel'
+				)
+			)
+		)
+	);
+};
+
+UpdateModal.propTypes = {
+	buttonLabel: _propTypes2.default.string,
+	handleRefresh: _propTypes2.default.func,
+	handleUpdate: _propTypes2.default.func,
+	currentGenreName: _propTypes2.default.string,
+	genreId: _propTypes2.default.number
+};
+
+exports.default = UpdateModal;
+
+},{"prop-types":94,"react":147,"reactstrap":241}],301:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -62871,7 +63644,7 @@ CreateModal.propTypes = {
 
 exports.default = CreateModal;
 
-},{"prop-types":94,"react":147,"reactstrap":241}],296:[function(require,module,exports){
+},{"prop-types":94,"react":147,"reactstrap":241}],302:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -63008,7 +63781,7 @@ DeleteModal.propTypes = {
 
 exports.default = DeleteModal;
 
-},{"prop-types":94,"react":147,"reactstrap":241}],297:[function(require,module,exports){
+},{"prop-types":94,"react":147,"reactstrap":241}],303:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -63177,7 +63950,7 @@ UpdateModal.propTypes = {
 
 exports.default = UpdateModal;
 
-},{"prop-types":94,"react":147,"reactstrap":241}],298:[function(require,module,exports){
+},{"prop-types":94,"react":147,"reactstrap":241}],304:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -63267,7 +64040,7 @@ var Header = function Header() {
 
 exports.default = Header;
 
-},{"react":147,"react-router-dom":134}],299:[function(require,module,exports){
+},{"react":147,"react-router-dom":134}],305:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -63325,7 +64098,23 @@ var DELETE_PUBLISHER_REQUEST = exports.DELETE_PUBLISHER_REQUEST = 'DELETE_PUBLIS
 var DELETE_PUBLISHER_FAILURE = exports.DELETE_PUBLISHER_FAILURE = 'DELETE_PUBLISHER_FAILURE';
 var DELETE_PUBLISHER_SUCCESSFUL = exports.DELETE_PUBLISHER_SUCCESSFUL = 'DELETE_PUBLISHER_SUCCESSFUL';
 
-},{}],300:[function(require,module,exports){
+var CREATE_GENRE_REQUEST = exports.CREATE_GENRE_REQUEST = 'CREATE_GENRE_REQUEST';
+var CREATE_GENRE_FAILURE = exports.CREATE_GENRE_FAILURE = 'CREATE_GENRE_FAILURE';
+var CREATE_GENRE_SUCCESSFUL = exports.CREATE_GENRE_SUCCESSFUL = 'CREATE_GENRE_SUCCESSFUL';
+
+var READ_GENRES_SUCCESSFUL = exports.READ_GENRES_SUCCESSFUL = 'READ_GENRES_SUCCESSFUL';
+var READ_GENRES_PENDING = exports.READ_GENRES_PENDING = 'READ_GENRES_PENDING';
+var READ_GENRES_FAILURE = exports.READ_GENRES_FAILURE = 'READ_GENRES_FAILURE';
+
+var UPDATE_GENRE_REQUEST = exports.UPDATE_GENRE_REQUEST = 'UPDATE_GENRE_REQUEST';
+var UPDATE_GENRE_FAILURE = exports.UPDATE_GENRE_FAILURE = 'UPDATE_GENRE_FAILURE';
+var UPDATE_GENRE_SUCCESSFUL = exports.UPDATE_GENRE_SUCCESSFUL = 'UPDATE_GENRE_SUCCESSFUL';
+
+var DELETE_GENRE_REQUEST = exports.DELETE_GENRE_REQUEST = 'DELETE_GENRE_REQUEST';
+var DELETE_GENRE_FAILURE = exports.DELETE_GENRE_FAILURE = 'DELETE_GENRE_FAILURE';
+var DELETE_GENRE_SUCCESSFUL = exports.DELETE_GENRE_SUCCESSFUL = 'DELETE_GENRE_SUCCESSFUL';
+
+},{}],306:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -63335,7 +64124,7 @@ var ADMIN_PORT = exports.ADMIN_PORT = 'http://localhost:8090/';
 var LIBRARIAN_PORT = exports.LIBRARIAN_PORT = 'http://localhost:8090/';
 var BORROWER_PORT = exports.BORROWER_PORT = 'http://localhost:8080/';
 
-},{}],301:[function(require,module,exports){
+},{}],307:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -63370,7 +64159,7 @@ _reactDom2.default.render(_react2.default.createElement(
 	)
 ), document.getElementById('app'));
 
-},{"./components/App.js":284,"./store/configureStore":307,"react":147,"react-dom":98,"react-redux":123,"react-router-dom":134}],302:[function(require,module,exports){
+},{"./components/App.js":287,"./store/configureStore":314,"react":147,"react-dom":98,"react-redux":123,"react-router-dom":134}],308:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -63401,7 +64190,7 @@ function bookReducer() {
 	}
 }
 
-},{"../constants/actionTypes":299}],303:[function(require,module,exports){
+},{"../constants/actionTypes":305}],309:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -63552,7 +64341,7 @@ function borrowerReducer() {
 	}
 }
 
-},{"../constants/actionTypes":299}],304:[function(require,module,exports){
+},{"../constants/actionTypes":305}],310:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -63701,7 +64490,156 @@ function branchReducer() {
 	}
 }
 
-},{"../constants/actionTypes":299}],305:[function(require,module,exports){
+},{"../constants/actionTypes":305}],311:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+exports.default = genreReducer;
+
+var _actionTypes = require('../constants/actionTypes');
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+function genreReducer() {
+	var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+	var action = arguments[1];
+
+	switch (action.type) {
+		case _actionTypes.READ_GENRES_PENDING:
+			return _extends({}, state, {
+				requestInfo: _extends({}, state.requestInfo, { readPending: true })
+			});
+		case _actionTypes.READ_GENRES_FAILURE:
+			return _extends({}, state, {
+				requestInfo: _extends({}, state.requestInfo, {
+					readFailed: true,
+					readPending: false
+				})
+			});
+		case _actionTypes.READ_GENRES_SUCCESSFUL:
+			return _extends({}, state, {
+				genreData: {
+					genres: action.data
+				},
+				requestInfo: _extends({}, state.requestInfo, {
+					readFailed: false,
+					readSuccessful: true,
+					readPending: false
+				})
+			});
+		case _actionTypes.DELETE_GENRE_REQUEST:
+			return _extends({}, state, {
+				genreData: _extends({}, state.genreData),
+				requestInfo: _extends({}, state.requestInfo, {
+					deleting: true,
+					deleteFailed: false,
+					deleteSuccess: false
+				})
+			});
+		case _actionTypes.DELETE_GENRE_FAILURE:
+			return _extends({}, state, {
+				genreData: _extends({}, state.genreData),
+				requestInfo: _extends({}, state.requestInfo, {
+					deleteFailed: true,
+					deleting: false
+				})
+			});
+		case _actionTypes.DELETE_GENRE_SUCCESSFUL:
+			{
+				var newGenres = state.genreData.genres.filter(function (genre) {
+					return genre.genreId != action.deletedId;
+				});
+				return _extends({}, state, {
+					genreData: _extends({}, state.genreData, {
+						genres: newGenres
+					}),
+					requestInfo: _extends({}, state.requestInfo, {
+						deleteSuccess: true,
+						deleting: false
+					})
+				});
+			}
+		case _actionTypes.UPDATE_GENRE_REQUEST:
+			return _extends({}, state, {
+				genreData: _extends({}, state.genreData),
+				requestInfo: _extends({}, state.requestInfo, {
+					updating: true,
+					updateFailed: false,
+					updateSuccess: false
+				})
+			});
+		case _actionTypes.UPDATE_GENRE_FAILURE:
+			return _extends({}, state, {
+				genreData: _extends({}, state.genreData),
+				requestInfo: _extends({}, state.requestInfo, {
+					updateFailed: true,
+					updating: false
+				})
+			});
+		case _actionTypes.UPDATE_GENRE_SUCCESSFUL:
+			{
+				if (state.genreData.readPending) {
+					/* Not needed if we continue to use toggle instead of handle refresh*/
+					return _extends({}, state, {
+						genreData: _extends({}, state.genreData),
+						requestInfo: _extends({}, state.requestInfo)
+					});
+				} else {
+					var updatedGenres = state.genreData.genres.map(function (genre) {
+						return action.updatedGenre.genreId === genre.genreId ? action.updatedGenre : genre;
+					});
+					return _extends({}, state, {
+						genreData: _extends({}, state.genreData, {
+							genres: updatedGenres
+						}),
+						requestInfo: _extends({}, state.requestInfo, {
+							updateSuccess: true,
+							updating: false
+						})
+					});
+				}
+			}
+		case _actionTypes.CREATE_GENRE_REQUEST:
+			return _extends({}, state, {
+				genreData: _extends({}, state.genreData),
+				requestInfo: _extends({}, state.requestInfo, {
+					creating: true,
+					createFailed: false,
+					createSuccess: false
+				})
+			});
+		case _actionTypes.CREATE_GENRE_FAILURE:
+			return _extends({}, state, {
+				genreData: _extends({}, state.genreData),
+				requestInfo: _extends({}, state.requestInfo, {
+					createFailed: true,
+					creating: false
+				})
+			});
+		case _actionTypes.CREATE_GENRE_SUCCESSFUL:
+			{
+				var updatedGenreArray = [].concat(_toConsumableArray(state.genreData.genres), [action.createdGenre]);
+				return _extends({}, state, {
+					genreData: _extends({}, state.genreData, {
+						genres: updatedGenreArray
+					}),
+					requestInfo: _extends({}, state.requestInfo, {
+						createSuccess: true,
+						creating: false
+					})
+				});
+			}
+		default:
+			return state;
+	}
+}
+
+},{"../constants/actionTypes":305}],312:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -63726,18 +64664,23 @@ var _publisherReducer = require('./publisherReducer');
 
 var _publisherReducer2 = _interopRequireDefault(_publisherReducer);
 
+var _genreReducer = require('./genreReducer');
+
+var _genreReducer2 = _interopRequireDefault(_genreReducer);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var rootReducer = (0, _redux.combineReducers)({
 	bookReducer: _bookReducer2.default,
 	borrowerReducer: _borrowerReducer2.default,
 	branchReducer: _branchReducer2.default,
-	publisherReducer: _publisherReducer2.default
+	publisherReducer: _publisherReducer2.default,
+	genreReducer: _genreReducer2.default
 });
 
 exports.default = rootReducer;
 
-},{"./bookReducer":302,"./borrowerReducer":303,"./branchReducer":304,"./publisherReducer":306,"redux":248}],306:[function(require,module,exports){
+},{"./bookReducer":308,"./borrowerReducer":309,"./branchReducer":310,"./genreReducer":311,"./publisherReducer":313,"redux":248}],313:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -63886,7 +64829,7 @@ function publisherReducer() {
 	}
 }
 
-},{"../constants/actionTypes":299}],307:[function(require,module,exports){
+},{"../constants/actionTypes":305}],314:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -63919,4 +64862,4 @@ function configureStore(initialState) {
 
 exports.default = configureStore;
 
-},{"../reducers":305,"redux":248,"redux-immutable-state-invariant":244,"redux-thunk":247}]},{},[301]);
+},{"../reducers":312,"redux":248,"redux-immutable-state-invariant":244,"redux-thunk":247}]},{},[307]);
