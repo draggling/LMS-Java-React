@@ -59934,6 +59934,164 @@ function extend() {
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
+exports.createBorrower = exports.updateBorrower = exports.deleteBorrower = exports.readBorrowers = undefined;
+
+var _axios = require('axios');
+
+var _axios2 = _interopRequireDefault(_axios);
+
+var _actionTypes = require('../constants/actionTypes');
+
+var _connections = require('../constants/connections');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var readBorrowers = exports.readBorrowers = function readBorrowers() {
+	return function (dispatch) {
+		dispatch(_readBorrowerStarted());
+		return _axios2.default.get(_connections.ADMIN_PORT + 'getBorrowers').then(function (res) {
+			dispatch(_readBorrowerSuccess(res));
+		}).catch(function (error) {
+			console.log(error);
+			dispatch(_readBorrowerFailed(error));
+		});
+	};
+};
+
+var deleteBorrower = exports.deleteBorrower = function deleteBorrower(borrowerCardNo) {
+	return function (dispatch) {
+		dispatch(_deleteBorrowerRequest());
+		return _axios2.default.delete(_connections.ADMIN_PORT + 'deleteBorrower', {
+			data: { borrowerCardNo: borrowerCardNo }
+		}).then(function (res) {
+			dispatch(_deleteBorrowerSuccess(res));
+		}).catch(function (error) {
+			console.log(error);
+			dispatch(_deleteBorrowerFailed(error));
+		});
+	};
+};
+
+var updateBorrower = exports.updateBorrower = function updateBorrower(borrowerCardNo, borrowerName, borrowerAddress, borrowerPhone) {
+	return function (dispatch) {
+		dispatch(_updateBorrowerRequest());
+		return _axios2.default.put(_connections.ADMIN_PORT + 'updateBorrower', {
+			borrowerCardNo: borrowerCardNo,
+			borrowerName: borrowerName,
+			borrowerAddress: borrowerAddress,
+			borrowerPhone: borrowerPhone
+		}).then(function (res) {
+			dispatch(_updateBorrowerSuccess(res));
+		}).catch(function (error) {
+			console.log(error);
+			dispatch(_updateBorrowerFailed(error));
+		});
+	};
+};
+
+var createBorrower = exports.createBorrower = function createBorrower(borrowerName, borrowerAddress, borrowerPhone) {
+	return function (dispatch) {
+		dispatch(_createBorrowerRequest());
+		return _axios2.default.post(_connections.ADMIN_PORT + 'addBorrower', {
+			borrowerName: borrowerName,
+			borrowerAddress: borrowerAddress,
+			borrowerPhone: borrowerPhone
+		}).then(function (res) {
+			dispatch(_createBorrowerSuccess(res));
+		}).catch(function (error) {
+			console.log(error);
+			dispatch(_createBorrowerFailed(error));
+		});
+	};
+};
+
+var _readBorrowerSuccess = function _readBorrowerSuccess(res) {
+	return {
+		type: _actionTypes.READ_BORROWERS_SUCCESSFUL,
+		data: res.data
+	};
+};
+
+var _readBorrowerFailed = function _readBorrowerFailed(error) {
+	return {
+		type: _actionTypes.READ_BORROWERS_FAILURE,
+		error: error
+	};
+};
+
+var _readBorrowerStarted = function _readBorrowerStarted() {
+	return {
+		type: _actionTypes.READ_BORROWERS_PENDING
+	};
+};
+
+var _deleteBorrowerRequest = function _deleteBorrowerRequest() {
+	return {
+		type: _actionTypes.DELETE_BORROWER_REQUEST
+	};
+};
+
+var _deleteBorrowerSuccess = function _deleteBorrowerSuccess(res) {
+	return {
+		type: _actionTypes.DELETE_BORROWER_SUCCESSFUL,
+		data: res.data,
+		deletedId: res.data.borrowerCardNo
+	};
+};
+
+var _deleteBorrowerFailed = function _deleteBorrowerFailed(error) {
+	return {
+		type: _actionTypes.DELETE_BORROWER_FAILURE,
+		error: error
+	};
+};
+
+var _updateBorrowerRequest = function _updateBorrowerRequest() {
+	return {
+		type: _actionTypes.UPDATE_BORROWER_REQUEST
+	};
+};
+
+var _updateBorrowerSuccess = function _updateBorrowerSuccess(res) {
+	return {
+		type: _actionTypes.UPDATE_BORROWER_SUCCESSFUL,
+		updatedBorrower: res.data
+	};
+};
+
+var _updateBorrowerFailed = function _updateBorrowerFailed(error) {
+	return {
+		type: _actionTypes.UPDATE_BORROWER_FAILURE,
+		error: error
+	};
+};
+
+var _createBorrowerRequest = function _createBorrowerRequest() {
+	return {
+		type: _actionTypes.CREATE_BORROWER_REQUEST
+	};
+};
+
+var _createBorrowerSuccess = function _createBorrowerSuccess(res) {
+	return {
+		type: _actionTypes.CREATE_BORROWER_SUCCESSFUL,
+		createdBorrower: res.data
+	};
+};
+
+var _createBorrowerFailed = function _createBorrowerFailed(error) {
+	return {
+		type: _actionTypes.CREATE_BORROWER_FAILURE,
+		error: error
+	};
+};
+
+},{"../constants/actionTypes":299,"../constants/connections":300,"axios":9}],273:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
 exports.createBranch = exports.updateBranch = exports.deleteBranch = exports.readBranches = undefined;
 
 var _axios = require('axios');
@@ -60084,7 +60242,7 @@ var _createBranchFailed = function _createBranchFailed(error) {
 	};
 };
 
-},{"../constants/actionTypes":293,"../constants/connections":294,"axios":9}],273:[function(require,module,exports){
+},{"../constants/actionTypes":299,"../constants/connections":300,"axios":9}],274:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -60242,7 +60400,7 @@ var _createPublisherFailed = function _createPublisherFailed(error) {
 	};
 };
 
-},{"../constants/actionTypes":293,"../constants/connections":294,"axios":9}],274:[function(require,module,exports){
+},{"../constants/actionTypes":299,"../constants/connections":300,"axios":9}],275:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -60291,7 +60449,7 @@ var _readBookStarted = function _readBookStarted() {
 	};
 };
 
-},{"../constants/actionTypes":293,"axios":9}],275:[function(require,module,exports){
+},{"../constants/actionTypes":299,"axios":9}],276:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -60388,7 +60546,7 @@ var AdminHeader = function AdminHeader() {
 					{ className: 'list-inline-item' },
 					_react2.default.createElement(
 						_reactRouterDom.Link,
-						{ to: '/AdminHome', replace: true },
+						{ to: '/AdminBorrower', replace: true },
 						'Borrowers'
 					)
 				),
@@ -60408,7 +60566,7 @@ var AdminHeader = function AdminHeader() {
 
 exports.default = AdminHeader;
 
-},{"react":147,"react-router-dom":134}],276:[function(require,module,exports){
+},{"react":147,"react-router-dom":134}],277:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -60444,7 +60602,281 @@ var AdminHome = function AdminHome() {
 
 exports.default = AdminHome;
 
-},{"./AdminHeader.js":275,"react":147}],277:[function(require,module,exports){
+},{"./AdminHeader.js":276,"react":147}],278:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = require('prop-types');
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _reactRedux = require('react-redux');
+
+var _redux = require('redux');
+
+var _adminBorrowerActions = require('../../../actions/adminBorrowerActions.js');
+
+var adminBorrowerActions = _interopRequireWildcard(_adminBorrowerActions);
+
+var _AdminBorrowerRender = require('./AdminBorrowerRender');
+
+var _AdminBorrowerRender2 = _interopRequireDefault(_AdminBorrowerRender);
+
+var _AdminHeader = require('../AdminHeader');
+
+var _AdminHeader2 = _interopRequireDefault(_AdminHeader);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var AdminBorrowerContainer = function AdminBorrowerContainer(props) {
+	var actions = props.actions;
+
+	(0, _react.useEffect)(function () {
+		actions.readBorrowers();
+	}, []);
+
+	return _react2.default.createElement(
+		'div',
+		null,
+		_react2.default.createElement(_AdminHeader2.default, null),
+		_react2.default.createElement(
+			'div',
+			{ className: 'jumbotron' },
+			_react2.default.createElement(
+				'h1',
+				null,
+				'Borrowers'
+			)
+		),
+		_react2.default.createElement(_AdminBorrowerRender2.default, _extends({}, props, {
+			handleRefresh: function handleRefresh() {
+				return actions.readBorrowers();
+			},
+			handleDelete: function handleDelete(borrowerCardNo) {
+				return actions.deleteBorrower(borrowerCardNo);
+			},
+			handleUpdate: function handleUpdate(borrowerCardNo, borrowerName, borrowerAddress, borrowerPhone) {
+				return actions.updateBorrower(borrowerCardNo, borrowerName, borrowerAddress, borrowerPhone);
+			},
+			handleCreate: function handleCreate(borrowerName, borrowerAddress, borrowerPhone) {
+				return actions.createBorrower(borrowerName, borrowerAddress, borrowerPhone);
+			}
+		}))
+	);
+};
+
+function mapStateToProps(state) {
+	return {
+		borrowerData: state.borrowerReducer.borrowerData,
+		requestInfo: state.borrowerReducer.requestInfo
+	};
+}
+
+function mapDispatchToProps(dispatch) {
+	return {
+		actions: (0, _redux.bindActionCreators)(adminBorrowerActions, dispatch)
+	};
+}
+
+AdminBorrowerContainer.propTypes = {
+	actions: _propTypes2.default.object
+};
+
+exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(AdminBorrowerContainer);
+
+},{"../../../actions/adminBorrowerActions.js":272,"../AdminHeader":276,"./AdminBorrowerRender":279,"prop-types":94,"react":147,"react-redux":123,"redux":248}],279:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = require('prop-types');
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _reactstrap = require('reactstrap');
+
+var _mdbreact = require('mdbreact');
+
+var _DeleteModal = require('../../Modal/AdminBorrower/DeleteModal');
+
+var _DeleteModal2 = _interopRequireDefault(_DeleteModal);
+
+var _UpdateModal = require('../../Modal/AdminBorrower/UpdateModal');
+
+var _UpdateModal2 = _interopRequireDefault(_UpdateModal);
+
+var _CreateModal = require('../../Modal/AdminBorrower/CreateModal');
+
+var _CreateModal2 = _interopRequireDefault(_CreateModal);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var AdminBorrowerRender = function AdminBorrowerRender(_ref) {
+	var borrowerData = _ref.borrowerData,
+	    handleRefresh = _ref.handleRefresh,
+	    handleDelete = _ref.handleDelete,
+	    handleUpdate = _ref.handleUpdate,
+	    handleCreate = _ref.handleCreate,
+	    requestInfo = _ref.requestInfo;
+
+	var content = '';
+	if (!borrowerData || requestInfo.readPending) {
+		content = _react2.default.createElement(
+			'div',
+			{ className: 'd-flex justify-content-center' },
+			_react2.default.createElement(
+				'div',
+				{ className: 'spinner-border', role: 'status' },
+				_react2.default.createElement(
+					'span',
+					{ className: 'sr-only' },
+					'Loading...'
+				)
+			)
+		);
+	}
+	if (borrowerData && requestInfo.readSuccessful) {
+		var data = {
+			columns: [{
+				label: 'Borrower Id',
+				field: 'borrowerCardNo',
+				sort: 'asc'
+			}, {
+				label: 'Borrower Name',
+				field: 'borrowerName',
+				sort: 'asc'
+			}, {
+				label: 'Borrower Address',
+				field: 'borrowerAddress',
+				sort: 'asc'
+			}, {
+				label: 'Borrower Phone #',
+				field: 'borrowerPhone',
+				sort: 'asc'
+			}, {
+				label: 'Update',
+				field: 'update',
+				sort: 'asc'
+			}, {
+				label: 'Delete',
+				field: 'delete',
+				sort: 'asc'
+			}],
+			rows: getTableBodyContent()
+		};
+		return _react2.default.createElement(
+			_react2.default.Fragment,
+			null,
+			_react2.default.createElement(
+				'div',
+				{ className: 'mainblock' },
+				_react2.default.createElement(_CreateModal2.default, {
+					buttonLabel: 'Create New Borrower',
+					handleCreate: handleCreate,
+					handleRefresh: handleRefresh
+				}),
+				_react2.default.createElement(
+					_reactstrap.Button,
+					{ onClick: function onClick() {
+							return handleRefresh();
+						} },
+					'Refresh Data'
+				),
+				' ',
+				_react2.default.createElement(_mdbreact.MDBDataTable, {
+					striped: true,
+					bordered: true,
+					small: true,
+					responsive: true,
+					data: data
+				})
+			)
+		);
+	}
+
+	if (borrowerData && requestInfo.readFailed) {
+		content = _react2.default.createElement(
+			'div',
+			{ className: 'alert alert-danger', role: 'alert' },
+			'Error while loading borrowers!'
+		);
+	}
+	function getTableBodyContent() {
+		return borrowerData.borrowers.map(function (obj) {
+			// Deep Clone object to avocardNo adding to it while mapping over it during map
+			var newObj = JSON.parse(JSON.stringify(obj));
+
+			newObj.update = _react2.default.createElement(
+				'div',
+				null,
+				_react2.default.createElement(_UpdateModal2.default, {
+					buttonLabel: 'Update',
+					handleUpdate: handleUpdate,
+					handleRefresh: handleRefresh,
+					cardNo: newObj.borrowerCardNo,
+					currentBorrowerName: newObj.borrowerName,
+					currentBorrowerAddress: newObj.borrowerAddress,
+					currentBorrowerPhone: newObj.borrowerPhone
+				})
+			);
+
+			newObj.delete = _react2.default.createElement(
+				'div',
+				null,
+				_react2.default.createElement(_DeleteModal2.default, {
+					buttonLabel: 'Delete',
+					handleDelete: handleDelete,
+					handleRefresh: handleRefresh,
+					cardNo: newObj.borrowerCardNo,
+					currentBorrowerName: newObj.borrowerName,
+					currentBorrowerAddress: newObj.borrowerAddress,
+					currentBorrowerPhone: newObj.borrowerPhone
+				})
+			);
+			return newObj;
+		});
+	}
+	return _react2.default.createElement(
+		'div',
+		null,
+		_react2.default.createElement(
+			'h1',
+			null,
+			'Borroweres'
+		),
+		content
+	);
+};
+
+AdminBorrowerRender.propTypes = {
+	borrowerData: _propTypes2.default.object,
+	handleRefresh: _propTypes2.default.func,
+	handleDelete: _propTypes2.default.func,
+	handleUpdate: _propTypes2.default.func,
+	handleCreate: _propTypes2.default.func,
+	requestInfo: _propTypes2.default.object
+};
+
+exports.default = AdminBorrowerRender;
+
+},{"../../Modal/AdminBorrower/CreateModal":289,"../../Modal/AdminBorrower/DeleteModal":290,"../../Modal/AdminBorrower/UpdateModal":291,"mdbreact":62,"prop-types":94,"react":147,"reactstrap":241}],280:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -60537,7 +60969,7 @@ AdminBranchContainer.propTypes = {
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(AdminBranchContainer);
 
-},{"../../../actions/adminBranchActions.js":272,"../AdminHeader":275,"./AdminBranchRender":278,"prop-types":94,"react":147,"react-redux":123,"redux":248}],278:[function(require,module,exports){
+},{"../../../actions/adminBranchActions.js":273,"../AdminHeader":276,"./AdminBranchRender":281,"prop-types":94,"react":147,"react-redux":123,"redux":248}],281:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -60712,7 +61144,7 @@ AdminBranchRender.propTypes = {
 
 exports.default = AdminBranchRender;
 
-},{"../../Modal/AdminBranch/CreateModal":286,"../../Modal/AdminBranch/DeleteModal":287,"../../Modal/AdminBranch/UpdateModal":288,"mdbreact":62,"prop-types":94,"react":147,"reactstrap":241}],279:[function(require,module,exports){
+},{"../../Modal/AdminBranch/CreateModal":292,"../../Modal/AdminBranch/DeleteModal":293,"../../Modal/AdminBranch/UpdateModal":294,"mdbreact":62,"prop-types":94,"react":147,"reactstrap":241}],282:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -60805,7 +61237,7 @@ AdminPublisherContainer.propTypes = {
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(AdminPublisherContainer);
 
-},{"../../../actions/adminPublisherActions.js":273,"../AdminHeader":275,"./AdminPublisherRender":280,"prop-types":94,"react":147,"react-redux":123,"redux":248}],280:[function(require,module,exports){
+},{"../../../actions/adminPublisherActions.js":274,"../AdminHeader":276,"./AdminPublisherRender":283,"prop-types":94,"react":147,"react-redux":123,"redux":248}],283:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -60986,7 +61418,7 @@ AdminPublisherRender.propTypes = {
 
 exports.default = AdminPublisherRender;
 
-},{"../../Modal/AdminPublisher/CreateModal":289,"../../Modal/AdminPublisher/DeleteModal":290,"../../Modal/AdminPublisher/UpdateModal":291,"mdbreact":62,"prop-types":94,"react":147,"reactstrap":241}],281:[function(require,module,exports){
+},{"../../Modal/AdminPublisher/CreateModal":295,"../../Modal/AdminPublisher/DeleteModal":296,"../../Modal/AdminPublisher/UpdateModal":297,"mdbreact":62,"prop-types":94,"react":147,"reactstrap":241}],284:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -61017,6 +61449,10 @@ var _AdminHome2 = _interopRequireDefault(_AdminHome);
 var _AdminBranchContainer = require('./Admin/Branch/AdminBranchContainer');
 
 var _AdminBranchContainer2 = _interopRequireDefault(_AdminBranchContainer);
+
+var _AdminBorrowerContainer = require('./Admin/Borrower/AdminBorrowerContainer');
+
+var _AdminBorrowerContainer2 = _interopRequireDefault(_AdminBorrowerContainer);
 
 var _AdminPublisherContainer = require('./Admin/Publisher/AdminPublisherContainer');
 
@@ -61056,6 +61492,7 @@ var App = exports.App = function (_React$Component) {
 					_react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/', component: _Home2.default }),
 					_react2.default.createElement(_reactRouterDom.Route, { path: '/books', component: _BookContainer2.default }),
 					_react2.default.createElement(_reactRouterDom.Route, { path: '/AdminHome', component: _AdminHome2.default }),
+					_react2.default.createElement(_reactRouterDom.Route, { path: '/AdminBorrower', component: _AdminBorrowerContainer2.default }),
 					_react2.default.createElement(_reactRouterDom.Route, { path: '/AdminBranch', component: _AdminBranchContainer2.default }),
 					_react2.default.createElement(_reactRouterDom.Route, { path: '/AdminPublisher', component: _AdminPublisherContainer2.default })
 				)
@@ -61066,7 +61503,7 @@ var App = exports.App = function (_React$Component) {
 	return App;
 }(_react2.default.Component);
 
-},{"./Admin/AdminHome.js":276,"./Admin/Branch/AdminBranchContainer":277,"./Admin/Publisher/AdminPublisherContainer":279,"./BookContainer":282,"./Home.js":285,"react":147,"react-router-dom":134}],282:[function(require,module,exports){
+},{"./Admin/AdminHome.js":277,"./Admin/Borrower/AdminBorrowerContainer":278,"./Admin/Branch/AdminBranchContainer":280,"./Admin/Publisher/AdminPublisherContainer":282,"./BookContainer":285,"./Home.js":288,"react":147,"react-router-dom":134}],285:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -61137,7 +61574,7 @@ BookContainer.propTypes = {
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(BookContainer);
 
-},{"../actions/bookActions":274,"./BookRender":283,"./Header":284,"prop-types":94,"react":147,"react-redux":123,"redux":248}],283:[function(require,module,exports){
+},{"../actions/bookActions":275,"./BookRender":286,"./Header":287,"prop-types":94,"react":147,"react-redux":123,"redux":248}],286:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -61266,7 +61703,7 @@ BookRender.propTypes = {
 
 exports.default = BookRender;
 
-},{"prop-types":94,"react":147}],284:[function(require,module,exports){
+},{"prop-types":94,"react":147}],287:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -61356,7 +61793,7 @@ var Header = function Header() {
 
 exports.default = Header;
 
-},{"react":147,"react-router-dom":134}],285:[function(require,module,exports){
+},{"react":147,"react-router-dom":134}],288:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -61392,7 +61829,474 @@ var Home = function Home() {
 
 exports.default = Home;
 
-},{"./header.js":292,"react":147}],286:[function(require,module,exports){
+},{"./header.js":298,"react":147}],289:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactstrap = require('reactstrap');
+
+var _propTypes = require('prop-types');
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var CreateModal = function CreateModal(props) {
+	var buttonLabel = props.buttonLabel,
+	    handleRefresh = props.handleRefresh,
+	    handleCreate = props.handleCreate;
+
+	var newBorrowerName = '';
+	var newBorrowerAddress = '';
+	var newBorrowerPhone = '';
+
+	function createBorrower(newBorrowerName, newBorrowerAddress, newBorrowerPhone) {
+		handleCreate(newBorrowerName, newBorrowerAddress, newBorrowerPhone);
+		//handleRefresh();
+		toggle(); //need to figure out how to make create button be unpressed
+	}
+
+	function handleNameChange(e) {
+		newBorrowerName = e.target.value;
+	}
+	function handleAddressChange(e) {
+		newBorrowerAddress = e.target.value;
+	}
+	function handlePhoneChange(e) {
+		newBorrowerPhone = e.target.value;
+	}
+
+	var _useState = (0, _react.useState)(false),
+	    _useState2 = _slicedToArray(_useState, 2),
+	    modal = _useState2[0],
+	    setModal = _useState2[1];
+
+	var toggle = function toggle() {
+		return setModal(!modal);
+	};
+
+	return _react2.default.createElement(
+		'div',
+		null,
+		_react2.default.createElement(
+			_reactstrap.Button,
+			{ color: 'primary', onClick: toggle },
+			buttonLabel
+		),
+		_react2.default.createElement(
+			_reactstrap.Modal,
+			{ isOpen: modal, toggle: toggle },
+			_react2.default.createElement(
+				_reactstrap.ModalHeader,
+				{ toggle: toggle },
+				'Create Borrower'
+			),
+			_react2.default.createElement(
+				_reactstrap.ModalBody,
+				null,
+				_react2.default.createElement(
+					_reactstrap.Form,
+					null,
+					_react2.default.createElement(
+						_reactstrap.FormGroup,
+						null,
+						_react2.default.createElement(
+							_reactstrap.Label,
+							{ 'for': 'formBorrowerName' },
+							' Borrower Name'
+						),
+						_react2.default.createElement(_reactstrap.Input, {
+							type: 'text',
+							name: 'borrowerName',
+							id: 'formBorrowerName',
+							placeholder: 'New Borrower Name',
+							onChange: handleNameChange
+						})
+					),
+					_react2.default.createElement(
+						_reactstrap.FormGroup,
+						null,
+						_react2.default.createElement(
+							_reactstrap.Label,
+							{ 'for': 'formBorrowerAddress' },
+							'Borrower Address'
+						),
+						_react2.default.createElement(_reactstrap.Input, {
+							type: 'text',
+							name: 'borrowerAddress',
+							id: 'formBorrowerAddress',
+							placeholder: 'New Address',
+							onChange: handleAddressChange
+						})
+					),
+					_react2.default.createElement(
+						_reactstrap.FormGroup,
+						null,
+						_react2.default.createElement(
+							_reactstrap.Label,
+							{ 'for': 'formBorrowerPhone' },
+							'Borrower Phone'
+						),
+						_react2.default.createElement(_reactstrap.Input, {
+							type: 'text',
+							name: 'borrowerPhone',
+							id: 'formBorrowerPhone',
+							placeholder: 'New Phone Number',
+							onChange: handlePhoneChange
+						})
+					)
+				),
+				_react2.default.createElement(
+					_reactstrap.Button,
+					{
+						color: 'primary',
+						className: 'twobuttons',
+						onClick: function onClick() {
+							createBorrower(newBorrowerName, newBorrowerAddress, newBorrowerPhone);
+						}
+					},
+					'Create'
+				),
+				_react2.default.createElement(
+					_reactstrap.Button,
+					{
+						color: 'danger',
+						className: 'twobuttons',
+						onClick: function onClick() {
+							return handleRefresh();
+						}
+					},
+					'Cancel'
+				)
+			)
+		)
+	);
+};
+
+CreateModal.propTypes = {
+	buttonLabel: _propTypes2.default.string,
+	handleRefresh: _propTypes2.default.func,
+	handleCreate: _propTypes2.default.func
+};
+
+exports.default = CreateModal;
+
+},{"prop-types":94,"react":147,"reactstrap":241}],290:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactstrap = require('reactstrap');
+
+var _propTypes = require('prop-types');
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var DeleteModal = function DeleteModal(props) {
+	var buttonLabel = props.buttonLabel,
+	    handleDelete = props.handleDelete,
+	    handleRefresh = props.handleRefresh,
+	    cardNo = props.cardNo,
+	    currentBorrowerName = props.currentBorrowerName,
+	    currentBorrowerAddress = props.currentBorrowerAddress,
+	    currentBorrowerPhone = props.currentBorrowerPhone;
+
+	var _useState = (0, _react.useState)(false),
+	    _useState2 = _slicedToArray(_useState, 2),
+	    modal = _useState2[0],
+	    setModal = _useState2[1];
+
+	function deleteBorrower(cardNo) {
+		handleDelete(cardNo);
+		//handleRefresh();
+		toggle();
+	}
+
+	var toggle = function toggle() {
+		return setModal(!modal);
+	};
+
+	return _react2.default.createElement(
+		'div',
+		null,
+		_react2.default.createElement(
+			_reactstrap.Button,
+			{ color: 'danger', onClick: toggle },
+			buttonLabel
+		),
+		_react2.default.createElement(
+			_reactstrap.Modal,
+			{ isOpen: modal, toggle: toggle },
+			_react2.default.createElement(
+				_reactstrap.ModalHeader,
+				{ toggle: toggle },
+				'Are you sure you want to delete the borrower?'
+			),
+			_react2.default.createElement(
+				_reactstrap.ModalBody,
+				null,
+				_react2.default.createElement(
+					_reactstrap.Form,
+					null,
+					_react2.default.createElement(
+						_reactstrap.FormGroup,
+						null,
+						_react2.default.createElement(
+							_reactstrap.Label,
+							{ 'for': 'borrowerName' },
+							'Name:'
+						),
+						_react2.default.createElement(_reactstrap.Input, { plaintext: true, defaultValue: currentBorrowerName })
+					),
+					_react2.default.createElement(
+						_reactstrap.FormGroup,
+						null,
+						_react2.default.createElement(
+							_reactstrap.Label,
+							{ 'for': 'borrowerAddress' },
+							'Address:'
+						),
+						_react2.default.createElement(_reactstrap.Input, { plaintext: true, defaultValue: currentBorrowerAddress })
+					),
+					_react2.default.createElement(
+						_reactstrap.FormGroup,
+						null,
+						_react2.default.createElement(
+							_reactstrap.Label,
+							{ 'for': 'borrowerAddress' },
+							'Phone Number:'
+						),
+						_react2.default.createElement(_reactstrap.Input, { plaintext: true, defaultValue: currentBorrowerPhone })
+					),
+					_react2.default.createElement(
+						_reactstrap.Button,
+						{
+							color: 'primary',
+							className: 'twobuttons',
+							onClick: function onClick() {
+								deleteBorrower(cardNo);
+							}
+						},
+						'Yes'
+					),
+					_react2.default.createElement(
+						_reactstrap.Button,
+						{
+							color: 'danger',
+							className: 'twobuttons',
+							onClick: function onClick() {
+								return handleRefresh();
+							}
+						},
+						'No'
+					)
+				)
+			)
+		)
+	);
+};
+
+DeleteModal.propTypes = {
+	buttonLabel: _propTypes2.default.string,
+	handleDelete: _propTypes2.default.func,
+	handleRefresh: _propTypes2.default.func,
+	cardNo: _propTypes2.default.number,
+	currentBorrowerName: _propTypes2.default.string,
+	currentBorrowerAddress: _propTypes2.default.string,
+	currentBorrowerPhone: _propTypes2.default.string
+};
+
+exports.default = DeleteModal;
+
+},{"prop-types":94,"react":147,"reactstrap":241}],291:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactstrap = require('reactstrap');
+
+var _propTypes = require('prop-types');
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var UpdateModal = function UpdateModal(props) {
+	var buttonLabel = props.buttonLabel,
+	    handleRefresh = props.handleRefresh,
+	    handleUpdate = props.handleUpdate,
+	    currentBorrowerName = props.currentBorrowerName,
+	    currentBorrowerAddress = props.currentBorrowerAddress,
+	    currentBorrowerPhone = props.currentBorrowerPhone,
+	    cardNo = props.cardNo;
+
+	var newBorrowerName = currentBorrowerName;
+	var newBorrowerAddress = currentBorrowerAddress;
+	var newBorrowerPhone = currentBorrowerPhone;
+
+	function updateBorrower(cardNo, newBorrowerName, newBorrowerAddress, newBorrowerPhone) {
+		handleUpdate(cardNo, newBorrowerName, newBorrowerAddress, newBorrowerPhone);
+		//handleRefresh(); //Causes the weird update issue where the borrowerData contains only requestPending because books is being loaded again
+		toggle(); //need to figure out how to make update button be unpressed
+	}
+
+	function handleNameChange(e) {
+		newBorrowerName = e.target.value;
+	}
+	function handleAddressChange(e) {
+		newBorrowerAddress = e.target.value;
+	}
+	function handlePhoneChange(e) {
+		newBorrowerPhone = e.target.value;
+	}
+
+	var _useState = (0, _react.useState)(false),
+	    _useState2 = _slicedToArray(_useState, 2),
+	    modal = _useState2[0],
+	    setModal = _useState2[1];
+
+	var toggle = function toggle() {
+		return setModal(!modal);
+	};
+
+	return _react2.default.createElement(
+		'div',
+		null,
+		_react2.default.createElement(
+			_reactstrap.Button,
+			{ color: 'primary', onClick: toggle },
+			buttonLabel
+		),
+		_react2.default.createElement(
+			_reactstrap.Modal,
+			{ isOpen: modal, toggle: toggle },
+			_react2.default.createElement(
+				_reactstrap.ModalHeader,
+				{ toggle: toggle },
+				'Update Borrower'
+			),
+			_react2.default.createElement(
+				_reactstrap.ModalBody,
+				null,
+				_react2.default.createElement(
+					_reactstrap.Form,
+					null,
+					_react2.default.createElement(
+						_reactstrap.FormGroup,
+						null,
+						_react2.default.createElement(
+							_reactstrap.Label,
+							{ 'for': 'formBorrowerName' },
+							'BorrowerName'
+						),
+						_react2.default.createElement(_reactstrap.Input, {
+							type: 'text',
+							name: 'borrowerName',
+							cardNo: 'formBorrowerName',
+							defaultValue: currentBorrowerName,
+							onChange: handleNameChange
+						})
+					),
+					_react2.default.createElement(
+						_reactstrap.FormGroup,
+						null,
+						_react2.default.createElement(
+							_reactstrap.Label,
+							{ 'for': 'formBorrowerAddress' },
+							'BorrowerAddress'
+						),
+						_react2.default.createElement(_reactstrap.Input, {
+							type: 'text',
+							name: 'borrowerAddress',
+							cardNo: 'formBorrowerAddress',
+							defaultValue: currentBorrowerAddress,
+							onChange: handleAddressChange
+						})
+					),
+					_react2.default.createElement(
+						_reactstrap.FormGroup,
+						null,
+						_react2.default.createElement(
+							_reactstrap.Label,
+							{ 'for': 'formBorrowerPhone' },
+							'BorrowerPhoneNumber'
+						),
+						_react2.default.createElement(_reactstrap.Input, {
+							type: 'text',
+							name: 'borrowerPhone',
+							cardNo: 'formBorrowerPhone',
+							defaultValue: currentBorrowerPhone,
+							onChange: handlePhoneChange
+						})
+					)
+				),
+				_react2.default.createElement(
+					_reactstrap.Button,
+					{
+						color: 'primary',
+						className: 'twobuttons',
+						onClick: function onClick() {
+							updateBorrower(cardNo, newBorrowerName, newBorrowerAddress, newBorrowerPhone);
+						}
+					},
+					'Update'
+				),
+				_react2.default.createElement(
+					_reactstrap.Button,
+					{
+						color: 'danger',
+						className: 'twobuttons',
+						onClick: function onClick() {
+							return handleRefresh();
+						}
+					},
+					'Cancel'
+				)
+			)
+		)
+	);
+};
+
+UpdateModal.propTypes = {
+	buttonLabel: _propTypes2.default.string,
+	handleRefresh: _propTypes2.default.func,
+	handleUpdate: _propTypes2.default.func,
+	currentBorrowerName: _propTypes2.default.string,
+	currentBorrowerAddress: _propTypes2.default.string,
+	currentBorrowerPhone: _propTypes2.default.string,
+	cardNo: _propTypes2.default.number
+};
+
+exports.default = UpdateModal;
+
+},{"prop-types":94,"react":147,"reactstrap":241}],292:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -61533,7 +62437,7 @@ CreateModal.propTypes = {
 
 exports.default = CreateModal;
 
-},{"prop-types":94,"react":147,"reactstrap":241}],287:[function(require,module,exports){
+},{"prop-types":94,"react":147,"reactstrap":241}],293:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -61658,7 +62562,7 @@ DeleteModal.propTypes = {
 
 exports.default = DeleteModal;
 
-},{"prop-types":94,"react":147,"reactstrap":241}],288:[function(require,module,exports){
+},{"prop-types":94,"react":147,"reactstrap":241}],294:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -61805,7 +62709,7 @@ UpdateModal.propTypes = {
 
 exports.default = UpdateModal;
 
-},{"prop-types":94,"react":147,"reactstrap":241}],289:[function(require,module,exports){
+},{"prop-types":94,"react":147,"reactstrap":241}],295:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -61967,7 +62871,7 @@ CreateModal.propTypes = {
 
 exports.default = CreateModal;
 
-},{"prop-types":94,"react":147,"reactstrap":241}],290:[function(require,module,exports){
+},{"prop-types":94,"react":147,"reactstrap":241}],296:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -62104,7 +63008,7 @@ DeleteModal.propTypes = {
 
 exports.default = DeleteModal;
 
-},{"prop-types":94,"react":147,"reactstrap":241}],291:[function(require,module,exports){
+},{"prop-types":94,"react":147,"reactstrap":241}],297:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -62273,7 +63177,7 @@ UpdateModal.propTypes = {
 
 exports.default = UpdateModal;
 
-},{"prop-types":94,"react":147,"reactstrap":241}],292:[function(require,module,exports){
+},{"prop-types":94,"react":147,"reactstrap":241}],298:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -62363,7 +63267,7 @@ var Header = function Header() {
 
 exports.default = Header;
 
-},{"react":147,"react-router-dom":134}],293:[function(require,module,exports){
+},{"react":147,"react-router-dom":134}],299:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -62389,6 +63293,22 @@ var DELETE_BRANCH_REQUEST = exports.DELETE_BRANCH_REQUEST = 'DELETE_BRANCH_REQUE
 var DELETE_BRANCH_FAILURE = exports.DELETE_BRANCH_FAILURE = 'DELETE_BRANCH_FAILURE';
 var DELETE_BRANCH_SUCCESSFUL = exports.DELETE_BRANCH_SUCCESSFUL = 'DELETE_BRANCH_SUCCESSFUL';
 
+var CREATE_BORROWER_REQUEST = exports.CREATE_BORROWER_REQUEST = 'CREATE_BORROWER_REQUEST';
+var CREATE_BORROWER_FAILURE = exports.CREATE_BORROWER_FAILURE = 'CREATE_BORROWER_FAILURE';
+var CREATE_BORROWER_SUCCESSFUL = exports.CREATE_BORROWER_SUCCESSFUL = 'CREATE_BORROWER_SUCCESSFUL';
+
+var READ_BORROWERS_SUCCESSFUL = exports.READ_BORROWERS_SUCCESSFUL = 'READ_BORROWERS_SUCCESSFUL';
+var READ_BORROWERS_PENDING = exports.READ_BORROWERS_PENDING = 'READ_BORROWERS_PENDING';
+var READ_BORROWERS_FAILURE = exports.READ_BORROWERS_FAILURE = 'READ_BORROWERS_FAILURE';
+
+var UPDATE_BORROWER_REQUEST = exports.UPDATE_BORROWER_REQUEST = 'UPDATE_BORROWER_REQUEST';
+var UPDATE_BORROWER_FAILURE = exports.UPDATE_BORROWER_FAILURE = 'UPDATE_BORROWER_FAILURE';
+var UPDATE_BORROWER_SUCCESSFUL = exports.UPDATE_BORROWER_SUCCESSFUL = 'UPDATE_BORROWER_SUCCESSFUL';
+
+var DELETE_BORROWER_REQUEST = exports.DELETE_BORROWER_REQUEST = 'DELETE_BORROWER_REQUEST';
+var DELETE_BORROWER_FAILURE = exports.DELETE_BORROWER_FAILURE = 'DELETE_BORROWER_FAILURE';
+var DELETE_BORROWER_SUCCESSFUL = exports.DELETE_BORROWER_SUCCESSFUL = 'DELETE_BORROWER_SUCCESSFUL';
+
 var CREATE_PUBLISHER_REQUEST = exports.CREATE_PUBLISHER_REQUEST = 'CREATE_PUBLISHER_REQUEST';
 var CREATE_PUBLISHER_FAILURE = exports.CREATE_PUBLISHER_FAILURE = 'CREATE_PUBLISHER_FAILURE';
 var CREATE_PUBLISHER_SUCCESSFUL = exports.CREATE_PUBLISHER_SUCCESSFUL = 'CREATE_PUBLISHER_SUCCESSFUL';
@@ -62405,7 +63325,7 @@ var DELETE_PUBLISHER_REQUEST = exports.DELETE_PUBLISHER_REQUEST = 'DELETE_PUBLIS
 var DELETE_PUBLISHER_FAILURE = exports.DELETE_PUBLISHER_FAILURE = 'DELETE_PUBLISHER_FAILURE';
 var DELETE_PUBLISHER_SUCCESSFUL = exports.DELETE_PUBLISHER_SUCCESSFUL = 'DELETE_PUBLISHER_SUCCESSFUL';
 
-},{}],294:[function(require,module,exports){
+},{}],300:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -62415,7 +63335,7 @@ var ADMIN_PORT = exports.ADMIN_PORT = 'http://localhost:8090/';
 var LIBRARIAN_PORT = exports.LIBRARIAN_PORT = 'http://localhost:8090/';
 var BORROWER_PORT = exports.BORROWER_PORT = 'http://localhost:8080/';
 
-},{}],295:[function(require,module,exports){
+},{}],301:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -62450,7 +63370,7 @@ _reactDom2.default.render(_react2.default.createElement(
 	)
 ), document.getElementById('app'));
 
-},{"./components/App.js":281,"./store/configureStore":300,"react":147,"react-dom":98,"react-redux":123,"react-router-dom":134}],296:[function(require,module,exports){
+},{"./components/App.js":284,"./store/configureStore":307,"react":147,"react-dom":98,"react-redux":123,"react-router-dom":134}],302:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -62481,7 +63401,158 @@ function bookReducer() {
 	}
 }
 
-},{"../constants/actionTypes":293}],297:[function(require,module,exports){
+},{"../constants/actionTypes":299}],303:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+exports.default = borrowerReducer;
+
+var _actionTypes = require('../constants/actionTypes');
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+function borrowerReducer() {
+	var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+	var action = arguments[1];
+
+	switch (action.type) {
+		case _actionTypes.READ_BORROWERS_PENDING:
+			return _extends({}, state, {
+				requestInfo: _extends({}, state.requestInfo, { readPending: true })
+			});
+		case _actionTypes.READ_BORROWERS_FAILURE:
+			return _extends({}, state, {
+				requestInfo: _extends({}, state.requestInfo, {
+					readFailed: true,
+					readPending: false
+				})
+			});
+		case _actionTypes.READ_BORROWERS_SUCCESSFUL:
+			return _extends({}, state, {
+				borrowerData: {
+					borrowers: action.data
+				},
+				requestInfo: _extends({}, state.requestInfo, {
+					readFailed: false,
+					readSuccessful: true,
+					readPending: false
+				})
+			});
+		case _actionTypes.DELETE_BORROWER_REQUEST:
+			return _extends({}, state, {
+				borrowerData: _extends({}, state.borrowerData),
+				requestInfo: _extends({}, state.requestInfo, {
+					deleting: true,
+					deleteFailed: false,
+					deleteSuccess: false
+				})
+			});
+		case _actionTypes.DELETE_BORROWER_FAILURE:
+			return _extends({}, state, {
+				borrowerData: _extends({}, state.borrowerData),
+				requestInfo: _extends({}, state.requestInfo, {
+					deleteFailed: true,
+					deleting: false
+				})
+			});
+		case _actionTypes.DELETE_BORROWER_SUCCESSFUL:
+			{
+				console.log(state.borrowerData.borrowers);
+				console.log(action);
+				var newBorrowers = state.borrowerData.borrowers.filter(function (borrower) {
+					return borrower.borrowerCardNo != action.deletedId;
+				});
+				return _extends({}, state, {
+					borrowerData: _extends({}, state.borrowerData, {
+						borrowers: newBorrowers
+					}),
+					requestInfo: _extends({}, state.requestInfo, {
+						deleteSuccess: true,
+						deleting: false
+					})
+				});
+			}
+		case _actionTypes.UPDATE_BORROWER_REQUEST:
+			return _extends({}, state, {
+				borrowerData: _extends({}, state.borrowerData),
+				requestInfo: _extends({}, state.requestInfo, {
+					updating: true,
+					updateFailed: false,
+					updateSuccess: false
+				})
+			});
+		case _actionTypes.UPDATE_BORROWER_FAILURE:
+			return _extends({}, state, {
+				borrowerData: _extends({}, state.borrowerData),
+				requestInfo: _extends({}, state.requestInfo, {
+					updateFailed: true,
+					updating: false
+				})
+			});
+		case _actionTypes.UPDATE_BORROWER_SUCCESSFUL:
+			{
+				if (state.borrowerData.readPending) {
+					/* Not needed if we continue to use toggle instead of handle refresh*/
+					return _extends({}, state, {
+						borrowerData: _extends({}, state.borrowerData),
+						requestInfo: _extends({}, state.requestInfo)
+					});
+				} else {
+					var updatedBorrowers = state.borrowerData.borrowers.map(function (borrower) {
+						return action.updatedBorrower.borrowerCardNo === borrower.borrowerCardNo ? action.updatedBorrower : borrower;
+					});
+					return _extends({}, state, {
+						borrowerData: _extends({}, state.borrowerData, {
+							borrowers: updatedBorrowers
+						}),
+						requestInfo: _extends({}, state.requestInfo, {
+							updateSuccess: true,
+							updating: false
+						})
+					});
+				}
+			}
+		case _actionTypes.CREATE_BORROWER_REQUEST:
+			return _extends({}, state, {
+				borrowerData: _extends({}, state.borrowerData),
+				requestInfo: _extends({}, state.requestInfo, {
+					creating: true,
+					createFailed: false,
+					createSuccess: false
+				})
+			});
+		case _actionTypes.CREATE_BORROWER_FAILURE:
+			return _extends({}, state, {
+				borrowerData: _extends({}, state.borrowerData),
+				requestInfo: _extends({}, state.requestInfo, {
+					createFailed: true,
+					creating: false
+				})
+			});
+		case _actionTypes.CREATE_BORROWER_SUCCESSFUL:
+			{
+				var updatedBorrowerArray = [].concat(_toConsumableArray(state.borrowerData.borrowers), [action.createdBorrower]);
+				return _extends({}, state, {
+					borrowerData: _extends({}, state.borrowerData, {
+						borrowers: updatedBorrowerArray
+					}),
+					requestInfo: _extends({}, state.requestInfo, {
+						createSuccess: true,
+						creating: false
+					})
+				});
+			}
+		default:
+			return state;
+	}
+}
+
+},{"../constants/actionTypes":299}],304:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -62630,7 +63701,7 @@ function branchReducer() {
 	}
 }
 
-},{"../constants/actionTypes":293}],298:[function(require,module,exports){
+},{"../constants/actionTypes":299}],305:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -62642,6 +63713,10 @@ var _redux = require('redux');
 var _bookReducer = require('./bookReducer');
 
 var _bookReducer2 = _interopRequireDefault(_bookReducer);
+
+var _borrowerReducer = require('./borrowerReducer');
+
+var _borrowerReducer2 = _interopRequireDefault(_borrowerReducer);
 
 var _branchReducer = require('./branchReducer');
 
@@ -62655,13 +63730,14 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var rootReducer = (0, _redux.combineReducers)({
 	bookReducer: _bookReducer2.default,
+	borrowerReducer: _borrowerReducer2.default,
 	branchReducer: _branchReducer2.default,
 	publisherReducer: _publisherReducer2.default
 });
 
 exports.default = rootReducer;
 
-},{"./bookReducer":296,"./branchReducer":297,"./publisherReducer":299,"redux":248}],299:[function(require,module,exports){
+},{"./bookReducer":302,"./borrowerReducer":303,"./branchReducer":304,"./publisherReducer":306,"redux":248}],306:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -62810,7 +63886,7 @@ function publisherReducer() {
 	}
 }
 
-},{"../constants/actionTypes":293}],300:[function(require,module,exports){
+},{"../constants/actionTypes":299}],307:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -62843,4 +63919,4 @@ function configureStore(initialState) {
 
 exports.default = configureStore;
 
-},{"../reducers":298,"redux":248,"redux-immutable-state-invariant":244,"redux-thunk":247}]},{},[295]);
+},{"../reducers":305,"redux":248,"redux-immutable-state-invariant":244,"redux-thunk":247}]},{},[301]);
