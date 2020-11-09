@@ -12,19 +12,13 @@ import {
 import PropTypes from 'prop-types';
 
 const DeleteModal = (props) => {
-	const {
-		buttonLabel,
-		currentPublisherName,
-		currentPublisherAddress,
-		currentPublisherPhone,
-		handleDelete,
-		id,
-	} = props;
+	const { authorId, buttonLabel, currentAuthorName, handleDelete } = props;
 
 	const [modal, setModal] = useState(false);
 
-	function deletePublisher(id) {
-		handleDelete(id);
+	function deleteAuthor(authorId) {
+		handleDelete(authorId);
+		//handleRefresh();
 		toggle();
 	}
 
@@ -37,27 +31,19 @@ const DeleteModal = (props) => {
 			</Button>
 			<Modal isOpen={modal} toggle={toggle}>
 				<ModalHeader toggle={toggle}>
-					Are you sure you want to delete the publisher?
+					Are you sure you want to delete the author?
 				</ModalHeader>
 				<ModalBody>
 					<Form>
 						<FormGroup>
-							<Label for="publisherName">Name:</Label>
-							<Input plaintext value={currentPublisherName} />
-						</FormGroup>
-						<FormGroup>
-							<Label for="publisherAddress">Address:</Label>
-							<Input plaintext value={currentPublisherAddress} />
-						</FormGroup>
-						<FormGroup>
-							<Label for="publisherPhone">Phone Number:</Label>
-							<Input plaintext value={currentPublisherPhone} />
+							<Label for="authorName">Name:</Label>
+							<Input plaintext defaultValue={currentAuthorName} />
 						</FormGroup>
 						<Button
 							color="primary"
 							className="twobuttons"
 							onClick={() => {
-								deletePublisher(id);
+								deleteAuthor(authorId);
 							}}
 						>
 							Yes
@@ -80,10 +66,8 @@ DeleteModal.propTypes = {
 	buttonLabel: PropTypes.string,
 	handleDelete: PropTypes.func,
 	handleRefresh: PropTypes.func,
-	id: PropTypes.number,
-	currentPublisherName: PropTypes.string,
-	currentPublisherAddress: PropTypes.string,
-	currentPublisherPhone: PropTypes.string,
+	authorId: PropTypes.number,
+	currentAuthorName: PropTypes.string,
 };
 
 export default DeleteModal;

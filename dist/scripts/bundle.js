@@ -59934,6 +59934,160 @@ function extend() {
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
+exports.createAuthor = exports.updateAuthor = exports.deleteAuthor = exports.readAuthors = undefined;
+
+var _axios = require('axios');
+
+var _axios2 = _interopRequireDefault(_axios);
+
+var _actionTypes = require('../constants/actionTypes');
+
+var _connections = require('../constants/connections');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var readAuthors = exports.readAuthors = function readAuthors() {
+	return function (dispatch) {
+		dispatch(_readAuthorStarted());
+		return _axios2.default.get(_connections.ADMIN_PORT + 'getAuthors').then(function (res) {
+			dispatch(_readAuthorSuccess(res));
+		}).catch(function (error) {
+			console.log(error);
+			dispatch(_readAuthorFailed(error));
+		});
+	};
+};
+
+var deleteAuthor = exports.deleteAuthor = function deleteAuthor(authorId) {
+	return function (dispatch) {
+		dispatch(_deleteAuthorRequest());
+		return _axios2.default.delete(_connections.ADMIN_PORT + 'deleteAuthor', {
+			data: { authorId: authorId }
+		}).then(function (res) {
+			dispatch(_deleteAuthorSuccess(res));
+		}).catch(function (error) {
+			console.log(error);
+			dispatch(_deleteAuthorFailed(error));
+		});
+	};
+};
+
+var updateAuthor = exports.updateAuthor = function updateAuthor(authorId, authorName) {
+	return function (dispatch) {
+		dispatch(_updateAuthorRequest());
+		return _axios2.default.put(_connections.ADMIN_PORT + 'updateAuthor', {
+			authorId: authorId,
+			authorName: authorName
+		}).then(function (res) {
+			dispatch(_updateAuthorSuccess(res));
+		}).catch(function (error) {
+			console.log(error);
+			dispatch(_updateAuthorFailed(error));
+		});
+	};
+};
+
+var createAuthor = exports.createAuthor = function createAuthor(authorName) {
+	return function (dispatch) {
+		dispatch(_createAuthorRequest());
+		return _axios2.default.post(_connections.ADMIN_PORT + 'addAuthor', {
+			authorName: authorName
+		}).then(function (res) {
+			dispatch(_createAuthorSuccess(res));
+		}).catch(function (error) {
+			console.log(error);
+			dispatch(_createAuthorFailed(error));
+		});
+	};
+};
+
+var _readAuthorSuccess = function _readAuthorSuccess(res) {
+	return {
+		type: _actionTypes.READ_AUTHORS_SUCCESSFUL,
+		data: res.data
+	};
+};
+
+var _readAuthorFailed = function _readAuthorFailed(error) {
+	return {
+		type: _actionTypes.READ_AUTHORS_FAILURE,
+		error: error
+	};
+};
+
+var _readAuthorStarted = function _readAuthorStarted() {
+	return {
+		type: _actionTypes.READ_AUTHORS_PENDING
+	};
+};
+
+var _deleteAuthorRequest = function _deleteAuthorRequest() {
+	return {
+		type: _actionTypes.DELETE_AUTHOR_REQUEST
+	};
+};
+
+var _deleteAuthorSuccess = function _deleteAuthorSuccess(res) {
+	return {
+		type: _actionTypes.DELETE_AUTHOR_SUCCESSFUL,
+		data: res.data,
+		deletedId: res.data.authorId
+	};
+};
+
+var _deleteAuthorFailed = function _deleteAuthorFailed(error) {
+	return {
+		type: _actionTypes.DELETE_AUTHOR_FAILURE,
+		error: error
+	};
+};
+
+var _updateAuthorRequest = function _updateAuthorRequest() {
+	return {
+		type: _actionTypes.UPDATE_AUTHOR_REQUEST
+	};
+};
+
+var _updateAuthorSuccess = function _updateAuthorSuccess(res) {
+	return {
+		type: _actionTypes.UPDATE_AUTHOR_SUCCESSFUL,
+		updatedAuthor: res.data
+	};
+};
+
+var _updateAuthorFailed = function _updateAuthorFailed(error) {
+	return {
+		type: _actionTypes.UPDATE_AUTHOR_FAILURE,
+		error: error
+	};
+};
+
+var _createAuthorRequest = function _createAuthorRequest() {
+	return {
+		type: _actionTypes.CREATE_AUTHOR_REQUEST
+	};
+};
+
+var _createAuthorSuccess = function _createAuthorSuccess(res) {
+	return {
+		type: _actionTypes.CREATE_AUTHOR_SUCCESSFUL,
+		createdAuthor: res.data
+	};
+};
+
+var _createAuthorFailed = function _createAuthorFailed(error) {
+	return {
+		type: _actionTypes.CREATE_AUTHOR_FAILURE,
+		error: error
+	};
+};
+
+},{"../constants/actionTypes":311,"../constants/connections":312,"axios":9}],273:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
 exports.createBorrower = exports.updateBorrower = exports.deleteBorrower = exports.readBorrowers = undefined;
 
 var _axios = require('axios');
@@ -60086,7 +60240,7 @@ var _createBorrowerFailed = function _createBorrowerFailed(error) {
 	};
 };
 
-},{"../constants/actionTypes":305,"../constants/connections":306,"axios":9}],273:[function(require,module,exports){
+},{"../constants/actionTypes":311,"../constants/connections":312,"axios":9}],274:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -60242,7 +60396,7 @@ var _createBranchFailed = function _createBranchFailed(error) {
 	};
 };
 
-},{"../constants/actionTypes":305,"../constants/connections":306,"axios":9}],274:[function(require,module,exports){
+},{"../constants/actionTypes":311,"../constants/connections":312,"axios":9}],275:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -60396,7 +60550,7 @@ var _createGenreFailed = function _createGenreFailed(error) {
 	};
 };
 
-},{"../constants/actionTypes":305,"../constants/connections":306,"axios":9}],275:[function(require,module,exports){
+},{"../constants/actionTypes":311,"../constants/connections":312,"axios":9}],276:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -60554,7 +60708,7 @@ var _createPublisherFailed = function _createPublisherFailed(error) {
 	};
 };
 
-},{"../constants/actionTypes":305,"../constants/connections":306,"axios":9}],276:[function(require,module,exports){
+},{"../constants/actionTypes":311,"../constants/connections":312,"axios":9}],277:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -60603,7 +60757,7 @@ var _readBookStarted = function _readBookStarted() {
 	};
 };
 
-},{"../constants/actionTypes":305,"axios":9}],277:[function(require,module,exports){
+},{"../constants/actionTypes":311,"axios":9}],278:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -60673,7 +60827,7 @@ var AdminHeader = function AdminHeader() {
 					{ className: 'list-inline-item' },
 					_react2.default.createElement(
 						_reactRouterDom.Link,
-						{ to: '/AdminHome', replace: true },
+						{ to: '/AdminAuthor', replace: true },
 						'Authors'
 					)
 				),
@@ -60720,7 +60874,7 @@ var AdminHeader = function AdminHeader() {
 
 exports.default = AdminHeader;
 
-},{"react":147,"react-router-dom":134}],278:[function(require,module,exports){
+},{"react":147,"react-router-dom":134}],279:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -60756,7 +60910,269 @@ var AdminHome = function AdminHome() {
 
 exports.default = AdminHome;
 
-},{"./AdminHeader.js":277,"react":147}],279:[function(require,module,exports){
+},{"./AdminHeader.js":278,"react":147}],280:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = require('prop-types');
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _reactRedux = require('react-redux');
+
+var _redux = require('redux');
+
+var _adminAuthorActions = require('../../../actions/adminAuthorActions.js');
+
+var adminAuthorActions = _interopRequireWildcard(_adminAuthorActions);
+
+var _AdminAuthorRender = require('./AdminAuthorRender');
+
+var _AdminAuthorRender2 = _interopRequireDefault(_AdminAuthorRender);
+
+var _AdminHeader = require('../AdminHeader');
+
+var _AdminHeader2 = _interopRequireDefault(_AdminHeader);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var AdminAuthorContainer = function AdminAuthorContainer(props) {
+	var actions = props.actions;
+
+	(0, _react.useEffect)(function () {
+		actions.readAuthors();
+	}, []);
+
+	return _react2.default.createElement(
+		'div',
+		null,
+		_react2.default.createElement(_AdminHeader2.default, null),
+		_react2.default.createElement(
+			'div',
+			{ className: 'jumbotron' },
+			_react2.default.createElement(
+				'h1',
+				null,
+				'Authors'
+			)
+		),
+		_react2.default.createElement(_AdminAuthorRender2.default, _extends({}, props, {
+			handleRefresh: function handleRefresh() {
+				return actions.readAuthors();
+			},
+			handleDelete: function handleDelete(authorId) {
+				return actions.deleteAuthor(authorId);
+			},
+			handleUpdate: function handleUpdate(authorId, authorName) {
+				return actions.updateAuthor(authorId, authorName);
+			},
+			handleCreate: function handleCreate(authorName) {
+				return actions.createAuthor(authorName);
+			}
+		}))
+	);
+};
+
+function mapStateToProps(state) {
+	return {
+		authorData: state.authorReducer.authorData,
+		requestInfo: state.authorReducer.requestInfo
+	};
+}
+
+function mapDispatchToProps(dispatch) {
+	return {
+		actions: (0, _redux.bindActionCreators)(adminAuthorActions, dispatch)
+	};
+}
+
+AdminAuthorContainer.propTypes = {
+	actions: _propTypes2.default.object
+};
+
+exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(AdminAuthorContainer);
+
+},{"../../../actions/adminAuthorActions.js":272,"../AdminHeader":278,"./AdminAuthorRender":281,"prop-types":94,"react":147,"react-redux":123,"redux":248}],281:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = require('prop-types');
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _reactstrap = require('reactstrap');
+
+var _mdbreact = require('mdbreact');
+
+var _DeleteModal = require('../../Modal/AdminAuthor/DeleteModal');
+
+var _DeleteModal2 = _interopRequireDefault(_DeleteModal);
+
+var _UpdateModal = require('../../Modal/AdminAuthor/UpdateModal');
+
+var _UpdateModal2 = _interopRequireDefault(_UpdateModal);
+
+var _CreateModal = require('../../Modal/AdminAuthor/CreateModal');
+
+var _CreateModal2 = _interopRequireDefault(_CreateModal);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var AdminAuthorRender = function AdminAuthorRender(_ref) {
+	var authorData = _ref.authorData,
+	    handleRefresh = _ref.handleRefresh,
+	    handleDelete = _ref.handleDelete,
+	    handleUpdate = _ref.handleUpdate,
+	    handleCreate = _ref.handleCreate,
+	    requestInfo = _ref.requestInfo;
+
+	var content = '';
+	if (!authorData || requestInfo.readPending) {
+		content = _react2.default.createElement(
+			'div',
+			{ className: 'd-flex justify-content-center' },
+			_react2.default.createElement(
+				'div',
+				{ className: 'spinner-border', role: 'status' },
+				_react2.default.createElement(
+					'span',
+					{ className: 'sr-only' },
+					'Loading...'
+				)
+			)
+		);
+	}
+	if (authorData && requestInfo.readSuccessful) {
+		var data = {
+			columns: [{
+				label: 'Author Id',
+				field: 'authorId',
+				sort: 'asc'
+			}, {
+				label: 'Author Name',
+				field: 'authorName',
+				sort: 'asc'
+			}, {
+				label: 'Update',
+				field: 'update',
+				sort: 'asc'
+			}, {
+				label: 'Delete',
+				field: 'delete',
+				sort: 'asc'
+			}],
+			rows: getTableBodyContent()
+		};
+		return _react2.default.createElement(
+			_react2.default.Fragment,
+			null,
+			_react2.default.createElement(
+				'div',
+				{ className: 'mainblock' },
+				_react2.default.createElement(_CreateModal2.default, {
+					buttonLabel: 'Create New Author',
+					handleCreate: handleCreate,
+					handleRefresh: handleRefresh
+				}),
+				_react2.default.createElement(
+					_reactstrap.Button,
+					{ onClick: function onClick() {
+							return handleRefresh();
+						} },
+					'Refresh Data'
+				),
+				' ',
+				_react2.default.createElement(_mdbreact.MDBDataTable, {
+					striped: true,
+					bordered: true,
+					small: true,
+					responsive: true,
+					data: data
+				})
+			)
+		);
+	}
+
+	if (authorData && requestInfo.readFailed) {
+		content = _react2.default.createElement(
+			'div',
+			{ className: 'alert alert-danger', role: 'alert' },
+			'Error while loading authors!'
+		);
+	}
+	function getTableBodyContent() {
+		return authorData.authors.map(function (obj) {
+			// Deep Clone object to authorId adding to it while mapping over it during map
+			var newObj = JSON.parse(JSON.stringify(obj));
+
+			newObj.update = _react2.default.createElement(
+				'div',
+				null,
+				_react2.default.createElement(_UpdateModal2.default, {
+					buttonLabel: 'Update',
+					handleUpdate: handleUpdate,
+					handleRefresh: handleRefresh,
+					authorId: newObj.authorId,
+					currentAuthorName: newObj.authorName
+				})
+			);
+
+			newObj.delete = _react2.default.createElement(
+				'div',
+				null,
+				_react2.default.createElement(_DeleteModal2.default, {
+					buttonLabel: 'Delete',
+					handleDelete: handleDelete,
+					handleRefresh: handleRefresh,
+					authorId: newObj.authorId,
+					currentAuthorName: newObj.authorName
+				})
+			);
+			return newObj;
+		});
+	}
+	return _react2.default.createElement(
+		'div',
+		null,
+		_react2.default.createElement(
+			'h1',
+			null,
+			'Authors'
+		),
+		content
+	);
+};
+
+AdminAuthorRender.propTypes = {
+	authorData: _propTypes2.default.object,
+	handleRefresh: _propTypes2.default.func,
+	handleDelete: _propTypes2.default.func,
+	handleUpdate: _propTypes2.default.func,
+	handleCreate: _propTypes2.default.func,
+	requestInfo: _propTypes2.default.object
+};
+
+exports.default = AdminAuthorRender;
+
+},{"../../Modal/AdminAuthor/CreateModal":295,"../../Modal/AdminAuthor/DeleteModal":296,"../../Modal/AdminAuthor/UpdateModal":297,"mdbreact":62,"prop-types":94,"react":147,"reactstrap":241}],282:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -60849,7 +61265,7 @@ AdminBorrowerContainer.propTypes = {
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(AdminBorrowerContainer);
 
-},{"../../../actions/adminBorrowerActions.js":272,"../AdminHeader":277,"./AdminBorrowerRender":280,"prop-types":94,"react":147,"react-redux":123,"redux":248}],280:[function(require,module,exports){
+},{"../../../actions/adminBorrowerActions.js":273,"../AdminHeader":278,"./AdminBorrowerRender":283,"prop-types":94,"react":147,"react-redux":123,"redux":248}],283:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -61030,7 +61446,7 @@ AdminBorrowerRender.propTypes = {
 
 exports.default = AdminBorrowerRender;
 
-},{"../../Modal/AdminBorrower/CreateModal":292,"../../Modal/AdminBorrower/DeleteModal":293,"../../Modal/AdminBorrower/UpdateModal":294,"mdbreact":62,"prop-types":94,"react":147,"reactstrap":241}],281:[function(require,module,exports){
+},{"../../Modal/AdminBorrower/CreateModal":298,"../../Modal/AdminBorrower/DeleteModal":299,"../../Modal/AdminBorrower/UpdateModal":300,"mdbreact":62,"prop-types":94,"react":147,"reactstrap":241}],284:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -61123,7 +61539,7 @@ AdminBranchContainer.propTypes = {
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(AdminBranchContainer);
 
-},{"../../../actions/adminBranchActions.js":273,"../AdminHeader":277,"./AdminBranchRender":282,"prop-types":94,"react":147,"react-redux":123,"redux":248}],282:[function(require,module,exports){
+},{"../../../actions/adminBranchActions.js":274,"../AdminHeader":278,"./AdminBranchRender":285,"prop-types":94,"react":147,"react-redux":123,"redux":248}],285:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -61298,7 +61714,7 @@ AdminBranchRender.propTypes = {
 
 exports.default = AdminBranchRender;
 
-},{"../../Modal/AdminBranch/CreateModal":295,"../../Modal/AdminBranch/DeleteModal":296,"../../Modal/AdminBranch/UpdateModal":297,"mdbreact":62,"prop-types":94,"react":147,"reactstrap":241}],283:[function(require,module,exports){
+},{"../../Modal/AdminBranch/CreateModal":301,"../../Modal/AdminBranch/DeleteModal":302,"../../Modal/AdminBranch/UpdateModal":303,"mdbreact":62,"prop-types":94,"react":147,"reactstrap":241}],286:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -61391,7 +61807,7 @@ AdminGenreContainer.propTypes = {
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(AdminGenreContainer);
 
-},{"../../../actions/adminGenreActions.js":274,"../AdminHeader":277,"./AdminGenreRender":284,"prop-types":94,"react":147,"react-redux":123,"redux":248}],284:[function(require,module,exports){
+},{"../../../actions/adminGenreActions.js":275,"../AdminHeader":278,"./AdminGenreRender":287,"prop-types":94,"react":147,"react-redux":123,"redux":248}],287:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -61560,7 +61976,7 @@ AdminGenreRender.propTypes = {
 
 exports.default = AdminGenreRender;
 
-},{"../../Modal/AdminGenre/CreateModal":298,"../../Modal/AdminGenre/DeleteModal":299,"../../Modal/AdminGenre/UpdateModal":300,"mdbreact":62,"prop-types":94,"react":147,"reactstrap":241}],285:[function(require,module,exports){
+},{"../../Modal/AdminGenre/CreateModal":304,"../../Modal/AdminGenre/DeleteModal":305,"../../Modal/AdminGenre/UpdateModal":306,"mdbreact":62,"prop-types":94,"react":147,"reactstrap":241}],288:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -61653,7 +62069,7 @@ AdminPublisherContainer.propTypes = {
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(AdminPublisherContainer);
 
-},{"../../../actions/adminPublisherActions.js":275,"../AdminHeader":277,"./AdminPublisherRender":286,"prop-types":94,"react":147,"react-redux":123,"redux":248}],286:[function(require,module,exports){
+},{"../../../actions/adminPublisherActions.js":276,"../AdminHeader":278,"./AdminPublisherRender":289,"prop-types":94,"react":147,"react-redux":123,"redux":248}],289:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -61834,7 +62250,7 @@ AdminPublisherRender.propTypes = {
 
 exports.default = AdminPublisherRender;
 
-},{"../../Modal/AdminPublisher/CreateModal":301,"../../Modal/AdminPublisher/DeleteModal":302,"../../Modal/AdminPublisher/UpdateModal":303,"mdbreact":62,"prop-types":94,"react":147,"reactstrap":241}],287:[function(require,module,exports){
+},{"../../Modal/AdminPublisher/CreateModal":307,"../../Modal/AdminPublisher/DeleteModal":308,"../../Modal/AdminPublisher/UpdateModal":309,"mdbreact":62,"prop-types":94,"react":147,"reactstrap":241}],290:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -61862,13 +62278,17 @@ var _AdminHome = require('./Admin/AdminHome.js');
 
 var _AdminHome2 = _interopRequireDefault(_AdminHome);
 
-var _AdminBranchContainer = require('./Admin/Branch/AdminBranchContainer');
+var _AdminAuthorContainer = require('./Admin/Author/AdminAuthorContainer');
 
-var _AdminBranchContainer2 = _interopRequireDefault(_AdminBranchContainer);
+var _AdminAuthorContainer2 = _interopRequireDefault(_AdminAuthorContainer);
 
 var _AdminBorrowerContainer = require('./Admin/Borrower/AdminBorrowerContainer');
 
 var _AdminBorrowerContainer2 = _interopRequireDefault(_AdminBorrowerContainer);
+
+var _AdminBranchContainer = require('./Admin/Branch/AdminBranchContainer');
+
+var _AdminBranchContainer2 = _interopRequireDefault(_AdminBranchContainer);
 
 var _AdminPublisherContainer = require('./Admin/Publisher/AdminPublisherContainer');
 
@@ -61912,6 +62332,7 @@ var App = exports.App = function (_React$Component) {
 					_react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/', component: _Home2.default }),
 					_react2.default.createElement(_reactRouterDom.Route, { path: '/books', component: _BookContainer2.default }),
 					_react2.default.createElement(_reactRouterDom.Route, { path: '/AdminHome', component: _AdminHome2.default }),
+					_react2.default.createElement(_reactRouterDom.Route, { path: '/AdminAuthor', component: _AdminAuthorContainer2.default }),
 					_react2.default.createElement(_reactRouterDom.Route, { path: '/AdminBorrower', component: _AdminBorrowerContainer2.default }),
 					_react2.default.createElement(_reactRouterDom.Route, { path: '/AdminBranch', component: _AdminBranchContainer2.default }),
 					_react2.default.createElement(_reactRouterDom.Route, { path: '/AdminPublisher', component: _AdminPublisherContainer2.default }),
@@ -61924,7 +62345,7 @@ var App = exports.App = function (_React$Component) {
 	return App;
 }(_react2.default.Component);
 
-},{"./Admin/AdminHome.js":278,"./Admin/Borrower/AdminBorrowerContainer":279,"./Admin/Branch/AdminBranchContainer":281,"./Admin/Genre/AdminGenreContainer":283,"./Admin/Publisher/AdminPublisherContainer":285,"./BookContainer":288,"./Home.js":291,"react":147,"react-router-dom":134}],288:[function(require,module,exports){
+},{"./Admin/AdminHome.js":279,"./Admin/Author/AdminAuthorContainer":280,"./Admin/Borrower/AdminBorrowerContainer":282,"./Admin/Branch/AdminBranchContainer":284,"./Admin/Genre/AdminGenreContainer":286,"./Admin/Publisher/AdminPublisherContainer":288,"./BookContainer":291,"./Home.js":294,"react":147,"react-router-dom":134}],291:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -61995,7 +62416,7 @@ BookContainer.propTypes = {
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(BookContainer);
 
-},{"../actions/bookActions":276,"./BookRender":289,"./Header":290,"prop-types":94,"react":147,"react-redux":123,"redux":248}],289:[function(require,module,exports){
+},{"../actions/bookActions":277,"./BookRender":292,"./Header":293,"prop-types":94,"react":147,"react-redux":123,"redux":248}],292:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -62124,7 +62545,7 @@ BookRender.propTypes = {
 
 exports.default = BookRender;
 
-},{"prop-types":94,"react":147}],290:[function(require,module,exports){
+},{"prop-types":94,"react":147}],293:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -62214,7 +62635,7 @@ var Header = function Header() {
 
 exports.default = Header;
 
-},{"react":147,"react-router-dom":134}],291:[function(require,module,exports){
+},{"react":147,"react-router-dom":134}],294:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -62250,7 +62671,7 @@ var Home = function Home() {
 
 exports.default = Home;
 
-},{"./header.js":304,"react":147}],292:[function(require,module,exports){
+},{"./header.js":310,"react":147}],295:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -62273,7 +62694,355 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var CreateModal = function CreateModal(props) {
 	var buttonLabel = props.buttonLabel,
-	    handleRefresh = props.handleRefresh,
+	    handleCreate = props.handleCreate;
+
+	var newAuthorName = '';
+
+	function createAuthor(newAuthorName) {
+		handleCreate(newAuthorName);
+		toggle(); //need to figure out how to make create button be unpressed
+	}
+
+	function handleNameChange(e) {
+		newAuthorName = e.target.value;
+	}
+
+	var _useState = (0, _react.useState)(false),
+	    _useState2 = _slicedToArray(_useState, 2),
+	    modal = _useState2[0],
+	    setModal = _useState2[1];
+
+	var toggle = function toggle() {
+		return setModal(!modal);
+	};
+
+	return _react2.default.createElement(
+		'div',
+		null,
+		_react2.default.createElement(
+			_reactstrap.Button,
+			{ color: 'primary', onClick: toggle },
+			buttonLabel
+		),
+		_react2.default.createElement(
+			_reactstrap.Modal,
+			{ isOpen: modal, toggle: toggle },
+			_react2.default.createElement(
+				_reactstrap.ModalHeader,
+				{ toggle: toggle },
+				'Create Author'
+			),
+			_react2.default.createElement(
+				_reactstrap.ModalBody,
+				null,
+				_react2.default.createElement(
+					_reactstrap.Form,
+					null,
+					_react2.default.createElement(
+						_reactstrap.FormGroup,
+						null,
+						_react2.default.createElement(
+							_reactstrap.Label,
+							{ 'for': 'formAuthorName' },
+							'Author Name'
+						),
+						_react2.default.createElement(_reactstrap.Input, {
+							type: 'text',
+							name: 'authorName',
+							id: 'formAuthorName',
+							placeholder: 'New Author Name',
+							onChange: handleNameChange
+						})
+					)
+				),
+				_react2.default.createElement(
+					_reactstrap.Button,
+					{
+						color: 'primary',
+						className: 'twobuttons',
+						onClick: function onClick() {
+							createAuthor(newAuthorName);
+						}
+					},
+					'Create'
+				),
+				_react2.default.createElement(
+					_reactstrap.Button,
+					{
+						color: 'danger',
+						className: 'twobuttons',
+						onClick: toggle
+					},
+					'Cancel'
+				)
+			)
+		)
+	);
+};
+
+CreateModal.propTypes = {
+	buttonLabel: _propTypes2.default.string,
+	handleRefresh: _propTypes2.default.func,
+	handleCreate: _propTypes2.default.func
+};
+
+exports.default = CreateModal;
+
+},{"prop-types":94,"react":147,"reactstrap":241}],296:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactstrap = require('reactstrap');
+
+var _propTypes = require('prop-types');
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var DeleteModal = function DeleteModal(props) {
+	var authorId = props.authorId,
+	    buttonLabel = props.buttonLabel,
+	    currentAuthorName = props.currentAuthorName,
+	    handleDelete = props.handleDelete;
+
+	var _useState = (0, _react.useState)(false),
+	    _useState2 = _slicedToArray(_useState, 2),
+	    modal = _useState2[0],
+	    setModal = _useState2[1];
+
+	function deleteAuthor(authorId) {
+		handleDelete(authorId);
+		//handleRefresh();
+		toggle();
+	}
+
+	var toggle = function toggle() {
+		return setModal(!modal);
+	};
+
+	return _react2.default.createElement(
+		'div',
+		null,
+		_react2.default.createElement(
+			_reactstrap.Button,
+			{ color: 'danger', onClick: toggle },
+			buttonLabel
+		),
+		_react2.default.createElement(
+			_reactstrap.Modal,
+			{ isOpen: modal, toggle: toggle },
+			_react2.default.createElement(
+				_reactstrap.ModalHeader,
+				{ toggle: toggle },
+				'Are you sure you want to delete the author?'
+			),
+			_react2.default.createElement(
+				_reactstrap.ModalBody,
+				null,
+				_react2.default.createElement(
+					_reactstrap.Form,
+					null,
+					_react2.default.createElement(
+						_reactstrap.FormGroup,
+						null,
+						_react2.default.createElement(
+							_reactstrap.Label,
+							{ 'for': 'authorName' },
+							'Name:'
+						),
+						_react2.default.createElement(_reactstrap.Input, { plaintext: true, defaultValue: currentAuthorName })
+					),
+					_react2.default.createElement(
+						_reactstrap.Button,
+						{
+							color: 'primary',
+							className: 'twobuttons',
+							onClick: function onClick() {
+								deleteAuthor(authorId);
+							}
+						},
+						'Yes'
+					),
+					_react2.default.createElement(
+						_reactstrap.Button,
+						{
+							color: 'danger',
+							className: 'twobuttons',
+							onClick: toggle
+						},
+						'No'
+					)
+				)
+			)
+		)
+	);
+};
+
+DeleteModal.propTypes = {
+	buttonLabel: _propTypes2.default.string,
+	handleDelete: _propTypes2.default.func,
+	handleRefresh: _propTypes2.default.func,
+	authorId: _propTypes2.default.number,
+	currentAuthorName: _propTypes2.default.string
+};
+
+exports.default = DeleteModal;
+
+},{"prop-types":94,"react":147,"reactstrap":241}],297:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactstrap = require('reactstrap');
+
+var _propTypes = require('prop-types');
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var UpdateModal = function UpdateModal(props) {
+	var authorId = props.authorId,
+	    buttonLabel = props.buttonLabel,
+	    currentAuthorName = props.currentAuthorName,
+	    handleUpdate = props.handleUpdate;
+
+	var newAuthorName = currentAuthorName;
+
+	function updateAuthor(authorId, newAuthorName) {
+		handleUpdate(authorId, newAuthorName);
+		//handleRefresh(); //Causes the weird update issue where the authorData contains only requestPending because books is being loaded again
+		toggle(); //need to figure out how to make update button be unpressed
+	}
+
+	function handleNameChange(e) {
+		newAuthorName = e.target.value;
+	}
+
+	var _useState = (0, _react.useState)(false),
+	    _useState2 = _slicedToArray(_useState, 2),
+	    modal = _useState2[0],
+	    setModal = _useState2[1];
+
+	var toggle = function toggle() {
+		return setModal(!modal);
+	};
+
+	return _react2.default.createElement(
+		'div',
+		null,
+		_react2.default.createElement(
+			_reactstrap.Button,
+			{ color: 'primary', onClick: toggle },
+			buttonLabel
+		),
+		_react2.default.createElement(
+			_reactstrap.Modal,
+			{ isOpen: modal, toggle: toggle },
+			_react2.default.createElement(
+				_reactstrap.ModalHeader,
+				{ toggle: toggle },
+				'Update Author'
+			),
+			_react2.default.createElement(
+				_reactstrap.ModalBody,
+				null,
+				_react2.default.createElement(
+					_reactstrap.Form,
+					null,
+					_react2.default.createElement(
+						_reactstrap.FormGroup,
+						null,
+						_react2.default.createElement(
+							_reactstrap.Label,
+							{ 'for': 'formAuthorName' },
+							'Author Name'
+						),
+						_react2.default.createElement(_reactstrap.Input, {
+							type: 'text',
+							name: 'authorName',
+							authorId: 'formAuthorName',
+							defaultValue: currentAuthorName,
+							onChange: handleNameChange
+						})
+					)
+				),
+				_react2.default.createElement(
+					_reactstrap.Button,
+					{
+						color: 'primary',
+						className: 'twobuttons',
+						onClick: function onClick() {
+							updateAuthor(authorId, newAuthorName);
+						}
+					},
+					'Update'
+				),
+				_react2.default.createElement(
+					_reactstrap.Button,
+					{
+						color: 'danger',
+						className: 'twobuttons',
+						onClick: toggle
+					},
+					'Cancel'
+				)
+			)
+		)
+	);
+};
+
+UpdateModal.propTypes = {
+	buttonLabel: _propTypes2.default.string,
+	handleRefresh: _propTypes2.default.func,
+	handleUpdate: _propTypes2.default.func,
+	currentAuthorName: _propTypes2.default.string,
+	authorId: _propTypes2.default.number
+};
+
+exports.default = UpdateModal;
+
+},{"prop-types":94,"react":147,"reactstrap":241}],298:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactstrap = require('reactstrap');
+
+var _propTypes = require('prop-types');
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var CreateModal = function CreateModal(props) {
+	var buttonLabel = props.buttonLabel,
 	    handleCreate = props.handleCreate;
 
 	var newBorrowerName = '';
@@ -62282,7 +63051,6 @@ var CreateModal = function CreateModal(props) {
 
 	function createBorrower(newBorrowerName, newBorrowerAddress, newBorrowerPhone) {
 		handleCreate(newBorrowerName, newBorrowerAddress, newBorrowerPhone);
-		//handleRefresh();
 		toggle(); //need to figure out how to make create button be unpressed
 	}
 
@@ -62392,9 +63160,7 @@ var CreateModal = function CreateModal(props) {
 					{
 						color: 'danger',
 						className: 'twobuttons',
-						onClick: function onClick() {
-							return handleRefresh();
-						}
+						onClick: toggle
 					},
 					'Cancel'
 				)
@@ -62411,7 +63177,7 @@ CreateModal.propTypes = {
 
 exports.default = CreateModal;
 
-},{"prop-types":94,"react":147,"reactstrap":241}],293:[function(require,module,exports){
+},{"prop-types":94,"react":147,"reactstrap":241}],299:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -62434,12 +63200,11 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var DeleteModal = function DeleteModal(props) {
 	var buttonLabel = props.buttonLabel,
-	    handleDelete = props.handleDelete,
-	    handleRefresh = props.handleRefresh,
 	    cardNo = props.cardNo,
-	    currentBorrowerName = props.currentBorrowerName,
 	    currentBorrowerAddress = props.currentBorrowerAddress,
-	    currentBorrowerPhone = props.currentBorrowerPhone;
+	    currentBorrowerName = props.currentBorrowerName,
+	    currentBorrowerPhone = props.currentBorrowerPhone,
+	    handleDelete = props.handleDelete;
 
 	var _useState = (0, _react.useState)(false),
 	    _useState2 = _slicedToArray(_useState, 2),
@@ -62448,7 +63213,6 @@ var DeleteModal = function DeleteModal(props) {
 
 	function deleteBorrower(cardNo) {
 		handleDelete(cardNo);
-		//handleRefresh();
 		toggle();
 	}
 
@@ -62486,7 +63250,10 @@ var DeleteModal = function DeleteModal(props) {
 							{ 'for': 'borrowerName' },
 							'Name:'
 						),
-						_react2.default.createElement(_reactstrap.Input, { plaintext: true, defaultValue: currentBorrowerName })
+						_react2.default.createElement(_reactstrap.Input, {
+							plaintext: true,
+							defaultValue: currentBorrowerName
+						})
 					),
 					_react2.default.createElement(
 						_reactstrap.FormGroup,
@@ -62496,7 +63263,10 @@ var DeleteModal = function DeleteModal(props) {
 							{ 'for': 'borrowerAddress' },
 							'Address:'
 						),
-						_react2.default.createElement(_reactstrap.Input, { plaintext: true, defaultValue: currentBorrowerAddress })
+						_react2.default.createElement(_reactstrap.Input, {
+							plaintext: true,
+							defaultValue: currentBorrowerAddress
+						})
 					),
 					_react2.default.createElement(
 						_reactstrap.FormGroup,
@@ -62506,7 +63276,10 @@ var DeleteModal = function DeleteModal(props) {
 							{ 'for': 'borrowerAddress' },
 							'Phone Number:'
 						),
-						_react2.default.createElement(_reactstrap.Input, { plaintext: true, defaultValue: currentBorrowerPhone })
+						_react2.default.createElement(_reactstrap.Input, {
+							plaintext: true,
+							defaultValue: currentBorrowerPhone
+						})
 					),
 					_react2.default.createElement(
 						_reactstrap.Button,
@@ -62524,9 +63297,7 @@ var DeleteModal = function DeleteModal(props) {
 						{
 							color: 'danger',
 							className: 'twobuttons',
-							onClick: function onClick() {
-								return handleRefresh();
-							}
+							onClick: toggle
 						},
 						'No'
 					)
@@ -62548,7 +63319,7 @@ DeleteModal.propTypes = {
 
 exports.default = DeleteModal;
 
-},{"prop-types":94,"react":147,"reactstrap":241}],294:[function(require,module,exports){
+},{"prop-types":94,"react":147,"reactstrap":241}],300:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -62571,12 +63342,11 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var UpdateModal = function UpdateModal(props) {
 	var buttonLabel = props.buttonLabel,
-	    handleRefresh = props.handleRefresh,
-	    handleUpdate = props.handleUpdate,
-	    currentBorrowerName = props.currentBorrowerName,
+	    cardNo = props.cardNo,
 	    currentBorrowerAddress = props.currentBorrowerAddress,
+	    currentBorrowerName = props.currentBorrowerName,
 	    currentBorrowerPhone = props.currentBorrowerPhone,
-	    cardNo = props.cardNo;
+	    handleUpdate = props.handleUpdate;
 
 	var newBorrowerName = currentBorrowerName;
 	var newBorrowerAddress = currentBorrowerAddress;
@@ -62584,7 +63354,6 @@ var UpdateModal = function UpdateModal(props) {
 
 	function updateBorrower(cardNo, newBorrowerName, newBorrowerAddress, newBorrowerPhone) {
 		handleUpdate(cardNo, newBorrowerName, newBorrowerAddress, newBorrowerPhone);
-		//handleRefresh(); //Causes the weird update issue where the borrowerData contains only requestPending because books is being loaded again
 		toggle(); //need to figure out how to make update button be unpressed
 	}
 
@@ -62694,9 +63463,7 @@ var UpdateModal = function UpdateModal(props) {
 					{
 						color: 'danger',
 						className: 'twobuttons',
-						onClick: function onClick() {
-							return handleRefresh();
-						}
+						onClick: toggle
 					},
 					'Cancel'
 				)
@@ -62717,7 +63484,7 @@ UpdateModal.propTypes = {
 
 exports.default = UpdateModal;
 
-},{"prop-types":94,"react":147,"reactstrap":241}],295:[function(require,module,exports){
+},{"prop-types":94,"react":147,"reactstrap":241}],301:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -62740,7 +63507,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var CreateModal = function CreateModal(props) {
 	var buttonLabel = props.buttonLabel,
-	    handleRefresh = props.handleRefresh,
 	    handleCreate = props.handleCreate;
 
 	var newBranchName = '';
@@ -62839,9 +63605,7 @@ var CreateModal = function CreateModal(props) {
 					{
 						color: 'danger',
 						className: 'twobuttons',
-						onClick: function onClick() {
-							return handleRefresh();
-						}
+						onClick: toggle
 					},
 					'Cancel'
 				)
@@ -62858,7 +63622,7 @@ CreateModal.propTypes = {
 
 exports.default = CreateModal;
 
-},{"prop-types":94,"react":147,"reactstrap":241}],296:[function(require,module,exports){
+},{"prop-types":94,"react":147,"reactstrap":241}],302:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -62881,11 +63645,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var DeleteModal = function DeleteModal(props) {
 	var buttonLabel = props.buttonLabel,
-	    handleDelete = props.handleDelete,
-	    handleRefresh = props.handleRefresh,
-	    id = props.id,
+	    currentBranchAddress = props.currentBranchAddress,
 	    currentBranchName = props.currentBranchName,
-	    currentBranchAddress = props.currentBranchAddress;
+	    handleDelete = props.handleDelete,
+	    id = props.id;
 
 	var _useState = (0, _react.useState)(false),
 	    _useState2 = _slicedToArray(_useState, 2),
@@ -62960,9 +63723,7 @@ var DeleteModal = function DeleteModal(props) {
 						{
 							color: 'danger',
 							className: 'twobuttons',
-							onClick: function onClick() {
-								return handleRefresh();
-							}
+							onClick: toggle
 						},
 						'No'
 					)
@@ -62983,7 +63744,7 @@ DeleteModal.propTypes = {
 
 exports.default = DeleteModal;
 
-},{"prop-types":94,"react":147,"reactstrap":241}],297:[function(require,module,exports){
+},{"prop-types":94,"react":147,"reactstrap":241}],303:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -63006,10 +63767,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var UpdateModal = function UpdateModal(props) {
 	var buttonLabel = props.buttonLabel,
-	    handleRefresh = props.handleRefresh,
-	    handleUpdate = props.handleUpdate,
-	    currentBranchName = props.currentBranchName,
 	    currentBranchAddress = props.currentBranchAddress,
+	    currentBranchName = props.currentBranchName,
+	    handleUpdate = props.handleUpdate,
 	    id = props.id;
 
 	var newBranchName = currentBranchName;
@@ -63108,9 +63868,7 @@ var UpdateModal = function UpdateModal(props) {
 					{
 						color: 'danger',
 						className: 'twobuttons',
-						onClick: function onClick() {
-							return handleRefresh();
-						}
+						onClick: toggle
 					},
 					'Cancel'
 				)
@@ -63130,7 +63888,7 @@ UpdateModal.propTypes = {
 
 exports.default = UpdateModal;
 
-},{"prop-types":94,"react":147,"reactstrap":241}],298:[function(require,module,exports){
+},{"prop-types":94,"react":147,"reactstrap":241}],304:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -63248,7 +64006,7 @@ CreateModal.propTypes = {
 
 exports.default = CreateModal;
 
-},{"prop-types":94,"react":147,"reactstrap":241}],299:[function(require,module,exports){
+},{"prop-types":94,"react":147,"reactstrap":241}],305:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -63359,7 +64117,7 @@ DeleteModal.propTypes = {
 
 exports.default = DeleteModal;
 
-},{"prop-types":94,"react":147,"reactstrap":241}],300:[function(require,module,exports){
+},{"prop-types":94,"react":147,"reactstrap":241}],306:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -63482,7 +64240,7 @@ UpdateModal.propTypes = {
 
 exports.default = UpdateModal;
 
-},{"prop-types":94,"react":147,"reactstrap":241}],301:[function(require,module,exports){
+},{"prop-types":94,"react":147,"reactstrap":241}],307:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -63505,7 +64263,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var CreateModal = function CreateModal(props) {
 	var buttonLabel = props.buttonLabel,
-	    handleRefresh = props.handleRefresh,
 	    handleCreate = props.handleCreate;
 
 	var newPublisherName = '';
@@ -63514,7 +64271,6 @@ var CreateModal = function CreateModal(props) {
 
 	function createPublisher(newPublisherName, newPublisherAddress, newPublisherPhone) {
 		handleCreate(newPublisherName, newPublisherAddress, newPublisherPhone);
-		//handleRefresh();
 		toggle(); //need to figure out how to make create button be unpressed
 	}
 
@@ -63625,9 +64381,7 @@ var CreateModal = function CreateModal(props) {
 					{
 						color: 'danger',
 						className: 'twobuttons',
-						onClick: function onClick() {
-							return handleRefresh();
-						}
+						onClick: toggle
 					},
 					'Cancel'
 				)
@@ -63644,7 +64398,7 @@ CreateModal.propTypes = {
 
 exports.default = CreateModal;
 
-},{"prop-types":94,"react":147,"reactstrap":241}],302:[function(require,module,exports){
+},{"prop-types":94,"react":147,"reactstrap":241}],308:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -63671,7 +64425,6 @@ var DeleteModal = function DeleteModal(props) {
 	    currentPublisherAddress = props.currentPublisherAddress,
 	    currentPublisherPhone = props.currentPublisherPhone,
 	    handleDelete = props.handleDelete,
-	    handleRefresh = props.handleRefresh,
 	    id = props.id;
 
 	var _useState = (0, _react.useState)(false),
@@ -63681,7 +64434,6 @@ var DeleteModal = function DeleteModal(props) {
 
 	function deletePublisher(id) {
 		handleDelete(id);
-		//handleRefresh();
 		toggle();
 	}
 
@@ -63757,9 +64509,7 @@ var DeleteModal = function DeleteModal(props) {
 						{
 							color: 'danger',
 							className: 'twobuttons',
-							onClick: function onClick() {
-								return handleRefresh();
-							}
+							onClick: toggle
 						},
 						'No'
 					)
@@ -63781,7 +64531,7 @@ DeleteModal.propTypes = {
 
 exports.default = DeleteModal;
 
-},{"prop-types":94,"react":147,"reactstrap":241}],303:[function(require,module,exports){
+},{"prop-types":94,"react":147,"reactstrap":241}],309:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -63807,7 +64557,6 @@ var UpdateModal = function UpdateModal(props) {
 	    currentPublisherName = props.currentPublisherName,
 	    currentPublisherAddress = props.currentPublisherAddress,
 	    currentPublisherPhone = props.currentPublisherPhone,
-	    handleRefresh = props.handleRefresh,
 	    handleUpdate = props.handleUpdate,
 	    id = props.id;
 
@@ -63817,7 +64566,6 @@ var UpdateModal = function UpdateModal(props) {
 
 	function updatePublisher(id, newPublisherName, newPublisherAddress, newPublisherPhone) {
 		handleUpdate(id, newPublisherName, newPublisherAddress, newPublisherPhone);
-		//handleRefresh(); //Causes the weird update issue where the publisherData contains only requestPending because books is being loaded again
 		toggle(); //need to figure out how to make update button be unpressed
 	}
 
@@ -63927,9 +64675,7 @@ var UpdateModal = function UpdateModal(props) {
 					{
 						color: 'danger',
 						className: 'twobuttons',
-						onClick: function onClick() {
-							return handleRefresh();
-						}
+						onClick: toggle
 					},
 					'Cancel'
 				)
@@ -63950,7 +64696,7 @@ UpdateModal.propTypes = {
 
 exports.default = UpdateModal;
 
-},{"prop-types":94,"react":147,"reactstrap":241}],304:[function(require,module,exports){
+},{"prop-types":94,"react":147,"reactstrap":241}],310:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -64040,7 +64786,7 @@ var Header = function Header() {
 
 exports.default = Header;
 
-},{"react":147,"react-router-dom":134}],305:[function(require,module,exports){
+},{"react":147,"react-router-dom":134}],311:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -64050,18 +64796,28 @@ var READ_BOOKS_SUCCESSFUL = exports.READ_BOOKS_SUCCESSFUL = 'READ_BOOKS_SUCCESSF
 var READ_BOOKS_PENDING = exports.READ_BOOKS_PENDING = 'READ_BOOKS_PENDING';
 var READ_BOOKS_FAILURE = exports.READ_BOOKS_FAILURE = 'READ_BOOKS_FAILURE';
 
+var CREATE_AUTHOR_REQUEST = exports.CREATE_AUTHOR_REQUEST = 'CREATE_AUTHOR_REQUEST';
+var CREATE_AUTHOR_FAILURE = exports.CREATE_AUTHOR_FAILURE = 'CREATE_AUTHOR_FAILURE';
+var CREATE_AUTHOR_SUCCESSFUL = exports.CREATE_AUTHOR_SUCCESSFUL = 'CREATE_AUTHOR_SUCCESSFUL';
+var READ_AUTHORS_SUCCESSFUL = exports.READ_AUTHORS_SUCCESSFUL = 'READ_AUTHORS_SUCCESSFUL';
+var READ_AUTHORS_PENDING = exports.READ_AUTHORS_PENDING = 'READ_AUTHORS_PENDING';
+var READ_AUTHORS_FAILURE = exports.READ_AUTHORS_FAILURE = 'READ_AUTHORS_FAILURE';
+var UPDATE_AUTHOR_REQUEST = exports.UPDATE_AUTHOR_REQUEST = 'UPDATE_AUTHOR_REQUEST';
+var UPDATE_AUTHOR_FAILURE = exports.UPDATE_AUTHOR_FAILURE = 'UPDATE_AUTHOR_FAILURE';
+var UPDATE_AUTHOR_SUCCESSFUL = exports.UPDATE_AUTHOR_SUCCESSFUL = 'UPDATE_AUTHOR_SUCCESSFUL';
+var DELETE_AUTHOR_REQUEST = exports.DELETE_AUTHOR_REQUEST = 'DELETE_AUTHOR_REQUEST';
+var DELETE_AUTHOR_FAILURE = exports.DELETE_AUTHOR_FAILURE = 'DELETE_AUTHOR_FAILURE';
+var DELETE_AUTHOR_SUCCESSFUL = exports.DELETE_AUTHOR_SUCCESSFUL = 'DELETE_AUTHOR_SUCCESSFUL';
+
 var CREATE_BRANCH_REQUEST = exports.CREATE_BRANCH_REQUEST = 'CREATE_BRANCH_REQUEST';
 var CREATE_BRANCH_FAILURE = exports.CREATE_BRANCH_FAILURE = 'CREATE_BRANCH_FAILURE';
 var CREATE_BRANCH_SUCCESSFUL = exports.CREATE_BRANCH_SUCCESSFUL = 'CREATE_BRANCH_SUCCESSFUL';
-
 var READ_BRANCHES_SUCCESSFUL = exports.READ_BRANCHES_SUCCESSFUL = 'READ_BRANCHES_SUCCESSFUL';
 var READ_BRANCHES_PENDING = exports.READ_BRANCHES_PENDING = 'READ_BRANCHES_PENDING';
 var READ_BRANCHES_FAILURE = exports.READ_BRANCHES_FAILURE = 'READ_BRANCHES_FAILURE';
-
 var UPDATE_BRANCH_REQUEST = exports.UPDATE_BRANCH_REQUEST = 'UPDATE_BRANCH_REQUEST';
 var UPDATE_BRANCH_FAILURE = exports.UPDATE_BRANCH_FAILURE = 'UPDATE_BRANCH_FAILURE';
 var UPDATE_BRANCH_SUCCESSFUL = exports.UPDATE_BRANCH_SUCCESSFUL = 'UPDATE_BRANCH_SUCCESSFUL';
-
 var DELETE_BRANCH_REQUEST = exports.DELETE_BRANCH_REQUEST = 'DELETE_BRANCH_REQUEST';
 var DELETE_BRANCH_FAILURE = exports.DELETE_BRANCH_FAILURE = 'DELETE_BRANCH_FAILURE';
 var DELETE_BRANCH_SUCCESSFUL = exports.DELETE_BRANCH_SUCCESSFUL = 'DELETE_BRANCH_SUCCESSFUL';
@@ -64069,15 +64825,12 @@ var DELETE_BRANCH_SUCCESSFUL = exports.DELETE_BRANCH_SUCCESSFUL = 'DELETE_BRANCH
 var CREATE_BORROWER_REQUEST = exports.CREATE_BORROWER_REQUEST = 'CREATE_BORROWER_REQUEST';
 var CREATE_BORROWER_FAILURE = exports.CREATE_BORROWER_FAILURE = 'CREATE_BORROWER_FAILURE';
 var CREATE_BORROWER_SUCCESSFUL = exports.CREATE_BORROWER_SUCCESSFUL = 'CREATE_BORROWER_SUCCESSFUL';
-
 var READ_BORROWERS_SUCCESSFUL = exports.READ_BORROWERS_SUCCESSFUL = 'READ_BORROWERS_SUCCESSFUL';
 var READ_BORROWERS_PENDING = exports.READ_BORROWERS_PENDING = 'READ_BORROWERS_PENDING';
 var READ_BORROWERS_FAILURE = exports.READ_BORROWERS_FAILURE = 'READ_BORROWERS_FAILURE';
-
 var UPDATE_BORROWER_REQUEST = exports.UPDATE_BORROWER_REQUEST = 'UPDATE_BORROWER_REQUEST';
 var UPDATE_BORROWER_FAILURE = exports.UPDATE_BORROWER_FAILURE = 'UPDATE_BORROWER_FAILURE';
 var UPDATE_BORROWER_SUCCESSFUL = exports.UPDATE_BORROWER_SUCCESSFUL = 'UPDATE_BORROWER_SUCCESSFUL';
-
 var DELETE_BORROWER_REQUEST = exports.DELETE_BORROWER_REQUEST = 'DELETE_BORROWER_REQUEST';
 var DELETE_BORROWER_FAILURE = exports.DELETE_BORROWER_FAILURE = 'DELETE_BORROWER_FAILURE';
 var DELETE_BORROWER_SUCCESSFUL = exports.DELETE_BORROWER_SUCCESSFUL = 'DELETE_BORROWER_SUCCESSFUL';
@@ -64085,15 +64838,12 @@ var DELETE_BORROWER_SUCCESSFUL = exports.DELETE_BORROWER_SUCCESSFUL = 'DELETE_BO
 var CREATE_PUBLISHER_REQUEST = exports.CREATE_PUBLISHER_REQUEST = 'CREATE_PUBLISHER_REQUEST';
 var CREATE_PUBLISHER_FAILURE = exports.CREATE_PUBLISHER_FAILURE = 'CREATE_PUBLISHER_FAILURE';
 var CREATE_PUBLISHER_SUCCESSFUL = exports.CREATE_PUBLISHER_SUCCESSFUL = 'CREATE_PUBLISHER_SUCCESSFUL';
-
 var READ_PUBLISHERS_SUCCESSFUL = exports.READ_PUBLISHERS_SUCCESSFUL = 'READ_PUBLISHERS_SUCCESSFUL';
 var READ_PUBLISHERS_PENDING = exports.READ_PUBLISHERS_PENDING = 'READ_PUBLISHERS_PENDING';
 var READ_PUBLISHERS_FAILURE = exports.READ_PUBLISHERS_FAILURE = 'READ_PUBLISHERS_FAILURE';
-
 var UPDATE_PUBLISHER_REQUEST = exports.UPDATE_PUBLISHER_REQUEST = 'UPDATE_PUBLISHER_REQUEST';
 var UPDATE_PUBLISHER_FAILURE = exports.UPDATE_PUBLISHER_FAILURE = 'UPDATE_PUBLISHER_FAILURE';
 var UPDATE_PUBLISHER_SUCCESSFUL = exports.UPDATE_PUBLISHER_SUCCESSFUL = 'UPDATE_PUBLISHER_SUCCESSFUL';
-
 var DELETE_PUBLISHER_REQUEST = exports.DELETE_PUBLISHER_REQUEST = 'DELETE_PUBLISHER_REQUEST';
 var DELETE_PUBLISHER_FAILURE = exports.DELETE_PUBLISHER_FAILURE = 'DELETE_PUBLISHER_FAILURE';
 var DELETE_PUBLISHER_SUCCESSFUL = exports.DELETE_PUBLISHER_SUCCESSFUL = 'DELETE_PUBLISHER_SUCCESSFUL';
@@ -64101,20 +64851,17 @@ var DELETE_PUBLISHER_SUCCESSFUL = exports.DELETE_PUBLISHER_SUCCESSFUL = 'DELETE_
 var CREATE_GENRE_REQUEST = exports.CREATE_GENRE_REQUEST = 'CREATE_GENRE_REQUEST';
 var CREATE_GENRE_FAILURE = exports.CREATE_GENRE_FAILURE = 'CREATE_GENRE_FAILURE';
 var CREATE_GENRE_SUCCESSFUL = exports.CREATE_GENRE_SUCCESSFUL = 'CREATE_GENRE_SUCCESSFUL';
-
 var READ_GENRES_SUCCESSFUL = exports.READ_GENRES_SUCCESSFUL = 'READ_GENRES_SUCCESSFUL';
 var READ_GENRES_PENDING = exports.READ_GENRES_PENDING = 'READ_GENRES_PENDING';
 var READ_GENRES_FAILURE = exports.READ_GENRES_FAILURE = 'READ_GENRES_FAILURE';
-
 var UPDATE_GENRE_REQUEST = exports.UPDATE_GENRE_REQUEST = 'UPDATE_GENRE_REQUEST';
 var UPDATE_GENRE_FAILURE = exports.UPDATE_GENRE_FAILURE = 'UPDATE_GENRE_FAILURE';
 var UPDATE_GENRE_SUCCESSFUL = exports.UPDATE_GENRE_SUCCESSFUL = 'UPDATE_GENRE_SUCCESSFUL';
-
 var DELETE_GENRE_REQUEST = exports.DELETE_GENRE_REQUEST = 'DELETE_GENRE_REQUEST';
 var DELETE_GENRE_FAILURE = exports.DELETE_GENRE_FAILURE = 'DELETE_GENRE_FAILURE';
 var DELETE_GENRE_SUCCESSFUL = exports.DELETE_GENRE_SUCCESSFUL = 'DELETE_GENRE_SUCCESSFUL';
 
-},{}],306:[function(require,module,exports){
+},{}],312:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -64124,7 +64871,7 @@ var ADMIN_PORT = exports.ADMIN_PORT = 'http://localhost:8090/';
 var LIBRARIAN_PORT = exports.LIBRARIAN_PORT = 'http://localhost:8090/';
 var BORROWER_PORT = exports.BORROWER_PORT = 'http://localhost:8080/';
 
-},{}],307:[function(require,module,exports){
+},{}],313:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -64159,7 +64906,156 @@ _reactDom2.default.render(_react2.default.createElement(
 	)
 ), document.getElementById('app'));
 
-},{"./components/App.js":287,"./store/configureStore":314,"react":147,"react-dom":98,"react-redux":123,"react-router-dom":134}],308:[function(require,module,exports){
+},{"./components/App.js":290,"./store/configureStore":321,"react":147,"react-dom":98,"react-redux":123,"react-router-dom":134}],314:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+exports.default = authorReducer;
+
+var _actionTypes = require('../constants/actionTypes');
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+function authorReducer() {
+	var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+	var action = arguments[1];
+
+	switch (action.type) {
+		case _actionTypes.READ_AUTHORS_PENDING:
+			return _extends({}, state, {
+				requestInfo: _extends({}, state.requestInfo, { readPending: true })
+			});
+		case _actionTypes.READ_AUTHORS_FAILURE:
+			return _extends({}, state, {
+				requestInfo: _extends({}, state.requestInfo, {
+					readFailed: true,
+					readPending: false
+				})
+			});
+		case _actionTypes.READ_AUTHORS_SUCCESSFUL:
+			return _extends({}, state, {
+				authorData: {
+					authors: action.data
+				},
+				requestInfo: _extends({}, state.requestInfo, {
+					readFailed: false,
+					readSuccessful: true,
+					readPending: false
+				})
+			});
+		case _actionTypes.DELETE_AUTHOR_REQUEST:
+			return _extends({}, state, {
+				authorData: _extends({}, state.authorData),
+				requestInfo: _extends({}, state.requestInfo, {
+					deleting: true,
+					deleteFailed: false,
+					deleteSuccess: false
+				})
+			});
+		case _actionTypes.DELETE_AUTHOR_FAILURE:
+			return _extends({}, state, {
+				authorData: _extends({}, state.authorData),
+				requestInfo: _extends({}, state.requestInfo, {
+					deleteFailed: true,
+					deleting: false
+				})
+			});
+		case _actionTypes.DELETE_AUTHOR_SUCCESSFUL:
+			{
+				var newAuthors = state.authorData.authors.filter(function (author) {
+					return author.authorId != action.deletedId;
+				});
+				return _extends({}, state, {
+					authorData: _extends({}, state.authorData, {
+						authors: newAuthors
+					}),
+					requestInfo: _extends({}, state.requestInfo, {
+						deleteSuccess: true,
+						deleting: false
+					})
+				});
+			}
+		case _actionTypes.UPDATE_AUTHOR_REQUEST:
+			return _extends({}, state, {
+				authorData: _extends({}, state.authorData),
+				requestInfo: _extends({}, state.requestInfo, {
+					updating: true,
+					updateFailed: false,
+					updateSuccess: false
+				})
+			});
+		case _actionTypes.UPDATE_AUTHOR_FAILURE:
+			return _extends({}, state, {
+				authorData: _extends({}, state.authorData),
+				requestInfo: _extends({}, state.requestInfo, {
+					updateFailed: true,
+					updating: false
+				})
+			});
+		case _actionTypes.UPDATE_AUTHOR_SUCCESSFUL:
+			{
+				if (state.authorData.readPending) {
+					/* Not needed if we continue to use toggle instead of handle refresh*/
+					return _extends({}, state, {
+						authorData: _extends({}, state.authorData),
+						requestInfo: _extends({}, state.requestInfo)
+					});
+				} else {
+					var updatedAuthors = state.authorData.authors.map(function (author) {
+						return action.updatedAuthor.authorId === author.authorId ? action.updatedAuthor : author;
+					});
+					return _extends({}, state, {
+						authorData: _extends({}, state.authorData, {
+							authors: updatedAuthors
+						}),
+						requestInfo: _extends({}, state.requestInfo, {
+							updateSuccess: true,
+							updating: false
+						})
+					});
+				}
+			}
+		case _actionTypes.CREATE_AUTHOR_REQUEST:
+			return _extends({}, state, {
+				authorData: _extends({}, state.authorData),
+				requestInfo: _extends({}, state.requestInfo, {
+					creating: true,
+					createFailed: false,
+					createSuccess: false
+				})
+			});
+		case _actionTypes.CREATE_AUTHOR_FAILURE:
+			return _extends({}, state, {
+				authorData: _extends({}, state.authorData),
+				requestInfo: _extends({}, state.requestInfo, {
+					createFailed: true,
+					creating: false
+				})
+			});
+		case _actionTypes.CREATE_AUTHOR_SUCCESSFUL:
+			{
+				var updatedAuthorArray = [].concat(_toConsumableArray(state.authorData.authors), [action.createdAuthor]);
+				return _extends({}, state, {
+					authorData: _extends({}, state.authorData, {
+						authors: updatedAuthorArray
+					}),
+					requestInfo: _extends({}, state.requestInfo, {
+						createSuccess: true,
+						creating: false
+					})
+				});
+			}
+		default:
+			return state;
+	}
+}
+
+},{"../constants/actionTypes":311}],315:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -64190,7 +65086,7 @@ function bookReducer() {
 	}
 }
 
-},{"../constants/actionTypes":305}],309:[function(require,module,exports){
+},{"../constants/actionTypes":311}],316:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -64341,7 +65237,7 @@ function borrowerReducer() {
 	}
 }
 
-},{"../constants/actionTypes":305}],310:[function(require,module,exports){
+},{"../constants/actionTypes":311}],317:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -64490,7 +65386,7 @@ function branchReducer() {
 	}
 }
 
-},{"../constants/actionTypes":305}],311:[function(require,module,exports){
+},{"../constants/actionTypes":311}],318:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -64639,7 +65535,7 @@ function genreReducer() {
 	}
 }
 
-},{"../constants/actionTypes":305}],312:[function(require,module,exports){
+},{"../constants/actionTypes":311}],319:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -64647,6 +65543,10 @@ Object.defineProperty(exports, "__esModule", {
 });
 
 var _redux = require('redux');
+
+var _authorReducer = require('./authorReducer');
+
+var _authorReducer2 = _interopRequireDefault(_authorReducer);
 
 var _bookReducer = require('./bookReducer');
 
@@ -64671,6 +65571,7 @@ var _genreReducer2 = _interopRequireDefault(_genreReducer);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var rootReducer = (0, _redux.combineReducers)({
+	authorReducer: _authorReducer2.default,
 	bookReducer: _bookReducer2.default,
 	borrowerReducer: _borrowerReducer2.default,
 	branchReducer: _branchReducer2.default,
@@ -64680,7 +65581,7 @@ var rootReducer = (0, _redux.combineReducers)({
 
 exports.default = rootReducer;
 
-},{"./bookReducer":308,"./borrowerReducer":309,"./branchReducer":310,"./genreReducer":311,"./publisherReducer":313,"redux":248}],313:[function(require,module,exports){
+},{"./authorReducer":314,"./bookReducer":315,"./borrowerReducer":316,"./branchReducer":317,"./genreReducer":318,"./publisherReducer":320,"redux":248}],320:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -64829,7 +65730,7 @@ function publisherReducer() {
 	}
 }
 
-},{"../constants/actionTypes":305}],314:[function(require,module,exports){
+},{"../constants/actionTypes":311}],321:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -64862,4 +65763,4 @@ function configureStore(initialState) {
 
 exports.default = configureStore;
 
-},{"../reducers":312,"redux":248,"redux-immutable-state-invariant":244,"redux-thunk":247}]},{},[307]);
+},{"../reducers":319,"redux":248,"redux-immutable-state-invariant":244,"redux-thunk":247}]},{},[313]);

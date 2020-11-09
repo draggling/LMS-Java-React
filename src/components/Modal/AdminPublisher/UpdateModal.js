@@ -17,7 +17,6 @@ const UpdateModal = (props) => {
 		currentPublisherName,
 		currentPublisherAddress,
 		currentPublisherPhone,
-		handleRefresh,
 		handleUpdate,
 		id,
 	} = props;
@@ -37,7 +36,6 @@ const UpdateModal = (props) => {
 			newPublisherAddress,
 			newPublisherPhone
 		);
-		//handleRefresh(); //Causes the weird update issue where the publisherData contains only requestPending because books is being loaded again
 		toggle(); //need to figure out how to make update button be unpressed
 	}
 
@@ -115,7 +113,7 @@ const UpdateModal = (props) => {
 					<Button
 						color="danger"
 						className="twobuttons"
-						onClick={() => handleRefresh()}
+						onClick={toggle}
 					>
 						Cancel
 					</Button>
