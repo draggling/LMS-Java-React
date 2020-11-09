@@ -43,7 +43,7 @@ const AdminHeader = () => {
 						</Link>
 					</li>
 					<li className="list-inline-item">
-						<Link to="/AdminHome" replace>
+						<Link to="/AdminGenre" replace>
 							Genres
 						</Link>
 					</li>
