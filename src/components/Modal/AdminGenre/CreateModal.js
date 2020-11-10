@@ -12,7 +12,7 @@ import {
 import PropTypes from 'prop-types';
 
 const CreateModal = (props) => {
-	const { buttonLabel, handleRefresh, handleCreate } = props;
+	const { buttonLabel, handleCreate } = props;
 	let newGenreName = '';
 
 	function createGenre(newGenreName) {

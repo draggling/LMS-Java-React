@@ -14,26 +14,27 @@ import PropTypes from 'prop-types';
 const UpdateModal = (props) => {
 	const {
 		buttonLabel,
-		currentGenreName,
+        dueDate,
+		handleRefresh,
 		handleUpdate,
-        genreId,
+		key,
 	} = props;
-	let newGenreName = currentGenreName;
+	let newDueDate = dueDate;
 
-	function updateGenre(
-		genreId,
-		newGenreName,
+
+	function updateLoan(
+		key,
+		newDueDate,
 	) {
 		handleUpdate(
-			genreId,
-			newGenreName,
+			key,
+			newDueDate,
 		);
-		//handleRefresh(); //Causes the weird update issue where the genreData contains only requestPending because books is being loaded again
-		toggle(); //need to figure out how to make update button be unpressed
+		toggle();
 	}
 
-	function handleNameChange(e) {
-		newGenreName = e.target.value;
+	function handleDueDateChange(e) {
+		newDueDate = e.target.value;
 	}
 
 	const [modal, setModal] = useState(false);
@@ -45,30 +46,28 @@ const UpdateModal = (props) => {
 				{buttonLabel}
 			</Button>
 			<Modal isOpen={modal} toggle={toggle}>
-				<ModalHeader toggle={toggle}>Update Genre</ModalHeader>
+				<ModalHeader toggle={toggle}>Extend Loan</ModalHeader>
 				<ModalBody>
 					<Form>
 						<FormGroup>
-							<Label for="formGenreName">
-								Genre Name
-							</Label>
-							<Input
-								type="text"
-								name="genreName"
-								genreId="formGenreName"
-								defaultValue={currentGenreName}
-								onChange={handleNameChange}
-							/>
+							<Label for="formDueDate">Date</Label>
+								<Input
+									type="date"
+									name="dueDate"
+									key="formLoanDueDate"
+									defaultValue={dueDate}
+									onChange={handleDueDateChange}
+								/>
 						</FormGroup>
-
 					</Form>
+
 					<Button
 						color="primary"
 						className="twobuttons"
 						onClick={() => {
-							updateGenre(
-								genreId,
-								newGenreName,
+							updateLoan(
+								key,
+								newDueDate,
 							);
 						}}
 					>
@@ -77,7 +76,7 @@ const UpdateModal = (props) => {
 					<Button
 						color="danger"
 						className="twobuttons"
-						onClick={toggle}
+						onClick={() => handleRefresh()}
 					>
 						Cancel
 					</Button>
@@ -91,8 +90,8 @@ UpdateModal.propTypes = {
 	buttonLabel: PropTypes.string,
 	handleRefresh: PropTypes.func,
 	handleUpdate: PropTypes.func,
-	currentGenreName: PropTypes.string,
-	genreId: PropTypes.number,
+	dueDate: PropTypes.instanceOf(Date),
+	key: PropTypes.object,
 };
 
 export default UpdateModal;

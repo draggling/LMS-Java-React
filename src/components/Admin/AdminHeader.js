@@ -53,7 +53,7 @@ const AdminHeader = () => {
 						</Link>
 					</li>
 					<li className="list-inline-item">
-						<Link to="/AdminHome" replace>
+						<Link to="/AdminLoan" replace>
 							Loans
 						</Link>
 					</li>

@@ -16,7 +16,6 @@ const DeleteModal = (props) => {
 		buttonLabel,
 		currentGenreName,
 		handleDelete,
-		handleRefresh,
 		genreId,
 	} = props;
 
