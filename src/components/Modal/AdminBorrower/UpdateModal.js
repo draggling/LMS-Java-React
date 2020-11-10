@@ -14,20 +14,28 @@ import PropTypes from 'prop-types';
 const UpdateModal = (props) => {
 	const {
 		buttonLabel,
-		handleRefresh,
-		handleUpdate,
-		currentBorrowerName,
-		currentBorrowerAddress,
-		currentBorrowerPhone,
 		cardNo,
+		currentBorrowerAddress,
+		currentBorrowerName,
+		currentBorrowerPhone,
+		handleUpdate,
 	} = props;
 	let newBorrowerName = currentBorrowerName;
 	let newBorrowerAddress = currentBorrowerAddress;
 	let newBorrowerPhone = currentBorrowerPhone;
 
-	function updateBorrower(cardNo, newBorrowerName, newBorrowerAddress, newBorrowerPhone) {
-		handleUpdate(cardNo, newBorrowerName, newBorrowerAddress, newBorrowerPhone);
-		//handleRefresh(); //Causes the weird update issue where the borrowerData contains only requestPending because books is being loaded again
+	function updateBorrower(
+		cardNo,
+		newBorrowerName,
+		newBorrowerAddress,
+		newBorrowerPhone
+	) {
+		handleUpdate(
+			cardNo,
+			newBorrowerName,
+			newBorrowerAddress,
+			newBorrowerPhone
+		);
 		toggle(); //need to figure out how to make update button be unpressed
 	}
 
@@ -65,7 +73,9 @@ const UpdateModal = (props) => {
 						</FormGroup>
 
 						<FormGroup>
-							<Label for="formBorrowerAddress">BorrowerAddress</Label>
+							<Label for="formBorrowerAddress">
+								BorrowerAddress
+							</Label>
 							<Input
 								type="text"
 								name="borrowerAddress"
@@ -74,9 +84,11 @@ const UpdateModal = (props) => {
 								onChange={handleAddressChange}
 							/>
 						</FormGroup>
-						
+
 						<FormGroup>
-							<Label for="formBorrowerPhone">BorrowerPhoneNumber</Label>
+							<Label for="formBorrowerPhone">
+								BorrowerPhoneNumber
+							</Label>
 							<Input
 								type="text"
 								name="borrowerPhone"
@@ -85,13 +97,17 @@ const UpdateModal = (props) => {
 								onChange={handlePhoneChange}
 							/>
 						</FormGroup>
-
 					</Form>
 					<Button
 						color="primary"
 						className="twobuttons"
 						onClick={() => {
-							updateBorrower(cardNo, newBorrowerName, newBorrowerAddress, newBorrowerPhone);
+							updateBorrower(
+								cardNo,
+								newBorrowerName,
+								newBorrowerAddress,
+								newBorrowerPhone
+							);
 						}}
 					>
 						Update
@@ -99,7 +115,7 @@ const UpdateModal = (props) => {
 					<Button
 						color="danger"
 						className="twobuttons"
-						onClick={() => handleRefresh()}
+						onClick={toggle}
 					>
 						Cancel
 					</Button>

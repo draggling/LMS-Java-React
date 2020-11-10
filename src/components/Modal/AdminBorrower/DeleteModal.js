@@ -14,19 +14,17 @@ import PropTypes from 'prop-types';
 const DeleteModal = (props) => {
 	const {
 		buttonLabel,
-		handleDelete,
-		handleRefresh,
 		cardNo,
-		currentBorrowerName,
 		currentBorrowerAddress,
+		currentBorrowerName,
 		currentBorrowerPhone,
+		handleDelete,
 	} = props;
 
 	const [modal, setModal] = useState(false);
 
 	function deleteBorrower(cardNo) {
 		handleDelete(cardNo);
-		//handleRefresh();
 		toggle();
 	}
 
@@ -45,15 +43,24 @@ const DeleteModal = (props) => {
 					<Form>
 						<FormGroup>
 							<Label for="borrowerName">Name:</Label>
-							<Input plaintext defaultValue={currentBorrowerName} />
+							<Input
+								plaintext
+								defaultValue={currentBorrowerName}
+							/>
 						</FormGroup>
 						<FormGroup>
 							<Label for="borrowerAddress">Address:</Label>
-							<Input plaintext defaultValue={currentBorrowerAddress} />
+							<Input
+								plaintext
+								defaultValue={currentBorrowerAddress}
+							/>
 						</FormGroup>
 						<FormGroup>
 							<Label for="borrowerAddress">Phone Number:</Label>
-							<Input plaintext defaultValue={currentBorrowerPhone} />
+							<Input
+								plaintext
+								defaultValue={currentBorrowerPhone}
+							/>
 						</FormGroup>
 						<Button
 							color="primary"
@@ -67,7 +74,7 @@ const DeleteModal = (props) => {
 						<Button
 							color="danger"
 							className="twobuttons"
-							onClick={() => handleRefresh()}
+							onClick={toggle}
 						>
 							No
 						</Button>

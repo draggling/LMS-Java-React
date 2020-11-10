@@ -13,20 +13,15 @@ import PropTypes from 'prop-types';
 
 const CreateModal = (props) => {
 	const { buttonLabel, handleCreate } = props;
-	let newBranchName = '';
-	let newBranchAddress = '';
+	let newAuthorName = '';
 
-	function createBranch(newBranchName, newBranchAddress) {
-		handleCreate(newBranchName, newBranchAddress);
-		//handleRefresh();
+	function createAuthor(newAuthorName) {
+		handleCreate(newAuthorName);
 		toggle(); //need to figure out how to make create button be unpressed
 	}
 
 	function handleNameChange(e) {
-		newBranchName = e.target.value;
-	}
-	function handleAddressChange(e) {
-		newBranchAddress = e.target.value;
+		newAuthorName = e.target.value;
 	}
 
 	const [modal, setModal] = useState(false);
@@ -38,30 +33,17 @@ const CreateModal = (props) => {
 				{buttonLabel}
 			</Button>
 			<Modal isOpen={modal} toggle={toggle}>
-				<ModalHeader toggle={toggle}>Create Branch</ModalHeader>
+				<ModalHeader toggle={toggle}>Create Author</ModalHeader>
 				<ModalBody>
 					<Form>
 						<FormGroup>
-							<Label for="formBranchName"> Branch Name</Label>
+							<Label for="formAuthorName">Author Name</Label>
 							<Input
 								type="text"
-								name="branchName"
-								id="formBranchName"
-								placeholder="New Branch Name"
+								name="authorName"
+								id="formAuthorName"
+								placeholder="New Author Name"
 								onChange={handleNameChange}
-							/>
-						</FormGroup>
-
-						<FormGroup>
-							<Label for="formBranchAddress">
-								Branch Address
-							</Label>
-							<Input
-								type="text"
-								name="branchAddress"
-								id="formBranchAddress"
-								placeholder="New Address"
-								onChange={handleAddressChange}
 							/>
 						</FormGroup>
 					</Form>
@@ -69,7 +51,7 @@ const CreateModal = (props) => {
 						color="primary"
 						className="twobuttons"
 						onClick={() => {
-							createBranch(newBranchName, newBranchAddress);
+							createAuthor(newAuthorName);
 						}}
 					>
 						Create
