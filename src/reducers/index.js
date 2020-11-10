@@ -13,7 +13,7 @@ const rootReducer = combineReducers({
 	borrowerReducer,
 	branchReducer,
 	genreReducer,
-	loanaReducer,
+	loanReducer,
 	publisherReducer,
 });
 
