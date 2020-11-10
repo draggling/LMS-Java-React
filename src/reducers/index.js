@@ -3,16 +3,18 @@ import authorReducer from './authorReducer';
 import bookReducer from './bookReducer';
 import borrowerReducer from './borrowerReducer';
 import branchReducer from './branchReducer';
-import publisherReducer from './publisherReducer';
 import genreReducer from './genreReducer';
+import loanReducer from './loanReducer';
+import publisherReducer from './publisherReducer';
 
 const rootReducer = combineReducers({
 	authorReducer,
 	bookReducer,
 	borrowerReducer,
 	branchReducer,
-	publisherReducer,
 	genreReducer,
+	loanaReducer,
+	publisherReducer,
 });
 
 export default rootReducer;
