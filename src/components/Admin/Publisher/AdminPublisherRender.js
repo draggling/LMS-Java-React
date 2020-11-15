@@ -29,11 +29,13 @@ const AdminPublisherRender = ({
 	if (publisherData && requestInfo.readSuccessful) {
 		let data = {
 			columns: [
+				/*
 				{
 					label: 'Publisher Id',
 					field: 'publisherId',
 					sort: 'asc',
 				},
+				*/
 				{
 					label: 'Publisher Name',
 					field: 'publisherName',

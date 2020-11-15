@@ -25,13 +25,13 @@ export const readLoans = () => {
 	};
 };
 
-export const extendLoan = (key, extension) => {
+export const extendLoan = (key, newDueDate) => {
 	return (dispatch) => {
 		dispatch(_extendLoanRequest());
 		return axios
 			.put(ADMIN_PORT + 'extendLoan', {
 				loan: key,
-				daysToExtend: extension,
+				daysToExtend: newDueDate,
 			})
 			.then((res) => {
 				dispatch(_extendLoanSuccess(res));

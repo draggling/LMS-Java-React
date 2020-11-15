@@ -29,11 +29,13 @@ const AdminBranchRender = ({
 	if (branchData && requestInfo.readSuccessful) {
 		let data = {
 			columns: [
+				/*
 				{
 					label: 'Branch Id',
 					field: 'branchId',
-					sort: 'asc',
+					display: 'asc',
 				},
+				*/
 				{
 					label: 'Branch Name',
 					field: 'branchName',

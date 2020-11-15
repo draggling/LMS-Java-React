@@ -28,11 +28,13 @@ const AdminGenreRender = ({
 	if (genreData && requestInfo.readSuccessful) {
 		let data = {
 			columns: [
+				/*
 				{
 					label: 'Genre Id',
 					field: 'genreId',
 					sort: 'asc',
 				},
+				*/
 				{
 					label: 'Genre Name',
 					field: 'genreName',

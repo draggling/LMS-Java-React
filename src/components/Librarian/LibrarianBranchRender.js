@@ -4,12 +4,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Button } from 'reactstrap';
 import { MDBDataTable } from 'mdbreact';
-import UpdateModal from '../Modal/AdminBranch/UpdateModal';
 
 const LibrarianBranchRender = ({
 	branchData,
 	handleRefresh,
-	handleUpdate,
+	//handleExtend,
 	requestInfo,
 }) => {
 	let content = '';
@@ -36,12 +35,12 @@ const LibrarianBranchRender = ({
 					sort: 'asc',
 				},
 				{
-					label: 'Update',
-					field: 'update',
-					sort: 'asc',
-                },
+					label: 'Update Branch Details',
+					sort: 'asc'
+				},
                 {
-                    label: 'Modify BookCopies',
+					label: 'Modify BookCopies',
+					sort: 'asc',
                 }
 			],
 			rows: getTableBodyContent(),
@@ -74,27 +73,28 @@ const LibrarianBranchRender = ({
 	function getTableBodyContent() {
 		return branchData.branches.map((obj) => {
 			// Deep Clone object to avoid adding to it while mapping over it during map
-			let newObj = JSON.parse(JSON.stringify(obj));
-
-			newObj.update = (
+            let newObj = JSON.parse(JSON.stringify(obj));
+            /*
+			newObj.extend = (
 				<div>
-					<UpdateModal
-						buttonLabel="Update"
-						handleUpdate={handleUpdate}
+					<ExtendModal
+						buttonLabel="Extend"
+						handleExtend={handleExtend}
 						handleRefresh={handleRefresh}
 						id={newObj.branchId}
 						currentBranchName={newObj.branchName}
 						currentBranchAddress={newObj.branchAddress}
 					/>
 				</div>
-			);
+            );
+            */
 
 			return newObj;
 		});
 	}
 	return (
 		<div>
-			<h1>Librarian Branch Management</h1>
+			<h1>Branch</h1>
 			{content}
 		</div>
 	);
@@ -103,7 +103,7 @@ const LibrarianBranchRender = ({
 LibrarianBranchRender.propTypes = {
 	branchData: PropTypes.object,
 	handleRefresh: PropTypes.func,
-	handleUpdate: PropTypes.func,
+	//handleExtend: PropTypes.func,
 	requestInfo: PropTypes.object,
 };
 
