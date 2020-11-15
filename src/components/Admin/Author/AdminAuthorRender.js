@@ -27,11 +27,13 @@ const AdminAuthorRender = ({
 	if (authorData && requestInfo.readSuccessful) {
 		let data = {
 			columns: [
+				/*
 				{
 					label: 'Author Id',
 					field: 'authorId',
 					sort: 'asc',
 				},
+				*/
 				{
 					label: 'Author Name',
 					field: 'authorName',

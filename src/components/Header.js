@@ -23,11 +23,6 @@ const Header = () => {
 						</Link>
 					</li>
 					<li className="list-inline-item">
-						<Link to="/books" replace>
-							Books
-						</Link>
-					</li>
-					<li className="list-inline-item">
 						<Link to="/LibrarianBranch" replace>
 							Librarian_Home
 						</Link>

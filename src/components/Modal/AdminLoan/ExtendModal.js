@@ -11,29 +11,34 @@ import {
 } from 'reactstrap';
 import PropTypes from 'prop-types';
 
-const UpdateModal = (props) => {
+const ExtendModal = (props) => {
 	const {
 		buttonLabel,
         dueDate,
-		handleRefresh,
-		handleUpdate,
-		key,
+		handleExtend,
+		bookKey,
+		branchKey,
+		cardKey,
 	} = props;
 	let newDueDate = dueDate;
 
 
-	function updateLoan(
-		key,
+	function extendLoan(
+		bookKey,
+		branchKey,
+		cardKey,
 		newDueDate,
 	) {
-		handleUpdate(
-			key,
+		handleExtend(
+			bookKey,
+			branchKey,
+			cardKey,
 			newDueDate,
 		);
 		toggle();
 	}
 
-	function handleDueDateChange(e) {
+	function handleExtendChange(e) {
 		newDueDate = e.target.value;
 	}
 
@@ -55,8 +60,11 @@ const UpdateModal = (props) => {
 									type="date"
 									name="dueDate"
 									key="formLoanDueDate"
-									defaultValue={dueDate}
-									onChange={handleDueDateChange}
+									format = 'yyyy-mm-dd'
+									minDate = {new Date()}
+									defaultValue = {dueDate}
+									showtodaybutton = {true}
+									onChange={handleExtendChange}
 								/>
 						</FormGroup>
 					</Form>
@@ -65,18 +73,20 @@ const UpdateModal = (props) => {
 						color="primary"
 						className="twobuttons"
 						onClick={() => {
-							updateLoan(
-								key,
+							extendLoan(
+								bookKey,
+								branchKey,
+								cardKey,
 								newDueDate,
 							);
 						}}
 					>
-						Update
+						Extend
 					</Button>
 					<Button
 						color="danger"
 						className="twobuttons"
-						onClick={() => handleRefresh()}
+						onClick={() => toggle()}
 					>
 						Cancel
 					</Button>
@@ -86,12 +96,14 @@ const UpdateModal = (props) => {
 	);
 };
 
-UpdateModal.propTypes = {
+ExtendModal.propTypes = {
 	buttonLabel: PropTypes.string,
 	handleRefresh: PropTypes.func,
-	handleUpdate: PropTypes.func,
-	dueDate: PropTypes.instanceOf(Date),
-	key: PropTypes.object,
+	handleExtend: PropTypes.func,
+	dueDate: PropTypes.string,
+	bookKey: PropTypes.number,
+	branchKey: PropTypes.number,
+	cardKey: PropTypes.number,
 };
 
-export default UpdateModal;
+export default ExtendModal;
