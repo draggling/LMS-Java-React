@@ -60758,12 +60758,21 @@ var deleteGenre = exports.deleteGenre = function deleteGenre(genreId) {
 
 var updateGenre = exports.updateGenre = function updateGenre(genreId, genreName) {
 	return function (dispatch) {
-		dispatch(_updateGenreRequest());
-		return _axios2.default.put(_connections.ADMIN_PORT + 'updateGenre', {
-			genreId: genreId,
-			genreName: genreName
-		}).then(function (res) {
-			dispatch(_updateGenreSuccess(res));
+		_axios2.default.get(_connections.ADMIN_PORT + 'findGenreName?genreName=' + genreName).then(function (res) {
+			if (res.data) {
+				dispatch(_updateGenreExists());
+			} else {
+				dispatch(_updateGenreRequest());
+				return _axios2.default.put(_connections.ADMIN_PORT + 'updateGenre', {
+					genreId: genreId,
+					genreName: genreName
+				}).then(function (res) {
+					dispatch(_updateGenreSuccess(res));
+				}).catch(function (error) {
+					console.log(error);
+					dispatch(_updateGenreFailed(error));
+				});
+			}
 		}).catch(function (error) {
 			console.log(error);
 			dispatch(_updateGenreFailed(error));
@@ -60773,14 +60782,23 @@ var updateGenre = exports.updateGenre = function updateGenre(genreId, genreName)
 
 var createGenre = exports.createGenre = function createGenre(genreName) {
 	return function (dispatch) {
-		dispatch(_createGenreRequest());
-		return _axios2.default.post(_connections.ADMIN_PORT + 'addGenre', {
-			genreName: genreName
-		}).then(function (res) {
-			dispatch(_createGenreSuccess(res));
-		}).catch(function (error) {
-			console.log(error);
-			dispatch(_createGenreFailed(error));
+		_axios2.default.get(_connections.ADMIN_PORT + 'findGenreName?genreName=' + genreName).then(function (res) {
+			if (res.data) {
+				dispatch(_createGenreExists());
+			} else {
+				dispatch(_createGenreRequest());
+				return _axios2.default.post(_connections.ADMIN_PORT + 'addGenre', {
+					genreName: genreName
+				}).then(function (res2) {
+					dispatch(_createGenreSuccess(res2));
+				}).catch(function (error) {
+					console.log(error);
+					dispatch(_createGenreFailed(error));
+				}).catch(function (error) {
+					console.log(error);
+					dispatch(_createGenreFailed(error));
+				});
+			}
 		});
 	};
 };
@@ -60832,6 +60850,12 @@ var _updateGenreRequest = function _updateGenreRequest() {
 	};
 };
 
+var _updateGenreExists = function _updateGenreExists() {
+	return {
+		type: _actionTypes.UPDATE_GENRE_EXISTS
+	};
+};
+
 var _updateGenreSuccess = function _updateGenreSuccess(res) {
 	return {
 		type: _actionTypes.UPDATE_GENRE_SUCCESSFUL,
@@ -60849,6 +60873,12 @@ var _updateGenreFailed = function _updateGenreFailed(error) {
 var _createGenreRequest = function _createGenreRequest() {
 	return {
 		type: _actionTypes.CREATE_GENRE_REQUEST
+	};
+};
+
+var _createGenreExists = function _createGenreExists() {
+	return {
+		type: _actionTypes.CREATE_GENRE_EXISTS
 	};
 };
 
@@ -62620,21 +62650,34 @@ var AdminGenreRender = function AdminGenreRender(_ref) {
 	    requestInfo = _ref.requestInfo;
 
 	var content = '';
-	if (!genreData || requestInfo.readPending) {
-		content = _react2.default.createElement(
+	var alert = '';
+
+	console.log("requestInfo");
+	console.log(requestInfo);
+	if (requestInfo !== undefined && requestInfo.exists !== undefined && requestInfo.exists) {
+		alert = _react2.default.createElement(
 			'div',
-			{ className: 'd-flex justify-content-center' },
+			null,
 			_react2.default.createElement(
-				'div',
-				{ className: 'spinner-border', role: 'status' },
-				_react2.default.createElement(
-					'span',
-					{ className: 'sr-only' },
-					'Loading...'
-				)
+				_mdbreact.Alert,
+				{ color: 'warning' },
+				'ERROR: Genre Already Exists!'
 			)
 		);
 	}
+
+	if (requestInfo !== undefined && requestInfo.exists !== undefined && requestInfo.exists) {
+		alert = _react2.default.createElement(
+			'div',
+			null,
+			_react2.default.createElement(
+				_mdbreact.Alert,
+				{ color: 'warning' },
+				'ERROR: Genre Already Exists!'
+			)
+		);
+	}
+
 	if (genreData && requestInfo.readSuccessful) {
 		var data = {
 			columns: [
@@ -62663,6 +62706,7 @@ var AdminGenreRender = function AdminGenreRender(_ref) {
 		return _react2.default.createElement(
 			_react2.default.Fragment,
 			null,
+			alert,
 			_react2.default.createElement(
 				'div',
 				{ className: 'mainblock' },
@@ -62694,12 +62738,12 @@ var AdminGenreRender = function AdminGenreRender(_ref) {
 		content = _react2.default.createElement(
 			'div',
 			{ className: 'alert alert-danger', role: 'alert' },
-			'Error while loading genrees!'
+			'Error while loading genres!'
 		);
 	}
 	function getTableBodyContent() {
 		return genreData.genres.map(function (obj) {
-			// Deep Clone object to avogenreId adding to it while mapping over it during map
+			// Deep Clone object to genreId adding to it while mapping over it during map
 			var newObj = JSON.parse(JSON.stringify(obj));
 
 			newObj.update = _react2.default.createElement(
@@ -65678,6 +65722,7 @@ var UpdateModal = function UpdateModal(props) {
 	    genreId = props.genreId;
 
 	var newGenreName = currentGenreName;
+	var defaultName = currentGenreName;
 
 	function updateGenre(genreId, newGenreName) {
 		handleUpdate(genreId, newGenreName);
@@ -65731,7 +65776,7 @@ var UpdateModal = function UpdateModal(props) {
 						_react2.default.createElement(_reactstrap.Input, {
 							type: 'text',
 							name: 'genreName',
-							genreId: 'formGenreName',
+							genreid: 'formGenreName',
 							defaultValue: currentGenreName,
 							onChange: handleNameChange
 						})
@@ -65743,7 +65788,7 @@ var UpdateModal = function UpdateModal(props) {
 						color: 'primary',
 						className: 'twobuttons',
 						onClick: function onClick() {
-							updateGenre(genreId, newGenreName);
+							defaultName.toLowerCase() === newGenreName.toLowerCase() ? toggle() : updateGenre(genreId, newGenreName);
 						}
 					},
 					'Update'
@@ -66524,12 +66569,14 @@ var DELETE_PUBLISHER_FAILURE = exports.DELETE_PUBLISHER_FAILURE = 'DELETE_PUBLIS
 var DELETE_PUBLISHER_SUCCESSFUL = exports.DELETE_PUBLISHER_SUCCESSFUL = 'DELETE_PUBLISHER_SUCCESSFUL';
 
 var CREATE_GENRE_REQUEST = exports.CREATE_GENRE_REQUEST = 'CREATE_GENRE_REQUEST';
+var CREATE_GENRE_EXISTS = exports.CREATE_GENRE_EXISTS = 'CREATE_GENRE_EXISTS';
 var CREATE_GENRE_FAILURE = exports.CREATE_GENRE_FAILURE = 'CREATE_GENRE_FAILURE';
 var CREATE_GENRE_SUCCESSFUL = exports.CREATE_GENRE_SUCCESSFUL = 'CREATE_GENRE_SUCCESSFUL';
 var READ_GENRES_SUCCESSFUL = exports.READ_GENRES_SUCCESSFUL = 'READ_GENRES_SUCCESSFUL';
 var READ_GENRES_PENDING = exports.READ_GENRES_PENDING = 'READ_GENRES_PENDING';
 var READ_GENRES_FAILURE = exports.READ_GENRES_FAILURE = 'READ_GENRES_FAILURE';
 var UPDATE_GENRE_REQUEST = exports.UPDATE_GENRE_REQUEST = 'UPDATE_GENRE_REQUEST';
+var UPDATE_GENRE_EXISTS = exports.UPDATE_GENRE_EXISTS = 'UPDATE_GENRE_EXISTS';
 var UPDATE_GENRE_FAILURE = exports.UPDATE_GENRE_FAILURE = 'UPDATE_GENRE_FAILURE';
 var UPDATE_GENRE_SUCCESSFUL = exports.UPDATE_GENRE_SUCCESSFUL = 'UPDATE_GENRE_SUCCESSFUL';
 var DELETE_GENRE_REQUEST = exports.DELETE_GENRE_REQUEST = 'DELETE_GENRE_REQUEST';
@@ -67234,7 +67281,8 @@ function genreReducer() {
 				requestInfo: _extends({}, state.requestInfo, {
 					deleting: true,
 					deleteFailed: false,
-					deleteSuccess: false
+					deleteSuccess: false,
+					exists: false
 				})
 			});
 		case _actionTypes.DELETE_GENRE_FAILURE:
@@ -67242,7 +67290,8 @@ function genreReducer() {
 				genreData: _extends({}, state.genreData),
 				requestInfo: _extends({}, state.requestInfo, {
 					deleteFailed: true,
-					deleting: false
+					deleting: false,
+					exists: false
 				})
 			});
 		case _actionTypes.DELETE_GENRE_SUCCESSFUL:
@@ -67256,7 +67305,8 @@ function genreReducer() {
 					}),
 					requestInfo: _extends({}, state.requestInfo, {
 						deleteSuccess: true,
-						deleting: false
+						deleting: false,
+						exists: false
 					})
 				});
 			}
@@ -67274,7 +67324,17 @@ function genreReducer() {
 				genreData: _extends({}, state.genreData),
 				requestInfo: _extends({}, state.requestInfo, {
 					updateFailed: true,
-					updating: false
+					updating: false,
+					exists: false
+				})
+			});
+		case _actionTypes.UPDATE_GENRE_EXISTS:
+			return _extends({}, state, {
+				genreData: _extends({}, state.genreData),
+				requestInfo: _extends({}, state.requestInfo, {
+					updateFailed: true,
+					updating: false,
+					exists: true
 				})
 			});
 		case _actionTypes.UPDATE_GENRE_SUCCESSFUL:
@@ -67283,7 +67343,11 @@ function genreReducer() {
 					/* Not needed if we continue to use toggle instead of handle refresh*/
 					return _extends({}, state, {
 						genreData: _extends({}, state.genreData),
-						requestInfo: _extends({}, state.requestInfo)
+						requestInfo: _extends({}, state.requestInfo, {
+							exists: false
+							//updatedSuccess: true,
+							//updating: false,
+						})
 					});
 				} else {
 					var updatedGenres = state.genreData.genres.map(function (genre) {
@@ -67295,7 +67359,8 @@ function genreReducer() {
 						}),
 						requestInfo: _extends({}, state.requestInfo, {
 							updateSuccess: true,
-							updating: false
+							updating: false,
+							exists: false
 						})
 					});
 				}
@@ -67309,6 +67374,16 @@ function genreReducer() {
 					createSuccess: false
 				})
 			});
+		case _actionTypes.CREATE_GENRE_EXISTS:
+			return _extends({}, state, {
+				genreData: _extends({}, state.genreData),
+				requestInfo: _extends({}, state.requestInfo, {
+					createFailed: true,
+					creating: false,
+					exists: true
+				})
+			});
+
 		case _actionTypes.CREATE_GENRE_FAILURE:
 			return _extends({}, state, {
 				genreData: _extends({}, state.genreData),
@@ -67326,7 +67401,8 @@ function genreReducer() {
 					}),
 					requestInfo: _extends({}, state.requestInfo, {
 						createSuccess: true,
-						creating: false
+						creating: false,
+						exists: false
 					})
 				});
 			}

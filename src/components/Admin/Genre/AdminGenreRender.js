@@ -2,7 +2,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button } from 'reactstrap';
-import { MDBDataTable } from 'mdbreact';
+import { MDBDataTable, Alert} from 'mdbreact';
 import DeleteModal from '../../Modal/AdminGenre/DeleteModal';
 import UpdateModal from '../../Modal/AdminGenre/UpdateModal';
 import CreateModal from '../../Modal/AdminGenre/CreateModal';
@@ -16,15 +16,30 @@ const AdminGenreRender = ({
 	requestInfo,
 }) => {
 	let content = '';
-	if (!genreData || requestInfo.readPending) {
-		content = (
-			<div className="d-flex justify-content-center">
-				<div className="spinner-border" role="status">
-					<span className="sr-only">Loading...</span>
-				</div>
+	let alert = '';
+
+	console.log("requestInfo");
+	console.log(requestInfo);
+	if(requestInfo !== undefined && requestInfo.exists !== undefined && requestInfo.exists) {
+			alert = (
+			<div>
+				<Alert color="warning">
+					ERROR: Genre Already Exists!
+				</Alert>
 			</div>
-		);
+			);
 	}
+
+	if(requestInfo !== undefined && requestInfo.exists !== undefined && requestInfo.exists) {
+		alert = (
+		<div>
+			<Alert color="warning">
+				ERROR: Genre Already Exists!
+			</Alert>
+		</div>
+		);
+}
+
 	if (genreData && requestInfo.readSuccessful) {
 		let data = {
 			columns: [
@@ -55,6 +70,7 @@ const AdminGenreRender = ({
 		};
 		return (
 			<React.Fragment>
+				{alert}
 				<div className="mainblock">
 					<CreateModal
 						buttonLabel="Create New Genre"
@@ -79,13 +95,13 @@ const AdminGenreRender = ({
 	if (genreData && requestInfo.readFailed) {
 		content = (
 			<div className="alert alert-danger" role="alert">
-				Error while loading genrees!
+				Error while loading genres!
 			</div>
 		);
 	}
 	function getTableBodyContent() {
 		return genreData.genres.map((obj) => {
-			// Deep Clone object to avogenreId adding to it while mapping over it during map
+			// Deep Clone object to genreId adding to it while mapping over it during map
 			let newObj = JSON.parse(JSON.stringify(obj));
 
 			newObj.update = (
