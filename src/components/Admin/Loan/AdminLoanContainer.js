@@ -25,12 +25,16 @@ const AdminLoanContainer = (props) => {
 				{...props}
 				handleRefresh={() => actions.readLoans()}
 				handleExtend={(
-					key,
-					daysToExtend,
+					bookId,
+					branchId,
+					cardNo,
+					difference,
 				) =>
 					actions.extendLoan(
-						key,
-						daysToExtend,
+						bookId,
+						branchId,
+						cardNo,
+						difference,
 					)
 				}
 			/>
