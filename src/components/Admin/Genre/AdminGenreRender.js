@@ -122,7 +122,7 @@ const AdminGenreRender = ({
 						buttonLabel="Delete"
 						handleDelete={handleDelete}
 						handleRefresh={handleRefresh}
-						genreid={newObj.genreId}
+						genreId={newObj.genreId}
 						currentGenreName={newObj.genreName}
 					/>
 				</div>

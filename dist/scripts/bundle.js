@@ -62765,7 +62765,7 @@ var AdminGenreRender = function AdminGenreRender(_ref) {
 					buttonLabel: 'Delete',
 					handleDelete: handleDelete,
 					handleRefresh: handleRefresh,
-					genreid: newObj.genreId,
+					genreId: newObj.genreId,
 					currentGenreName: newObj.genreName
 				})
 			);
