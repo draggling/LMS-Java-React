@@ -41,7 +41,7 @@ const AdminLoanRender = ({
 				},
 				{
 					label: 'dateOut',
-					field: 'parsedDueDate',
+					field: 'parsedDateOut',
 					sort: 'asc',
 				},
 				{
@@ -101,14 +101,19 @@ const AdminLoanRender = ({
 		let rawData = "Branch ID: " + newObj['branch.branchId']
 		+ "\nName: " + newObj['branch.branchName']
 		*/
-		let rawData = "Name: " + newObj['branch.branchName']
-		+ "\nAddress: " + newObj['branch.branchAddress'];
+		let rawData = newObj['branch.branchName']
+		+ "\n" + newObj['branch.branchAddress'];
 		rawData = rawData.split("\n");
 		let parsedBranch = rawData.map((line)=><div key = {line.id}>{line}</div>);
 		return parsedBranch;
 	}
 
 	function parseBookInfo(newObj) {
+		// if(newObj == null) {
+		// 	return "book error";
+		// }
+		//console.log("parseBookInfo:");
+		//console.log(newObj);
 		let rawData = "Title: " + newObj.book.title
 		+ parseAuthors(newObj);
 		rawData = rawData.split("\n");
@@ -190,26 +195,30 @@ const AdminLoanRender = ({
 			const flatten = require('flat').flatten;
 			let newObj = flatten(obj);
 			newObj.bookInfo = tempbook;
+			/* will fix later */
 			newObj.cardInfo = parseCardInfo(newObj);
 			newObj.branchInfo = parseBranchInfo(newObj);
 			newObj.parsedDueDate = formatDate(newObj.dueDate);
 			newObj.parsedDateOut = formatDate(newObj.dateOut);
-			console.log("duedate: " + newObj.dueDate); 
+			//console.log("duedate: " + newObj.dueDate); 
 			//let newObj = JSON.parse(JSON.stringify(obj));
+			console.log(newObj);
 			newObj.extend = (
 				<div>
 					<ExtendModal
 						buttonLabel="Extend"
 						handleExtend={handleExtend}
 						handleRefresh={handleRefresh}
-						cardKey={newObj.cardNo}
-						bookKey={newObj.bookId}
-						branchKey={newObj.branchId}
+						cardNo={newObj['key.cardNo']}
+						bookId={newObj['key.bookId']}
+						branchId={newObj['key.branchId']}
 						dueDate={newObj.dueDate.slice(0,10)}
-						daysToExtend={newObj.daysToExtend}
+						//daysToExtend={newObj.daysToExtend}
 					/>
 				</div>
 			);
+			//console.log("object");
+			//console.log(newObj);
 			return newObj;
 		});
 	}

@@ -16,30 +16,31 @@ const ExtendModal = (props) => {
 		buttonLabel,
         dueDate,
 		handleExtend,
-		bookKey,
-		branchKey,
-		cardKey,
+		bookId,
+		branchId,
+		cardNo,
 	} = props;
-	let newDueDate = dueDate;
+	let difference = 0;
 
-
-	function extendLoan(
-		bookKey,
-		branchKey,
-		cardKey,
-		newDueDate,
-	) {
-		handleExtend(
-			bookKey,
-			branchKey,
-			cardKey,
-			newDueDate,
-		);
+	function extendLoan( bookId,branchId,cardNo,difference) {
+		console.log("pushing values");
+		console.log("bookId = " + bookId);
+		console.log("branchId = " + branchId);
+		console.log("cardNo = " + cardNo);
+		console.log("difference = " + difference);
+		handleExtend(bookId, branchId, cardNo, difference);
 		toggle();
 	}
 
 	function handleExtendChange(e) {
-		newDueDate = e.target.value;
+		let newDueDate = e.target.value;
+		console.log("newDueDate = " + newDueDate);
+		console.log("oldDueDate = " + dueDate);
+		let date1 = new Date(newDueDate);
+		let date2 = new Date(dueDate);
+		difference = (date1.getTime() - date2.getTime()) / (1000 * 3600 * 24);
+		difference = difference - difference % 1;
+		console.log("difference = " + difference);
 	}
 
 	const [modal, setModal] = useState(false);
@@ -61,9 +62,9 @@ const ExtendModal = (props) => {
 									name="dueDate"
 									key="formLoanDueDate"
 									format = 'yyyy-mm-dd'
-									minDate = {new Date()}
+									mindate = {new Date()}
 									defaultValue = {dueDate}
-									showtodaybutton = {true}
+									showtodaybutton = 'true'
 									onChange={handleExtendChange}
 								/>
 						</FormGroup>
@@ -72,13 +73,7 @@ const ExtendModal = (props) => {
 					<Button
 						color="primary"
 						className="twobuttons"
-						onClick={() => {
-							extendLoan(
-								bookKey,
-								branchKey,
-								cardKey,
-								newDueDate,
-							);
+						onClick={() => { extendLoan(bookId, branchId, cardNo, difference);
 						}}
 					>
 						Extend
@@ -101,9 +96,10 @@ ExtendModal.propTypes = {
 	handleRefresh: PropTypes.func,
 	handleExtend: PropTypes.func,
 	dueDate: PropTypes.string,
-	bookKey: PropTypes.number,
-	branchKey: PropTypes.number,
-	cardKey: PropTypes.number,
+	cardNo: PropTypes.number,
+	difference: PropTypes.number,
+	bookId: PropTypes.number,
+	branchId: PropTypes.number
 };
 
 export default ExtendModal;

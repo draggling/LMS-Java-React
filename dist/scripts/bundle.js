@@ -60242,7 +60242,163 @@ var _createAuthorFailed = function _createAuthorFailed(error) {
 	};
 };
 
-},{"../constants/actionTypes":320,"../constants/connections":321,"axios":9}],274:[function(require,module,exports){
+},{"../constants/actionTypes":322,"../constants/connections":323,"axios":9}],274:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+exports.createBook = exports.updateBook = exports.deleteBook = exports.readBooks = undefined;
+
+var _axios = require('axios');
+
+var _axios2 = _interopRequireDefault(_axios);
+
+var _actionTypes = require('../constants/actionTypes');
+
+var _connections = require('../constants/connections');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var readBooks = exports.readBooks = function readBooks() {
+	return function (dispatch) {
+		dispatch(_readBookStarted());
+		return _axios2.default.get(_connections.ADMIN_PORT + 'getBooks').then(function (res) {
+			dispatch(_readBookSuccess(res));
+		}).catch(function (error) {
+			console.log(error);
+			dispatch(_readBookFailed(error));
+		});
+	};
+};
+
+var deleteBook = exports.deleteBook = function deleteBook(bookId) {
+	return function (dispatch) {
+		dispatch(_deleteBookRequest());
+		return _axios2.default.delete(_connections.ADMIN_PORT + 'deleteBook', {
+			data: { bookId: bookId }
+		}).then(function (res) {
+			dispatch(_deleteBookSuccess(res));
+		}).catch(function (error) {
+			console.log(error);
+			dispatch(_deleteBookFailed(error));
+		});
+	};
+};
+
+var updateBook = exports.updateBook = function updateBook(bookId, publisherId, title) {
+	return function (dispatch) {
+		dispatch(_updateBookRequest());
+		return _axios2.default.put(_connections.ADMIN_PORT + 'updateBook', {
+			bookId: bookId,
+			title: title,
+			pubId: publisherId
+		}).then(function (res) {
+			dispatch(_updateBookSuccess(res));
+		}).catch(function (error) {
+			console.log(error);
+			dispatch(_updateBookFailed(error));
+		});
+	};
+};
+
+var createBook = exports.createBook = function createBook(title, publisherId) {
+	return function (dispatch) {
+		dispatch(_createBookRequest());
+		return _axios2.default.post(_connections.ADMIN_PORT + 'addBook', {
+			title: title,
+			pubId: publisherId
+		}).then(function (res) {
+			dispatch(_createBookSuccess(res));
+		}).catch(function (error) {
+			console.log(error);
+			dispatch(_createBookFailed(error));
+		});
+	};
+};
+
+var _readBookSuccess = function _readBookSuccess(res) {
+	return {
+		type: _actionTypes.READ_BOOKS_SUCCESSFUL,
+		data: res.data
+	};
+};
+
+var _readBookFailed = function _readBookFailed(error) {
+	return {
+		type: _actionTypes.READ_BOOKS_FAILURE,
+		error: error
+	};
+};
+
+var _readBookStarted = function _readBookStarted() {
+	return {
+		type: _actionTypes.READ_BOOKS_PENDING
+	};
+};
+
+var _deleteBookRequest = function _deleteBookRequest() {
+	return {
+		type: _actionTypes.DELETE_BOOK_REQUEST
+	};
+};
+
+var _deleteBookSuccess = function _deleteBookSuccess(res) {
+	return {
+		type: _actionTypes.DELETE_BOOK_SUCCESSFUL,
+		data: res.data,
+		deletedId: res.data.bookId
+	};
+};
+
+var _deleteBookFailed = function _deleteBookFailed(error) {
+	return {
+		type: _actionTypes.DELETE_BOOK_FAILURE,
+		error: error
+	};
+};
+
+var _updateBookRequest = function _updateBookRequest() {
+	return {
+		type: _actionTypes.UPDATE_BOOK_REQUEST
+	};
+};
+
+var _updateBookSuccess = function _updateBookSuccess(res) {
+	return {
+		type: _actionTypes.UPDATE_BOOK_SUCCESSFUL,
+		updatedBook: res.data
+	};
+};
+
+var _updateBookFailed = function _updateBookFailed(error) {
+	return {
+		type: _actionTypes.UPDATE_BOOK_FAILURE,
+		error: error
+	};
+};
+
+var _createBookRequest = function _createBookRequest() {
+	return {
+		type: _actionTypes.CREATE_BOOK_REQUEST
+	};
+};
+
+var _createBookSuccess = function _createBookSuccess(res) {
+	return {
+		type: _actionTypes.CREATE_BOOK_SUCCESSFUL,
+		createdBook: res.data
+	};
+};
+
+var _createBookFailed = function _createBookFailed(error) {
+	return {
+		type: _actionTypes.CREATE_BOOK_FAILURE,
+		error: error
+	};
+};
+
+},{"../constants/actionTypes":322,"../constants/connections":323,"axios":9}],275:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -60400,7 +60556,7 @@ var _createBorrowerFailed = function _createBorrowerFailed(error) {
 	};
 };
 
-},{"../constants/actionTypes":320,"../constants/connections":321,"axios":9}],275:[function(require,module,exports){
+},{"../constants/actionTypes":322,"../constants/connections":323,"axios":9}],276:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -60556,7 +60712,7 @@ var _createBranchFailed = function _createBranchFailed(error) {
 	};
 };
 
-},{"../constants/actionTypes":320,"../constants/connections":321,"axios":9}],276:[function(require,module,exports){
+},{"../constants/actionTypes":322,"../constants/connections":323,"axios":9}],277:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -60710,7 +60866,7 @@ var _createGenreFailed = function _createGenreFailed(error) {
 	};
 };
 
-},{"../constants/actionTypes":320,"../constants/connections":321,"axios":9}],277:[function(require,module,exports){
+},{"../constants/actionTypes":322,"../constants/connections":323,"axios":9}],278:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -60740,12 +60896,21 @@ var readLoans = exports.readLoans = function readLoans() {
 	};
 };
 
-var extendLoan = exports.extendLoan = function extendLoan(key, newDueDate) {
+var extendLoan = exports.extendLoan = function extendLoan(bookId, branchId, cardNo, difference) {
+	console.log("extendLoan Values");
+	console.log("bookId = " + bookId);
+	console.log("branchId = " + branchId);
+	console.log("cardNo = " + cardNo);
+	console.log("difference = " + difference);
 	return function (dispatch) {
 		dispatch(_extendLoanRequest());
-		return _axios2.default.put(_connections.ADMIN_PORT + 'extendLoan', {
-			loan: key,
-			daysToExtend: newDueDate
+		return _axios2.default.put(_connections.ADMIN_PORT + 'extendBookLoan', {
+			bookLoan: {
+				book: { bookId: bookId },
+				branch: { branchId: branchId },
+				borrower: { borrowerCardNo: cardNo }
+			},
+			daysToExtend: difference
 		}).then(function (res) {
 			dispatch(_extendLoanSuccess(res));
 		}).catch(function (error) {
@@ -60795,7 +60960,7 @@ var _extendLoanFailed = function _extendLoanFailed(error) {
 	};
 };
 
-},{"../constants/actionTypes":320,"../constants/connections":321,"axios":9}],278:[function(require,module,exports){
+},{"../constants/actionTypes":322,"../constants/connections":323,"axios":9}],279:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -60953,56 +61118,7 @@ var _createPublisherFailed = function _createPublisherFailed(error) {
 	};
 };
 
-},{"../constants/actionTypes":320,"../constants/connections":321,"axios":9}],279:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-exports.readBooks = undefined;
-
-var _axios = require('axios');
-
-var _axios2 = _interopRequireDefault(_axios);
-
-var _actionTypes = require('../constants/actionTypes');
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var readBooks = exports.readBooks = function readBooks() {
-	return function (dispatch) {
-		dispatch(_readBookStarted());
-
-		return _axios2.default.get('http://www.mocky.io/v2/5daca80c30000092002987ad').then(function (res) {
-			dispatch(_readBookSuccess(res));
-		}).catch(function (error) {
-			console.log(error);
-			dispatch(_readBookFailed(error));
-		});
-	};
-};
-
-var _readBookSuccess = function _readBookSuccess(res) {
-	return {
-		type: _actionTypes.READ_BOOKS_SUCCESSFUL,
-		data: res.data
-	};
-};
-
-var _readBookFailed = function _readBookFailed(error) {
-	return {
-		type: _actionTypes.READ_BOOKS_FAILURE,
-		error: error
-	};
-};
-
-var _readBookStarted = function _readBookStarted() {
-	return {
-		type: _actionTypes.READ_BOOKS_PENDING
-	};
-};
-
-},{"../constants/actionTypes":320,"axios":9}],280:[function(require,module,exports){
+},{"../constants/actionTypes":322,"../constants/connections":323,"axios":9}],280:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -61088,7 +61204,7 @@ var _updateBranchFailed = function _updateBranchFailed(error) {
 	};
 };
 
-},{"../constants/actionTypes":320,"../constants/connections":321,"axios":9}],281:[function(require,module,exports){
+},{"../constants/actionTypes":322,"../constants/connections":323,"axios":9}],281:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -61149,7 +61265,7 @@ var AdminHeader = function AdminHeader() {
 					{ className: 'list-inline-item' },
 					_react2.default.createElement(
 						_reactRouterDom.Link,
-						{ to: '/AdminHome', replace: true },
+						{ to: '/AdminBook', replace: true },
 						'Books'
 					)
 				),
@@ -61507,7 +61623,323 @@ AdminAuthorRender.propTypes = {
 
 exports.default = AdminAuthorRender;
 
-},{"../../Modal/AdminAuthor/CreateModal":303,"../../Modal/AdminAuthor/DeleteModal":304,"../../Modal/AdminAuthor/UpdateModal":305,"mdbreact":63,"prop-types":95,"react":148,"reactstrap":242}],285:[function(require,module,exports){
+},{"../../Modal/AdminAuthor/CreateModal":302,"../../Modal/AdminAuthor/DeleteModal":303,"../../Modal/AdminAuthor/UpdateModal":304,"mdbreact":63,"prop-types":95,"react":148,"reactstrap":242}],285:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = require('prop-types');
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _reactRedux = require('react-redux');
+
+var _redux = require('redux');
+
+var _adminBookActions = require('../../../actions/adminBookActions.js');
+
+var adminBookActions = _interopRequireWildcard(_adminBookActions);
+
+var _AdminBookRender = require('./AdminBookRender');
+
+var _AdminBookRender2 = _interopRequireDefault(_AdminBookRender);
+
+var _AdminHeader = require('../AdminHeader');
+
+var _AdminHeader2 = _interopRequireDefault(_AdminHeader);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var AdminBookContainer = function AdminBookContainer(props) {
+	var actions = props.actions;
+
+	(0, _react.useEffect)(function () {
+		actions.readBooks();
+	}, []);
+
+	return _react2.default.createElement(
+		'div',
+		null,
+		_react2.default.createElement(_AdminHeader2.default, null),
+		_react2.default.createElement(
+			'div',
+			{ className: 'jumbotron' },
+			_react2.default.createElement(
+				'h1',
+				null,
+				'Books'
+			)
+		),
+		_react2.default.createElement(_AdminBookRender2.default, _extends({}, props, {
+			handleRefresh: function handleRefresh() {
+				return actions.readBooks();
+			},
+			handleDelete: function handleDelete(bookId, publisherId) {
+				return actions.deleteBook(bookId, publisherId);
+			},
+			handleUpdate: function handleUpdate(bookId, title) {
+				return actions.updateBook(bookId, title);
+			},
+			handleCreate: function handleCreate(title, publisherId) {
+				return actions.createBook(title, publisherId);
+			}
+		}))
+	);
+};
+
+function mapStateToProps(state) {
+	return {
+		bookData: state.bookReducer.bookData,
+		requestInfo: state.bookReducer.requestInfo
+	};
+}
+
+function mapDispatchToProps(dispatch) {
+	return {
+		actions: (0, _redux.bindActionCreators)(adminBookActions, dispatch)
+	};
+}
+
+AdminBookContainer.propTypes = {
+	actions: _propTypes2.default.object
+};
+
+exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(AdminBookContainer);
+
+},{"../../../actions/adminBookActions.js":274,"../AdminHeader":281,"./AdminBookRender":286,"prop-types":95,"react":148,"react-redux":124,"redux":249}],286:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = require('prop-types');
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _reactstrap = require('reactstrap');
+
+var _mdbreact = require('mdbreact');
+
+var _DeleteModal = require('../../Modal/AdminBook/DeleteModal');
+
+var _DeleteModal2 = _interopRequireDefault(_DeleteModal);
+
+var _UpdateModal = require('../../Modal/AdminBook/UpdateModal');
+
+var _UpdateModal2 = _interopRequireDefault(_UpdateModal);
+
+var _CreateModal = require('../../Modal/AdminBook/CreateModal');
+
+var _CreateModal2 = _interopRequireDefault(_CreateModal);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var AdminBookRender = function AdminBookRender(_ref) {
+	var bookData = _ref.bookData,
+	    handleRefresh = _ref.handleRefresh,
+	    handleDelete = _ref.handleDelete,
+	    handleUpdate = _ref.handleUpdate,
+	    handleCreate = _ref.handleCreate,
+	    requestInfo = _ref.requestInfo;
+
+	var content = '';
+	if (!bookData || requestInfo.readPending) {
+		content = _react2.default.createElement(
+			'div',
+			{ className: 'd-flex justify-content-center' },
+			_react2.default.createElement(
+				'div',
+				{ className: 'spinner-border', role: 'status' },
+				_react2.default.createElement(
+					'span',
+					{ className: 'sr-only' },
+					'Loading...'
+				)
+			)
+		);
+	}
+	if (bookData && requestInfo.readSuccessful) {
+		var data = {
+			columns: [
+			/*
+   {
+   	label: 'Book Id',
+   	field: 'bookId',
+   	sort: 'asc',
+   },
+   */
+			{
+				label: 'Book Name',
+				field: 'title',
+				sort: 'asc'
+			}, {
+				label: 'Publisher',
+				field: 'publisherName'
+			}, {
+				label: 'Authors',
+				field: 'authorInfo',
+				sort: 'asc'
+			}, {
+				label: 'Genres',
+				field: 'genreInfo',
+				sort: 'asc'
+			}, {
+				label: 'Update',
+				field: 'update',
+				sort: 'asc'
+			}, {
+				label: 'Delete',
+				field: 'delete',
+				sort: 'asc'
+			}],
+			rows: getTableBodyContent()
+		};
+		return _react2.default.createElement(
+			_react2.default.Fragment,
+			null,
+			_react2.default.createElement(
+				'div',
+				{ className: 'mainblock' },
+				_react2.default.createElement(_CreateModal2.default, {
+					buttonLabel: 'Create New Book',
+					handleCreate: handleCreate,
+					handleRefresh: handleRefresh
+				}),
+				_react2.default.createElement(
+					_reactstrap.Button,
+					{ onClick: function onClick() {
+							return handleRefresh();
+						} },
+					'Refresh Data'
+				),
+				' ',
+				_react2.default.createElement(_mdbreact.MDBDataTable, {
+					striped: true,
+					bordered: true,
+					small: true,
+					responsive: true,
+					data: data
+				})
+			)
+		);
+	}
+
+	if (bookData && requestInfo.readFailed) {
+		content = _react2.default.createElement(
+			'div',
+			{ className: 'alert alert-danger', role: 'alert' },
+			'Error while loading books!'
+		);
+	}
+	function parsePublisherInfo(newObj) {
+		return newObj.publisher.publisherName;
+	}
+
+	function parseAuthors(newObj) {
+		if (newObj.authors.length == 0) {
+			return "\nNo Authors";
+		} else {
+			var authors = "";
+			for (var i = 0; i < newObj.authors.length; i++) {
+				authors = authors.concat(newObj.authors[i].authorName);
+				if (i < newObj.authors.length - 1) {
+					authors = authors.concat(", ");
+				}
+			}
+			return authors;
+		}
+	}
+
+	function parseGenres(newObj) {
+		if (newObj.genres.length == 0) {
+			return "\nNo Genres";
+		} else {
+			var genres = "";
+			for (var i = 0; i < newObj.genres.length; i++) {
+				genres = genres.concat(newObj.genres[i].genreName);
+				if (i < newObj.genres.length - 1) {
+					genres = genres.concat(", ");
+				}
+			}
+			return genres;
+		}
+	}
+
+	function getTableBodyContent() {
+		return bookData.books.map(function (obj) {
+			// Deep Clone object to bookId adding to it while mapping over it during map
+
+
+			var newObj = JSON.parse(JSON.stringify(obj));
+
+			newObj.publisherName = parsePublisherInfo(newObj);
+			newObj.authorInfo = parseAuthors(newObj);
+			newObj.genreInfo = parseGenres(newObj);
+			newObj.update = _react2.default.createElement(
+				'div',
+				null,
+				_react2.default.createElement(_UpdateModal2.default, {
+					buttonLabel: 'Update',
+					handleUpdate: handleUpdate,
+					handleRefresh: handleRefresh,
+					bookId: newObj.bookId,
+					currentTitle: newObj.title
+				})
+			);
+
+			newObj.delete = _react2.default.createElement(
+				'div',
+				null,
+				_react2.default.createElement(_DeleteModal2.default, {
+					buttonLabel: 'Delete',
+					handleDelete: handleDelete,
+					handleRefresh: handleRefresh,
+					bookId: newObj.bookId,
+					currentTitle: newObj.title
+				})
+			);
+			return newObj;
+		});
+	}
+	return _react2.default.createElement(
+		'div',
+		null,
+		_react2.default.createElement(
+			'h1',
+			null,
+			'Books'
+		),
+		content
+	);
+};
+
+AdminBookRender.propTypes = {
+	bookData: _propTypes2.default.object,
+	handleRefresh: _propTypes2.default.func,
+	handleDelete: _propTypes2.default.func,
+	handleUpdate: _propTypes2.default.func,
+	handleCreate: _propTypes2.default.func,
+	requestInfo: _propTypes2.default.object
+};
+
+exports.default = AdminBookRender;
+
+},{"../../Modal/AdminBook/CreateModal":305,"../../Modal/AdminBook/DeleteModal":306,"../../Modal/AdminBook/UpdateModal":307,"mdbreact":63,"prop-types":95,"react":148,"reactstrap":242}],287:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -61600,7 +62032,7 @@ AdminBorrowerContainer.propTypes = {
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(AdminBorrowerContainer);
 
-},{"../../../actions/adminBorrowerActions.js":274,"../AdminHeader":281,"./AdminBorrowerRender":286,"prop-types":95,"react":148,"react-redux":124,"redux":249}],286:[function(require,module,exports){
+},{"../../../actions/adminBorrowerActions.js":275,"../AdminHeader":281,"./AdminBorrowerRender":288,"prop-types":95,"react":148,"react-redux":124,"redux":249}],288:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -61781,7 +62213,7 @@ AdminBorrowerRender.propTypes = {
 
 exports.default = AdminBorrowerRender;
 
-},{"../../Modal/AdminBorrower/CreateModal":306,"../../Modal/AdminBorrower/DeleteModal":307,"../../Modal/AdminBorrower/UpdateModal":308,"mdbreact":63,"prop-types":95,"react":148,"reactstrap":242}],287:[function(require,module,exports){
+},{"../../Modal/AdminBorrower/CreateModal":308,"../../Modal/AdminBorrower/DeleteModal":309,"../../Modal/AdminBorrower/UpdateModal":310,"mdbreact":63,"prop-types":95,"react":148,"reactstrap":242}],289:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -61874,7 +62306,7 @@ AdminBranchContainer.propTypes = {
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(AdminBranchContainer);
 
-},{"../../../actions/adminBranchActions.js":275,"../AdminHeader":281,"./AdminBranchRender":288,"prop-types":95,"react":148,"react-redux":124,"redux":249}],288:[function(require,module,exports){
+},{"../../../actions/adminBranchActions.js":276,"../AdminHeader":281,"./AdminBranchRender":290,"prop-types":95,"react":148,"react-redux":124,"redux":249}],290:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -62053,7 +62485,7 @@ AdminBranchRender.propTypes = {
 
 exports.default = AdminBranchRender;
 
-},{"../../Modal/AdminBranch/CreateModal":309,"../../Modal/AdminBranch/DeleteModal":310,"../../Modal/AdminBranch/UpdateModal":311,"mdbreact":63,"prop-types":95,"react":148,"reactstrap":242}],289:[function(require,module,exports){
+},{"../../Modal/AdminBranch/CreateModal":311,"../../Modal/AdminBranch/DeleteModal":312,"../../Modal/AdminBranch/UpdateModal":313,"mdbreact":63,"prop-types":95,"react":148,"reactstrap":242}],291:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -62146,7 +62578,7 @@ AdminGenreContainer.propTypes = {
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(AdminGenreContainer);
 
-},{"../../../actions/adminGenreActions.js":276,"../AdminHeader":281,"./AdminGenreRender":290,"prop-types":95,"react":148,"react-redux":124,"redux":249}],290:[function(require,module,exports){
+},{"../../../actions/adminGenreActions.js":277,"../AdminHeader":281,"./AdminGenreRender":292,"prop-types":95,"react":148,"react-redux":124,"redux":249}],292:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -62319,7 +62751,7 @@ AdminGenreRender.propTypes = {
 
 exports.default = AdminGenreRender;
 
-},{"../../Modal/AdminGenre/CreateModal":312,"../../Modal/AdminGenre/DeleteModal":313,"../../Modal/AdminGenre/UpdateModal":314,"mdbreact":63,"prop-types":95,"react":148,"reactstrap":242}],291:[function(require,module,exports){
+},{"../../Modal/AdminGenre/CreateModal":314,"../../Modal/AdminGenre/DeleteModal":315,"../../Modal/AdminGenre/UpdateModal":316,"mdbreact":63,"prop-types":95,"react":148,"reactstrap":242}],293:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -62380,8 +62812,8 @@ var AdminLoanContainer = function AdminLoanContainer(props) {
 			handleRefresh: function handleRefresh() {
 				return actions.readLoans();
 			},
-			handleExtend: function handleExtend(key, daysToExtend) {
-				return actions.extendLoan(key, daysToExtend);
+			handleExtend: function handleExtend(bookId, branchId, cardNo, difference) {
+				return actions.extendLoan(bookId, branchId, cardNo, difference);
 			}
 		}))
 	);
@@ -62406,7 +62838,7 @@ AdminLoanContainer.propTypes = {
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(AdminLoanContainer);
 
-},{"../../../actions/adminLoanActions.js":277,"../AdminHeader":281,"./AdminLoanRender":292,"prop-types":95,"react":148,"react-redux":124,"redux":249}],292:[function(require,module,exports){
+},{"../../../actions/adminLoanActions.js":278,"../AdminHeader":281,"./AdminLoanRender":294,"prop-types":95,"react":148,"react-redux":124,"redux":249}],294:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -62469,7 +62901,7 @@ var AdminLoanRender = function AdminLoanRender(_ref) {
 				sort: 'asc'
 			}, {
 				label: 'dateOut',
-				field: 'parsedDueDate',
+				field: 'parsedDateOut',
 				sort: 'asc'
 			}, {
 				label: 'dueDate',
@@ -62537,7 +62969,7 @@ var AdminLoanRender = function AdminLoanRender(_ref) {
   let rawData = "Branch ID: " + newObj['branch.branchId']
   + "\nName: " + newObj['branch.branchName']
   */
-		var rawData = "Name: " + newObj['branch.branchName'] + "\nAddress: " + newObj['branch.branchAddress'];
+		var rawData = newObj['branch.branchName'] + "\n" + newObj['branch.branchAddress'];
 		rawData = rawData.split("\n");
 		var parsedBranch = rawData.map(function (line) {
 			return _react2.default.createElement(
@@ -62550,6 +62982,11 @@ var AdminLoanRender = function AdminLoanRender(_ref) {
 	}
 
 	function parseBookInfo(newObj) {
+		// if(newObj == null) {
+		// 	return "book error";
+		// }
+		//console.log("parseBookInfo:");
+		//console.log(newObj);
 		var rawData = "Title: " + newObj.book.title + parseAuthors(newObj);
 		rawData = rawData.split("\n");
 		var parsedBook = rawData.map(function (line) {
@@ -62638,12 +63075,14 @@ var AdminLoanRender = function AdminLoanRender(_ref) {
 			var flatten = require('flat').flatten;
 			var newObj = flatten(obj);
 			newObj.bookInfo = tempbook;
+			/* will fix later */
 			newObj.cardInfo = parseCardInfo(newObj);
 			newObj.branchInfo = parseBranchInfo(newObj);
 			newObj.parsedDueDate = formatDate(newObj.dueDate);
 			newObj.parsedDateOut = formatDate(newObj.dateOut);
-			console.log("duedate: " + newObj.dueDate);
+			//console.log("duedate: " + newObj.dueDate); 
 			//let newObj = JSON.parse(JSON.stringify(obj));
+			console.log(newObj);
 			newObj.extend = _react2.default.createElement(
 				'div',
 				null,
@@ -62651,13 +63090,15 @@ var AdminLoanRender = function AdminLoanRender(_ref) {
 					buttonLabel: 'Extend',
 					handleExtend: handleExtend,
 					handleRefresh: handleRefresh,
-					cardKey: newObj.cardNo,
-					bookKey: newObj.bookId,
-					branchKey: newObj.branchId,
-					dueDate: newObj.dueDate.slice(0, 10),
-					daysToExtend: newObj.daysToExtend
+					cardNo: newObj['key.cardNo'],
+					bookId: newObj['key.bookId'],
+					branchId: newObj['key.branchId'],
+					dueDate: newObj.dueDate.slice(0, 10)
+					//daysToExtend={newObj.daysToExtend}
 				})
 			);
+			//console.log("object");
+			//console.log(newObj);
 			return newObj;
 		});
 	}
@@ -62682,7 +63123,7 @@ AdminLoanRender.propTypes = {
 
 exports.default = AdminLoanRender;
 
-},{"../../Modal/AdminLoan/ExtendModal":315,"flat":43,"mdbreact":63,"prop-types":95,"react":148,"reactstrap":242}],293:[function(require,module,exports){
+},{"../../Modal/AdminLoan/ExtendModal":317,"flat":43,"mdbreact":63,"prop-types":95,"react":148,"reactstrap":242}],295:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -62775,7 +63216,7 @@ AdminPublisherContainer.propTypes = {
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(AdminPublisherContainer);
 
-},{"../../../actions/adminPublisherActions.js":278,"../AdminHeader":281,"./AdminPublisherRender":294,"prop-types":95,"react":148,"react-redux":124,"redux":249}],294:[function(require,module,exports){
+},{"../../../actions/adminPublisherActions.js":279,"../AdminHeader":281,"./AdminPublisherRender":296,"prop-types":95,"react":148,"react-redux":124,"redux":249}],296:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -62960,7 +63401,7 @@ AdminPublisherRender.propTypes = {
 
 exports.default = AdminPublisherRender;
 
-},{"../../Modal/AdminPublisher/CreateModal":316,"../../Modal/AdminPublisher/DeleteModal":317,"../../Modal/AdminPublisher/UpdateModal":318,"mdbreact":63,"prop-types":95,"react":148,"reactstrap":242}],295:[function(require,module,exports){
+},{"../../Modal/AdminPublisher/CreateModal":318,"../../Modal/AdminPublisher/DeleteModal":319,"../../Modal/AdminPublisher/UpdateModal":320,"mdbreact":63,"prop-types":95,"react":148,"reactstrap":242}],297:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -62980,10 +63421,6 @@ var _Home = require('./Home.js');
 
 var _Home2 = _interopRequireDefault(_Home);
 
-var _BookContainer = require('./BookContainer');
-
-var _BookContainer2 = _interopRequireDefault(_BookContainer);
-
 var _AdminHome = require('./Admin/AdminHome.js');
 
 var _AdminHome2 = _interopRequireDefault(_AdminHome);
@@ -62991,6 +63428,10 @@ var _AdminHome2 = _interopRequireDefault(_AdminHome);
 var _AdminAuthorContainer = require('./Admin/Author/AdminAuthorContainer');
 
 var _AdminAuthorContainer2 = _interopRequireDefault(_AdminAuthorContainer);
+
+var _AdminBookContainer = require('./Admin/Book/AdminBookContainer');
+
+var _AdminBookContainer2 = _interopRequireDefault(_AdminBookContainer);
 
 var _AdminBorrowerContainer = require('./Admin/Borrower/AdminBorrowerContainer');
 
@@ -63043,9 +63484,9 @@ var App = exports.App = function (_React$Component) {
 					_reactRouterDom.Switch,
 					null,
 					_react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/', component: _Home2.default }),
-					_react2.default.createElement(_reactRouterDom.Route, { path: '/books', component: _BookContainer2.default }),
 					_react2.default.createElement(_reactRouterDom.Route, { path: '/AdminHome', component: _AdminHome2.default }),
 					_react2.default.createElement(_reactRouterDom.Route, { path: '/AdminAuthor', component: _AdminAuthorContainer2.default }),
+					_react2.default.createElement(_reactRouterDom.Route, { path: '/AdminBook', component: _AdminBookContainer2.default }),
 					_react2.default.createElement(_reactRouterDom.Route, { path: '/AdminBorrower', component: _AdminBorrowerContainer2.default }),
 					_react2.default.createElement(_reactRouterDom.Route, { path: '/AdminBranch', component: _AdminBranchContainer2.default }),
 					_react2.default.createElement(_reactRouterDom.Route, { path: '/AdminPublisher', component: _AdminPublisherContainer2.default }),
@@ -63060,288 +63501,7 @@ var App = exports.App = function (_React$Component) {
 	return App;
 }(_react2.default.Component);
 
-},{"./Admin/AdminHome.js":282,"./Admin/Author/AdminAuthorContainer":283,"./Admin/Borrower/AdminBorrowerContainer":285,"./Admin/Branch/AdminBranchContainer":287,"./Admin/Genre/AdminGenreContainer":289,"./Admin/Loan/AdminLoanContainer":291,"./Admin/Publisher/AdminPublisherContainer":293,"./BookContainer":296,"./Home.js":299,"./Librarian/LibrarianBranchContainer":300,"react":148,"react-router-dom":135}],296:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-
-var _react = require('react');
-
-var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = require('prop-types');
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
-var _reactRedux = require('react-redux');
-
-var _redux = require('redux');
-
-var _BookRender = require('./BookRender');
-
-var _BookRender2 = _interopRequireDefault(_BookRender);
-
-var _Header = require('./Header');
-
-var _Header2 = _interopRequireDefault(_Header);
-
-var _bookActions = require('../actions/bookActions');
-
-var bookActions = _interopRequireWildcard(_bookActions);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var BookContainer = function BookContainer(props) {
-	(0, _react.useEffect)(function () {
-		var actions = props.actions;
-
-		actions.readBooks();
-	}, []);
-	return _react2.default.createElement(
-		'div',
-		null,
-		_react2.default.createElement(_Header2.default, null),
-		_react2.default.createElement(
-			'div',
-			null,
-			_react2.default.createElement(_BookRender2.default, props)
-		)
-	);
-};
-
-function mapStateToProps(state) {
-	return {
-		bookData: state.bookReducer.bookData
-	};
-}
-
-function mapDispatchToProps(dispatch) {
-	return {
-		actions: (0, _redux.bindActionCreators)(bookActions, dispatch)
-	};
-}
-
-BookContainer.propTypes = {
-	actions: _propTypes2.default.object
-};
-
-exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(BookContainer);
-
-},{"../actions/bookActions":279,"./BookRender":297,"./Header":298,"prop-types":95,"react":148,"react-redux":124,"redux":249}],297:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-
-var _react = require('react');
-
-var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = require('prop-types');
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var BookRender = function BookRender(_ref) {
-	var bookData = _ref.bookData;
-
-	function createBookRow(book) {
-		return _react2.default.createElement(
-			'tr',
-			{ key: book.book_id },
-			_react2.default.createElement(
-				'td',
-				null,
-				' ',
-				book.book_id,
-				' '
-			),
-			_react2.default.createElement(
-				'td',
-				null,
-				' ',
-				book.title,
-				' '
-			),
-			_react2.default.createElement(
-				'td',
-				null,
-				' ',
-				book.author,
-				' '
-			)
-		);
-	}
-
-	var content = '';
-
-	if (!bookData || bookData.requestPending) {
-		content = _react2.default.createElement(
-			'div',
-			{ className: 'd-flex justify-content-center' },
-			_react2.default.createElement(
-				'div',
-				{ className: 'spinner-border', role: 'status' },
-				_react2.default.createElement(
-					'span',
-					{ className: 'sr-only' },
-					'Loading...'
-				)
-			)
-		);
-	}
-
-	if (bookData && bookData.requestSuccessful) {
-		content = _react2.default.createElement(
-			'table',
-			{ className: 'table' },
-			_react2.default.createElement(
-				'thead',
-				null,
-				_react2.default.createElement(
-					'tr',
-					null,
-					_react2.default.createElement(
-						'th',
-						null,
-						'ID'
-					),
-					_react2.default.createElement(
-						'th',
-						null,
-						'Title'
-					),
-					_react2.default.createElement(
-						'th',
-						null,
-						'Author'
-					)
-				)
-			),
-			_react2.default.createElement(
-				'tbody',
-				null,
-				bookData.books.map(function (book) {
-					return createBookRow(book);
-				})
-			)
-		);
-	}
-
-	if (bookData && bookData.requestFailed) {
-		content = _react2.default.createElement(
-			'div',
-			{ className: 'alert alert-danger', role: 'alert' },
-			'Error while loading books!'
-		);
-	}
-
-	return _react2.default.createElement(
-		'div',
-		null,
-		_react2.default.createElement(
-			'h1',
-			null,
-			'Books'
-		),
-		content
-	);
-};
-
-BookRender.propTypes = {
-	bookData: _propTypes2.default.object
-};
-
-exports.default = BookRender;
-
-},{"prop-types":95,"react":148}],298:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-
-var _react = require('react');
-
-var _react2 = _interopRequireDefault(_react);
-
-var _reactRouterDom = require('react-router-dom');
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var Header = function Header() {
-	return _react2.default.createElement(
-		'nav',
-		{ className: 'navbar navbar-inverse' },
-		_react2.default.createElement(
-			'div',
-			{ className: 'container-fluid' },
-			_react2.default.createElement(
-				'ul',
-				{ className: 'list-inline' },
-				_react2.default.createElement(
-					'li',
-					{ className: 'list-inline-item' },
-					_react2.default.createElement(
-						_reactRouterDom.Link,
-						{ to: '/', className: 'navbar-brand' },
-						_react2.default.createElement('img', {
-							width: '90px',
-							height: '30px',
-							src: 'images/logo.png'
-						})
-					)
-				),
-				_react2.default.createElement(
-					'li',
-					{ className: 'list-inline-item' },
-					_react2.default.createElement(
-						_reactRouterDom.Link,
-						{ to: '/', replace: true },
-						'Home'
-					)
-				),
-				_react2.default.createElement(
-					'li',
-					{ className: 'list-inline-item' },
-					_react2.default.createElement(
-						_reactRouterDom.Link,
-						{ to: '/LibrarianBranch', replace: true },
-						'Librarian_Home'
-					)
-				),
-				_react2.default.createElement(
-					'li',
-					{ className: 'list-inline-item' },
-					_react2.default.createElement(
-						_reactRouterDom.Link,
-						{ to: '/', replace: true },
-						'Borrower_Home'
-					)
-				),
-				_react2.default.createElement(
-					'li',
-					{ className: 'list-inline-item' },
-					_react2.default.createElement(
-						_reactRouterDom.Link,
-						{ to: '/AdminHome', replace: true },
-						'Administrator_Home'
-					)
-				)
-			)
-		)
-	);
-};
-
-exports.default = Header;
-
-},{"react":148,"react-router-dom":135}],299:[function(require,module,exports){
+},{"./Admin/AdminHome.js":282,"./Admin/Author/AdminAuthorContainer":283,"./Admin/Book/AdminBookContainer":285,"./Admin/Borrower/AdminBorrowerContainer":287,"./Admin/Branch/AdminBranchContainer":289,"./Admin/Genre/AdminGenreContainer":291,"./Admin/Loan/AdminLoanContainer":293,"./Admin/Publisher/AdminPublisherContainer":295,"./Home.js":298,"./Librarian/LibrarianBranchContainer":299,"react":148,"react-router-dom":135}],298:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -63377,7 +63537,7 @@ var Home = function Home() {
 
 exports.default = Home;
 
-},{"./header.js":319,"react":148}],300:[function(require,module,exports){
+},{"./header.js":321,"react":148}],299:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -63464,7 +63624,7 @@ LibrarianBranchContainer.propTypes = {
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(LibrarianBranchContainer);
 
-},{"../../actions/librarianBranchActions.js":280,"./LibrarianBranchRender":301,"./LibrarianHeader":302,"prop-types":95,"react":148,"react-redux":124,"redux":249}],301:[function(require,module,exports){
+},{"../../actions/librarianBranchActions.js":280,"./LibrarianBranchRender":300,"./LibrarianHeader":301,"prop-types":95,"react":148,"react-redux":124,"redux":249}],300:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -63600,7 +63760,7 @@ LibrarianBranchRender.propTypes = {
 
 exports.default = LibrarianBranchRender;
 
-},{"mdbreact":63,"prop-types":95,"react":148,"reactstrap":242}],302:[function(require,module,exports){
+},{"mdbreact":63,"prop-types":95,"react":148,"reactstrap":242}],301:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -63654,7 +63814,7 @@ var LibrarianHeader = function LibrarianHeader() {
 
 exports.default = LibrarianHeader;
 
-},{"react":148,"react-router-dom":135}],303:[function(require,module,exports){
+},{"react":148,"react-router-dom":135}],302:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -63771,7 +63931,7 @@ CreateModal.propTypes = {
 
 exports.default = CreateModal;
 
-},{"prop-types":95,"react":148,"reactstrap":242}],304:[function(require,module,exports){
+},{"prop-types":95,"react":148,"reactstrap":242}],303:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -63881,7 +64041,7 @@ DeleteModal.propTypes = {
 
 exports.default = DeleteModal;
 
-},{"prop-types":95,"react":148,"reactstrap":242}],305:[function(require,module,exports){
+},{"prop-types":95,"react":148,"reactstrap":242}],304:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -64003,7 +64163,399 @@ UpdateModal.propTypes = {
 
 exports.default = UpdateModal;
 
+},{"prop-types":95,"react":148,"reactstrap":242}],305:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactstrap = require('reactstrap');
+
+var _propTypes = require('prop-types');
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var CreateModal = function CreateModal(props) {
+	var buttonLabel = props.buttonLabel,
+	    handleCreate = props.handleCreate;
+
+	var newBookName = '';
+	var newPubId = '';
+
+	function createBook(newBookName, newPubId) {
+		handleCreate(newBookName, newPubId);
+		//handleRefresh();
+		toggle(); //need to figure out how to make create button be unpressed
+	}
+
+	function handleNameChange(e) {
+		newBookName = e.target.value;
+	}
+	function handlePublisherChange(e) {
+		newPubId = e.target.value;
+	}
+
+	var _useState = (0, _react.useState)(false),
+	    _useState2 = _slicedToArray(_useState, 2),
+	    modal = _useState2[0],
+	    setModal = _useState2[1];
+
+	var toggle = function toggle() {
+		return setModal(!modal);
+	};
+
+	return _react2.default.createElement(
+		'div',
+		null,
+		_react2.default.createElement(
+			_reactstrap.Button,
+			{ color: 'primary', onClick: toggle },
+			buttonLabel
+		),
+		_react2.default.createElement(
+			_reactstrap.Modal,
+			{ isOpen: modal, toggle: toggle },
+			_react2.default.createElement(
+				_reactstrap.ModalHeader,
+				{ toggle: toggle },
+				'Create Book'
+			),
+			_react2.default.createElement(
+				_reactstrap.ModalBody,
+				null,
+				_react2.default.createElement(
+					_reactstrap.Form,
+					null,
+					_react2.default.createElement(
+						_reactstrap.FormGroup,
+						null,
+						_react2.default.createElement(
+							_reactstrap.Label,
+							{ 'for': 'formBookName' },
+							' Book Name'
+						),
+						_react2.default.createElement(_reactstrap.Input, {
+							type: 'text',
+							name: 'title',
+							id: 'formBookName',
+							placeholder: 'New Book Name',
+							onChange: handleNameChange
+						})
+					),
+					_react2.default.createElement(
+						_reactstrap.FormGroup,
+						null,
+						_react2.default.createElement(
+							_reactstrap.Label,
+							{ 'for': 'formPubId' },
+							'Book Publisher'
+						),
+						_react2.default.createElement(_reactstrap.Input, {
+							type: 'text',
+							name: 'pubId',
+							id: 'formPubId',
+							placeholder: 'New Publisher',
+							onChange: handlePublisherChange
+						})
+					)
+				),
+				_react2.default.createElement(
+					_reactstrap.Button,
+					{
+						color: 'primary',
+						className: 'twobuttons',
+						onClick: function onClick() {
+							createBook(newBookName, newPubId);
+						}
+					},
+					'Create'
+				),
+				_react2.default.createElement(
+					_reactstrap.Button,
+					{
+						color: 'danger',
+						className: 'twobuttons',
+						onClick: toggle
+					},
+					'Cancel'
+				)
+			)
+		)
+	);
+};
+
+CreateModal.propTypes = {
+	buttonLabel: _propTypes2.default.string,
+	handleRefresh: _propTypes2.default.func,
+	handleCreate: _propTypes2.default.func
+};
+
+exports.default = CreateModal;
+
 },{"prop-types":95,"react":148,"reactstrap":242}],306:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactstrap = require('reactstrap');
+
+var _propTypes = require('prop-types');
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var DeleteModal = function DeleteModal(props) {
+	var buttonLabel = props.buttonLabel,
+	    currentTitle = props.currentTitle,
+	    handleDelete = props.handleDelete,
+	    id = props.id;
+
+	var _useState = (0, _react.useState)(false),
+	    _useState2 = _slicedToArray(_useState, 2),
+	    modal = _useState2[0],
+	    setModal = _useState2[1];
+
+	function deleteBook(id) {
+		handleDelete(id);
+		//handleRefresh();
+		toggle();
+	}
+
+	var toggle = function toggle() {
+		return setModal(!modal);
+	};
+
+	return _react2.default.createElement(
+		'div',
+		null,
+		_react2.default.createElement(
+			_reactstrap.Button,
+			{ color: 'danger', onClick: toggle },
+			buttonLabel
+		),
+		_react2.default.createElement(
+			_reactstrap.Modal,
+			{ isOpen: modal, toggle: toggle },
+			_react2.default.createElement(
+				_reactstrap.ModalHeader,
+				{ toggle: toggle },
+				'Are you sure you want to delete the book?'
+			),
+			_react2.default.createElement(
+				_reactstrap.ModalBody,
+				null,
+				_react2.default.createElement(
+					_reactstrap.Form,
+					null,
+					_react2.default.createElement(
+						_reactstrap.FormGroup,
+						null,
+						_react2.default.createElement(
+							_reactstrap.Label,
+							{ 'for': 'title' },
+							'Name:'
+						),
+						_react2.default.createElement(_reactstrap.Input, { plaintext: true, value: currentTitle })
+					),
+					_react2.default.createElement(
+						_reactstrap.Button,
+						{
+							color: 'primary',
+							className: 'twobuttons',
+							onClick: function onClick() {
+								deleteBook(id);
+							}
+						},
+						'Yes'
+					),
+					_react2.default.createElement(
+						_reactstrap.Button,
+						{
+							color: 'danger',
+							className: 'twobuttons',
+							onClick: toggle
+						},
+						'No'
+					)
+				)
+			)
+		)
+	);
+};
+
+DeleteModal.propTypes = {
+	buttonLabel: _propTypes2.default.string,
+	handleDelete: _propTypes2.default.func,
+	handleRefresh: _propTypes2.default.func,
+	id: _propTypes2.default.number,
+	currentTitle: _propTypes2.default.string
+};
+
+exports.default = DeleteModal;
+
+},{"prop-types":95,"react":148,"reactstrap":242}],307:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactstrap = require('reactstrap');
+
+var _propTypes = require('prop-types');
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var UpdateModal = function UpdateModal(props) {
+	var buttonLabel = props.buttonLabel,
+	    currentPubId = props.currentPubId,
+	    currentTitle = props.currentTitle,
+	    handleUpdate = props.handleUpdate,
+	    id = props.id;
+
+	var newTitle = currentTitle;
+	var newPubId = currentPubId;
+
+	function updateBook(id, newTitle, newPubId) {
+		handleUpdate(id, newTitle, newPubId);
+		//handleRefresh(); //Causes the weird update issue where the bookData contains only requestPending because books is being loaded again
+		toggle(); //need to figure out how to make update button be unpressed
+	}
+
+	function handleNameChange(e) {
+		newTitle = e.target.value;
+	}
+	function handleAddressChange(e) {
+		newPubId = e.target.value;
+	}
+
+	var _useState = (0, _react.useState)(false),
+	    _useState2 = _slicedToArray(_useState, 2),
+	    modal = _useState2[0],
+	    setModal = _useState2[1];
+
+	var toggle = function toggle() {
+		return setModal(!modal);
+	};
+
+	return _react2.default.createElement(
+		'div',
+		null,
+		_react2.default.createElement(
+			_reactstrap.Button,
+			{ color: 'primary', onClick: toggle },
+			buttonLabel
+		),
+		_react2.default.createElement(
+			_reactstrap.Modal,
+			{ isOpen: modal, toggle: toggle },
+			_react2.default.createElement(
+				_reactstrap.ModalHeader,
+				{ toggle: toggle },
+				'Update Book'
+			),
+			_react2.default.createElement(
+				_reactstrap.ModalBody,
+				null,
+				_react2.default.createElement(
+					_reactstrap.Form,
+					null,
+					_react2.default.createElement(
+						_reactstrap.FormGroup,
+						null,
+						_react2.default.createElement(
+							_reactstrap.Label,
+							{ 'for': 'formTitle' },
+							'Title'
+						),
+						_react2.default.createElement(_reactstrap.Input, {
+							type: 'text',
+							name: 'title',
+							id: 'formTitle',
+							defaultValue: currentTitle,
+							onChange: handleNameChange
+						})
+					),
+					_react2.default.createElement(
+						_reactstrap.FormGroup,
+						null,
+						_react2.default.createElement(
+							_reactstrap.Label,
+							{ 'for': 'formPubId' },
+							'PubId'
+						),
+						_react2.default.createElement(_reactstrap.Input, {
+							type: 'text',
+							name: 'bookAddress',
+							id: 'formPubId',
+							defaultValue: currentPubId,
+							onChange: handleAddressChange
+						})
+					)
+				),
+				_react2.default.createElement(
+					_reactstrap.Button,
+					{
+						color: 'primary',
+						className: 'twobuttons',
+						onClick: function onClick() {
+							updateBook(id, newTitle, newPubId);
+						}
+					},
+					'Update'
+				),
+				_react2.default.createElement(
+					_reactstrap.Button,
+					{
+						color: 'danger',
+						className: 'twobuttons',
+						onClick: toggle
+					},
+					'Cancel'
+				)
+			)
+		)
+	);
+};
+
+UpdateModal.propTypes = {
+	buttonLabel: _propTypes2.default.string,
+	handleRefresh: _propTypes2.default.func,
+	handleUpdate: _propTypes2.default.func,
+	currentTitle: _propTypes2.default.string,
+	currentPubId: _propTypes2.default.string,
+	id: _propTypes2.default.number
+};
+
+exports.default = UpdateModal;
+
+},{"prop-types":95,"react":148,"reactstrap":242}],308:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -64160,7 +64712,7 @@ CreateModal.propTypes = {
 
 exports.default = CreateModal;
 
-},{"prop-types":95,"react":148,"reactstrap":242}],307:[function(require,module,exports){
+},{"prop-types":95,"react":148,"reactstrap":242}],309:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -64302,7 +64854,7 @@ DeleteModal.propTypes = {
 
 exports.default = DeleteModal;
 
-},{"prop-types":95,"react":148,"reactstrap":242}],308:[function(require,module,exports){
+},{"prop-types":95,"react":148,"reactstrap":242}],310:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -64467,7 +65019,7 @@ UpdateModal.propTypes = {
 
 exports.default = UpdateModal;
 
-},{"prop-types":95,"react":148,"reactstrap":242}],309:[function(require,module,exports){
+},{"prop-types":95,"react":148,"reactstrap":242}],311:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -64605,7 +65157,7 @@ CreateModal.propTypes = {
 
 exports.default = CreateModal;
 
-},{"prop-types":95,"react":148,"reactstrap":242}],310:[function(require,module,exports){
+},{"prop-types":95,"react":148,"reactstrap":242}],312:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -64727,7 +65279,7 @@ DeleteModal.propTypes = {
 
 exports.default = DeleteModal;
 
-},{"prop-types":95,"react":148,"reactstrap":242}],311:[function(require,module,exports){
+},{"prop-types":95,"react":148,"reactstrap":242}],313:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -64871,7 +65423,7 @@ UpdateModal.propTypes = {
 
 exports.default = UpdateModal;
 
-},{"prop-types":95,"react":148,"reactstrap":242}],312:[function(require,module,exports){
+},{"prop-types":95,"react":148,"reactstrap":242}],314:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -64988,7 +65540,7 @@ CreateModal.propTypes = {
 
 exports.default = CreateModal;
 
-},{"prop-types":95,"react":148,"reactstrap":242}],313:[function(require,module,exports){
+},{"prop-types":95,"react":148,"reactstrap":242}],315:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -65098,7 +65650,7 @@ DeleteModal.propTypes = {
 
 exports.default = DeleteModal;
 
-},{"prop-types":95,"react":148,"reactstrap":242}],314:[function(require,module,exports){
+},{"prop-types":95,"react":148,"reactstrap":242}],316:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -65220,7 +65772,7 @@ UpdateModal.propTypes = {
 
 exports.default = UpdateModal;
 
-},{"prop-types":95,"react":148,"reactstrap":242}],315:[function(require,module,exports){
+},{"prop-types":95,"react":148,"reactstrap":242}],317:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -65245,19 +65797,31 @@ var ExtendModal = function ExtendModal(props) {
 	var buttonLabel = props.buttonLabel,
 	    dueDate = props.dueDate,
 	    handleExtend = props.handleExtend,
-	    bookKey = props.bookKey,
-	    branchKey = props.branchKey,
-	    cardKey = props.cardKey;
+	    bookId = props.bookId,
+	    branchId = props.branchId,
+	    cardNo = props.cardNo;
 
-	var newDueDate = dueDate;
+	var difference = 0;
 
-	function extendLoan(bookKey, branchKey, cardKey, newDueDate) {
-		handleExtend(bookKey, branchKey, cardKey, newDueDate);
+	function extendLoan(bookId, branchId, cardNo, difference) {
+		console.log("pushing values");
+		console.log("bookId = " + bookId);
+		console.log("branchId = " + branchId);
+		console.log("cardNo = " + cardNo);
+		console.log("difference = " + difference);
+		handleExtend(bookId, branchId, cardNo, difference);
 		toggle();
 	}
 
 	function handleExtendChange(e) {
-		newDueDate = e.target.value;
+		var newDueDate = e.target.value;
+		console.log("newDueDate = " + newDueDate);
+		console.log("oldDueDate = " + dueDate);
+		var date1 = new Date(newDueDate);
+		var date2 = new Date(dueDate);
+		difference = (date1.getTime() - date2.getTime()) / (1000 * 3600 * 24);
+		difference = difference - difference % 1;
+		console.log("difference = " + difference);
 	}
 
 	var _useState = (0, _react.useState)(false),
@@ -65304,9 +65868,9 @@ var ExtendModal = function ExtendModal(props) {
 							name: 'dueDate',
 							key: 'formLoanDueDate',
 							format: 'yyyy-mm-dd',
-							minDate: new Date(),
+							mindate: new Date(),
 							defaultValue: dueDate,
-							showtodaybutton: true,
+							showtodaybutton: 'true',
 							onChange: handleExtendChange
 						})
 					)
@@ -65317,7 +65881,7 @@ var ExtendModal = function ExtendModal(props) {
 						color: 'primary',
 						className: 'twobuttons',
 						onClick: function onClick() {
-							extendLoan(bookKey, branchKey, cardKey, newDueDate);
+							extendLoan(bookId, branchId, cardNo, difference);
 						}
 					},
 					'Extend'
@@ -65343,14 +65907,15 @@ ExtendModal.propTypes = {
 	handleRefresh: _propTypes2.default.func,
 	handleExtend: _propTypes2.default.func,
 	dueDate: _propTypes2.default.string,
-	bookKey: _propTypes2.default.number,
-	branchKey: _propTypes2.default.number,
-	cardKey: _propTypes2.default.number
+	cardNo: _propTypes2.default.number,
+	difference: _propTypes2.default.number,
+	bookId: _propTypes2.default.number,
+	branchId: _propTypes2.default.number
 };
 
 exports.default = ExtendModal;
 
-},{"prop-types":95,"react":148,"reactstrap":242}],316:[function(require,module,exports){
+},{"prop-types":95,"react":148,"reactstrap":242}],318:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -65508,7 +66073,7 @@ CreateModal.propTypes = {
 
 exports.default = CreateModal;
 
-},{"prop-types":95,"react":148,"reactstrap":242}],317:[function(require,module,exports){
+},{"prop-types":95,"react":148,"reactstrap":242}],319:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -65641,7 +66206,7 @@ DeleteModal.propTypes = {
 
 exports.default = DeleteModal;
 
-},{"prop-types":95,"react":148,"reactstrap":242}],318:[function(require,module,exports){
+},{"prop-types":95,"react":148,"reactstrap":242}],320:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -65806,7 +66371,7 @@ UpdateModal.propTypes = {
 
 exports.default = UpdateModal;
 
-},{"prop-types":95,"react":148,"reactstrap":242}],319:[function(require,module,exports){
+},{"prop-types":95,"react":148,"reactstrap":242}],321:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -65887,15 +66452,24 @@ var Header = function Header() {
 
 exports.default = Header;
 
-},{"react":148,"react-router-dom":135}],320:[function(require,module,exports){
+},{"react":148,"react-router-dom":135}],322:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+var CREATE_BOOK_REQUEST = exports.CREATE_BOOK_REQUEST = 'CREATE_BOOK_REQUEST';
+var CREATE_BOOK_FAILURE = exports.CREATE_BOOK_FAILURE = 'CREATE_BOOK_FAILURE';
+var CREATE_BOOK_SUCCESSFUL = exports.CREATE_BOOK_SUCCESSFUL = 'CREATE_BOOK_SUCCESSFUL';
 var READ_BOOKS_SUCCESSFUL = exports.READ_BOOKS_SUCCESSFUL = 'READ_BOOKS_SUCCESSFUL';
 var READ_BOOKS_PENDING = exports.READ_BOOKS_PENDING = 'READ_BOOKS_PENDING';
 var READ_BOOKS_FAILURE = exports.READ_BOOKS_FAILURE = 'READ_BOOKS_FAILURE';
+var UPDATE_BOOK_REQUEST = exports.UPDATE_BOOK_REQUEST = 'UPDATE_BOOK_REQUEST';
+var UPDATE_BOOK_FAILURE = exports.UPDATE_BOOK_FAILURE = 'UPDATE_BOOK_FAILURE';
+var UPDATE_BOOK_SUCCESSFUL = exports.UPDATE_BOOK_SUCCESSFUL = 'UPDATE_BOOK_SUCCESSFUL';
+var DELETE_BOOK_REQUEST = exports.DELETE_BOOK_REQUEST = 'DELETE_BOOK_REQUEST';
+var DELETE_BOOK_FAILURE = exports.DELETE_BOOK_FAILURE = 'DELETE_BOOK_FAILURE';
+var DELETE_BOOK_SUCCESSFUL = exports.DELETE_BOOK_SUCCESSFUL = 'DELETE_BOOK_SUCCESSFUL';
 
 var CREATE_AUTHOR_REQUEST = exports.CREATE_AUTHOR_REQUEST = 'CREATE_AUTHOR_REQUEST';
 var CREATE_AUTHOR_FAILURE = exports.CREATE_AUTHOR_FAILURE = 'CREATE_AUTHOR_FAILURE';
@@ -65969,7 +66543,7 @@ var EXTEND_LOAN_REQUEST = exports.EXTEND_LOAN_REQUEST = 'EXTEND_LOAN_REQUEST';
 var EXTEND_LOAN_FAILURE = exports.EXTEND_LOAN_FAILURE = 'EXTEND_LOAN_FAILURE';
 var EXTEND_LOAN_SUCCESSFUL = exports.EXTEND_LOAN_SUCCESSFUL = 'EXTEND_LOAN_SUCCESSFUL';
 
-},{}],321:[function(require,module,exports){
+},{}],323:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -65979,7 +66553,7 @@ var ADMIN_PORT = exports.ADMIN_PORT = 'http://localhost:8090/';
 var LIBRARIAN_PORT = exports.LIBRARIAN_PORT = 'http://localhost:8090/';
 var BORROWER_PORT = exports.BORROWER_PORT = 'http://localhost:8080/';
 
-},{}],322:[function(require,module,exports){
+},{}],324:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -66014,7 +66588,7 @@ _reactDom2.default.render(_react2.default.createElement(
 	)
 ), document.getElementById('app'));
 
-},{"./components/App.js":295,"./store/configureStore":331,"react":148,"react-dom":99,"react-redux":124,"react-router-dom":135}],323:[function(require,module,exports){
+},{"./components/App.js":297,"./store/configureStore":333,"react":148,"react-dom":99,"react-redux":124,"react-router-dom":135}],325:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -66163,7 +66737,7 @@ function authorReducer() {
 	}
 }
 
-},{"../constants/actionTypes":320}],324:[function(require,module,exports){
+},{"../constants/actionTypes":322}],326:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -66176,25 +66750,143 @@ exports.default = bookReducer;
 
 var _actionTypes = require('../constants/actionTypes');
 
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
 function bookReducer() {
 	var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 	var action = arguments[1];
 
 	switch (action.type) {
+		case _actionTypes.READ_BOOKS_PENDING:
+			return _extends({}, state, {
+				requestInfo: _extends({}, state.requestInfo, { readPending: true })
+			});
+		case _actionTypes.READ_BOOKS_FAILURE:
+			return _extends({}, state, {
+				requestInfo: _extends({}, state.requestInfo, {
+					readFailed: true,
+					readPending: false
+				})
+			});
 		case _actionTypes.READ_BOOKS_SUCCESSFUL:
 			return _extends({}, state, {
-				bookData: { books: action.data, requestSuccessful: true }
+				bookData: {
+					books: action.data
+				},
+				requestInfo: _extends({}, state.requestInfo, {
+					readFailed: false,
+					readSuccessful: true,
+					readPending: false
+				})
 			});
-		case _actionTypes.READ_BOOKS_PENDING:
-			return _extends({}, state, { bookData: { requestPending: true } });
-		case _actionTypes.READ_BOOKS_FAILURE:
-			return _extends({}, state, { bookData: { requestFailed: true } });
+		case _actionTypes.DELETE_BOOK_REQUEST:
+			return _extends({}, state, {
+				bookData: _extends({}, state.bookData),
+				requestInfo: _extends({}, state.requestInfo, {
+					deleting: true,
+					deleteFailed: false,
+					deleteSuccess: false
+				})
+			});
+		case _actionTypes.DELETE_BOOK_FAILURE:
+			return _extends({}, state, {
+				bookData: _extends({}, state.bookData),
+				requestInfo: _extends({}, state.requestInfo, {
+					deleteFailed: true,
+					deleting: false
+				})
+			});
+		case _actionTypes.DELETE_BOOK_SUCCESSFUL:
+			{
+				var newBooks = state.bookData.books.filter(function (book) {
+					return book.bookId != action.deletedId;
+				});
+				return _extends({}, state, {
+					bookData: _extends({}, state.bookData, {
+						books: newBooks
+					}),
+					requestInfo: _extends({}, state.requestInfo, {
+						deleteSuccess: true,
+						deleting: false
+					})
+				});
+			}
+		case _actionTypes.UPDATE_BOOK_REQUEST:
+			return _extends({}, state, {
+				bookData: _extends({}, state.bookData),
+				requestInfo: _extends({}, state.requestInfo, {
+					updating: true,
+					updateFailed: false,
+					updateSuccess: false
+				})
+			});
+		case _actionTypes.UPDATE_BOOK_FAILURE:
+			return _extends({}, state, {
+				bookData: _extends({}, state.bookData),
+				requestInfo: _extends({}, state.requestInfo, {
+					updateFailed: true,
+					updating: false
+				})
+			});
+		case _actionTypes.UPDATE_BOOK_SUCCESSFUL:
+			{
+				if (state.bookData.readPending) {
+					/* Not needed if we continue to use toggle instead of handle refresh*/
+					return _extends({}, state, {
+						bookData: _extends({}, state.bookData),
+						requestInfo: _extends({}, state.requestInfo)
+					});
+				} else {
+					var updatedBooks = state.bookData.books.map(function (book) {
+						return action.updatedBook.bookId === book.bookId ? action.updatedBook : book;
+					});
+					return _extends({}, state, {
+						bookData: _extends({}, state.bookData, {
+							books: updatedBooks
+						}),
+						requestInfo: _extends({}, state.requestInfo, {
+							updateSuccess: true,
+							updating: false
+						})
+					});
+				}
+			}
+		case _actionTypes.CREATE_BOOK_REQUEST:
+			return _extends({}, state, {
+				bookData: _extends({}, state.bookData),
+				requestInfo: _extends({}, state.requestInfo, {
+					creating: true,
+					createFailed: false,
+					createSuccess: false
+				})
+			});
+		case _actionTypes.CREATE_BOOK_FAILURE:
+			return _extends({}, state, {
+				bookData: _extends({}, state.bookData),
+				requestInfo: _extends({}, state.requestInfo, {
+					createFailed: true,
+					creating: false
+				})
+			});
+		case _actionTypes.CREATE_BOOK_SUCCESSFUL:
+			{
+				var updatedBookArray = [].concat(_toConsumableArray(state.bookData.books), [action.createdBook]);
+				return _extends({}, state, {
+					bookData: _extends({}, state.bookData, {
+						books: updatedBookArray
+					}),
+					requestInfo: _extends({}, state.requestInfo, {
+						createSuccess: true,
+						creating: false
+					})
+				});
+			}
 		default:
 			return state;
 	}
 }
 
-},{"../constants/actionTypes":320}],325:[function(require,module,exports){
+},{"../constants/actionTypes":322}],327:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -66345,7 +67037,7 @@ function borrowerReducer() {
 	}
 }
 
-},{"../constants/actionTypes":320}],326:[function(require,module,exports){
+},{"../constants/actionTypes":322}],328:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -66494,7 +67186,7 @@ function branchReducer() {
 	}
 }
 
-},{"../constants/actionTypes":320}],327:[function(require,module,exports){
+},{"../constants/actionTypes":322}],329:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -66643,7 +67335,7 @@ function genreReducer() {
 	}
 }
 
-},{"../constants/actionTypes":320}],328:[function(require,module,exports){
+},{"../constants/actionTypes":322}],330:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -66694,8 +67386,8 @@ var rootReducer = (0, _redux.combineReducers)({
 
 exports.default = rootReducer;
 
-},{"./authorReducer":323,"./bookReducer":324,"./borrowerReducer":325,"./branchReducer":326,"./genreReducer":327,"./loanReducer":329,"./publisherReducer":330,"redux":249}],329:[function(require,module,exports){
-'use strict';
+},{"./authorReducer":325,"./bookReducer":326,"./borrowerReducer":327,"./branchReducer":328,"./genreReducer":329,"./loanReducer":331,"./publisherReducer":332,"redux":249}],331:[function(require,module,exports){
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
 	value: true
@@ -66705,7 +67397,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 exports.default = loanReducer;
 
-var _actionTypes = require('../constants/actionTypes');
+var _actionTypes = require("../constants/actionTypes");
 
 function loanReducer() {
 	var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
@@ -66759,8 +67451,26 @@ function loanReducer() {
 						requestInfo: _extends({}, state.requestInfo)
 					});
 				} else {
+					/* asdf 
+     return {
+     	...state,
+     	borrowerData: {
+     		...state.borrowerData,
+     		borrowers: updatedBorrowers,
+     	},
+     	requestInfo: {
+     		...state.requestInfo,
+     		updateSuccess: true,
+     		updating: false,
+     	},
+     };
+     asdf*/
+					console.log("map test: action.extendLoan");
+					console.log(action.extendLoan);
+					console.log("map test state.loanData.loans:");
+					console.log(state.loanData.loans);
 					var extendLoans = state.loanData.loans.map(function (loan) {
-						return action.extendLoan.key === loan.key ? action.extendLoan : loan;
+						return action.extendLoan.key.bookId === loan.key.bookId && action.extendLoan.key.branchId === loan.key.branchId && action.extendLoan.key.cardNo === loan.key.cardNo ? action.extendLoan : loan;
 					});
 					return _extends({}, state, {
 						loanData: _extends({}, state.loanData, {
@@ -66778,7 +67488,7 @@ function loanReducer() {
 	}
 }
 
-},{"../constants/actionTypes":320}],330:[function(require,module,exports){
+},{"../constants/actionTypes":322}],332:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -66927,7 +67637,7 @@ function publisherReducer() {
 	}
 }
 
-},{"../constants/actionTypes":320}],331:[function(require,module,exports){
+},{"../constants/actionTypes":322}],333:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -66960,4 +67670,4 @@ function configureStore(initialState) {
 
 exports.default = configureStore;
 
-},{"../reducers":328,"redux":249,"redux-immutable-state-invariant":245,"redux-thunk":248}]},{},[322]);
+},{"../reducers":330,"redux":249,"redux-immutable-state-invariant":245,"redux-thunk":248}]},{},[324]);
