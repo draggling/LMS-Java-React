@@ -65788,7 +65788,7 @@ var UpdateModal = function UpdateModal(props) {
 						color: 'primary',
 						className: 'twobuttons',
 						onClick: function onClick() {
-							defaultName === newGenreName ? toggle() : updateGenre(genreId, newGenreName);
+							defaultName.toLowerCase() === newGenreName.toLowerCase() ? toggle() : updateGenre(genreId, newGenreName);
 						}
 					},
 					'Update'

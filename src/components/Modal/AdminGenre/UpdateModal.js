@@ -67,7 +67,7 @@ const UpdateModal = (props) => {
 						color="primary"
 						className="twobuttons"
 						onClick={() => {
-							(defaultName === newGenreName) ? toggle() : updateGenre(
+							(defaultName.toLowerCase() === newGenreName.toLowerCase()) ? toggle() : updateGenre(
 								genreId,
 								newGenreName,
 								);
