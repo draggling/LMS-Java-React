@@ -8,9 +8,11 @@ import {
 	DELETE_GENRE_FAILURE,
 	DELETE_GENRE_SUCCESSFUL,
 	UPDATE_GENRE_REQUEST,
+	UPDATE_GENRE_EXISTS,
 	UPDATE_GENRE_FAILURE,
 	UPDATE_GENRE_SUCCESSFUL,
 	CREATE_GENRE_REQUEST,
+	CREATE_GENRE_EXISTS,
 	CREATE_GENRE_FAILURE,
 	CREATE_GENRE_SUCCESSFUL,
 } from '../constants/actionTypes';
@@ -48,45 +50,64 @@ export const deleteGenre = (genreId) => {
 	};
 };
 
-export const updateGenre = (
-	genreId,
-	genreName,
-) => {
+export const updateGenre = (genreId,genreName) => {
 	return (dispatch) => {
-		dispatch(_updateGenreRequest());
-		return axios
-			.put(ADMIN_PORT + 'updateGenre', {
-				genreId: genreId,
-				genreName: genreName,
-			})
-			.then((res) => {
-				dispatch(_updateGenreSuccess(res));
-			})
-			.catch((error) => {
-				console.log(error);
-				dispatch(_updateGenreFailed(error));
-			});
-	};
+		axios.get(ADMIN_PORT + 'findGenreName?genreName=' + genreName)
+		.then ((res) => {
+			if(res.data) {
+				dispatch(_updateGenreExists());
+			} else {
+				dispatch(_updateGenreRequest());
+				return axios
+					.put(ADMIN_PORT + 'updateGenre', {
+						genreId: genreId,
+						genreName: genreName,
+					})
+					.then((res) => {
+						dispatch(_updateGenreSuccess(res));
+					})
+					.catch((error) => {
+						console.log(error);
+						dispatch(_updateGenreFailed(error));
+					});
+			}
+		})
+		.catch((error) => {
+			console.log(error);
+			dispatch(_updateGenreFailed(error));
+		});
+	}
 };
 
-export const createGenre = (
-	genreName,
-) => {
+export const createGenre = (genreName) => {
 	return (dispatch) => {
-		dispatch(_createGenreRequest());
-		return axios
-			.post(ADMIN_PORT + 'addGenre', {
-				genreName: genreName,
-			})
-			.then((res) => {
-				dispatch(_createGenreSuccess(res));
-			})
-			.catch((error) => {
-				console.log(error);
-				dispatch(_createGenreFailed(error));
-			});
-	};
+		axios.get(ADMIN_PORT + 'findGenreName?genreName=' + genreName)
+		.then ((res) => {
+			if(res.data) {
+				dispatch(_createGenreExists());
+			} else {
+				dispatch(_createGenreRequest());
+				return axios
+				.post(ADMIN_PORT + 'addGenre', {
+					genreName: genreName,
+				})
+				.then((res2) => {
+					dispatch(_createGenreSuccess(res2));
+				})
+				.catch((error) => {
+					console.log(error);
+					dispatch(_createGenreFailed(error));
+				})
+				.catch((error) => {
+					console.log(error);
+					dispatch(_createGenreFailed(error));
+				})
+			}
+
+		});
+	}
 };
+
 
 const _readGenreSuccess = (res) => {
 	return {
@@ -135,6 +156,12 @@ const _updateGenreRequest = () => {
 	};
 };
 
+const _updateGenreExists = () => {
+	return {
+		type: UPDATE_GENRE_EXISTS,
+	};
+};
+
 const _updateGenreSuccess = (res) => {
 	return {
 		type: UPDATE_GENRE_SUCCESSFUL,
@@ -152,6 +179,12 @@ const _updateGenreFailed = (error) => {
 const _createGenreRequest = () => {
 	return {
 		type: CREATE_GENRE_REQUEST,
+	};
+};
+
+const _createGenreExists = () => {
+	return {
+		type: CREATE_GENRE_EXISTS,
 	};
 };
 

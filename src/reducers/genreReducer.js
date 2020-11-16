@@ -6,9 +6,11 @@ import {
 	DELETE_GENRE_FAILURE,
 	DELETE_GENRE_SUCCESSFUL,
 	UPDATE_GENRE_REQUEST,
+	UPDATE_GENRE_EXISTS,
 	UPDATE_GENRE_FAILURE,
 	UPDATE_GENRE_SUCCESSFUL,
 	CREATE_GENRE_REQUEST,
+	CREATE_GENRE_EXISTS,
 	CREATE_GENRE_FAILURE,
 	CREATE_GENRE_SUCCESSFUL,
 } from '../constants/actionTypes';
@@ -53,6 +55,7 @@ export default function genreReducer(state = {}, action) {
 					deleting: true,
 					deleteFailed: false,
 					deleteSuccess: false,
+					exists: false,
 				},
 			};
 		case DELETE_GENRE_FAILURE:
@@ -65,6 +68,7 @@ export default function genreReducer(state = {}, action) {
 					...state.requestInfo,
 					deleteFailed: true,
 					deleting: false,
+					exists: false,
 				},
 			};
 		case DELETE_GENRE_SUCCESSFUL: {
@@ -83,6 +87,7 @@ export default function genreReducer(state = {}, action) {
 					...state.requestInfo,
 					deleteSuccess: true,
 					deleting: false,
+					exists: false,
 				},
 			};
 		}
@@ -109,6 +114,20 @@ export default function genreReducer(state = {}, action) {
 					...state.requestInfo,
 					updateFailed: true,
 					updating: false,
+					exists: false,
+				},
+			};
+		case UPDATE_GENRE_EXISTS:
+			return {
+				...state,
+				genreData: {
+					...state.genreData,
+				},
+				requestInfo: {
+					...state.requestInfo,
+					updateFailed: true,
+					updating: false,
+					exists: true
 				},
 			};
 		case UPDATE_GENRE_SUCCESSFUL: {
@@ -121,6 +140,7 @@ export default function genreReducer(state = {}, action) {
 					},
 					requestInfo: {
 						...state.requestInfo,
+						exists: false
 						//updatedSuccess: true,
 						//updating: false,
 					},
@@ -143,6 +163,7 @@ export default function genreReducer(state = {}, action) {
 						...state.requestInfo,
 						updateSuccess: true,
 						updating: false,
+						exists: false,
 					},
 				};
 			}
@@ -160,6 +181,20 @@ export default function genreReducer(state = {}, action) {
 					createSuccess: false,
 				},
 			};
+		case CREATE_GENRE_EXISTS:
+			return {
+				...state,
+				genreData: {
+					...state.genreData,
+				},
+				requestInfo: {
+					...state.requestInfo,
+					createFailed: true,
+					creating: false,
+					exists: true,
+				},
+			};
+
 		case CREATE_GENRE_FAILURE:
 			return {
 				...state,
@@ -187,6 +222,7 @@ export default function genreReducer(state = {}, action) {
 					...state.requestInfo,
 					createSuccess: true,
 					creating: false,
+					exists: false,
 				},
 			};
 		}
