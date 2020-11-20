@@ -70,7 +70,6 @@ export default function loanReducer(state = {}, action) {
 					},
 					requestInfo: {
 						...state.requestInfo,
-
 					},
 				};
 			} else {
@@ -88,21 +87,16 @@ export default function loanReducer(state = {}, action) {
 					},
 				};
 				asdf*/
-				console.log("map test: action.extendLoan");
+				console.log('map test: action.extendLoan');
 				console.log(action.extendLoan);
-				console.log("map test state.loanData.loans:");
+				console.log('map test state.loanData.loans:');
 				console.log(state.loanData.loans);
-				let extendLoans = state.loanData.loans.map(
-					(loan) =>
-						action.extendLoan.key.bookId ===
-						loan.key.bookId &&
-						action.extendLoan.key.branchId ===
-						loan.key.branchId &&
-						action.extendLoan.key.cardNo ===
-						loan.key.cardNo
-							? action.extendLoan
-							: loan
-						
+				let extendLoans = state.loanData.loans.map((loan) =>
+					action.extendLoan.key.bookId === loan.key.bookId &&
+					action.extendLoan.key.branchId === loan.key.branchId &&
+					action.extendLoan.key.cardNo === loan.key.cardNo
+						? action.extendLoan
+						: loan
 				);
 				return {
 					...state,

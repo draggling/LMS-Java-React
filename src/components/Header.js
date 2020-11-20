@@ -10,11 +10,7 @@ const Header = () => {
 				<ul className="list-inline">
 					<li className="list-inline-item">
 						<Link to="/" className="navbar-brand">
-							<img
-								width="90px"
-								height="30px"
-								src="images/logo.png"
-							/>
+							<img width="90px" height="30px" src="images/logo.png" />
 						</Link>
 					</li>
 					<li className="list-inline-item">
@@ -28,8 +24,8 @@ const Header = () => {
 						</Link>
 					</li>
 					<li className="list-inline-item">
-						<Link to="/" replace>
-							Borrower_Home
+						<Link to="/Borrower" replace>
+							Borrower
 						</Link>
 					</li>
 					<li className="list-inline-item">
