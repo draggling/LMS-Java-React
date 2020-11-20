@@ -12,7 +12,7 @@ import {
 import PropTypes from 'prop-types';
 
 const CreateModal = (props) => {
-	const { buttonLabel, handleRefresh, handleCreate } = props;
+	const { buttonLabel, handleCreate } = props;
 	let newBranchName = '';
 	let newBranchAddress = '';
 
@@ -77,7 +77,7 @@ const CreateModal = (props) => {
 					<Button
 						color="danger"
 						className="twobuttons"
-						onClick={() => handleRefresh()}
+						onClick={toggle}
 					>
 						Cancel
 					</Button>

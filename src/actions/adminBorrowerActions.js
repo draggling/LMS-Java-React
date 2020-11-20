@@ -48,7 +48,12 @@ export const deleteBorrower = (borrowerCardNo) => {
 	};
 };
 
-export const updateBorrower = (borrowerCardNo, borrowerName, borrowerAddress, borrowerPhone) => {
+export const updateBorrower = (
+	borrowerCardNo,
+	borrowerName,
+	borrowerAddress,
+	borrowerPhone
+) => {
 	return (dispatch) => {
 		dispatch(_updateBorrowerRequest());
 		return axios

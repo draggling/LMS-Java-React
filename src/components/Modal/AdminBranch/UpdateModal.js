@@ -14,10 +14,9 @@ import PropTypes from 'prop-types';
 const UpdateModal = (props) => {
 	const {
 		buttonLabel,
-		handleRefresh,
-		handleUpdate,
-		currentBranchName,
 		currentBranchAddress,
+		currentBranchName,
+		handleUpdate,
 		id,
 	} = props;
 	let newBranchName = currentBranchName;
@@ -82,7 +81,7 @@ const UpdateModal = (props) => {
 					<Button
 						color="danger"
 						className="twobuttons"
-						onClick={() => handleRefresh()}
+						onClick={toggle}
 					>
 						Cancel
 					</Button>

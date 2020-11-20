@@ -25,18 +25,13 @@ const AdminGenreContainer = (props) => {
 				{...props}
 				handleRefresh={() => actions.readGenres()}
 				handleDelete={(genreId) => actions.deleteGenre(genreId)}
-				handleUpdate={(
-					genreId,
-					genreName,
-				) =>
+				handleUpdate={(genreId,genreName) =>
 					actions.updateGenre(
 						genreId,
 						genreName,
 					)
 				}
-				handleCreate={(
-					genreName,
-				) =>
+				handleCreate={(genreName) =>
 					actions.createGenre(
 						genreName,
 					)

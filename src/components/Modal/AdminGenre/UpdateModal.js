@@ -19,6 +19,7 @@ const UpdateModal = (props) => {
         genreId,
 	} = props;
 	let newGenreName = currentGenreName;
+	let defaultName = currentGenreName;
 
 	function updateGenre(
 		genreId,
@@ -55,7 +56,7 @@ const UpdateModal = (props) => {
 							<Input
 								type="text"
 								name="genreName"
-								genreId="formGenreName"
+								genreid="formGenreName"
 								defaultValue={currentGenreName}
 								onChange={handleNameChange}
 							/>
@@ -66,10 +67,10 @@ const UpdateModal = (props) => {
 						color="primary"
 						className="twobuttons"
 						onClick={() => {
-							updateGenre(
+							(defaultName.toLowerCase() === newGenreName.toLowerCase()) ? toggle() : updateGenre(
 								genreId,
 								newGenreName,
-							);
+								);
 						}}
 					>
 						Update

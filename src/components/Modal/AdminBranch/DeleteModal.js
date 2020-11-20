@@ -14,11 +14,10 @@ import PropTypes from 'prop-types';
 const DeleteModal = (props) => {
 	const {
 		buttonLabel,
-		handleDelete,
-		handleRefresh,
-		id,
-		currentBranchName,
 		currentBranchAddress,
+		currentBranchName,
+		handleDelete,
+		id,
 	} = props;
 
 	const [modal, setModal] = useState(false);
@@ -62,7 +61,7 @@ const DeleteModal = (props) => {
 						<Button
 							color="danger"
 							className="twobuttons"
-							onClick={() => handleRefresh()}
+							onClick={toggle}
 						>
 							No
 						</Button>

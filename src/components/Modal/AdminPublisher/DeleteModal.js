@@ -18,7 +18,6 @@ const DeleteModal = (props) => {
 		currentPublisherAddress,
 		currentPublisherPhone,
 		handleDelete,
-		handleRefresh,
 		id,
 	} = props;
 
@@ -26,7 +25,6 @@ const DeleteModal = (props) => {
 
 	function deletePublisher(id) {
 		handleDelete(id);
-		//handleRefresh();
 		toggle();
 	}
 
@@ -67,7 +65,7 @@ const DeleteModal = (props) => {
 						<Button
 							color="danger"
 							className="twobuttons"
-							onClick={() => handleRefresh()}
+							onClick={toggle}
 						>
 							No
 						</Button>

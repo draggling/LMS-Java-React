@@ -25,13 +25,22 @@ export const readLoans = () => {
 	};
 };
 
-export const extendLoan = (key, extension) => {
+export const extendLoan = (bookId, branchId, cardNo, difference) => {
+	console.log("extendLoan Values");
+	console.log("bookId = " + bookId);
+	console.log("branchId = " + branchId);
+	console.log("cardNo = " + cardNo);
+	console.log("difference = " + difference);
 	return (dispatch) => {
 		dispatch(_extendLoanRequest());
 		return axios
-			.put(ADMIN_PORT + 'extendLoan', {
-				loan: key,
-				daysToExtend: extension,
+			.put(ADMIN_PORT + 'extendBookLoan', {
+				bookLoan: {
+					book: {bookId: bookId},
+					branch: {branchId: branchId},
+					borrower: {borrowerCardNo: cardNo},
+				},
+				daysToExtend: difference,
 			})
 			.then((res) => {
 				dispatch(_extendLoanSuccess(res));

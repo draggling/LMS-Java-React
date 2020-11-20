@@ -12,14 +12,17 @@ import {
 import PropTypes from 'prop-types';
 
 const CreateModal = (props) => {
-	const { buttonLabel, handleRefresh, handleCreate } = props;
+	const { buttonLabel, handleCreate } = props;
 	let newBorrowerName = '';
 	let newBorrowerAddress = '';
 	let newBorrowerPhone = '';
 
-	function createBorrower(newBorrowerName, newBorrowerAddress, newBorrowerPhone) {
+	function createBorrower(
+		newBorrowerName,
+		newBorrowerAddress,
+		newBorrowerPhone
+	) {
 		handleCreate(newBorrowerName, newBorrowerAddress, newBorrowerPhone);
-		//handleRefresh();
 		toggle(); //need to figure out how to make create button be unpressed
 	}
 
@@ -68,8 +71,8 @@ const CreateModal = (props) => {
 								onChange={handleAddressChange}
 							/>
 						</FormGroup>
-						
-												<FormGroup>
+
+						<FormGroup>
 							<Label for="formBorrowerPhone">
 								Borrower Phone
 							</Label>
@@ -81,13 +84,16 @@ const CreateModal = (props) => {
 								onChange={handlePhoneChange}
 							/>
 						</FormGroup>
-						
 					</Form>
 					<Button
 						color="primary"
 						className="twobuttons"
 						onClick={() => {
-							createBorrower(newBorrowerName, newBorrowerAddress, newBorrowerPhone);
+							createBorrower(
+								newBorrowerName,
+								newBorrowerAddress,
+								newBorrowerPhone
+							);
 						}}
 					>
 						Create
@@ -95,7 +101,7 @@ const CreateModal = (props) => {
 					<Button
 						color="danger"
 						className="twobuttons"
-						onClick={() => handleRefresh()}
+						onClick={toggle}
 					>
 						Cancel
 					</Button>

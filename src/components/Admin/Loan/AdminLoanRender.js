@@ -1,4 +1,3 @@
-
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button } from 'reactstrap';
@@ -22,44 +21,44 @@ const AdminLoanRender = ({
 		);
 	}
 	if (loanData && requestInfo.readSuccessful) {
-    console.log("loanData.loans:");
-    console.log(loanData.loans);
-	let data = {
-		columns: [
-			{
-				label: 'Card Number',
-				field:  'key.cardNo',
-				sort: 'asc',
-			},
-			{
-				label: 'Book Id',
-				field: 'key["cardno"]',
-				sort: 'asc',
-			},
-			{	
-				label: 'Branch Id',
-				field: 'key."cardNo"',
-				sort: 'asc',
-			},
-			{
-				label: 'dateOut',
-				field: 'dateOut',
-				sort: 'asc',
-			},
-			{
-				label: 'dueDate',
-				field: 'dueDate',
-				sort: 'asc',
-			},
-			{
-				label: 'Extend Due Date',
-				field: 'extend',
-				sort: 'asc',
-			},
-		],
-		rows: getTableBodyContent(),
+		console.log('loanData.loans:');
+		console.log(loanData.loans);
+		let data = {
+			columns: [
+				{
+					label: 'Card Number',
+					field: 'key.cardNo',
+					sort: 'asc',
+				},
+				{
+					label: 'Book Id',
+					field: 'key["cardno"]',
+					sort: 'asc',
+				},
+				{
+					label: 'Branch Id',
+					field: 'key."cardNo"',
+					sort: 'asc',
+				},
+				{
+					label: 'dateOut',
+					field: 'dateOut',
+					sort: 'asc',
+				},
+				{
+					label: 'dueDate',
+					field: 'dueDate',
+					sort: 'asc',
+				},
+				{
+					label: 'Extend Due Date',
+					field: 'extend',
+					sort: 'asc',
+				},
+			],
+			rows: getTableBodyContent(),
 		};
-        return (
+		return (
 			<React.Fragment>
 				<div className="mainblock">
 					<Button onClick={() => handleRefresh()}>
@@ -88,7 +87,7 @@ const AdminLoanRender = ({
 		return loanData.loans.map((obj) => {
 			// Deep Clone object to avoid loanId adding to it while mapping over it during map
 			let newObj = JSON.parse(JSON.stringify(obj));
-			console.log("newObj");
+			console.log('newObj');
 			console.log(newObj);
 			newObj.extend = (
 				<div>
