@@ -7,15 +7,15 @@ import { MDBDataTable } from 'mdbreact';
 import UpdateModal from '../Modal/Librarian/UpdateModal';
 import UpdateBookCopiesModal from '../Modal/Librarian/UpdateBookCopiesModal'
 
-const LibrarianBranchRender = ({
-	branchData,
+const LibrarianCopiesRender = ({
+	copiesData,
 	handleRefresh,
 	handleUpdate,
 	handleCopies,
 	requestInfo,
 }) => {
 	let content = '';
-	if (!branchData || requestInfo.readPending) {
+	if (!copiesData || requestInfo.readPending) {
 		content = (
 			<div className="d-flex justify-content-center">
 				<div className="spinner-border" role="status">
@@ -24,21 +24,21 @@ const LibrarianBranchRender = ({
 			</div>
 		);
 	}
-	if (branchData && requestInfo.readSuccessful) {
+	if (copiesData && requestInfo.readSuccessful) {
 		let data = {
 			columns: [
 				{
-					label: 'Branch Name',
-					field: 'branchName',
+					label: 'Copies Name',
+					field: 'copiesName',
 					sort: 'asc',
 				},
 				{
-					label: 'Branch Address',
-					field: 'branchAddress',
+					label: 'Copies Address',
+					field: 'copiesAddress',
 					sort: 'asc',
 				},
 				{
-					label: 'Branch Info',
+					label: 'Copies Info',
 					field: 'update',
 					sort: 'asc'
 				},
@@ -68,15 +68,15 @@ const LibrarianBranchRender = ({
 		);
 	}
 
-	if (branchData && requestInfo.readFailed) {
+	if (copiesData && requestInfo.readFailed) {
 		content = (
 			<div className="alert alert-danger" role="alert">
-				Error while loading branches!
+				Error while loading copies!
 			</div>
 		);
 	}
 	function getTableBodyContent() {
-		return branchData.branches.map((obj) => {
+		return copiesData.copies.map((obj) => {
 			// Deep Clone object to avoid adding to it while mapping over it during map
 			let newObj = JSON.parse(JSON.stringify(obj));
 			newObj.update = (
@@ -85,9 +85,9 @@ const LibrarianBranchRender = ({
 						buttonLabel="Update"
 						handleUpdate={handleUpdate}
 						handleRefresh={handleRefresh}
-						id={newObj.branchId}
-						currentBranchName={newObj.branchName}
-						currentBranchAddress={newObj.branchAddress}
+						id={newObj.copiesId}
+						currentCopiesName={newObj.copiesName}
+						currentCopiesAddress={newObj.copiesAddress}
 					/>
 				</div>
 			);
@@ -95,8 +95,8 @@ const LibrarianBranchRender = ({
 				<div>
 					<UpdateBookCopiesModal
 					buttonLabel="Books"
-					branchId={newObj.branchId}
-					branchName={newObj.branchName}
+					copiesId={newObj.copiesId}
+					copiesName={newObj.copiesName}
 					handleRefresh={handleRefresh}
 					handleCopies={handleCopies}
 					/>
@@ -108,18 +108,18 @@ const LibrarianBranchRender = ({
 	}
 	return (
 		<div>
-			<h1>Branch</h1>
+			<h1>Copies</h1>
 			{content}
 		</div>
 	);
 };
 
-LibrarianBranchRender.propTypes = {
-	branchData: PropTypes.object,
+LibrarianCopiesRender.propTypes = {
+	copiesData: PropTypes.object,
 	handleRefresh: PropTypes.func,
 	handleUpdate: PropTypes.func,
 	handleCopies: PropTypes.func,
 	requestInfo: PropTypes.object,
 };
 
-export default LibrarianBranchRender;
+export default LibrarianCopiesRender;
