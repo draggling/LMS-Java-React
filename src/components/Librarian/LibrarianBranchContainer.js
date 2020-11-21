@@ -24,6 +24,7 @@ const LibrarianBranchContainer = (props) => {
 			<LibrarianBranchRender
 				{...props}
 				handleRefresh={() => actions.readBranches()}
+				handleCopies={(branchId) => actions.readCopies(branchId)}
 				handleUpdate={(id, branchName, branchAddress) =>
 					actions.updateBranch(id, branchName, branchAddress)
 				}
@@ -36,6 +37,8 @@ function mapStateToProps(state) {
 	return {
 		branchData: state.branchReducer.branchData,
 		requestInfo: state.branchReducer.requestInfo,
+		copiesData: state.copiesReducer.copiesData,
+		requestInfoCopies: state.branchReducer.requestInfo
 	};
 }
 
