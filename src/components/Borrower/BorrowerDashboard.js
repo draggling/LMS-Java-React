@@ -10,19 +10,9 @@ const BorrowerDashboard = ({
 	dashboardInfo,
 	handleCheckout,
 	requestInfo,
-	selectBranch,
 	startCheckout,
 	startReturn,
 }) => {
-	function createBranchRows() {
-		return dashboardInfo.branches.map((branch) => {
-			let deepCopyBranch = JSON.parse(JSON.stringify(branch));
-			deepCopyBranch.select = (
-				<Button onClick={() => selectBranch(branch)}>Select</Button>
-			);
-			return deepCopyBranch;
-		});
-	}
 	function parsePublisherInfo(newObj) {
 		return newObj.publisher.publisherName;
 	}
@@ -99,35 +89,7 @@ const BorrowerDashboard = ({
 				</div>
 			);
 		} else if (requestInfo.branchesSuccessful) {
-			let data = {
-				columns: [
-					{
-						label: 'Branch Name',
-						field: 'branchName',
-						sort: 'asc',
-					},
-					{
-						label: 'Branch Address',
-						field: 'branchAddress',
-						sort: 'asc',
-					},
-					{
-						label: 'Select',
-						field: 'select',
-						sort: 'asc',
-					},
-				],
-				rows: createBranchRows(),
-			};
-			content = (
-				<div>
-					<Button onClick={() => startCheckout()}>Check-out</Button>
-					<Button onClick={() => startReturn()}>Return</Button>
-					<div className="mainblock">
-						<MDBDataTable striped bordered small responsive data={data} />
-					</div>
-				</div>
-			);
+			console.log('moved to CheckoutBranchTable');
 		} else if (requestInfo.branchesFailed) {
 			content = (
 				<Alert color="danger">
@@ -146,6 +108,7 @@ const BorrowerDashboard = ({
 				</div>
 			);
 		} else if (requestInfo.booksSuccessful) {
+			console.log('moved to CheckoutBookTable');
 			let data = {
 				columns: [
 					{
@@ -202,7 +165,6 @@ BorrowerDashboard.propTypes = {
 	dashboardInfo: PropTypes.object,
 	handleCheckout: PropTypes.func,
 	requestInfo: PropTypes.object,
-	selectBranch: PropTypes.func,
 	startCheckout: PropTypes.func,
 	startReturn: PropTypes.func,
 };

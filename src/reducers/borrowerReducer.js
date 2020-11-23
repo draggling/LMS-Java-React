@@ -20,6 +20,8 @@ import {
 	BORROWER_LOGIN_PENDING,
 	BORROWER_LOGIN_FAILURE,
 	BORROWER_LOGIN_SUCCESSFUL,
+	BORROWER_READ_ACTIVE_LOANS_FAILED,
+	BORROWER_READ_ACTIVE_LOANS_SUCCESSFUL,
 	BORROWER_READ_ALL_BRANCHES_FAILED,
 	BORROWER_READ_ALL_BRANCHES_SUCCESSFUL,
 	BORROWER_START_CHECKOUT,
@@ -258,6 +260,35 @@ export default function borrowerReducer(state = {}, action) {
 				},
 			};
 		}
+		case BORROWER_READ_ACTIVE_LOANS_FAILED: {
+			return {
+				...state,
+				borrowerDashboardInfo: {
+					...state.borrowerDashboardInfo,
+				},
+				requestInfo: {
+					...state.requestInfo,
+					loansPending: false,
+					loansSuccessful: false,
+					loansFailed: true,
+				},
+			};
+		}
+		case BORROWER_READ_ACTIVE_LOANS_SUCCESSFUL: {
+			return {
+				...state,
+				borrowerDashboardInfo: {
+					...state.borrowerDashboardInfo,
+					loans: action.loans,
+				},
+				requestInfo: {
+					...state.requestInfo,
+					loansPending: false,
+					loansSuccessful: true,
+					loansFailed: false,
+				},
+			};
+		}
 		case BORROWER_READ_ALL_BRANCHES_FAILED: {
 			return {
 				...state,
@@ -293,6 +324,13 @@ export default function borrowerReducer(state = {}, action) {
 				borrowerDashboardInfo: {
 					isCheckingOut: false,
 					isReturning: true,
+					selectedLoan: null,
+				},
+				requestInfo: {
+					...state.requestInfo,
+					loansPending: true,
+					loansSuccessful: false,
+					loansFailed: false,
 				},
 			};
 		}

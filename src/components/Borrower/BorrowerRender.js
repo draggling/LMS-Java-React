@@ -3,8 +3,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import BorrowerLoginForm from './BorrowerLoginForm';
-import { Alert, Spinner } from 'reactstrap';
 import BorrowerDashboard from './BorrowerDashboard';
+import { Alert, Spinner } from 'reactstrap';
+
 //import { MDBDataTable } from 'mdbreact';
 
 const BorrowerRender = ({

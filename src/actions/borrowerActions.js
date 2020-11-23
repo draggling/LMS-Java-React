@@ -10,6 +10,8 @@ import {
 	BORROWER_LOGIN_PENDING,
 	BORROWER_LOGIN_FAILED,
 	BORROWER_LOGIN_SUCCESSFUL,
+	BORROWER_READ_ACTIVE_LOANS_FAILED,
+	BORROWER_READ_ACTIVE_LOANS_SUCCESSFUL,
 	BORROWER_READ_ALL_BRANCHES_FAILED,
 	BORROWER_READ_ALL_BRANCHES_SUCCESSFUL,
 	BORROWER_START_CHECKOUT,
@@ -90,9 +92,18 @@ export const startCheckout = () => {
 			});
 	};
 };
-export const startReturn = () => {
+export const startReturn = (borrowerCardNo) => {
 	return (dispatch) => {
 		dispatch(_startReturn());
+		return axios
+			.get(BORROWER_PORT + 'borrower/getActiveLoansForBorrower/' + borrowerCardNo)
+			.then((response) => {
+				dispatch(_getActiveLoansForBorrowerSuccessful(response));
+			})
+			.catch((error) => {
+				console.log(error);
+				dispatch(_getActiveLoansForBorrowerFailed(error));
+			});
 	};
 };
 
@@ -135,6 +146,18 @@ const _selectBranch = (branch) => {
 const _startCheckout = () => {
 	return {
 		type: BORROWER_START_CHECKOUT,
+	};
+};
+const _getActiveLoansForBorrowerSuccessful = (res) => {
+	return {
+		type: BORROWER_READ_ACTIVE_LOANS_SUCCESSFUL,
+		loans: res.data,
+	};
+};
+const _getActiveLoansForBorrowerFailed = (error) => {
+	return {
+		type: BORROWER_READ_ACTIVE_LOANS_FAILED,
+		error,
 	};
 };
 const _getAllBranchesFailed = (error) => {
