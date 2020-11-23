@@ -1,9 +1,12 @@
 import axios from 'axios';
 
 import {
+
+	LIBRARIAN_SELECT_BRANCH,
 	READ_BRANCHES_PENDING,
 	READ_BRANCHES_FAILURE,
 	READ_BRANCHES_SUCCESSFUL,
+
 	UPDATE_BRANCH_REQUEST,
 	UPDATE_BRANCH_FAILURE,
 	UPDATE_BRANCH_SUCCESSFUL,
@@ -11,11 +14,18 @@ import {
 	READ_COPIES_PENDING,
 	READ_COPIES_SUCCESSFUL,
 	READ_COPIES_FAILURE,
+
+	READ_NON_COPIES_PENDING,
+	READ_NON_COPIES_SUCCESSFUL,
+	READ_NON_COPIES_FAILURE,
+	
 	CREATE_COPIES_REQUEST,
 	CREATE_COPIES_SUCCESSFUL,
 	CREATE_COPIES_FAILURE,
+
+	LIBRARIAN_SWITCH,
 } from '../constants/actionTypes';
-import { ADMIN_PORT } from '../constants/connections';
+import { ADMIN_PORT, LIBRARIAN_PORT } from '../constants/connections';
 
 export const readBranches = () => {
 	return (dispatch) => {
@@ -51,10 +61,11 @@ export const updateBranch = (id, branchName, branchAddress) => {
 	};
 };
 
-export const readCopies = () => {
+
+export const readCopies = (branchId) => {
 	return (dispatch) => {
 		dispatch(_readCopiesStarted());
-		return axios.get(ADMIN_PORT + '/librarian/readBranchCopies', {
+		return axios.get(LIBRARIAN_PORT + '/librarian/readBranchCopies', {
 			params: {branchId: branchId}
 		})
 			.then((res) => {
@@ -65,16 +76,32 @@ export const readCopies = () => {
 				dispatch(_readCopiesFailed(error));
 			});
 	};
-};
+};	
 
-export const createCopies = (branchId, bookId, numOfCopies) => {
+export const readNonCopies = (branchId) => {
+	return (dispatch) => {
+		dispatch(_readNonCopiesStarted());
+		return axios.get(LIBRARIAN_PORT + 'librarian/readNonBranchCopies', {
+			params: {branchId: branchId}
+		})
+		.then((res) => {
+			dispatch(_readNonCopiesSuccess(res));
+		})
+		.catch((error) => {
+			console.log(error);
+			dispatch(_readNonCopiesFailed(error));
+		})
+	}
+ }
+
+export const setCopies = (bookId, branchId, numOfCopies) => {
 	return (dispatch) => {
 		dispatch(_createCopiesRequest());
 		return axios
-			.put(ADMIN_PORT + 'setBookCoopies', {
-				branchId: branchId,
-				bookId: bookId,
-				numOfCopies: numOfCopies,
+			.post(LIBRARIAN_PORT + 'librarian/setBookCopies', {
+				book: {bookId: bookId},
+				branch: {branchId: branchId},
+				numberOfCopies: numOfCopies,
 			})
 			.then((res) => {
 				dispatch(_createCopiesSuccess(res));
@@ -86,6 +113,31 @@ export const createCopies = (branchId, bookId, numOfCopies) => {
 	};
 };
 
+export const selectBranch = (branch) => {
+	return (dispatch) => { 
+		dispatch(_selectBranch(branch));
+	}
+};
+
+export const Switch = () => {
+	console.log("switching views");
+	return (dispatch) => {
+		dispatch(_SwitchRequest());
+	}
+}
+
+const _SwitchRequest = () => {
+	return {
+		type: LIBRARIAN_SWITCH,
+	};
+};
+
+const _selectBranch = (branch) => {
+	return {
+		type: LIBRARIAN_SELECT_BRANCH,
+		data: branch,
+	};
+};
 
 const _readBranchSuccess = (res) => {
 	return {
@@ -148,6 +200,27 @@ const _readCopiesFailed = (error) => {
 	};
 };
 
+const _readNonCopiesStarted = () => {
+	return {
+		type: READ_NON_COPIES_PENDING
+	};
+};
+
+
+const _readNonCopiesSuccess = (res) => {
+	return {
+		type: READ_NON_COPIES_SUCCESSFUL,
+		data: res.data,
+	};
+};
+
+const _readNonCopiesFailed = (error) => {
+	return {
+		type: READ_NON_COPIES_FAILURE,
+		error,
+	};
+};
+
 const _createCopiesRequest = () => {
 	return {
 		type: CREATE_COPIES_REQUEST,
@@ -157,7 +230,7 @@ const _createCopiesRequest = () => {
 const _createCopiesSuccess = (res) => {
 	return {
 		type: CREATE_COPIES_SUCCESSFUL,
-		createdCopies: res.data,
+		data: res.data,
 	};
 };
 

@@ -1,85 +1,110 @@
 import React, { useState } from 'react';
-//import LibrarianBranchRender from '../LibrarianBranchRender';
-import axios from 'axios';
-import { ADMIN_PORT } from '../../../constants/connections';
 
 import {
 	Button,
 	Modal,
 	ModalHeader,
-	ModalBody
+    ModalBody,
+    Form,
+    FormGroup,
+    Input,
+    Label,
+    Alert,
 } from 'reactstrap';
 import PropTypes from 'prop-types';
 
 const UpdateBookCopiesModal = (props) => {
 	const {
-		buttonLabel,
+        buttonLabel,
+        bookId,
         branchId,
         branchName,
+        noOfCopies,
+        setCopies,
     } = props;
 
-	const [modal, setModal] = useState(false);
-	const toggle = () => setModal(!modal);
-    
-    function readBranchBooks() {
-        return axios.get(ADMIN_PORT + '/librarian/readBranchCopies', {
-            params: {branchId: branchId}
-        }).then(response => response.data)
+    let newCopies = noOfCopies;
+    if(!alert) {
+        var alert = '';
     }
-    /*
-    readBranchBooks().then(data => {
-        let books = data;
-        console.log("modal data for branchId " + branchId + ":");
-        console.log(books)
-    }).then((res) => {
-        console.log("res");
-        console.log(res);
-    });
-    */
+	const [modal, setModal] = useState(false);
+    const toggle = () => 
+    {
+        setModal(!modal);
+    }
+    
+	function handleCopies(e) {
+        newCopies = e.target.value;
+    }
 
-    //console.log(books);
-
-    axios.get(ADMIN_PORT + '/librarian/readBranchCopies', {
-        params: {branchId: branchId}
-    })
-    .then(function(response){ return response.data; })
-    .then(function(data) {
-    const items = data;
-    console.log("items");
-    console.log(items)
-    })
-    //console.log(items);
-
+    function validateInput(newCopies) {
+        if(newCopies >= 0) {
+            setCopies(bookId, branchId, newCopies);
+            toggle();
+        } else {
+            alert = (
+                <div>
+                    <Alert color="warning">
+                    ERROR: Negative Number!
+                    </Alert>
+                </div>
+            );
+        }
+    } 
+    
     return (
         <div>
             <Button color="primary" onClick={toggle}>
                 {buttonLabel}
             </Button>
             <Modal isOpen={modal} toggle={toggle} size = 'xl'>
-                <ModalHeader toggle={toggle}>Update Book Copies for {branchName} {branchId} </ModalHeader>
+                <ModalHeader toggle={toggle}>Update Book Copies for {branchName} </ModalHeader>
                 <ModalBody>
-                <div>
-                wip
-                </div>
-                    <Button
-                        color="danger"
-                        className="twobuttons"
-                        onClick={toggle}>
-                        Exit
-                    </Button>
+                {alert}
+                <Form>
+                    <FormGroup>
+                        <Label for="numberOfCopies">Number of Copies</Label>
+                        <Input 
+                            className="formNumberOfCopies"
+                            defaultValue={noOfCopies}
+                            min={0}
+                            input="integer"
+                            onChange={handleCopies}
+                        />  
+                </FormGroup>
+                </Form>
+                <Button
+						color="primary"
+						className="twobuttons"
+						onClick={() => {
+                            validateInput(newCopies);
+						}}
+				>
+					Update
+				</Button>
+                <Button
+                    color="danger"
+                    className="twobuttons"
+                    onClick={toggle}>
+                    Exit
+                </Button>
                 </ModalBody>
             </Modal>
         </div>
     );
 };
 
+
 UpdateBookCopiesModal.propTypes = {
-	buttonLabel: PropTypes.string,
+    buttonLabel: PropTypes.string,
     handleRefresh: PropTypes.func,
     handleCopies: PropTypes.func,
+    validateInput: PropTypes.func,
+    setCopies: PropTypes.func,
+    bookId : PropTypes.number,
     branchName: PropTypes.string,
     branchId: PropTypes.number,
-    books: PropTypes.array,
+    noOfCopies: PropTypes.number,
 };
 
 export default UpdateBookCopiesModal;

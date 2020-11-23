@@ -30,11 +30,6 @@ const AdminBorrowerRender = ({
 		let data = {
 			columns: [
 				{
-					label: 'Borrower Id',
-					field: 'borrowerCardNo',
-					sort: 'asc',
-				},
-				{
 					label: 'Borrower Name',
 					field: 'borrowerName',
 					sort: 'asc',

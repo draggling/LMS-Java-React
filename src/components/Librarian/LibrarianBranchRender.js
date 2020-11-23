@@ -6,16 +6,35 @@ import { Button } from 'reactstrap';
 import { MDBDataTable } from 'mdbreact';
 import UpdateModal from '../Modal/Librarian/UpdateModal';
 import UpdateBookCopiesModal from '../Modal/Librarian/UpdateBookCopiesModal'
+import LibrarianCopiesRender from './LibrarianCopiesRender';
+import LibrarianNonCopiesRender from './LibrarianNonCopiesRender';
 
-const LibrarianBranchRender = ({
+const LibrarianBranchRender =  ({
+	selectedBranch,
 	branchData,
 	handleRefresh,
 	handleUpdate,
-	handleCopies,
+	setCopies,
 	requestInfo,
+	requestInfoCopies,
+	selectBranch,
+	startReadCopies,
+	startReadNonCopies,
+	bookCopies,
+	bookNonCopies,
+	Switch,
 }) => {
 	let content = '';
-	if (!branchData || requestInfo.readPending) {
+	let branchTable = '';
+
+	if(selectedBranch > 0 && bookCopies === undefined && !requestInfoCopies.readCopiesPending && !requestInfoCopies.readCopiesSuccessful) {
+		startReadCopies(selectedBranch);
+	}
+	if(selectedBranch > 0 && bookNonCopies === undefined && !requestInfoCopies.readNonCopiesPending && !requestInfoCopies.readNonCopiesSuccessful) {
+		startReadNonCopies(selectedBranch);
+	}
+
+	if (!branchData || requestInfo.readPending || requestInfo.readCopiesPending || requestInfo.readNonCopiesPending) {
 		content = (
 			<div className="d-flex justify-content-center">
 				<div className="spinner-border" role="status">
@@ -38,21 +57,22 @@ const LibrarianBranchRender = ({
 					sort: 'asc',
 				},
 				{
-					label: 'Branch Info',
+					label: 'Update Branch',
 					field: 'update',
 					sort: 'asc'
 				},
                 {
-					label: 'Book Copies',
-					field: 'copies',
+					label: 'Select',
+					field: 'select',
 					sort: 'asc',
                 }
 			],
 			rows: getTableBodyContent(),
 		};
-		return (
+		branchTable =	 (
 			<React.Fragment>
 				<div className="mainblock">
+					<h1>Branches</h1>
 					<Button onClick={() => handleRefresh()}>
 						Refresh Data
 					</Button>{' '}
@@ -98,28 +118,95 @@ const LibrarianBranchRender = ({
 					branchId={newObj.branchId}
 					branchName={newObj.branchName}
 					handleRefresh={handleRefresh}
-					handleCopies={handleCopies}
+					setCopies={setCopies}
 					/>
 				</div>
 			)
+			newObj.select = (
+				<Button onClick={() => selectBranch(newObj.branchId)}>Select</Button>
+			);
 
 			return newObj;
 		});
 	}
+
+
+	function changeView() {
+		Switch();
+	}
+	function showNonBookCopies() {
+		return(
+			<div>
+				<Button color="success" disabled> View Books In Library </Button>
+				<Button color="primary" onClick={changeView}> View Books not in Library</Button>
+				<LibrarianNonCopiesRender
+				branchData = {branchData}
+				selectedBranch = {selectedBranch}
+				handleRefresh = {handleRefresh}
+				setCopies = {setCopies}
+				requestInfoCopies = {requestInfoCopies} 
+				bookNonCopies = {bookNonCopies}
+				/>
+			</div>
+		);
+	}
+
+
+	function showBookCopies() {
+		return(
+			<div>
+				<Button color="success" disabled> View Books In Library </Button>
+				<Button color="primary" onClick={changeView}> View Books not in Library</Button>
+				<LibrarianCopiesRender
+				branchData = {branchData}
+				selectedBranch = {selectedBranch}
+				handleRefresh = {handleRefresh}
+				setCopies = {setCopies}
+				requestInfoCopies = {requestInfoCopies} 
+				bookCopies = {bookCopies}
+				/>
+			</div>
+		);
+	}
+
+	function showTable() {
+		if(branchData && requestInfo 
+			&& requestInfoCopies
+			&& (requestInfoCopies.readCopiesSuccessful
+			&& requestInfoCopies.readNonCopiesSuccessful)) {
+			if(!requestInfoCopies.inLibrary) {
+				return showNonBookCopies();
+			} else {
+				return showBookCopies();
+			}
+		} else if(requestInfo && requestInfo.readSuccessful && branchData) {
+			return branchTable;
+		}
+		return <h1> ERROR </h1>
+	}
+
 	return (
 		<div>
-			<h1>Branch</h1>
 			{content}
+			{showTable()}
 		</div>
 	);
 };
 
 LibrarianBranchRender.propTypes = {
+	Switch: PropTypes.func,
 	branchData: PropTypes.object,
+	bookCopies: PropTypes.array,
+	bookNonCopies: PropTypes.array,
+	selectedBranch: PropTypes.number,
+	selectBranch: PropTypes.func,
 	handleRefresh: PropTypes.func,
 	handleUpdate: PropTypes.func,
-	handleCopies: PropTypes.func,
+	setCopies: PropTypes.func,
 	requestInfo: PropTypes.object,
+	requestInfoCopies: PropTypes.object,
+	startReadCopies: PropTypes.func,
+	startReadNonCopies: PropTypes.func,
 };
 
 export default LibrarianBranchRender;

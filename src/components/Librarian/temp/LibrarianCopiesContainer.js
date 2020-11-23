@@ -12,7 +12,7 @@ import LibrarianHeader from './LibrarianHeader';
 const LibrarianCopiesContainer = (props) => {
 	const { actions } = props;
 	useEffect(() => {
-		actions.readCopies();
+		actions.createCopies();
 	}, []);
 
 	return (
@@ -23,7 +23,7 @@ const LibrarianCopiesContainer = (props) => {
 			</div>
 			<LibrarianCopiesRender
 				{...props}
-				handleRefresh={() => actions.readCopies()}
+				handleRefresh={() => actions.createCopies()}
 				handleUpdate={(id, copiesName, copiesAddress) =>
 					actions.updateCopies(id, copiesName, copiesAddress)
 				}

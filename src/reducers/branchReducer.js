@@ -40,6 +40,7 @@ export default function branchReducer(state = {}, action) {
 					readFailed: false,
 					readSuccessful: true,
 					readPending: false,
+					test: true,
 				},
 			};
 		case DELETE_BRANCH_REQUEST:

@@ -6,18 +6,20 @@ import { Button } from 'reactstrap';
 import { MDBDataTable } from 'mdbreact';
 import UpdateBookCopiesModal from '../Modal/Librarian/UpdateBookCopiesModal'
 
-const LibrarianCopiesRender = ({
+const LibrarianNonCopiesRender = ({
 	branchData,
 	selectedBranch,
 	handleRefresh,
-	bookCopies,
+	bookNonCopies,
 	setCopies,
 }) => {
 	let content = '';
 	console.log("..........");
-	console.log("LIBRARIAN COPIES RENDER");
-	console.log("book copies:");
-	console.log(bookCopies);
+	console.log("LIBRARIAN NON COPIES RENDER");
+	console.log("non book copies:");
+    console.log(bookNonCopies);
+    console.log("branch data");
+    console.log(branchData);
 	console.log("..........");
 	let branchName = 'null'
 	/* get branchName */
@@ -37,11 +39,6 @@ const LibrarianCopiesRender = ({
 			{
 				label: 'Authors',
 				field: 'authors',
-				sort: 'asc',
-			},
-			{
-				label: 'Copies',
-				field: 'numberOfCopies', 
 				sort: 'asc',
 			},
             {
@@ -69,7 +66,7 @@ const LibrarianCopiesRender = ({
 		</React.Fragment>
 	)
 
-	if (!selectedBranch || !bookCopies) {
+	if (!selectedBranch || !bookNonCopies) {
 		content = (
 			<div className="alert alert-danger" role="alert">
 				Error while loading books!
@@ -91,19 +88,19 @@ const LibrarianCopiesRender = ({
 		}
 	}
 	function getTableBodyContent() {
-		return bookCopies.map((obj) => {
+		return bookNonCopies.map((obj) => {
 			// Deep Clone object to avoid adding to it while mapping over it during map
 			let newObj = JSON.parse(JSON.stringify(obj));
-			newObj.title = obj.book.title;
-			newObj.authors = getAuthors(obj.book.authors);
+			newObj.title = obj.title;
+			newObj.authors = getAuthors(obj.authors);
 			newObj.copies = (
 				<div>
 					<UpdateBookCopiesModal
 					buttonLabel="Copies"
-					bookId = {newObj.book.bookId}
-					branchId={newObj.branch.branchId}
-					branchName={newObj.branch.branchName}
-					noOfCopies={newObj.numberOfCopies}
+					bookId = {newObj.bookId}
+					branchId={selectedBranch}
+					branchName={branchName}
+					noOfCopies={0}
 					setCopies={setCopies}
 					handleRefresh={handleRefresh}
 					/>
@@ -115,19 +112,19 @@ const LibrarianCopiesRender = ({
 
 	return (
 		<div>
-			<h1>Books In {branchName}</h1>
+			<h1>Books Not in {branchName}</h1>
 			{content}
 		</div>
 	);
 };
 
-LibrarianCopiesRender.propTypes = {
+LibrarianNonCopiesRender.propTypes = {
 	branchData: PropTypes.object,
-	bookCopies: PropTypes.array,
+	bookNonCopies: PropTypes.array,
 	selectedBranch: PropTypes.number,
 	handleRefresh: PropTypes.func,
 	setCopies: PropTypes.func,
 	requestInfoCopies: PropTypes.object,
 }
 
-export default LibrarianCopiesRender;
+export default LibrarianNonCopiesRender;
