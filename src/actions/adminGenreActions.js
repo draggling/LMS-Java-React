@@ -50,9 +50,11 @@ export const deleteGenre = (genreId) => {
 	};
 };
 
+
 export const updateGenre = (genreId,genreName) => {
 	return (dispatch) => {
-		axios.get(ADMIN_PORT + 'findGenreName?genreName=' + genreName)
+//		axios.get(ADMIN_PORT + 'findGenreName?genreName=' + genreName)
+		axios.get(ADMIN_PORT + 'findGenreName', {params: {genreName : genreName}})
 		.then ((res) => {
 			if(res.data) {
 				dispatch(_updateGenreExists());
@@ -107,7 +109,6 @@ export const createGenre = (genreName) => {
 		});
 	}
 };
-
 
 const _readGenreSuccess = (res) => {
 	return {
