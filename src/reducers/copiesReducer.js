@@ -8,8 +8,12 @@ import {
 	CREATE_COPIES_REQUEST,
 	CREATE_COPIES_FAILURE,
 	CREATE_COPIES_SUCCESSFUL,
+	CREATE_NON_COPIES_REQUEST,
+	CREATE_NON_COPIES_FAILURE,
+	CREATE_NON_COPIES_SUCCESSFUL,
 	LIBRARIAN_SELECT_BRANCH,
 	LIBRARIAN_SWITCH,
+	BRANCH_SELECT,
 } from '../constants/actionTypes';
 
 export default function copiesReducer(state = {}, action) {
@@ -44,17 +48,17 @@ export default function copiesReducer(state = {}, action) {
 				...state,
 				requestInfo: { ...state.requestInfo, readNonCopiesPending: true },
             };
-        case READ_NON_COPIES_SUCCESSFUL:
-            return {
-                ...state,
-                bookNonCopies: action.data,
-                requestInfo: {
-                    ...state.requestInfo,
+		case READ_NON_COPIES_SUCCESSFUL:
+			return {
+				...state,
+				bookNonCopies: action.data,
+				requestInfo: {
+					...state.requestInfo,
 					readNonCopiesSuccessful: true,
-					readNonCopiesPending: false,
+					readCopiesPending: false,
 					inLibrary: true,
-                },
-            };
+				}
+			};
         case READ_NON_COPIES_FAILURE:
             return {
                 ...state,
@@ -67,9 +71,7 @@ export default function copiesReducer(state = {}, action) {
 		case CREATE_COPIES_REQUEST:
 			return {
 				...state,
-				copiesData: {
-					...state.copiesData,
-				},
+
 				requestInfo: {
 					...state.requestInfo,
 					creating: true,
@@ -80,42 +82,90 @@ export default function copiesReducer(state = {}, action) {
 		case CREATE_COPIES_FAILURE:
 			return {
 				...state,
-				copiesData: {
-					...state.copiesData,
-				},
 				requestInfo: {
 					...state.requestInfo,
 					createFailed: true,
 					creating: false,
 				},
 			};
+			
+		case CREATE_NON_COPIES_REQUEST:
+			return {
+				...state,
+				requestInfo: {
+					...state.requestInfo,
+					creating: true,
+					createFailed: false,
+					createSuccess: false,
+				},
+			};
+		case CREATE_NON_COPIES_FAILURE:
+			return {
+				...state,
+				requestInfo: {
+					...state.requestInfo,
+					createFailed: true,
+					creating: false,
+				},
+			};
+		case CREATE_NON_COPIES_SUCCESSFUL: {
+			let tempCopy = JSON.parse(JSON.stringify(state.bookCopies));	
+			let tempNotCopy = JSON.parse(JSON.stringify(state.bookNonCopies));
+			let tempBook = null;
+			/* remove book from bookNonCopies */
+			tempNotCopy = tempNotCopy.filter((b1) => {
+				if(b1.bookId === action.data.book.bookId) {
+					console.log("WHOA");
+					tempBook = b1;
+					return false;
+				} {
+					return true;
+				}
+			});
+			/* add book to bookCopies */
+			let newBookCopy = {
+				book: tempBook,
+				branch: {branchId : state.selectedBranch},
+				key: {branchId : state.selectedBranch, bookId: tempBook.bookId},
+				numberOfCopies: action.data.numberOfCopies,
+			}
+			tempCopy.unshift(newBookCopy);
+            return {
+                ...state,
+				bookNonCopies: tempNotCopy,
+				bookCopies: tempCopy,
+                requestInfo: {
+                    ...state.requestInfo,
+					createNonCopiesSuccessful: true,
+					creating: false,
+                },
+			};
+		}
+			//
 		case CREATE_COPIES_SUCCESSFUL: {
-			let temp = JSON.parse(JSON.stringify(state.bookCopies));
+			let tempCopy = JSON.parse(JSON.stringify(state.bookCopies));
+			let tempNotCopy = JSON.parse(JSON.stringify(state.bookNonCopies))
+			/* removes book from library copies view */
 			if(action.data.numberOfCopies === 0) {
-				temp = temp.filter((b1) => {
-					console.log("b1 = ");
-					console.log(b1);
+				tempCopy = tempCopy.filter((b1) => {
 					if(b1.book.bookId === action.data.book.bookId) {
-						console.log("WOW");
+						tempNotCopy.unshift(b1.book);
 						return false;
 					}
 					return b1.book.bookId !== action.data.book.bookId;
 				});
-				console.log("temp after filter:");
-				console.log(temp);
 				return {
 					...state,
-					bookCopies: temp,
+					bookCopies: tempCopy,
+					bookNonCopies: tempNotCopy,
 					requestInfo: {
 						...state.requestInfo,
-						readCopiesSuccessful: true,
+						createCopiesSuccessful: true,
 						creating: false,
 					},
 				}
 			} else {
-				temp = temp.map((b2) => {
-					console.log("b2 = ");
-					console.log(b2);
+				tempCopy = tempCopy.map((b2) => {
 					if(b2.book.bookId === action.data.book.bookId) {
 						b2.numberOfCopies = action.data.numberOfCopies;
 						return b2;
@@ -123,11 +173,9 @@ export default function copiesReducer(state = {}, action) {
 						return b2;
 					}
 				});
-				console.log("new copies");
-				console.log(temp);
 				return {
 					...state,
-					bookCopies: temp,
+					bookCopies: tempCopy,
 					requestInfo: {
 						...state.requestInfo,
 						readCopiesSuccessful: true,
@@ -147,6 +195,20 @@ export default function copiesReducer(state = {}, action) {
 					booksSuccessful: false,
 					booksFailed: false,
 				},
+			};
+		}
+
+		/* reset select branch */
+		case BRANCH_SELECT: {
+			return {
+				...state,
+				bookCopies: undefined,
+				bookNonCopies: undefined,
+				selectedBranch: undefined,
+				requestInfo: {
+					readSuccessful : true,
+				},
+				requestInfoCopies: undefined,
 			};
 		}
 		case LIBRARIAN_SWITCH: {

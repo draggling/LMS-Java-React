@@ -4,25 +4,27 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Button } from 'reactstrap';
 import { MDBDataTable } from 'mdbreact';
-import UpdateBookCopiesModal from '../Modal/Librarian/UpdateBookCopiesModal'
+import UpdateBookNonCopiesModal from '../Modal/Librarian/UpdateBookNonCopiesModal'
 
 const LibrarianNonCopiesRender = ({
 	branchData,
 	selectedBranch,
-	handleRefresh,
+    handleRefresh,
 	bookNonCopies,
-	setCopies,
+	setNonCopies,
 }) => {
-	let content = '';
+    let content = '';
+    /*
 	console.log("..........");
 	console.log("LIBRARIAN NON COPIES RENDER");
 	console.log("non book copies:");
     console.log(bookNonCopies);
     console.log("branch data");
     console.log(branchData);
-	console.log("..........");
+    console.log("..........");
+    */
 	let branchName = 'null'
-	/* get branchName */
+    /* get branchName */
 	branchData.branches.map(branch => {
 		if(branch.branchId == selectedBranch) {
 			branchName = branch.branchName;
@@ -42,7 +44,7 @@ const LibrarianNonCopiesRender = ({
 				sort: 'asc',
 			},
             {
-				label: 'Set Copies',
+				label: 'Add Copies',
 				field: 'copies',
 				sort: 'asc',
             },
@@ -75,7 +77,7 @@ const LibrarianNonCopiesRender = ({
 	}
 	function getAuthors(Authors) {
 		if(Authors.length === 0) {
-			return "No Authors"
+			return "No Author"
 		} else {
 			let authors = "";
 			for(let i = 0; i < Authors.length; i++) {
@@ -95,13 +97,13 @@ const LibrarianNonCopiesRender = ({
 			newObj.authors = getAuthors(obj.authors);
 			newObj.copies = (
 				<div>
-					<UpdateBookCopiesModal
+					<UpdateBookNonCopiesModal
 					buttonLabel="Copies"
 					bookId = {newObj.bookId}
 					branchId={selectedBranch}
 					branchName={branchName}
 					noOfCopies={0}
-					setCopies={setCopies}
+					setNonCopies={setNonCopies}
 					handleRefresh={handleRefresh}
 					/>
 				</div>
@@ -112,18 +114,18 @@ const LibrarianNonCopiesRender = ({
 
 	return (
 		<div>
-			<h1>Books Not in {branchName}</h1>
+			<h1>Books not in {branchName}</h1>
 			{content}
 		</div>
 	);
 };
 
 LibrarianNonCopiesRender.propTypes = {
-	branchData: PropTypes.object,
+    branchData: PropTypes.object,
 	bookNonCopies: PropTypes.array,
 	selectedBranch: PropTypes.number,
 	handleRefresh: PropTypes.func,
-	setCopies: PropTypes.func,
+	setNonCopies: PropTypes.func,
 	requestInfoCopies: PropTypes.object,
 }
 
