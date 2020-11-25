@@ -11,6 +11,7 @@ import BorrowerLoginForm from './BorrowerLoginForm';
 import CheckoutBranchTable from './CheckoutBranchTable';
 import CheckoutBookTable from './CheckoutBookTable';
 import ReturnLoansTable from './ReturnLoansTable';
+import Header from '../Header';
 //import BorrowerRender from './BorrowerRender';
 //import BorrowerHeader from './BorrowerHeader';
 
@@ -130,7 +131,7 @@ const BorrowerContainer = (props) => {
 	}
 	return (
 		<div>
-			{/* <BorrowerHeader /> */}
+			<Header />
 			<div className="jumbotron">
 				<h1>Borrower Dashboard</h1>
 			</div>

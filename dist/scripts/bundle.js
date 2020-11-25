@@ -60242,7 +60242,7 @@ var _createAuthorFailed = function _createAuthorFailed(error) {
 	};
 };
 
-},{"../constants/actionTypes":331,"../constants/connections":332,"axios":9}],274:[function(require,module,exports){
+},{"../constants/actionTypes":333,"../constants/connections":334,"axios":9}],274:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -60398,7 +60398,7 @@ var _createBookFailed = function _createBookFailed(error) {
 	};
 };
 
-},{"../constants/actionTypes":331,"../constants/connections":332,"axios":9}],275:[function(require,module,exports){
+},{"../constants/actionTypes":333,"../constants/connections":334,"axios":9}],275:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -60556,7 +60556,7 @@ var _createBorrowerFailed = function _createBorrowerFailed(error) {
 	};
 };
 
-},{"../constants/actionTypes":331,"../constants/connections":332,"axios":9}],276:[function(require,module,exports){
+},{"../constants/actionTypes":333,"../constants/connections":334,"axios":9}],276:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -60712,7 +60712,7 @@ var _createBranchFailed = function _createBranchFailed(error) {
 	};
 };
 
-},{"../constants/actionTypes":331,"../constants/connections":332,"axios":9}],277:[function(require,module,exports){
+},{"../constants/actionTypes":333,"../constants/connections":334,"axios":9}],277:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -60897,7 +60897,7 @@ var _createGenreFailed = function _createGenreFailed(error) {
 	};
 };
 
-},{"../constants/actionTypes":331,"../constants/connections":332,"axios":9}],278:[function(require,module,exports){
+},{"../constants/actionTypes":333,"../constants/connections":334,"axios":9}],278:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -60991,7 +60991,7 @@ var _extendLoanFailed = function _extendLoanFailed(error) {
 	};
 };
 
-},{"../constants/actionTypes":331,"../constants/connections":332,"axios":9}],279:[function(require,module,exports){
+},{"../constants/actionTypes":333,"../constants/connections":334,"axios":9}],279:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -61149,7 +61149,7 @@ var _createPublisherFailed = function _createPublisherFailed(error) {
 	};
 };
 
-},{"../constants/actionTypes":331,"../constants/connections":332,"axios":9}],280:[function(require,module,exports){
+},{"../constants/actionTypes":333,"../constants/connections":334,"axios":9}],280:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -61226,9 +61226,15 @@ var startCheckout = exports.startCheckout = function startCheckout() {
 		});
 	};
 };
-var startReturn = exports.startReturn = function startReturn() {
+var startReturn = exports.startReturn = function startReturn(borrowerCardNo) {
 	return function (dispatch) {
 		dispatch(_startReturn());
+		return _axios2.default.get(_connections.BORROWER_PORT + 'borrower/getActiveLoansForBorrower/' + borrowerCardNo).then(function (response) {
+			dispatch(_getActiveLoansForBorrowerSuccessful(response));
+		}).catch(function (error) {
+			console.log(error);
+			dispatch(_getActiveLoansForBorrowerFailed(error));
+		});
 	};
 };
 
@@ -61273,6 +61279,18 @@ var _startCheckout = function _startCheckout() {
 		type: _actionTypes.BORROWER_START_CHECKOUT
 	};
 };
+var _getActiveLoansForBorrowerSuccessful = function _getActiveLoansForBorrowerSuccessful(res) {
+	return {
+		type: _actionTypes.BORROWER_READ_ACTIVE_LOANS_SUCCESSFUL,
+		loans: res.data
+	};
+};
+var _getActiveLoansForBorrowerFailed = function _getActiveLoansForBorrowerFailed(error) {
+	return {
+		type: _actionTypes.BORROWER_READ_ACTIVE_LOANS_FAILED,
+		error: error
+	};
+};
 var _getAllBranchesFailed = function _getAllBranchesFailed(error) {
 	return {
 		type: _actionTypes.BORROWER_READ_ALL_BRANCHES_FAILED,
@@ -61309,7 +61327,7 @@ var _startReturn = function _startReturn() {
 	};
 };
 
-},{"../constants/actionTypes":331,"../constants/connections":332,"axios":9}],281:[function(require,module,exports){
+},{"../constants/actionTypes":333,"../constants/connections":334,"axios":9}],281:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -61525,7 +61543,7 @@ var _createCopiesFailed = function _createCopiesFailed(error) {
 	};
 };
 
-},{"../constants/actionTypes":331,"../constants/connections":332,"axios":9}],282:[function(require,module,exports){
+},{"../constants/actionTypes":333,"../constants/connections":334,"axios":9}],282:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -61944,7 +61962,7 @@ AdminAuthorRender.propTypes = {
 
 exports.default = AdminAuthorRender;
 
-},{"../../Modal/AdminAuthor/CreateModal":309,"../../Modal/AdminAuthor/DeleteModal":310,"../../Modal/AdminAuthor/UpdateModal":311,"mdbreact":63,"prop-types":95,"react":148,"reactstrap":242}],286:[function(require,module,exports){
+},{"../../Modal/AdminAuthor/CreateModal":311,"../../Modal/AdminAuthor/DeleteModal":312,"../../Modal/AdminAuthor/UpdateModal":313,"mdbreact":63,"prop-types":95,"react":148,"reactstrap":242}],286:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -62260,7 +62278,7 @@ AdminBookRender.propTypes = {
 
 exports.default = AdminBookRender;
 
-},{"../../Modal/AdminBook/CreateModal":312,"../../Modal/AdminBook/DeleteModal":313,"../../Modal/AdminBook/UpdateModal":314,"mdbreact":63,"prop-types":95,"react":148,"reactstrap":242}],288:[function(require,module,exports){
+},{"../../Modal/AdminBook/CreateModal":314,"../../Modal/AdminBook/DeleteModal":315,"../../Modal/AdminBook/UpdateModal":316,"mdbreact":63,"prop-types":95,"react":148,"reactstrap":242}],288:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -62530,7 +62548,7 @@ AdminBorrowerRender.propTypes = {
 
 exports.default = AdminBorrowerRender;
 
-},{"../../Modal/AdminBorrower/CreateModal":315,"../../Modal/AdminBorrower/DeleteModal":316,"../../Modal/AdminBorrower/UpdateModal":317,"mdbreact":63,"prop-types":95,"react":148,"reactstrap":242}],290:[function(require,module,exports){
+},{"../../Modal/AdminBorrower/CreateModal":317,"../../Modal/AdminBorrower/DeleteModal":318,"../../Modal/AdminBorrower/UpdateModal":319,"mdbreact":63,"prop-types":95,"react":148,"reactstrap":242}],290:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -62802,7 +62820,7 @@ AdminBranchRender.propTypes = {
 
 exports.default = AdminBranchRender;
 
-},{"../../Modal/AdminBranch/CreateModal":318,"../../Modal/AdminBranch/DeleteModal":319,"../../Modal/AdminBranch/UpdateModal":320,"mdbreact":63,"prop-types":95,"react":148,"reactstrap":242}],292:[function(require,module,exports){
+},{"../../Modal/AdminBranch/CreateModal":320,"../../Modal/AdminBranch/DeleteModal":321,"../../Modal/AdminBranch/UpdateModal":322,"mdbreact":63,"prop-types":95,"react":148,"reactstrap":242}],292:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -63082,7 +63100,7 @@ AdminGenreRender.propTypes = {
 
 exports.default = AdminGenreRender;
 
-},{"../../Modal/AdminGenre/CreateModal":321,"../../Modal/AdminGenre/DeleteModal":322,"../../Modal/AdminGenre/UpdateModal":323,"mdbreact":63,"prop-types":95,"react":148,"reactstrap":242}],294:[function(require,module,exports){
+},{"../../Modal/AdminGenre/CreateModal":323,"../../Modal/AdminGenre/DeleteModal":324,"../../Modal/AdminGenre/UpdateModal":325,"mdbreact":63,"prop-types":95,"react":148,"reactstrap":242}],294:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -63454,7 +63472,7 @@ AdminLoanRender.propTypes = {
 
 exports.default = AdminLoanRender;
 
-},{"../../Modal/AdminLoan/ExtendModal":324,"flat":43,"mdbreact":63,"prop-types":95,"react":148,"reactstrap":242}],296:[function(require,module,exports){
+},{"../../Modal/AdminLoan/ExtendModal":326,"flat":43,"mdbreact":63,"prop-types":95,"react":148,"reactstrap":242}],296:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -63732,7 +63750,7 @@ AdminPublisherRender.propTypes = {
 
 exports.default = AdminPublisherRender;
 
-},{"../../Modal/AdminPublisher/CreateModal":325,"../../Modal/AdminPublisher/DeleteModal":326,"../../Modal/AdminPublisher/UpdateModal":327,"mdbreact":63,"prop-types":95,"react":148,"reactstrap":242}],298:[function(require,module,exports){
+},{"../../Modal/AdminPublisher/CreateModal":327,"../../Modal/AdminPublisher/DeleteModal":328,"../../Modal/AdminPublisher/UpdateModal":329,"mdbreact":63,"prop-types":95,"react":148,"reactstrap":242}],298:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -63837,14 +63855,12 @@ var App = exports.App = function (_React$Component) {
 	return App;
 }(_react2.default.Component);
 
-},{"./Admin/AdminHome.js":283,"./Admin/Author/AdminAuthorContainer":284,"./Admin/Book/AdminBookContainer":286,"./Admin/Borrower/AdminBorrowerContainer":288,"./Admin/Branch/AdminBranchContainer":290,"./Admin/Genre/AdminGenreContainer":292,"./Admin/Loan/AdminLoanContainer":294,"./Admin/Publisher/AdminPublisherContainer":296,"./Borrower/BorrowerContainer":299,"./Home.js":303,"./Librarian/LibrarianBranchContainer":304,"react":148,"react-router-dom":135}],299:[function(require,module,exports){
+},{"./Admin/AdminHome.js":283,"./Admin/Author/AdminAuthorContainer":284,"./Admin/Book/AdminBookContainer":286,"./Admin/Borrower/AdminBorrowerContainer":288,"./Admin/Branch/AdminBranchContainer":290,"./Admin/Genre/AdminGenreContainer":292,"./Admin/Loan/AdminLoanContainer":294,"./Admin/Publisher/AdminPublisherContainer":296,"./Borrower/BorrowerContainer":299,"./Home.js":305,"./Librarian/LibrarianBranchContainer":306,"react":148,"react-router-dom":135}],299:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 var _react = require('react');
 
@@ -63856,58 +63872,174 @@ var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _reactRedux = require('react-redux');
 
+var _reactstrap = require('reactstrap');
+
 var _redux = require('redux');
 
 var _borrowerActions = require('../../actions/borrowerActions');
 
 var borrowerActions = _interopRequireWildcard(_borrowerActions);
 
-var _BorrowerRender = require('./BorrowerRender');
+var _BorrowerLoginForm = require('./BorrowerLoginForm');
 
-var _BorrowerRender2 = _interopRequireDefault(_BorrowerRender);
+var _BorrowerLoginForm2 = _interopRequireDefault(_BorrowerLoginForm);
+
+var _CheckoutBranchTable = require('./CheckoutBranchTable');
+
+var _CheckoutBranchTable2 = _interopRequireDefault(_CheckoutBranchTable);
+
+var _CheckoutBookTable = require('./CheckoutBookTable');
+
+var _CheckoutBookTable2 = _interopRequireDefault(_CheckoutBookTable);
+
+var _ReturnLoansTable = require('./ReturnLoansTable');
+
+var _ReturnLoansTable2 = _interopRequireDefault(_ReturnLoansTable);
+
+var _Header = require('../Header');
+
+var _Header2 = _interopRequireDefault(_Header);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+//import BorrowerRender from './BorrowerRender';
 //import BorrowerHeader from './BorrowerHeader';
 
 var BorrowerContainer = function BorrowerContainer(props) {
-	var actions = props.actions;
+	var actions = props.actions,
+	    borrower = props.borrower,
+	    borrowerDashboardInfo = props.borrowerDashboardInfo,
+	    requestInfo = props.requestInfo;
 
 	(0, _react.useEffect)(function () {
 		//actions.readBranches();
 	}, []);
+	var content = '';
+	function handleCheckout(book, borrower, branch) {
+		actions.processCheckout(book, borrower, branch);
+	}
+	function handleLoginAttempt(cardNo) {
+		actions.attemptLogin(cardNo);
+	}
+	function selectBranch(branch) {
+		actions.selectBranchForCheckout(branch);
+	}
+	function startCheckout() {
+		actions.startCheckout();
+	}
+	function startReturn() {
+		actions.startReturn(borrower.borrowerCardNo);
+	}
 
+	var doesRequestInfoExist = requestInfo;
+	if (!borrower) {
+		if (!doesRequestInfoExist) {
+			content = _react2.default.createElement(_BorrowerLoginForm2.default, { handleLoginAttempt: handleLoginAttempt });
+		}
+		if (doesRequestInfoExist && requestInfo.loginPending) {
+			content = _react2.default.createElement(_reactstrap.Spinner, { type: 'grow', color: 'primary' });
+		}
+		if (doesRequestInfoExist && requestInfo.loginFailed) {
+			content = _react2.default.createElement(
+				'div',
+				null,
+				_react2.default.createElement(
+					_reactstrap.Alert,
+					{ color: 'danger' },
+					'The entered card number does not exist in our system please try again or contact an administrator'
+				),
+				_react2.default.createElement(_BorrowerLoginForm2.default, { handleLoginAttempt: handleLoginAttempt })
+			);
+		}
+	} else if (borrower && doesRequestInfoExist && requestInfo.loginSuccessful) {
+		content = [
+		//Make into its own component in the future
+		_react2.default.createElement(
+			'div',
+			{ key: 0 },
+			_react2.default.createElement(
+				_reactstrap.Button,
+				{ onClick: startCheckout },
+				'Check-out'
+			),
+			_react2.default.createElement(
+				_reactstrap.Button,
+				{ onClick: startReturn },
+				'Return'
+			)
+		)];
+		if (borrowerDashboardInfo.isCheckingOut) {
+			if (!borrowerDashboardInfo.selectedBranch) {
+				if (requestInfo.branchesPending) {
+					content.push(_react2.default.createElement(_reactstrap.Spinner, { type: 'grow', color: 'primary', key: 1 }));
+				} else if (requestInfo.branchesSuccessful) {
+					content.push(_react2.default.createElement(_CheckoutBranchTable2.default, {
+						branches: borrowerDashboardInfo.branches,
+						selectBranch: selectBranch,
+						key: 1
+					}));
+				} else if (requestInfo.branchesFailed) {
+					content.push(_react2.default.createElement(
+						_reactstrap.Alert,
+						{ color: 'danger', key: 1 },
+						'Their was an error trying to access library branches please try again later or contact and Admin'
+					));
+				}
+			} else if (borrowerDashboardInfo.selectedBranch) {
+				if (requestInfo.booksPending) {
+					content.push(_react2.default.createElement(_reactstrap.Spinner, { type: 'grow', color: 'primary', key: 1 }));
+				} else if (requestInfo.booksSuccessful) {
+					content.push(_react2.default.createElement(_CheckoutBookTable2.default, {
+						books: borrowerDashboardInfo.books,
+						borrower: borrower,
+						branch: borrowerDashboardInfo.selectedBranch,
+						handleCheckout: handleCheckout,
+						key: 1
+					}));
+				} else if (requestInfo.booksFailed) {
+					content.push(_react2.default.createElement(
+						_reactstrap.Alert,
+						{ color: 'danger', key: 1 },
+						'Their was an error trying to access available books please try again later or contact and Admin'
+					));
+				}
+			}
+		} else if (borrowerDashboardInfo.isReturning) {
+			content.push('return clicked!');
+			if (requestInfo.loansPending) {
+				content.push(_react2.default.createElement(_reactstrap.Spinner, { type: 'grow', color: 'primary', key: 1 }));
+			} else if (requestInfo.loansSuccessful) {
+				content.push(_react2.default.createElement(_ReturnLoansTable2.default, { loans: borrowerDashboardInfo.loans, key: 1 }));
+				//
+				//
+				//
+				//
+				//
+			} else if (requestInfo.loansFailed) {
+				content.push(_react2.default.createElement(
+					_reactstrap.Alert,
+					{ color: 'danger', key: 1 },
+					'Their was an error trying to access available books please try again later or contact and Admin'
+				));
+			}
+		}
+	}
 	return _react2.default.createElement(
 		'div',
 		null,
+		_react2.default.createElement(_Header2.default, null),
 		_react2.default.createElement(
 			'div',
 			{ className: 'jumbotron' },
 			_react2.default.createElement(
 				'h1',
 				null,
-				'Borrower Management'
+				'Borrower Dashboard'
 			)
 		),
-		_react2.default.createElement(_BorrowerRender2.default, _extends({}, props, {
-			handleCheckout: function handleCheckout(book, borrower, branch) {
-				return actions.processCheckout(book, borrower, branch);
-			},
-			handleLoginAttempt: function handleLoginAttempt(cardNo) {
-				return actions.attemptLogin(cardNo);
-			},
-			startCheckout: function startCheckout() {
-				return actions.startCheckout();
-			},
-			startReturn: function startReturn() {
-				return actions.startReturn();
-			},
-			selectBranch: function selectBranch(branch) {
-				return actions.selectBranchForCheckout(branch);
-			}
-		}))
+		content
 	);
 };
 
@@ -63926,282 +64058,15 @@ function mapDispatchToProps(dispatch) {
 }
 
 BorrowerContainer.propTypes = {
-	actions: _propTypes2.default.object
+	actions: _propTypes2.default.object,
+	borrower: _propTypes2.default.object,
+	borrowerDashboardInfo: _propTypes2.default.object,
+	requestInfo: _propTypes2.default.object
 };
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(BorrowerContainer);
 
-},{"../../actions/borrowerActions":280,"./BorrowerRender":302,"prop-types":95,"react":148,"react-redux":124,"redux":249}],300:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-
-var _react = require('react');
-
-var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = require('prop-types');
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
-var _reactstrap = require('reactstrap');
-
-var _mdbreact = require('mdbreact');
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var BorrowerDashboard = function BorrowerDashboard(_ref) {
-	var borrower = _ref.borrower,
-	    dashboardInfo = _ref.dashboardInfo,
-	    handleCheckout = _ref.handleCheckout,
-	    requestInfo = _ref.requestInfo,
-	    selectBranch = _ref.selectBranch,
-	    startCheckout = _ref.startCheckout,
-	    startReturn = _ref.startReturn;
-
-	function createBranchRows() {
-		return dashboardInfo.branches.map(function (branch) {
-			var deepCopyBranch = JSON.parse(JSON.stringify(branch));
-			deepCopyBranch.select = _react2.default.createElement(
-				_reactstrap.Button,
-				{ onClick: function onClick() {
-						return selectBranch(branch);
-					} },
-				'Select'
-			);
-			return deepCopyBranch;
-		});
-	}
-	function parsePublisherInfo(newObj) {
-		return newObj.publisher.publisherName;
-	}
-
-	function parseAuthors(newObj) {
-		if (newObj.authors.length == 0) {
-			return '\nNo Authors';
-		} else {
-			var authors = '';
-			for (var i = 0; i < newObj.authors.length; i++) {
-				authors = authors.concat(newObj.authors[i].authorName);
-				if (i < newObj.authors.length - 1) {
-					authors = authors.concat(', ');
-				}
-			}
-			return authors;
-		}
-	}
-
-	function parseGenres(newObj) {
-		if (newObj.genres.length == 0) {
-			return '\nNo Genres';
-		} else {
-			var genres = '';
-			for (var i = 0; i < newObj.genres.length; i++) {
-				genres = genres.concat(newObj.genres[i].genreName);
-				if (i < newObj.genres.length - 1) {
-					genres = genres.concat(', ');
-				}
-			}
-			return genres;
-		}
-	}
-
-	function getBookRowsForCheckout() {
-		return dashboardInfo.books.map(function (book) {
-			// Deep Clone object to bookId adding to it while mapping over it during map
-
-			var bookDeepCopy = JSON.parse(JSON.stringify(book));
-
-			bookDeepCopy.publisherName = parsePublisherInfo(bookDeepCopy);
-			bookDeepCopy.authorInfo = parseAuthors(bookDeepCopy);
-			bookDeepCopy.genreInfo = parseGenres(bookDeepCopy);
-			bookDeepCopy.select = _react2.default.createElement(
-				_reactstrap.Button,
-				{
-					onClick: function onClick() {
-						return handleCheckout(book, borrower, dashboardInfo.selectedBranch);
-					}
-				},
-				'Select'
-			);
-			return bookDeepCopy;
-		});
-	}
-
-	console.log(borrower);
-	var content = '';
-	if (!dashboardInfo.isCheckingOut && !dashboardInfo.isReturning) {
-		content = _react2.default.createElement(
-			'div',
-			null,
-			_react2.default.createElement(
-				_reactstrap.Button,
-				{ onClick: function onClick() {
-						return startCheckout();
-					} },
-				'Check-out'
-			),
-			_react2.default.createElement(
-				_reactstrap.Button,
-				{ onClick: function onClick() {
-						return startReturn();
-					} },
-				'Return'
-			)
-		);
-	}
-	if (dashboardInfo.isCheckingOut && !dashboardInfo.selectedBranch) {
-		if (requestInfo.branchesPending) {
-			content = _react2.default.createElement(
-				'div',
-				null,
-				_react2.default.createElement(
-					_reactstrap.Button,
-					{ onClick: function onClick() {
-							return startCheckout();
-						} },
-					'Check-out'
-				),
-				_react2.default.createElement(
-					_reactstrap.Button,
-					{ onClick: function onClick() {
-							return startReturn();
-						} },
-					'Return'
-				),
-				_react2.default.createElement(_reactstrap.Spinner, { type: 'grow', color: 'primary' })
-			);
-		} else if (requestInfo.branchesSuccessful) {
-			var data = {
-				columns: [{
-					label: 'Branch Name',
-					field: 'branchName',
-					sort: 'asc'
-				}, {
-					label: 'Branch Address',
-					field: 'branchAddress',
-					sort: 'asc'
-				}, {
-					label: 'Select',
-					field: 'select',
-					sort: 'asc'
-				}],
-				rows: createBranchRows()
-			};
-			content = _react2.default.createElement(
-				'div',
-				null,
-				_react2.default.createElement(
-					_reactstrap.Button,
-					{ onClick: function onClick() {
-							return startCheckout();
-						} },
-					'Check-out'
-				),
-				_react2.default.createElement(
-					_reactstrap.Button,
-					{ onClick: function onClick() {
-							return startReturn();
-						} },
-					'Return'
-				),
-				_react2.default.createElement(
-					'div',
-					{ className: 'mainblock' },
-					_react2.default.createElement(_mdbreact.MDBDataTable, { striped: true, bordered: true, small: true, responsive: true, data: data })
-				)
-			);
-		} else if (requestInfo.branchesFailed) {
-			content = _react2.default.createElement(
-				_reactstrap.Alert,
-				{ color: 'danger' },
-				'Their was an error trying to access library branches please try again later or contact and Admin'
-			);
-		}
-	} else if (dashboardInfo.isCheckingOut && dashboardInfo.selectedBranch) {
-		if (requestInfo.booksPending) {
-			content = _react2.default.createElement(
-				'div',
-				null,
-				_react2.default.createElement(
-					_reactstrap.Button,
-					{ onClick: function onClick() {
-							return startCheckout();
-						} },
-					'Check-out'
-				),
-				_react2.default.createElement(
-					_reactstrap.Button,
-					{ onClick: function onClick() {
-							return startReturn();
-						} },
-					'Return'
-				),
-				_react2.default.createElement(_reactstrap.Spinner, { type: 'grow', color: 'primary' })
-			);
-		} else if (requestInfo.booksSuccessful) {
-			var _data = {
-				columns: [{
-					label: 'Book Name',
-					field: 'title',
-					sort: 'asc'
-				}, {
-					label: 'Publisher',
-					field: 'publisherName'
-				}, {
-					label: 'Authors',
-					field: 'authorInfo',
-					sort: 'asc'
-				}, {
-					label: 'Genres',
-					field: 'genreInfo',
-					sort: 'asc'
-				}, {
-					label: 'Select',
-					field: 'select',
-					sort: 'asc'
-				}],
-				rows: getBookRowsForCheckout()
-			};
-			return _react2.default.createElement(
-				_react2.default.Fragment,
-				null,
-				_react2.default.createElement(
-					'div',
-					{ className: 'mainblock' },
-					_react2.default.createElement(_mdbreact.MDBDataTable, { striped: true, bordered: true, small: true, responsive: true, data: _data })
-				)
-			);
-		} else if (requestInfo.booksFailed) {
-			_react2.default.createElement(
-				_reactstrap.Alert,
-				{ color: 'danger' },
-				'Their was an error trying to access available books please try again later or contact and Admin'
-			);
-		}
-	}
-
-	if (dashboardInfo.isReturning) {
-		content = 'Is Returning';
-	}
-	return content;
-};
-
-BorrowerDashboard.propTypes = {
-	borrower: _propTypes2.default.object,
-	dashboardInfo: _propTypes2.default.object,
-	handleCheckout: _propTypes2.default.func,
-	requestInfo: _propTypes2.default.object,
-	selectBranch: _propTypes2.default.func,
-	startCheckout: _propTypes2.default.func,
-	startReturn: _propTypes2.default.func
-};
-
-exports.default = BorrowerDashboard;
-
-},{"mdbreact":63,"prop-types":95,"react":148,"reactstrap":242}],301:[function(require,module,exports){
+},{"../../actions/borrowerActions":280,"../Header":304,"./BorrowerLoginForm":300,"./CheckoutBookTable":301,"./CheckoutBranchTable":302,"./ReturnLoansTable":303,"prop-types":95,"react":148,"react-redux":124,"reactstrap":242,"redux":249}],300:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -64233,7 +64098,7 @@ var BorrowerLoginForm = function BorrowerLoginForm(props) {
 	}
 	return _react2.default.createElement(
 		_reactstrap.Form,
-		{ onSubmit: submitLoginAttempt },
+		{ className: 'mainblock', onSubmit: submitLoginAttempt },
 		_react2.default.createElement(
 			_reactstrap.FormGroup,
 			null,
@@ -64264,7 +64129,7 @@ BorrowerLoginForm.propTypes = {
 
 exports.default = BorrowerLoginForm;
 
-},{"prop-types":95,"react":148,"reactstrap":242}],302:[function(require,module,exports){
+},{"prop-types":95,"react":148,"reactstrap":242}],301:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -64279,87 +64144,447 @@ var _propTypes = require('prop-types');
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _BorrowerLoginForm = require('./BorrowerLoginForm');
-
-var _BorrowerLoginForm2 = _interopRequireDefault(_BorrowerLoginForm);
+var _mdbreact = require('mdbreact');
 
 var _reactstrap = require('reactstrap');
 
-var _BorrowerDashboard = require('./BorrowerDashboard');
-
-var _BorrowerDashboard2 = _interopRequireDefault(_BorrowerDashboard);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-//import { MDBDataTable } from 'mdbreact';
+var CheckoutBookTable = function CheckoutBookTable(_ref) {
+	var books = _ref.books,
+	    borrower = _ref.borrower,
+	    branch = _ref.branch,
+	    handleCheckout = _ref.handleCheckout;
 
-var BorrowerRender = function BorrowerRender(_ref) {
-	var borrower = _ref.borrower,
-	    borrowerDashboardInfo = _ref.borrowerDashboardInfo,
-	    handleCheckout = _ref.handleCheckout,
-	    handleLoginAttempt = _ref.handleLoginAttempt,
-	    requestInfo = _ref.requestInfo,
-	    selectBranch = _ref.selectBranch,
-	    startCheckout = _ref.startCheckout,
-	    startReturn = _ref.startReturn;
+	function parsePublisherInfo(bookCopy) {
+		return bookCopy.publisher.publisherName;
+	}
 
-	var content = '';
-	var doesRequestInfoExist = requestInfo;
-	if (!borrower && !doesRequestInfoExist) {
-		content = _react2.default.createElement(_BorrowerLoginForm2.default, { handleLoginAttempt: handleLoginAttempt });
+	function parseAuthors(bookCopy) {
+		if (bookCopy.authors.length == 0) {
+			return '\nNo Authors';
+		} else {
+			var authors = '';
+			for (var i = 0; i < bookCopy.authors.length; i++) {
+				authors = authors.concat(bookCopy.authors[i].authorName);
+				if (i < bookCopy.authors.length - 1) {
+					authors = authors.concat(', ');
+				}
+			}
+			return authors;
+		}
 	}
-	if (!borrower && doesRequestInfoExist && requestInfo.loginPending) {
-		content = _react2.default.createElement(_reactstrap.Spinner, { type: 'grow', color: 'primary' });
+
+	function parseGenres(bookCopy) {
+		if (bookCopy.genres.length == 0) {
+			return '\nNo Genres';
+		} else {
+			var genres = '';
+			for (var i = 0; i < bookCopy.genres.length; i++) {
+				genres = genres.concat(bookCopy.genres[i].genreName);
+				if (i < bookCopy.genres.length - 1) {
+					genres = genres.concat(', ');
+				}
+			}
+			return genres;
+		}
 	}
-	if (!borrower && doesRequestInfoExist && requestInfo.loginFailed) {
-		content = _react2.default.createElement(
-			'div',
-			null,
-			_react2.default.createElement(
-				_reactstrap.Alert,
-				{ color: 'danger' },
-				'The entered card number does not exist in our system please try again or contact an administrator'
-			),
-			_react2.default.createElement(_BorrowerLoginForm2.default, { handleLoginAttempt: handleLoginAttempt })
-		);
-	}
-	if (borrower && doesRequestInfoExist && requestInfo.loginSuccessful) {
-		content = _react2.default.createElement(_BorrowerDashboard2.default, {
-			borrower: borrower,
-			dashboardInfo: borrowerDashboardInfo,
-			handleCheckout: handleCheckout,
-			requestInfo: requestInfo,
-			selectBranch: selectBranch,
-			startCheckout: startCheckout,
-			startReturn: startReturn
+
+	function getBookRowsForCheckout() {
+		return books.map(function (book) {
+			// Deep Clone object to bookId adding to it while mapping over it during map
+			var bookDeepCopy = JSON.parse(JSON.stringify(book));
+
+			bookDeepCopy.publisherName = parsePublisherInfo(bookDeepCopy);
+			bookDeepCopy.authorInfo = parseAuthors(bookDeepCopy);
+			bookDeepCopy.genreInfo = parseGenres(bookDeepCopy);
+			bookDeepCopy.select = _react2.default.createElement(
+				_reactstrap.Button,
+				{ onClick: function onClick() {
+						return handleCheckout(book, borrower, branch);
+					} },
+				'Select'
+			);
+			return bookDeepCopy;
 		});
 	}
+	var data = {
+		columns: [{
+			label: 'Book Name',
+			field: 'title',
+			sort: 'asc'
+		}, {
+			label: 'Publisher',
+			field: 'publisherName'
+		}, {
+			label: 'Authors',
+			field: 'authorInfo',
+			sort: 'asc'
+		}, {
+			label: 'Genres',
+			field: 'genreInfo',
+			sort: 'asc'
+		}, {
+			label: 'Select',
+			field: 'select',
+			sort: 'asc'
+		}],
+		rows: getBookRowsForCheckout()
+	};
 	return _react2.default.createElement(
-		'div',
+		_react2.default.Fragment,
 		null,
 		_react2.default.createElement(
-			'h1',
-			null,
-			'Borrower'
-		),
-		content
+			'div',
+			{ className: 'mainblock' },
+			_react2.default.createElement(_mdbreact.MDBDataTable, { striped: true, bordered: true, small: true, responsive: true, data: data })
+		)
 	);
 };
 
-BorrowerRender.propTypes = {
+CheckoutBookTable.propTypes = {
+	books: _propTypes2.default.array,
 	borrower: _propTypes2.default.object,
-	borrowerDashboardInfo: _propTypes2.default.object,
-	handleCheckout: _propTypes2.default.func,
-	handleLoginAttempt: _propTypes2.default.func,
-	requestInfo: _propTypes2.default.object,
-	selectBranch: _propTypes2.default.func,
-	startCheckout: _propTypes2.default.func,
-	startReturn: _propTypes2.default.func
+	branch: _propTypes2.default.object,
+	handleCheckout: _propTypes2.default.func
+};
+exports.default = CheckoutBookTable;
+
+},{"mdbreact":63,"prop-types":95,"react":148,"reactstrap":242}],302:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = require('prop-types');
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _mdbreact = require('mdbreact');
+
+var _reactstrap = require('reactstrap');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var CheckoutBranchTable = function CheckoutBranchTable(_ref) {
+	var branches = _ref.branches,
+	    selectBranch = _ref.selectBranch;
+
+	function createBranchRows() {
+		return branches.map(function (branch) {
+			var deepCopyBranch = JSON.parse(JSON.stringify(branch));
+			deepCopyBranch.select = _react2.default.createElement(
+				_reactstrap.Button,
+				{ onClick: function onClick() {
+						return selectBranch(branch);
+					} },
+				'Select'
+			);
+			return deepCopyBranch;
+		});
+	}
+	var data = {
+		columns: [{
+			label: 'Branch Name',
+			field: 'branchName',
+			sort: 'asc'
+		}, {
+			label: 'Branch Address',
+			field: 'branchAddress',
+			sort: 'asc'
+		}, {
+			label: 'Select',
+			field: 'select',
+			sort: 'asc'
+		}],
+		rows: createBranchRows()
+	};
+	return _react2.default.createElement(
+		'div',
+		{ className: 'mainblock' },
+		_react2.default.createElement(_mdbreact.MDBDataTable, { striped: true, bordered: true, small: true, responsive: true, data: data })
+	);
 };
 
-exports.default = BorrowerRender;
+CheckoutBranchTable.propTypes = {
+	branches: _propTypes2.default.array,
+	selectBranch: _propTypes2.default.func
+};
 
-},{"./BorrowerDashboard":300,"./BorrowerLoginForm":301,"prop-types":95,"react":148,"reactstrap":242}],303:[function(require,module,exports){
+exports.default = CheckoutBranchTable;
+
+},{"mdbreact":63,"prop-types":95,"react":148,"reactstrap":242}],303:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = require('prop-types');
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _mdbreact = require('mdbreact');
+
+var _reactstrap = require('reactstrap');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var ReturnLoansTable = function ReturnLoansTable(_ref) {
+	var loans = _ref.loans;
+
+	console.log(loans);
+
+	function parseBranchInfo(newObj) {
+		var rawData = newObj['branch.branchName'] + '\n' + newObj['branch.branchAddress'];
+		rawData = rawData.split('\n');
+		var parsedBranch = rawData.map(function (line) {
+			return _react2.default.createElement(
+				'div',
+				{ key: line.id },
+				line
+			);
+		});
+		return parsedBranch;
+	}
+
+	function parseBookInfo(newObj) {
+		var rawData = 'Title: ' + newObj.book.title + parseAuthors(newObj);
+		rawData = rawData.split('\n');
+		var parsedBook = rawData.map(function (line) {
+			return _react2.default.createElement(
+				'div',
+				{ key: line.id },
+				line
+			);
+		});
+		return parsedBook;
+	}
+	function parseAuthors(newObj) {
+		if (newObj.book.authors === null) {
+			return '\nNo Authors';
+		} else {
+			var authors = '\nAuthors: ';
+			for (var i = 0; i < newObj.book.authors.length; i++) {
+				authors = authors.concat(newObj.book.authors[i].authorName);
+				if (i < newObj.book.authors.length - 1) {
+					authors = authors.concat(', ');
+				}
+			}
+			return authors;
+		}
+	}
+
+	function parseMonth(string) {
+		var num = parseInt(string);
+		switch (num) {
+			case 1:
+				return 'January';
+			case 2:
+				return 'February';
+			case 3:
+				return 'March';
+			case 4:
+				return 'April';
+			case 5:
+				return 'May';
+			case 6:
+				return 'June';
+			case 7:
+				return 'July';
+			case 8:
+				return 'August';
+			case 9:
+				return 'September';
+			case 10:
+				return 'October';
+			case 11:
+				return 'November';
+			case 12:
+				return 'December';
+			default:
+				return 'ERROR';
+		}
+	}
+	function formatDate(obj) {
+		var concat = function concat(accumulator, currentValue) {
+			return accumulator + currentValue;
+		};
+		//2020-09-14T04:00:00Z
+		var array = Array.from(obj);
+		//09-14-2020 : 04:00AM
+		var am = true;
+		if (array.slice(11, 13).reduce(concat) < 12) {
+			am = true;
+		} else {
+			am = false;
+		}
+		var time = '';
+		// Parse hours depending on AM or PM
+		if (array.slice(11, 13).reduce(concat) > 12) {
+			time = array.slice(11, 13).reduce(concat) - 12 + array.slice(13, 16).reduce(concat) + (am ? 'AM' : 'PM');
+		} else {
+			time = parseInt(array.slice(11, 13).reduce(concat)) + array.slice(13, 16).reduce(concat) + (am ? 'AM' : 'PM');
+		}
+		// Parse Months
+		var month = parseMonth(array.slice(5, 7).reduce(concat));
+		return month + ' ' + parseInt(array.slice(8, 10).reduce(concat)) + ', ' + array.slice(0, 4).reduce(concat) + ' ' + time;
+	}
+
+	function getTableBodyContent() {
+		return loans.map(function (obj) {
+			var tempbook = parseBookInfo(obj);
+			var flatten = require('flat').flatten;
+			var loanCopy = flatten(obj);
+			loanCopy.bookInfo = tempbook;
+			/* will fix later */
+			loanCopy.branchInfo = parseBranchInfo(loanCopy);
+			loanCopy.parsedDueDate = formatDate(loanCopy.dueDate);
+			loanCopy.parsedDateOut = formatDate(loanCopy.dateOut);
+			console.log(loanCopy);
+			loanCopy.extend = _react2.default.createElement(
+				_reactstrap.Button,
+				null,
+				'Select'
+			);
+			return loanCopy;
+		});
+	}
+	var data = {
+		columns: [{
+			label: 'Book Info',
+			field: 'bookInfo',
+			sort: 'asc'
+		}, {
+			label: 'Branch Info',
+			field: 'branchInfo',
+			sort: 'asc'
+		}, {
+			label: 'dateOut',
+			field: 'parsedDateOut',
+			sort: 'asc'
+		}, {
+			label: 'dueDate',
+			field: 'parsedDueDate',
+			sort: 'asc'
+		}, {
+			label: 'Extend Due Date',
+			field: 'extend',
+			sort: 'asc'
+		}],
+		rows: getTableBodyContent()
+	};
+	return _react2.default.createElement(
+		_react2.default.Fragment,
+		null,
+		_react2.default.createElement(
+			'div',
+			{ className: 'mainblock', key: 2 },
+			_react2.default.createElement(
+				_reactstrap.Button,
+				{ onClick: function onClick() {
+						return handleRefresh();
+					} },
+				'Refresh Data'
+			),
+			' ',
+			_react2.default.createElement(_mdbreact.MDBDataTable, { striped: true, bordered: true, small: true, responsive: true, data: data })
+		)
+	);
+};
+
+ReturnLoansTable.propTypes = {
+	loans: _propTypes2.default.array
+};
+exports.default = ReturnLoansTable;
+
+},{"flat":43,"mdbreact":63,"prop-types":95,"react":148,"reactstrap":242}],304:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactRouterDom = require('react-router-dom');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Header = function Header() {
+	return _react2.default.createElement(
+		'nav',
+		{ className: 'navbar navbar-inverse' },
+		_react2.default.createElement(
+			'div',
+			{ className: 'container-fluid' },
+			_react2.default.createElement(
+				'ul',
+				{ className: 'list-inline' },
+				_react2.default.createElement(
+					'li',
+					{ className: 'list-inline-item' },
+					_react2.default.createElement(
+						_reactRouterDom.Link,
+						{ to: '/', className: 'navbar-brand' },
+						_react2.default.createElement('img', { width: '90px', height: '30px', src: 'images/logo.png' })
+					)
+				),
+				_react2.default.createElement(
+					'li',
+					{ className: 'list-inline-item' },
+					_react2.default.createElement(
+						_reactRouterDom.Link,
+						{ to: '/', replace: true },
+						'Home'
+					)
+				),
+				_react2.default.createElement(
+					'li',
+					{ className: 'list-inline-item' },
+					_react2.default.createElement(
+						_reactRouterDom.Link,
+						{ to: '/LibrarianBranch', replace: true },
+						'Librarian_Home'
+					)
+				),
+				_react2.default.createElement(
+					'li',
+					{ className: 'list-inline-item' },
+					_react2.default.createElement(
+						_reactRouterDom.Link,
+						{ to: '/Borrower', replace: true },
+						'Borrower'
+					)
+				),
+				_react2.default.createElement(
+					'li',
+					{ className: 'list-inline-item' },
+					_react2.default.createElement(
+						_reactRouterDom.Link,
+						{ to: '/AdminHome', replace: true },
+						'Administrator_Home'
+					)
+				)
+			)
+		)
+	);
+};
+
+exports.default = Header;
+
+},{"react":148,"react-router-dom":135}],305:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -64395,7 +64620,7 @@ var Home = function Home() {
 
 exports.default = Home;
 
-},{"./header.js":330,"react":148}],304:[function(require,module,exports){
+},{"./header.js":332,"react":148}],306:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -64500,7 +64725,7 @@ LibrarianBranchContainer.propTypes = {
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(LibrarianBranchContainer);
 
-},{"../../actions/librarianActions.js":281,"./LibrarianBranchRender":305,"./LibrarianHeader":307,"prop-types":95,"react":148,"react-redux":124,"redux":249}],305:[function(require,module,exports){
+},{"../../actions/librarianActions.js":281,"./LibrarianBranchRender":307,"./LibrarianHeader":309,"prop-types":95,"react":148,"react-redux":124,"redux":249}],307:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -64770,7 +64995,7 @@ LibrarianBranchRender.propTypes = {
 
 exports.default = LibrarianBranchRender;
 
-},{"../Modal/Librarian/UpdateBookCopiesModal":328,"../Modal/Librarian/UpdateModal":329,"./LibrarianCopiesRender":306,"./LibrarianNonCopiesRender":308,"mdbreact":63,"prop-types":95,"react":148,"reactstrap":242}],306:[function(require,module,exports){
+},{"../Modal/Librarian/UpdateBookCopiesModal":330,"../Modal/Librarian/UpdateModal":331,"./LibrarianCopiesRender":308,"./LibrarianNonCopiesRender":310,"mdbreact":63,"prop-types":95,"react":148,"reactstrap":242}],308:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -64928,7 +65153,7 @@ LibrarianCopiesRender.propTypes = {
 
 exports.default = LibrarianCopiesRender;
 
-},{"../Modal/Librarian/UpdateBookCopiesModal":328,"mdbreact":63,"prop-types":95,"react":148,"reactstrap":242}],307:[function(require,module,exports){
+},{"../Modal/Librarian/UpdateBookCopiesModal":330,"mdbreact":63,"prop-types":95,"react":148,"reactstrap":242}],309:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -64982,7 +65207,7 @@ var LibrarianHeader = function LibrarianHeader() {
 
 exports.default = LibrarianHeader;
 
-},{"react":148,"react-router-dom":135}],308:[function(require,module,exports){
+},{"react":148,"react-router-dom":135}],310:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -65138,7 +65363,7 @@ LibrarianNonCopiesRender.propTypes = {
 
 exports.default = LibrarianNonCopiesRender;
 
-},{"../Modal/Librarian/UpdateBookCopiesModal":328,"mdbreact":63,"prop-types":95,"react":148,"reactstrap":242}],309:[function(require,module,exports){
+},{"../Modal/Librarian/UpdateBookCopiesModal":330,"mdbreact":63,"prop-types":95,"react":148,"reactstrap":242}],311:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -65255,7 +65480,7 @@ CreateModal.propTypes = {
 
 exports.default = CreateModal;
 
-},{"prop-types":95,"react":148,"reactstrap":242}],310:[function(require,module,exports){
+},{"prop-types":95,"react":148,"reactstrap":242}],312:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -65365,7 +65590,7 @@ DeleteModal.propTypes = {
 
 exports.default = DeleteModal;
 
-},{"prop-types":95,"react":148,"reactstrap":242}],311:[function(require,module,exports){
+},{"prop-types":95,"react":148,"reactstrap":242}],313:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -65487,7 +65712,7 @@ UpdateModal.propTypes = {
 
 exports.default = UpdateModal;
 
-},{"prop-types":95,"react":148,"reactstrap":242}],312:[function(require,module,exports){
+},{"prop-types":95,"react":148,"reactstrap":242}],314:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -65625,7 +65850,7 @@ CreateModal.propTypes = {
 
 exports.default = CreateModal;
 
-},{"prop-types":95,"react":148,"reactstrap":242}],313:[function(require,module,exports){
+},{"prop-types":95,"react":148,"reactstrap":242}],315:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -65735,7 +65960,7 @@ DeleteModal.propTypes = {
 
 exports.default = DeleteModal;
 
-},{"prop-types":95,"react":148,"reactstrap":242}],314:[function(require,module,exports){
+},{"prop-types":95,"react":148,"reactstrap":242}],316:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -65879,7 +66104,7 @@ UpdateModal.propTypes = {
 
 exports.default = UpdateModal;
 
-},{"prop-types":95,"react":148,"reactstrap":242}],315:[function(require,module,exports){
+},{"prop-types":95,"react":148,"reactstrap":242}],317:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -66036,7 +66261,7 @@ CreateModal.propTypes = {
 
 exports.default = CreateModal;
 
-},{"prop-types":95,"react":148,"reactstrap":242}],316:[function(require,module,exports){
+},{"prop-types":95,"react":148,"reactstrap":242}],318:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -66178,7 +66403,7 @@ DeleteModal.propTypes = {
 
 exports.default = DeleteModal;
 
-},{"prop-types":95,"react":148,"reactstrap":242}],317:[function(require,module,exports){
+},{"prop-types":95,"react":148,"reactstrap":242}],319:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -66343,7 +66568,7 @@ UpdateModal.propTypes = {
 
 exports.default = UpdateModal;
 
-},{"prop-types":95,"react":148,"reactstrap":242}],318:[function(require,module,exports){
+},{"prop-types":95,"react":148,"reactstrap":242}],320:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -66481,7 +66706,7 @@ CreateModal.propTypes = {
 
 exports.default = CreateModal;
 
-},{"prop-types":95,"react":148,"reactstrap":242}],319:[function(require,module,exports){
+},{"prop-types":95,"react":148,"reactstrap":242}],321:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -66603,7 +66828,7 @@ DeleteModal.propTypes = {
 
 exports.default = DeleteModal;
 
-},{"prop-types":95,"react":148,"reactstrap":242}],320:[function(require,module,exports){
+},{"prop-types":95,"react":148,"reactstrap":242}],322:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -66747,7 +66972,7 @@ UpdateModal.propTypes = {
 
 exports.default = UpdateModal;
 
-},{"prop-types":95,"react":148,"reactstrap":242}],321:[function(require,module,exports){
+},{"prop-types":95,"react":148,"reactstrap":242}],323:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -66864,7 +67089,7 @@ CreateModal.propTypes = {
 
 exports.default = CreateModal;
 
-},{"prop-types":95,"react":148,"reactstrap":242}],322:[function(require,module,exports){
+},{"prop-types":95,"react":148,"reactstrap":242}],324:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -66974,7 +67199,7 @@ DeleteModal.propTypes = {
 
 exports.default = DeleteModal;
 
-},{"prop-types":95,"react":148,"reactstrap":242}],323:[function(require,module,exports){
+},{"prop-types":95,"react":148,"reactstrap":242}],325:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -67097,7 +67322,7 @@ UpdateModal.propTypes = {
 
 exports.default = UpdateModal;
 
-},{"prop-types":95,"react":148,"reactstrap":242}],324:[function(require,module,exports){
+},{"prop-types":95,"react":148,"reactstrap":242}],326:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -67240,7 +67465,7 @@ ExtendModal.propTypes = {
 
 exports.default = ExtendModal;
 
-},{"prop-types":95,"react":148,"reactstrap":242}],325:[function(require,module,exports){
+},{"prop-types":95,"react":148,"reactstrap":242}],327:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -67398,7 +67623,7 @@ CreateModal.propTypes = {
 
 exports.default = CreateModal;
 
-},{"prop-types":95,"react":148,"reactstrap":242}],326:[function(require,module,exports){
+},{"prop-types":95,"react":148,"reactstrap":242}],328:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -67531,7 +67756,7 @@ DeleteModal.propTypes = {
 
 exports.default = DeleteModal;
 
-},{"prop-types":95,"react":148,"reactstrap":242}],327:[function(require,module,exports){
+},{"prop-types":95,"react":148,"reactstrap":242}],329:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -67696,7 +67921,7 @@ UpdateModal.propTypes = {
 
 exports.default = UpdateModal;
 
-},{"prop-types":95,"react":148,"reactstrap":242}],328:[function(require,module,exports){
+},{"prop-types":95,"react":148,"reactstrap":242}],330:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -67841,9 +68066,9 @@ UpdateBookCopiesModal.propTypes = {
 
 exports.default = UpdateBookCopiesModal;
 
-},{"prop-types":95,"react":148,"reactstrap":242}],329:[function(require,module,exports){
-arguments[4][320][0].apply(exports,arguments)
-},{"dup":320,"prop-types":95,"react":148,"reactstrap":242}],330:[function(require,module,exports){
+},{"prop-types":95,"react":148,"reactstrap":242}],331:[function(require,module,exports){
+arguments[4][322][0].apply(exports,arguments)
+},{"dup":322,"prop-types":95,"react":148,"reactstrap":242}],332:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -67920,7 +68145,7 @@ var Header = function Header() {
 
 exports.default = Header;
 
-},{"react":148,"react-router-dom":135}],331:[function(require,module,exports){
+},{"react":148,"react-router-dom":135}],333:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -68050,8 +68275,10 @@ var BORROWER_DASHBOARD_READ_BOOKS_SUCCESSFUL = exports.BORROWER_DASHBOARD_READ_B
 var BORROWER_CHECKOUT_PENDING = exports.BORROWER_CHECKOUT_PENDING = 'BORROWER_CHECKOUT_PENDING';
 var BORROWER_CHECKOUT_FAILURE = exports.BORROWER_CHECKOUT_FAILURE = 'BORROWER_CHECKOUT_FAILURE';
 var BORROWER_CHECKOUT_SUCCESSFUL = exports.BORROWER_CHECKOUT_SUCCESSFUL = 'BORROWER_CHECKOUT_SUCCESSFUL';
+var BORROWER_READ_ACTIVE_LOANS_SUCCESSFUL = exports.BORROWER_READ_ACTIVE_LOANS_SUCCESSFUL = 'BORROWER_READ_ACTIVE_LOANS_SUCCESSFUL';
+var BORROWER_READ_ACTIVE_LOANS_FAILED = exports.BORROWER_READ_ACTIVE_LOANS_FAILED = 'BORROWER_READ_ACTIVE_LOANS_FAILED';
 
-},{}],332:[function(require,module,exports){
+},{}],334:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -68061,7 +68288,7 @@ var ADMIN_PORT = exports.ADMIN_PORT = 'http://localhost:8090/';
 var LIBRARIAN_PORT = exports.LIBRARIAN_PORT = 'http://localhost:8090/';
 var BORROWER_PORT = exports.BORROWER_PORT = 'http://localhost:8081/';
 
-},{}],333:[function(require,module,exports){
+},{}],335:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -68096,7 +68323,7 @@ _reactDom2.default.render(_react2.default.createElement(
 	)
 ), document.getElementById('app'));
 
-},{"./components/App.js":298,"./store/configureStore":343,"react":148,"react-dom":99,"react-redux":124,"react-router-dom":135}],334:[function(require,module,exports){
+},{"./components/App.js":298,"./store/configureStore":345,"react":148,"react-dom":99,"react-redux":124,"react-router-dom":135}],336:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -68245,7 +68472,7 @@ function authorReducer() {
 	}
 }
 
-},{"../constants/actionTypes":331}],335:[function(require,module,exports){
+},{"../constants/actionTypes":333}],337:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -68394,7 +68621,7 @@ function bookReducer() {
 	}
 }
 
-},{"../constants/actionTypes":331}],336:[function(require,module,exports){
+},{"../constants/actionTypes":333}],338:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -68593,6 +68820,30 @@ function borrowerReducer() {
 					})
 				});
 			}
+		case _actionTypes.BORROWER_READ_ACTIVE_LOANS_FAILED:
+			{
+				return _extends({}, state, {
+					borrowerDashboardInfo: _extends({}, state.borrowerDashboardInfo),
+					requestInfo: _extends({}, state.requestInfo, {
+						loansPending: false,
+						loansSuccessful: false,
+						loansFailed: true
+					})
+				});
+			}
+		case _actionTypes.BORROWER_READ_ACTIVE_LOANS_SUCCESSFUL:
+			{
+				return _extends({}, state, {
+					borrowerDashboardInfo: _extends({}, state.borrowerDashboardInfo, {
+						loans: action.loans
+					}),
+					requestInfo: _extends({}, state.requestInfo, {
+						loansPending: false,
+						loansSuccessful: true,
+						loansFailed: false
+					})
+				});
+			}
 		case _actionTypes.BORROWER_READ_ALL_BRANCHES_FAILED:
 			{
 				return _extends({}, state, {
@@ -68622,8 +68873,14 @@ function borrowerReducer() {
 				return _extends({}, state, {
 					borrowerDashboardInfo: {
 						isCheckingOut: false,
-						isReturning: true
-					}
+						isReturning: true,
+						selectedLoan: null
+					},
+					requestInfo: _extends({}, state.requestInfo, {
+						loansPending: true,
+						loansSuccessful: false,
+						loansFailed: false
+					})
 				});
 			}
 		case _actionTypes.BORROWER_DASHBOARD_SELECT_BRANCH:
@@ -68703,7 +68960,7 @@ function borrowerReducer() {
 	}
 }
 
-},{"../constants/actionTypes":331}],337:[function(require,module,exports){
+},{"../constants/actionTypes":333}],339:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -68853,7 +69110,7 @@ function branchReducer() {
 	}
 }
 
-},{"../constants/actionTypes":331}],338:[function(require,module,exports){
+},{"../constants/actionTypes":333}],340:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -68997,7 +69254,7 @@ function copiesReducer() {
 	}
 }
 
-},{"../constants/actionTypes":331}],339:[function(require,module,exports){
+},{"../constants/actionTypes":333}],341:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -69175,7 +69432,7 @@ function genreReducer() {
 	}
 }
 
-},{"../constants/actionTypes":331}],340:[function(require,module,exports){
+},{"../constants/actionTypes":333}],342:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -69231,7 +69488,7 @@ var rootReducer = (0, _redux.combineReducers)({
 
 exports.default = rootReducer;
 
-},{"./authorReducer":334,"./bookReducer":335,"./borrowerReducer":336,"./branchReducer":337,"./copiesReducer":338,"./genreReducer":339,"./loanReducer":341,"./publisherReducer":342,"redux":249}],341:[function(require,module,exports){
+},{"./authorReducer":336,"./bookReducer":337,"./borrowerReducer":338,"./branchReducer":339,"./copiesReducer":340,"./genreReducer":341,"./loanReducer":343,"./publisherReducer":344,"redux":249}],343:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -69315,7 +69572,7 @@ function loanReducer() {
 	}
 }
 
-},{"../constants/actionTypes":331}],342:[function(require,module,exports){
+},{"../constants/actionTypes":333}],344:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -69464,7 +69721,7 @@ function publisherReducer() {
 	}
 }
 
-},{"../constants/actionTypes":331}],343:[function(require,module,exports){
+},{"../constants/actionTypes":333}],345:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -69497,4 +69754,4 @@ function configureStore(initialState) {
 
 exports.default = configureStore;
 
-},{"../reducers":340,"redux":249,"redux-immutable-state-invariant":245,"redux-thunk":248}]},{},[333]);
+},{"../reducers":342,"redux":249,"redux-immutable-state-invariant":245,"redux-thunk":248}]},{},[335]);
