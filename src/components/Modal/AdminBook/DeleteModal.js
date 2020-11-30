@@ -14,16 +14,15 @@ import PropTypes from 'prop-types';
 const DeleteModal = (props) => {
 	const {
 		buttonLabel,
-		currentTitle,
+		title,
 		handleDelete,
-		id,
+		bookId,
 	} = props;
 
 	const [modal, setModal] = useState(false);
 
-	function deleteBook(id) {
-		handleDelete(id);
-		//handleRefresh();
+	function deleteBook(bookId) {
+		handleDelete(bookId);
 		toggle();
 	}
 
@@ -42,13 +41,13 @@ const DeleteModal = (props) => {
 					<Form>
 						<FormGroup>
 							<Label for="title">Name:</Label>
-							<Input plaintext value={currentTitle} />
+							<Input readOnly value={title} />
 						</FormGroup>
 						<Button
 							color="primary"
 							className="twobuttons"
 							onClick={() => {
-								deleteBook(id);
+								deleteBook(bookId);
 							}}
 						>
 							Yes
@@ -71,8 +70,8 @@ DeleteModal.propTypes = {
 	buttonLabel: PropTypes.string,
 	handleDelete: PropTypes.func,
 	handleRefresh: PropTypes.func,
-	id: PropTypes.number,
-	currentTitle: PropTypes.string,
+	bookId: PropTypes.number,
+	title: PropTypes.string,
 };
 
 export default DeleteModal;

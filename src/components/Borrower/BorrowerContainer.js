@@ -27,9 +27,9 @@ const BorrowerContainer = (props) => {
 					actions.processCheckout(book, borrower, branch)
 				}
 				handleLoginAttempt={(cardNo) => actions.attemptLogin(cardNo)}
-				selectBranch={(branch) => actions.selectBranchForCheckout(branch)}
 				startCheckout={() => actions.startCheckout()}
 				startReturn={() => actions.startReturn()}
+				selectBranch={(branch) => actions.selectBranchForCheckout(branch)}
 			/>
 		</div>
 	);

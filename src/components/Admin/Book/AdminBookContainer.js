@@ -13,6 +13,9 @@ const AdminBookContainer = (props) => {
 	const { actions } = props;
 	useEffect(() => {
 		actions.readBooks();
+		actions.readPublishers();
+		actions.readAuthors();
+		actions.readGenres();
 	}, []);
 
 	return (
@@ -24,11 +27,11 @@ const AdminBookContainer = (props) => {
 			<AdminBookRender
 				{...props}
 				handleRefresh={() => actions.readBooks()}
-				handleDelete={(bookId, publisherId) => actions.deleteBook(bookId, publisherId)}
-				handleUpdate={(bookId, title) =>
-					actions.updateBook(bookId, title)
+				handleDelete={(bookId) => actions.deleteBook(bookId)}
+				handleUpdate={(bookId, title, publisher, authors, genres) =>
+					actions.updateBook(bookId, title, publisher, authors, genres)
 				}
-				handleCreate={(title, publisherId) => actions.createBook(title, publisherId)}
+				handleCreate={(title, publisherId, authors, genres) => actions.createBook(title, publisherId, authors, genres)}
 			/>
 		</div>
 	);
@@ -37,6 +40,9 @@ const AdminBookContainer = (props) => {
 function mapStateToProps(state) {
 	return {
 		bookData: state.bookReducer.bookData,
+		publisherData: state.bookReducer.publisherData,
+		authorData: state.bookReducer.authorData,
+		genreData: state.bookReducer.genreData,
 		requestInfo: state.bookReducer.requestInfo,
 	};
 }

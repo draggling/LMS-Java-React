@@ -60242,13 +60242,13 @@ var _createAuthorFailed = function _createAuthorFailed(error) {
 	};
 };
 
-},{"../constants/actionTypes":322,"../constants/connections":323,"axios":9}],274:[function(require,module,exports){
+},{"../constants/actionTypes":332,"../constants/connections":333,"axios":9}],274:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
-exports.createBook = exports.updateBook = exports.deleteBook = exports.readBooks = undefined;
+exports.createBook = exports.updateBook = exports.deleteBook = exports.readGenres = exports.readAuthors = exports.readPublishers = exports.readBooks = undefined;
 
 var _axios = require('axios');
 
@@ -60271,6 +60271,41 @@ var readBooks = exports.readBooks = function readBooks() {
 		});
 	};
 };
+var readPublishers = exports.readPublishers = function readPublishers() {
+	return function (dispatch) {
+		dispatch(_readPublisherStarted());
+		return _axios2.default.get(_connections.ADMIN_PORT + 'getPublishers').then(function (res) {
+			dispatch(_readPublisherSuccess(res));
+		}).catch(function (error) {
+			console.log(error);
+			dispatch(_readPublisherFailed(error));
+		});
+	};
+};
+
+var readAuthors = exports.readAuthors = function readAuthors() {
+	return function (dispatch) {
+		dispatch(_readAuthorStarted());
+		return _axios2.default.get(_connections.ADMIN_PORT + 'getAuthors').then(function (res) {
+			dispatch(_readAuthorSuccess(res));
+		}).catch(function (error) {
+			console.log(error);
+			dispatch(_readAuthorFailed(error));
+		});
+	};
+};
+
+var readGenres = exports.readGenres = function readGenres() {
+	return function (dispatch) {
+		dispatch(_readGenreStarted());
+		return _axios2.default.get(_connections.ADMIN_PORT + 'getGenres').then(function (res) {
+			dispatch(_readGenreSuccess(res));
+		}).catch(function (error) {
+			console.log(error);
+			dispatch(_readGenreFailed(error));
+		});
+	};
+};
 
 var deleteBook = exports.deleteBook = function deleteBook(bookId) {
 	return function (dispatch) {
@@ -60286,13 +60321,25 @@ var deleteBook = exports.deleteBook = function deleteBook(bookId) {
 	};
 };
 
-var updateBook = exports.updateBook = function updateBook(bookId, publisherId, title) {
+var updateBook = exports.updateBook = function updateBook(bookId, title, publisher, authors, genres) {
 	return function (dispatch) {
 		dispatch(_updateBookRequest());
+		console.log("bookId:");
+		console.log(bookId);
+		console.log("book title:");
+		console.log(title);
+		console.log("publisher");
+		console.log(publisher);
+		console.log("authors");
+		console.log(authors);
+		console.log("genres");
+		console.log(genres);
 		return _axios2.default.put(_connections.ADMIN_PORT + 'updateBook', {
 			bookId: bookId,
 			title: title,
-			pubId: publisherId
+			publisher: publisher,
+			authors: authors,
+			genres: genres
 		}).then(function (res) {
 			dispatch(_updateBookSuccess(res));
 		}).catch(function (error) {
@@ -60302,12 +60349,14 @@ var updateBook = exports.updateBook = function updateBook(bookId, publisherId, t
 	};
 };
 
-var createBook = exports.createBook = function createBook(title, publisherId) {
+var createBook = exports.createBook = function createBook(title, publisher, authors, genres) {
 	return function (dispatch) {
 		dispatch(_createBookRequest());
 		return _axios2.default.post(_connections.ADMIN_PORT + 'addBook', {
 			title: title,
-			pubId: publisherId
+			publisher: publisher,
+			authors: authors,
+			genres: genres
 		}).then(function (res) {
 			dispatch(_createBookSuccess(res));
 		}).catch(function (error) {
@@ -60334,6 +60383,66 @@ var _readBookFailed = function _readBookFailed(error) {
 var _readBookStarted = function _readBookStarted() {
 	return {
 		type: _actionTypes.READ_BOOKS_PENDING
+	};
+};
+
+var _readPublisherSuccess = function _readPublisherSuccess(res) {
+	return {
+		type: _actionTypes.READ_PUBLISHERS_SUCCESSFUL,
+		data: res.data
+	};
+};
+
+var _readPublisherFailed = function _readPublisherFailed(error) {
+	return {
+		type: _actionTypes.READ_PUBLISHERS_FAILURE,
+		error: error
+	};
+};
+
+var _readPublisherStarted = function _readPublisherStarted() {
+	return {
+		type: _actionTypes.READ_PUBLISHERS_PENDING
+	};
+};
+
+var _readAuthorSuccess = function _readAuthorSuccess(res) {
+	return {
+		type: _actionTypes.READ_AUTHORS_SUCCESSFUL,
+		data: res.data
+	};
+};
+
+var _readAuthorFailed = function _readAuthorFailed(error) {
+	return {
+		type: _actionTypes.READ_AUTHORS_FAILURE,
+		error: error
+	};
+};
+
+var _readAuthorStarted = function _readAuthorStarted() {
+	return {
+		type: _actionTypes.READ_AUTHORS_PENDING
+	};
+};
+
+var _readGenreSuccess = function _readGenreSuccess(res) {
+	return {
+		type: _actionTypes.READ_GENRES_SUCCESSFUL,
+		data: res.data
+	};
+};
+
+var _readGenreFailed = function _readGenreFailed(error) {
+	return {
+		type: _actionTypes.READ_GENRES_FAILURE,
+		error: error
+	};
+};
+
+var _readGenreStarted = function _readGenreStarted() {
+	return {
+		type: _actionTypes.READ_GENRES_PENDING
 	};
 };
 
@@ -60398,7 +60507,7 @@ var _createBookFailed = function _createBookFailed(error) {
 	};
 };
 
-},{"../constants/actionTypes":322,"../constants/connections":323,"axios":9}],275:[function(require,module,exports){
+},{"../constants/actionTypes":332,"../constants/connections":333,"axios":9}],275:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -60556,7 +60665,7 @@ var _createBorrowerFailed = function _createBorrowerFailed(error) {
 	};
 };
 
-},{"../constants/actionTypes":322,"../constants/connections":323,"axios":9}],276:[function(require,module,exports){
+},{"../constants/actionTypes":332,"../constants/connections":333,"axios":9}],276:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -60712,7 +60821,7 @@ var _createBranchFailed = function _createBranchFailed(error) {
 	};
 };
 
-},{"../constants/actionTypes":322,"../constants/connections":323,"axios":9}],277:[function(require,module,exports){
+},{"../constants/actionTypes":332,"../constants/connections":333,"axios":9}],277:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -60758,7 +60867,8 @@ var deleteGenre = exports.deleteGenre = function deleteGenre(genreId) {
 
 var updateGenre = exports.updateGenre = function updateGenre(genreId, genreName) {
 	return function (dispatch) {
-		_axios2.default.get(_connections.ADMIN_PORT + 'findGenreName?genreName=' + genreName).then(function (res) {
+		//		axios.get(ADMIN_PORT + 'findGenreName?genreName=' + genreName)
+		_axios2.default.get(_connections.ADMIN_PORT + 'findGenreName', { params: { genreName: genreName } }).then(function (res) {
 			if (res.data) {
 				dispatch(_updateGenreExists());
 			} else {
@@ -60896,7 +61006,7 @@ var _createGenreFailed = function _createGenreFailed(error) {
 	};
 };
 
-},{"../constants/actionTypes":322,"../constants/connections":323,"axios":9}],278:[function(require,module,exports){
+},{"../constants/actionTypes":332,"../constants/connections":333,"axios":9}],278:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -60990,7 +61100,7 @@ var _extendLoanFailed = function _extendLoanFailed(error) {
 	};
 };
 
-},{"../constants/actionTypes":322,"../constants/connections":323,"axios":9}],279:[function(require,module,exports){
+},{"../constants/actionTypes":332,"../constants/connections":333,"axios":9}],279:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -61148,13 +61258,173 @@ var _createPublisherFailed = function _createPublisherFailed(error) {
 	};
 };
 
-},{"../constants/actionTypes":322,"../constants/connections":323,"axios":9}],280:[function(require,module,exports){
+},{"../constants/actionTypes":332,"../constants/connections":333,"axios":9}],280:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
-exports.updateBranch = exports.readBranches = undefined;
+exports.startReturn = exports.startCheckout = exports.processCheckout = exports.selectBranchForCheckout = exports.attemptLogin = undefined;
+
+var _axios = require('axios');
+
+var _axios2 = _interopRequireDefault(_axios);
+
+var _actionTypes = require('../constants/actionTypes');
+
+var _connections = require('../constants/connections');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var attemptLogin = exports.attemptLogin = function attemptLogin(cardNo) {
+	return function (dispatch) {
+		dispatch(_loginAttemptInitiated());
+		return _axios2.default.get(_connections.BORROWER_PORT + 'borrower/getBorrowerById/' + cardNo).then(function (response) {
+			dispatch(_loginAttemptSuccessful(response));
+		}).catch(function (error) {
+			console.log(error);
+			dispatch(_loginAttemptFailed(error));
+		});
+	};
+};
+
+var selectBranchForCheckout = exports.selectBranchForCheckout = function selectBranchForCheckout(branch) {
+	return function (dispatch) {
+		dispatch(_selectBranch(branch));
+		return _axios2.default.get(_connections.BORROWER_PORT + 'borrower/getBooksAvailableFromBranch/' + branch.branchId).then(function (response) {
+			dispatch(_readBooksAtBranchSuccess(response));
+		}).catch(function (error) {
+			console.log(error);
+			dispatch(_readBooksAtBranchFailed(error));
+		});
+	};
+};
+
+var processCheckout = exports.processCheckout = function processCheckout(book, borrower, branch) {
+	return function (dispatch) {
+		dispatch(_processCheckout(book));
+		return _axios2.default.post(_connections.BORROWER_PORT + 'borrower/addNewBookLoan', {
+			key: {
+				bookId: book.bookId,
+				branchId: branch.branchId,
+				cardNo: borrower.borrowerCardNo
+			},
+			book: book,
+			branch: branch,
+			borrower: borrower,
+			dateOut: null,
+			dueDate: null,
+			dateIn: null
+		}).then(function (response) {
+			dispatch(_processCheckoutSuccess(response));
+		}).catch(function (error) {
+			console.log(error);
+			dispatch(_processCheckoutFailed(error));
+		});
+	};
+};
+
+var startCheckout = exports.startCheckout = function startCheckout() {
+	return function (dispatch) {
+		dispatch(_startCheckout());
+		return _axios2.default.get(_connections.BORROWER_PORT + 'borrower/getLibraryBranches').then(function (response) {
+			dispatch(_getAllBranchesSuccessful(response));
+		}).catch(function (error) {
+			console.log(error);
+			dispatch(_getAllBranchesFailed(error));
+		});
+	};
+};
+var startReturn = exports.startReturn = function startReturn() {
+	return function (dispatch) {
+		dispatch(_startReturn());
+	};
+};
+
+var _readBooksAtBranchSuccess = function _readBooksAtBranchSuccess(res) {
+	return {
+		type: _actionTypes.BORROWER_DASHBOARD_READ_BOOKS_SUCCESSFUL,
+		booksAvailable: res.data
+	};
+};
+var _readBooksAtBranchFailed = function _readBooksAtBranchFailed(error) {
+	return {
+		type: _actionTypes.BORROWER_DASHBOARD_READ_BOOKS_FAILED,
+		error: error
+	};
+};
+var _loginAttemptInitiated = function _loginAttemptInitiated() {
+	return {
+		type: _actionTypes.BORROWER_LOGIN_PENDING
+	};
+};
+var _loginAttemptFailed = function _loginAttemptFailed(error) {
+	return {
+		type: _actionTypes.BORROWER_LOGIN_FAILED,
+		error: error
+	};
+};
+var _loginAttemptSuccessful = function _loginAttemptSuccessful(res) {
+	return {
+		type: _actionTypes.BORROWER_LOGIN_SUCCESSFUL,
+		data: res.data
+	};
+};
+
+var _selectBranch = function _selectBranch(branch) {
+	return {
+		type: _actionTypes.BORROWER_DASHBOARD_SELECT_BRANCH,
+		selectedBranch: branch
+	};
+};
+var _startCheckout = function _startCheckout() {
+	return {
+		type: _actionTypes.BORROWER_START_CHECKOUT
+	};
+};
+var _getAllBranchesFailed = function _getAllBranchesFailed(error) {
+	return {
+		type: _actionTypes.BORROWER_READ_ALL_BRANCHES_FAILED,
+		error: error
+	};
+};
+var _getAllBranchesSuccessful = function _getAllBranchesSuccessful(res) {
+	return {
+		type: _actionTypes.BORROWER_READ_ALL_BRANCHES_SUCCESSFUL,
+		data: res.data
+	};
+};
+var _processCheckout = function _processCheckout(book) {
+	return {
+		type: _actionTypes.BORROWER_CHECKOUT_PENDING,
+		selectedBook: book
+	};
+};
+var _processCheckoutFailed = function _processCheckoutFailed(error) {
+	return {
+		type: _actionTypes.BORROWER_CHECKOUT_FAILURE,
+		error: error
+	};
+};
+var _processCheckoutSuccess = function _processCheckoutSuccess(res) {
+	return {
+		type: _actionTypes.BORROWER_CHECKOUT_SUCCESSFUL,
+		newLoan: res.data
+	};
+};
+var _startReturn = function _startReturn() {
+	return {
+		type: _actionTypes.BORROWER_START_RETURN
+	};
+};
+
+},{"../constants/actionTypes":332,"../constants/connections":333,"axios":9}],281:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+exports.branchSelect = exports.Switch = exports.selectBranch = exports.setNonCopies = exports.setCopies = exports.readNonCopies = exports.readCopies = exports.updateBranch = exports.readBranches = undefined;
 
 var _axios = require('axios');
 
@@ -61191,6 +61461,105 @@ var updateBranch = exports.updateBranch = function updateBranch(id, branchName, 
 			console.log(error);
 			dispatch(_updateBranchFailed(error));
 		});
+	};
+};
+
+var readCopies = exports.readCopies = function readCopies(branchId) {
+	return function (dispatch) {
+		dispatch(_readCopiesStarted());
+		return _axios2.default.get(_connections.LIBRARIAN_PORT + '/librarian/readBranchCopies', {
+			params: { branchId: branchId }
+		}).then(function (res) {
+			dispatch(_readCopiesSuccess(res));
+		}).catch(function (error) {
+			console.log(error);
+			dispatch(_readCopiesFailed(error));
+		});
+	};
+};
+
+var readNonCopies = exports.readNonCopies = function readNonCopies(branchId) {
+	return function (dispatch) {
+		dispatch(_readNonCopiesStarted());
+		return _axios2.default.get(_connections.LIBRARIAN_PORT + 'librarian/readNonBranchCopies', {
+			params: { branchId: branchId }
+		}).then(function (res) {
+			dispatch(_readNonCopiesSuccess(res));
+		}).catch(function (error) {
+			console.log(error);
+			dispatch(_readNonCopiesFailed(error));
+		});
+	};
+};
+
+var setCopies = exports.setCopies = function setCopies(bookId, branchId, numOfCopies) {
+	return function (dispatch) {
+		dispatch(_createCopiesRequest());
+		return _axios2.default.post(_connections.LIBRARIAN_PORT + 'librarian/setBookCopies', {
+			book: { bookId: bookId },
+			branch: { branchId: branchId },
+			numberOfCopies: numOfCopies
+		}).then(function (res) {
+			dispatch(_createCopiesSuccess(res));
+		}).catch(function (error) {
+			console.log(error);
+			dispatch(_createCopiesFailed(error));
+		});
+	};
+};
+
+var setNonCopies = exports.setNonCopies = function setNonCopies(bookId, branchId, numOfCopies) {
+	return function (dispatch) {
+		dispatch(_createNonCopiesRequest());
+		return _axios2.default.post(_connections.LIBRARIAN_PORT + 'librarian/setBookCopies', {
+			book: { bookId: bookId },
+			branch: { branchId: branchId },
+			numberOfCopies: numOfCopies
+		}).then(function (res) {
+			dispatch(_createNonCopiesSuccess(res));
+		}).catch(function (error) {
+			console.log(error);
+			dispatch(_createNonCopiesFailed(error));
+		});
+	};
+};
+
+var selectBranch = exports.selectBranch = function selectBranch(branch) {
+	return function (dispatch) {
+		dispatch(_selectBranch(branch));
+	};
+};
+
+var Switch = exports.Switch = function Switch() {
+	console.log("switching views");
+	return function (dispatch) {
+		dispatch(_SwitchRequest());
+	};
+};
+
+/* resets branch information */
+var branchSelect = exports.branchSelect = function branchSelect() {
+	console.log("branchSelect");
+	return function (dispatch) {
+		return dispatch(_branchSelect());
+	};
+};
+
+var _branchSelect = function _branchSelect() {
+	return {
+		type: _actionTypes.BRANCH_SELECT
+	};
+};
+var _SwitchRequest = function _SwitchRequest() {
+	return {
+		type: _actionTypes.LIBRARIAN_SWITCH
+	};
+};
+
+var _selectBranch = function _selectBranch(branch) {
+	return {
+		type: _actionTypes.LIBRARIAN_SELECT_BRANCH,
+		data: branch
 	};
 };
 
@@ -61234,7 +61603,87 @@ var _updateBranchFailed = function _updateBranchFailed(error) {
 	};
 };
 
-},{"../constants/actionTypes":322,"../constants/connections":323,"axios":9}],281:[function(require,module,exports){
+var _readCopiesStarted = function _readCopiesStarted() {
+	return {
+		type: _actionTypes.READ_COPIES_PENDING
+	};
+};
+
+var _readCopiesSuccess = function _readCopiesSuccess(res) {
+	return {
+		type: _actionTypes.READ_COPIES_SUCCESSFUL,
+		data: res.data
+	};
+};
+
+var _readCopiesFailed = function _readCopiesFailed(error) {
+	return {
+		type: _actionTypes.READ_COPIES_FAILURE,
+		error: error
+	};
+};
+
+var _readNonCopiesStarted = function _readNonCopiesStarted() {
+	return {
+		type: _actionTypes.READ_NON_COPIES_PENDING
+	};
+};
+
+var _readNonCopiesSuccess = function _readNonCopiesSuccess(res) {
+	return {
+		type: _actionTypes.READ_NON_COPIES_SUCCESSFUL,
+		data: res.data
+	};
+};
+
+var _readNonCopiesFailed = function _readNonCopiesFailed(error) {
+	return {
+		type: _actionTypes.READ_NON_COPIES_FAILURE,
+		error: error
+	};
+};
+
+var _createCopiesRequest = function _createCopiesRequest() {
+	return {
+		type: _actionTypes.CREATE_COPIES_REQUEST
+	};
+};
+
+var _createCopiesSuccess = function _createCopiesSuccess(res) {
+	return {
+		type: _actionTypes.CREATE_COPIES_SUCCESSFUL,
+		data: res.data
+	};
+};
+
+var _createCopiesFailed = function _createCopiesFailed(error) {
+	return {
+		type: _actionTypes.CREATE_COPIES_FAILURE,
+		error: error
+	};
+};
+
+var _createNonCopiesRequest = function _createNonCopiesRequest() {
+	return {
+		type: _actionTypes.CREATE_NON_COPIES_REQUEST
+	};
+};
+
+var _createNonCopiesSuccess = function _createNonCopiesSuccess(res) {
+	return {
+		type: _actionTypes.CREATE_NON_COPIES_SUCCESSFUL,
+		data: res.data
+	};
+};
+
+var _createNonCopiesFailed = function _createNonCopiesFailed(error) {
+	return {
+		type: _actionTypes.CREATE_NON_COPIES_FAILURE,
+		error: error
+	};
+};
+
+},{"../constants/actionTypes":332,"../constants/connections":333,"axios":9}],282:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -61351,7 +61800,7 @@ var AdminHeader = function AdminHeader() {
 
 exports.default = AdminHeader;
 
-},{"react":148,"react-router-dom":135}],282:[function(require,module,exports){
+},{"react":148,"react-router-dom":135}],283:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -61387,7 +61836,7 @@ var AdminHome = function AdminHome() {
 
 exports.default = AdminHome;
 
-},{"./AdminHeader.js":281,"react":148}],283:[function(require,module,exports){
+},{"./AdminHeader.js":282,"react":148}],284:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -61480,7 +61929,7 @@ AdminAuthorContainer.propTypes = {
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(AdminAuthorContainer);
 
-},{"../../../actions/adminAuthorActions.js":273,"../AdminHeader":281,"./AdminAuthorRender":284,"prop-types":95,"react":148,"react-redux":124,"redux":249}],284:[function(require,module,exports){
+},{"../../../actions/adminAuthorActions.js":273,"../AdminHeader":282,"./AdminAuthorRender":285,"prop-types":95,"react":148,"react-redux":124,"redux":249}],285:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -61653,7 +62102,7 @@ AdminAuthorRender.propTypes = {
 
 exports.default = AdminAuthorRender;
 
-},{"../../Modal/AdminAuthor/CreateModal":302,"../../Modal/AdminAuthor/DeleteModal":303,"../../Modal/AdminAuthor/UpdateModal":304,"mdbreact":63,"prop-types":95,"react":148,"reactstrap":242}],285:[function(require,module,exports){
+},{"../../Modal/AdminAuthor/CreateModal":309,"../../Modal/AdminAuthor/DeleteModal":310,"../../Modal/AdminAuthor/UpdateModal":311,"mdbreact":63,"prop-types":95,"react":148,"reactstrap":242}],286:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -61695,6 +62144,9 @@ var AdminBookContainer = function AdminBookContainer(props) {
 
 	(0, _react.useEffect)(function () {
 		actions.readBooks();
+		actions.readPublishers();
+		actions.readAuthors();
+		actions.readGenres();
 	}, []);
 
 	return _react2.default.createElement(
@@ -61714,14 +62166,14 @@ var AdminBookContainer = function AdminBookContainer(props) {
 			handleRefresh: function handleRefresh() {
 				return actions.readBooks();
 			},
-			handleDelete: function handleDelete(bookId, publisherId) {
-				return actions.deleteBook(bookId, publisherId);
+			handleDelete: function handleDelete(bookId) {
+				return actions.deleteBook(bookId);
 			},
-			handleUpdate: function handleUpdate(bookId, title) {
-				return actions.updateBook(bookId, title);
+			handleUpdate: function handleUpdate(bookId, title, publisher, authors, genres) {
+				return actions.updateBook(bookId, title, publisher, authors, genres);
 			},
-			handleCreate: function handleCreate(title, publisherId) {
-				return actions.createBook(title, publisherId);
+			handleCreate: function handleCreate(title, publisherId, authors, genres) {
+				return actions.createBook(title, publisherId, authors, genres);
 			}
 		}))
 	);
@@ -61730,6 +62182,9 @@ var AdminBookContainer = function AdminBookContainer(props) {
 function mapStateToProps(state) {
 	return {
 		bookData: state.bookReducer.bookData,
+		publisherData: state.bookReducer.publisherData,
+		authorData: state.bookReducer.authorData,
+		genreData: state.bookReducer.genreData,
 		requestInfo: state.bookReducer.requestInfo
 	};
 }
@@ -61746,7 +62201,7 @@ AdminBookContainer.propTypes = {
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(AdminBookContainer);
 
-},{"../../../actions/adminBookActions.js":274,"../AdminHeader":281,"./AdminBookRender":286,"prop-types":95,"react":148,"react-redux":124,"redux":249}],286:[function(require,module,exports){
+},{"../../../actions/adminBookActions.js":274,"../AdminHeader":282,"./AdminBookRender":287,"prop-types":95,"react":148,"react-redux":124,"redux":249}],287:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -61781,6 +62236,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var AdminBookRender = function AdminBookRender(_ref) {
 	var bookData = _ref.bookData,
+	    publisherData = _ref.publisherData,
+	    authorData = _ref.authorData,
+	    genreData = _ref.genreData,
 	    handleRefresh = _ref.handleRefresh,
 	    handleDelete = _ref.handleDelete,
 	    handleUpdate = _ref.handleUpdate,
@@ -61788,7 +62246,7 @@ var AdminBookRender = function AdminBookRender(_ref) {
 	    requestInfo = _ref.requestInfo;
 
 	var content = '';
-	if (!bookData || requestInfo.readPending) {
+	if (!bookData || requestInfo.readPending || requestInfo.readPublisherPending || requestInfo.readAuthorPending || requestInfo.readGenrePending) {
 		content = _react2.default.createElement(
 			'div',
 			{ className: 'd-flex justify-content-center' },
@@ -61803,7 +62261,17 @@ var AdminBookRender = function AdminBookRender(_ref) {
 			)
 		);
 	}
-	if (bookData && requestInfo.readSuccessful) {
+	if (bookData && requestInfo.readSuccessful && requestInfo.readPublisherSuccessful && requestInfo.readAuthorSuccessful && requestInfo.readGenreSuccessful) {
+		console.log("Book Data");
+		console.log(bookData);
+		console.log("Publisher Data");
+		console.log(publisherData);
+		console.log("Author Data");
+		console.log(authorData);
+		console.log("Genre Data");
+		console.log(genreData);
+		console.log("requestInfo:");
+		console.log(requestInfo);
 		var data = {
 			columns: [
 			/*
@@ -61847,6 +62315,9 @@ var AdminBookRender = function AdminBookRender(_ref) {
 				{ className: 'mainblock' },
 				_react2.default.createElement(_CreateModal2.default, {
 					buttonLabel: 'Create New Book',
+					publishers: publisherData,
+					authors: authorData,
+					genres: genreData,
 					handleCreate: handleCreate,
 					handleRefresh: handleRefresh
 				}),
@@ -61877,11 +62348,15 @@ var AdminBookRender = function AdminBookRender(_ref) {
 		);
 	}
 	function parsePublisherInfo(newObj) {
-		return newObj.publisher.publisherName;
+		if (!newObj.publisher) {
+			return "Null pubisher";
+		} else {
+			return newObj.publisher.publisherName;
+		}
 	}
 
 	function parseAuthors(newObj) {
-		if (newObj.authors.length == 0) {
+		if (!newObj.authors || newObj.authors.length === 0) {
 			return "\nNo Authors";
 		} else {
 			var authors = "";
@@ -61896,7 +62371,7 @@ var AdminBookRender = function AdminBookRender(_ref) {
 	}
 
 	function parseGenres(newObj) {
-		if (newObj.genres.length == 0) {
+		if (!newObj.genres || newObj.genres.length === 0) {
 			return "\nNo Genres";
 		} else {
 			var genres = "";
@@ -61912,9 +62387,6 @@ var AdminBookRender = function AdminBookRender(_ref) {
 
 	function getTableBodyContent() {
 		return bookData.books.map(function (obj) {
-			// Deep Clone object to bookId adding to it while mapping over it during map
-
-
 			var newObj = JSON.parse(JSON.stringify(obj));
 
 			newObj.publisherName = parsePublisherInfo(newObj);
@@ -61928,7 +62400,13 @@ var AdminBookRender = function AdminBookRender(_ref) {
 					handleUpdate: handleUpdate,
 					handleRefresh: handleRefresh,
 					bookId: newObj.bookId,
-					currentTitle: newObj.title
+					currentPub: newObj.publisher,
+					currentAuthors: newObj.authors,
+					currentGenres: newObj.genres,
+					currentTitle: newObj.title,
+					publishers: publisherData,
+					authors: authorData,
+					genres: genreData
 				})
 			);
 
@@ -61940,7 +62418,7 @@ var AdminBookRender = function AdminBookRender(_ref) {
 					handleDelete: handleDelete,
 					handleRefresh: handleRefresh,
 					bookId: newObj.bookId,
-					currentTitle: newObj.title
+					title: newObj.title
 				})
 			);
 			return newObj;
@@ -61960,6 +62438,9 @@ var AdminBookRender = function AdminBookRender(_ref) {
 
 AdminBookRender.propTypes = {
 	bookData: _propTypes2.default.object,
+	publisherData: _propTypes2.default.array,
+	authorData: _propTypes2.default.array,
+	genreData: _propTypes2.default.array,
 	handleRefresh: _propTypes2.default.func,
 	handleDelete: _propTypes2.default.func,
 	handleUpdate: _propTypes2.default.func,
@@ -61969,7 +62450,7 @@ AdminBookRender.propTypes = {
 
 exports.default = AdminBookRender;
 
-},{"../../Modal/AdminBook/CreateModal":305,"../../Modal/AdminBook/DeleteModal":306,"../../Modal/AdminBook/UpdateModal":307,"mdbreact":63,"prop-types":95,"react":148,"reactstrap":242}],287:[function(require,module,exports){
+},{"../../Modal/AdminBook/CreateModal":312,"../../Modal/AdminBook/DeleteModal":313,"../../Modal/AdminBook/UpdateModal":314,"mdbreact":63,"prop-types":95,"react":148,"reactstrap":242}],288:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -62062,7 +62543,7 @@ AdminBorrowerContainer.propTypes = {
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(AdminBorrowerContainer);
 
-},{"../../../actions/adminBorrowerActions.js":275,"../AdminHeader":281,"./AdminBorrowerRender":288,"prop-types":95,"react":148,"react-redux":124,"redux":249}],288:[function(require,module,exports){
+},{"../../../actions/adminBorrowerActions.js":275,"../AdminHeader":282,"./AdminBorrowerRender":289,"prop-types":95,"react":148,"react-redux":124,"redux":249}],289:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -62122,10 +62603,6 @@ var AdminBorrowerRender = function AdminBorrowerRender(_ref) {
 	if (borrowerData && requestInfo.readSuccessful) {
 		var data = {
 			columns: [{
-				label: 'Borrower Id',
-				field: 'borrowerCardNo',
-				sort: 'asc'
-			}, {
 				label: 'Borrower Name',
 				field: 'borrowerName',
 				sort: 'asc'
@@ -62243,7 +62720,7 @@ AdminBorrowerRender.propTypes = {
 
 exports.default = AdminBorrowerRender;
 
-},{"../../Modal/AdminBorrower/CreateModal":308,"../../Modal/AdminBorrower/DeleteModal":309,"../../Modal/AdminBorrower/UpdateModal":310,"mdbreact":63,"prop-types":95,"react":148,"reactstrap":242}],289:[function(require,module,exports){
+},{"../../Modal/AdminBorrower/CreateModal":315,"../../Modal/AdminBorrower/DeleteModal":316,"../../Modal/AdminBorrower/UpdateModal":317,"mdbreact":63,"prop-types":95,"react":148,"reactstrap":242}],290:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -62336,7 +62813,7 @@ AdminBranchContainer.propTypes = {
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(AdminBranchContainer);
 
-},{"../../../actions/adminBranchActions.js":276,"../AdminHeader":281,"./AdminBranchRender":290,"prop-types":95,"react":148,"react-redux":124,"redux":249}],290:[function(require,module,exports){
+},{"../../../actions/adminBranchActions.js":276,"../AdminHeader":282,"./AdminBranchRender":291,"prop-types":95,"react":148,"react-redux":124,"redux":249}],291:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -62515,7 +62992,7 @@ AdminBranchRender.propTypes = {
 
 exports.default = AdminBranchRender;
 
-},{"../../Modal/AdminBranch/CreateModal":311,"../../Modal/AdminBranch/DeleteModal":312,"../../Modal/AdminBranch/UpdateModal":313,"mdbreact":63,"prop-types":95,"react":148,"reactstrap":242}],291:[function(require,module,exports){
+},{"../../Modal/AdminBranch/CreateModal":318,"../../Modal/AdminBranch/DeleteModal":319,"../../Modal/AdminBranch/UpdateModal":320,"mdbreact":63,"prop-types":95,"react":148,"reactstrap":242}],292:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -62608,7 +63085,7 @@ AdminGenreContainer.propTypes = {
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(AdminGenreContainer);
 
-},{"../../../actions/adminGenreActions.js":277,"../AdminHeader":281,"./AdminGenreRender":292,"prop-types":95,"react":148,"react-redux":124,"redux":249}],292:[function(require,module,exports){
+},{"../../../actions/adminGenreActions.js":277,"../AdminHeader":282,"./AdminGenreRender":293,"prop-types":95,"react":148,"react-redux":124,"redux":249}],293:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -62795,7 +63272,7 @@ AdminGenreRender.propTypes = {
 
 exports.default = AdminGenreRender;
 
-},{"../../Modal/AdminGenre/CreateModal":314,"../../Modal/AdminGenre/DeleteModal":315,"../../Modal/AdminGenre/UpdateModal":316,"mdbreact":63,"prop-types":95,"react":148,"reactstrap":242}],293:[function(require,module,exports){
+},{"../../Modal/AdminGenre/CreateModal":321,"../../Modal/AdminGenre/DeleteModal":322,"../../Modal/AdminGenre/UpdateModal":323,"mdbreact":63,"prop-types":95,"react":148,"reactstrap":242}],294:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -62882,7 +63359,7 @@ AdminLoanContainer.propTypes = {
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(AdminLoanContainer);
 
-},{"../../../actions/adminLoanActions.js":278,"../AdminHeader":281,"./AdminLoanRender":294,"prop-types":95,"react":148,"react-redux":124,"redux":249}],294:[function(require,module,exports){
+},{"../../../actions/adminLoanActions.js":278,"../AdminHeader":282,"./AdminLoanRender":295,"prop-types":95,"react":148,"react-redux":124,"redux":249}],295:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -63167,7 +63644,7 @@ AdminLoanRender.propTypes = {
 
 exports.default = AdminLoanRender;
 
-},{"../../Modal/AdminLoan/ExtendModal":317,"flat":43,"mdbreact":63,"prop-types":95,"react":148,"reactstrap":242}],295:[function(require,module,exports){
+},{"../../Modal/AdminLoan/ExtendModal":324,"flat":43,"mdbreact":63,"prop-types":95,"react":148,"reactstrap":242}],296:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -63260,7 +63737,7 @@ AdminPublisherContainer.propTypes = {
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(AdminPublisherContainer);
 
-},{"../../../actions/adminPublisherActions.js":279,"../AdminHeader":281,"./AdminPublisherRender":296,"prop-types":95,"react":148,"react-redux":124,"redux":249}],296:[function(require,module,exports){
+},{"../../../actions/adminPublisherActions.js":279,"../AdminHeader":282,"./AdminPublisherRender":297,"prop-types":95,"react":148,"react-redux":124,"redux":249}],297:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -63445,7 +63922,7 @@ AdminPublisherRender.propTypes = {
 
 exports.default = AdminPublisherRender;
 
-},{"../../Modal/AdminPublisher/CreateModal":318,"../../Modal/AdminPublisher/DeleteModal":319,"../../Modal/AdminPublisher/UpdateModal":320,"mdbreact":63,"prop-types":95,"react":148,"reactstrap":242}],297:[function(require,module,exports){
+},{"../../Modal/AdminPublisher/CreateModal":325,"../../Modal/AdminPublisher/DeleteModal":326,"../../Modal/AdminPublisher/UpdateModal":327,"mdbreact":63,"prop-types":95,"react":148,"reactstrap":242}],298:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -63497,6 +63974,10 @@ var _AdminLoanContainer = require('./Admin/Loan/AdminLoanContainer');
 
 var _AdminLoanContainer2 = _interopRequireDefault(_AdminLoanContainer);
 
+var _BorrowerContainer = require('./Borrower/BorrowerContainer');
+
+var _BorrowerContainer2 = _interopRequireDefault(_BorrowerContainer);
+
 var _LibrarianBranchContainer = require('./Librarian/LibrarianBranchContainer');
 
 var _LibrarianBranchContainer2 = _interopRequireDefault(_LibrarianBranchContainer);
@@ -63536,6 +64017,7 @@ var App = exports.App = function (_React$Component) {
 					_react2.default.createElement(_reactRouterDom.Route, { path: '/AdminPublisher', component: _AdminPublisherContainer2.default }),
 					_react2.default.createElement(_reactRouterDom.Route, { path: '/AdminGenre', component: _AdminGenreContainer2.default }),
 					_react2.default.createElement(_reactRouterDom.Route, { path: '/AdminLoan', component: _AdminLoanContainer2.default }),
+					_react2.default.createElement(_reactRouterDom.Route, { path: '/Borrower', component: _BorrowerContainer2.default }),
 					_react2.default.createElement(_reactRouterDom.Route, { path: '/LibrarianBranch', component: _LibrarianBranchContainer2.default })
 				)
 			);
@@ -63545,7 +64027,529 @@ var App = exports.App = function (_React$Component) {
 	return App;
 }(_react2.default.Component);
 
-},{"./Admin/AdminHome.js":282,"./Admin/Author/AdminAuthorContainer":283,"./Admin/Book/AdminBookContainer":285,"./Admin/Borrower/AdminBorrowerContainer":287,"./Admin/Branch/AdminBranchContainer":289,"./Admin/Genre/AdminGenreContainer":291,"./Admin/Loan/AdminLoanContainer":293,"./Admin/Publisher/AdminPublisherContainer":295,"./Home.js":298,"./Librarian/LibrarianBranchContainer":299,"react":148,"react-router-dom":135}],298:[function(require,module,exports){
+},{"./Admin/AdminHome.js":283,"./Admin/Author/AdminAuthorContainer":284,"./Admin/Book/AdminBookContainer":286,"./Admin/Borrower/AdminBorrowerContainer":288,"./Admin/Branch/AdminBranchContainer":290,"./Admin/Genre/AdminGenreContainer":292,"./Admin/Loan/AdminLoanContainer":294,"./Admin/Publisher/AdminPublisherContainer":296,"./Borrower/BorrowerContainer":299,"./Home.js":303,"./Librarian/LibrarianBranchContainer":304,"react":148,"react-router-dom":135}],299:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = require('prop-types');
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _reactRedux = require('react-redux');
+
+var _redux = require('redux');
+
+var _borrowerActions = require('../../actions/borrowerActions');
+
+var borrowerActions = _interopRequireWildcard(_borrowerActions);
+
+var _BorrowerRender = require('./BorrowerRender');
+
+var _BorrowerRender2 = _interopRequireDefault(_BorrowerRender);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+//import BorrowerHeader from './BorrowerHeader';
+
+var BorrowerContainer = function BorrowerContainer(props) {
+	var actions = props.actions;
+
+	(0, _react.useEffect)(function () {
+		//actions.readBranches();
+	}, []);
+
+	return _react2.default.createElement(
+		'div',
+		null,
+		_react2.default.createElement(
+			'div',
+			{ className: 'jumbotron' },
+			_react2.default.createElement(
+				'h1',
+				null,
+				'Borrower Management'
+			)
+		),
+		_react2.default.createElement(_BorrowerRender2.default, _extends({}, props, {
+			handleCheckout: function handleCheckout(book, borrower, branch) {
+				return actions.processCheckout(book, borrower, branch);
+			},
+			handleLoginAttempt: function handleLoginAttempt(cardNo) {
+				return actions.attemptLogin(cardNo);
+			},
+			startCheckout: function startCheckout() {
+				return actions.startCheckout();
+			},
+			startReturn: function startReturn() {
+				return actions.startReturn();
+			},
+			selectBranch: function selectBranch(branch) {
+				return actions.selectBranchForCheckout(branch);
+			}
+		}))
+	);
+};
+
+function mapStateToProps(state) {
+	return {
+		borrower: state.borrowerReducer.loggedInBorrower,
+		borrowerDashboardInfo: state.borrowerReducer.borrowerDashboardInfo,
+		requestInfo: state.borrowerReducer.requestInfo
+	};
+}
+
+function mapDispatchToProps(dispatch) {
+	return {
+		actions: (0, _redux.bindActionCreators)(borrowerActions, dispatch)
+	};
+}
+
+BorrowerContainer.propTypes = {
+	actions: _propTypes2.default.object
+};
+
+exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(BorrowerContainer);
+
+},{"../../actions/borrowerActions":280,"./BorrowerRender":302,"prop-types":95,"react":148,"react-redux":124,"redux":249}],300:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = require('prop-types');
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _reactstrap = require('reactstrap');
+
+var _mdbreact = require('mdbreact');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var BorrowerDashboard = function BorrowerDashboard(_ref) {
+	var borrower = _ref.borrower,
+	    dashboardInfo = _ref.dashboardInfo,
+	    handleCheckout = _ref.handleCheckout,
+	    requestInfo = _ref.requestInfo,
+	    selectBranch = _ref.selectBranch,
+	    startCheckout = _ref.startCheckout,
+	    startReturn = _ref.startReturn;
+
+	function createBranchRows() {
+		return dashboardInfo.branches.map(function (branch) {
+			var deepCopyBranch = JSON.parse(JSON.stringify(branch));
+			deepCopyBranch.select = _react2.default.createElement(
+				_reactstrap.Button,
+				{ onClick: function onClick() {
+						return selectBranch(branch);
+					} },
+				'Select'
+			);
+			return deepCopyBranch;
+		});
+	}
+	function parsePublisherInfo(newObj) {
+		return newObj.publisher.publisherName;
+	}
+
+	function parseAuthors(newObj) {
+		if (newObj.authors.length == 0) {
+			return '\nNo Authors';
+		} else {
+			var authors = '';
+			for (var i = 0; i < newObj.authors.length; i++) {
+				authors = authors.concat(newObj.authors[i].authorName);
+				if (i < newObj.authors.length - 1) {
+					authors = authors.concat(', ');
+				}
+			}
+			return authors;
+		}
+	}
+
+	function parseGenres(newObj) {
+		if (newObj.genres.length == 0) {
+			return '\nNo Genres';
+		} else {
+			var genres = '';
+			for (var i = 0; i < newObj.genres.length; i++) {
+				genres = genres.concat(newObj.genres[i].genreName);
+				if (i < newObj.genres.length - 1) {
+					genres = genres.concat(', ');
+				}
+			}
+			return genres;
+		}
+	}
+
+	function getBookRowsForCheckout() {
+		return dashboardInfo.books.map(function (book) {
+			// Deep Clone object to bookId adding to it while mapping over it during map
+
+			var bookDeepCopy = JSON.parse(JSON.stringify(book));
+
+			bookDeepCopy.publisherName = parsePublisherInfo(bookDeepCopy);
+			bookDeepCopy.authorInfo = parseAuthors(bookDeepCopy);
+			bookDeepCopy.genreInfo = parseGenres(bookDeepCopy);
+			bookDeepCopy.select = _react2.default.createElement(
+				_reactstrap.Button,
+				{
+					onClick: function onClick() {
+						return handleCheckout(book, borrower, dashboardInfo.selectedBranch);
+					}
+				},
+				'Select'
+			);
+			return bookDeepCopy;
+		});
+	}
+
+	console.log(borrower);
+	var content = '';
+	if (!dashboardInfo.isCheckingOut && !dashboardInfo.isReturning) {
+		content = _react2.default.createElement(
+			'div',
+			null,
+			_react2.default.createElement(
+				_reactstrap.Button,
+				{ onClick: function onClick() {
+						return startCheckout();
+					} },
+				'Check-out'
+			),
+			_react2.default.createElement(
+				_reactstrap.Button,
+				{ onClick: function onClick() {
+						return startReturn();
+					} },
+				'Return'
+			)
+		);
+	}
+	if (dashboardInfo.isCheckingOut && !dashboardInfo.selectedBranch) {
+		if (requestInfo.branchesPending) {
+			content = _react2.default.createElement(
+				'div',
+				null,
+				_react2.default.createElement(
+					_reactstrap.Button,
+					{ onClick: function onClick() {
+							return startCheckout();
+						} },
+					'Check-out'
+				),
+				_react2.default.createElement(
+					_reactstrap.Button,
+					{ onClick: function onClick() {
+							return startReturn();
+						} },
+					'Return'
+				),
+				_react2.default.createElement(_reactstrap.Spinner, { type: 'grow', color: 'primary' })
+			);
+		} else if (requestInfo.branchesSuccessful) {
+			var data = {
+				columns: [{
+					label: 'Branch Name',
+					field: 'branchName',
+					sort: 'asc'
+				}, {
+					label: 'Branch Address',
+					field: 'branchAddress',
+					sort: 'asc'
+				}, {
+					label: 'Select',
+					field: 'select',
+					sort: 'asc'
+				}],
+				rows: createBranchRows()
+			};
+			content = _react2.default.createElement(
+				'div',
+				null,
+				_react2.default.createElement(
+					_reactstrap.Button,
+					{ onClick: function onClick() {
+							return startCheckout();
+						} },
+					'Check-out'
+				),
+				_react2.default.createElement(
+					_reactstrap.Button,
+					{ onClick: function onClick() {
+							return startReturn();
+						} },
+					'Return'
+				),
+				_react2.default.createElement(
+					'div',
+					{ className: 'mainblock' },
+					_react2.default.createElement(_mdbreact.MDBDataTable, { striped: true, bordered: true, small: true, responsive: true, data: data })
+				)
+			);
+		} else if (requestInfo.branchesFailed) {
+			content = _react2.default.createElement(
+				_reactstrap.Alert,
+				{ color: 'danger' },
+				'Their was an error trying to access library branches please try again later or contact and Admin'
+			);
+		}
+	} else if (dashboardInfo.isCheckingOut && dashboardInfo.selectedBranch) {
+		if (requestInfo.booksPending) {
+			content = _react2.default.createElement(
+				'div',
+				null,
+				_react2.default.createElement(
+					_reactstrap.Button,
+					{ onClick: function onClick() {
+							return startCheckout();
+						} },
+					'Check-out'
+				),
+				_react2.default.createElement(
+					_reactstrap.Button,
+					{ onClick: function onClick() {
+							return startReturn();
+						} },
+					'Return'
+				),
+				_react2.default.createElement(_reactstrap.Spinner, { type: 'grow', color: 'primary' })
+			);
+		} else if (requestInfo.booksSuccessful) {
+			var _data = {
+				columns: [{
+					label: 'Book Name',
+					field: 'title',
+					sort: 'asc'
+				}, {
+					label: 'Publisher',
+					field: 'publisherName'
+				}, {
+					label: 'Authors',
+					field: 'authorInfo',
+					sort: 'asc'
+				}, {
+					label: 'Genres',
+					field: 'genreInfo',
+					sort: 'asc'
+				}, {
+					label: 'Select',
+					field: 'select',
+					sort: 'asc'
+				}],
+				rows: getBookRowsForCheckout()
+			};
+			return _react2.default.createElement(
+				_react2.default.Fragment,
+				null,
+				_react2.default.createElement(
+					'div',
+					{ className: 'mainblock' },
+					_react2.default.createElement(_mdbreact.MDBDataTable, { striped: true, bordered: true, small: true, responsive: true, data: _data })
+				)
+			);
+		} else if (requestInfo.booksFailed) {
+			_react2.default.createElement(
+				_reactstrap.Alert,
+				{ color: 'danger' },
+				'Their was an error trying to access available books please try again later or contact and Admin'
+			);
+		}
+	}
+
+	if (dashboardInfo.isReturning) {
+		content = 'Is Returning';
+	}
+	return content;
+};
+
+BorrowerDashboard.propTypes = {
+	borrower: _propTypes2.default.object,
+	dashboardInfo: _propTypes2.default.object,
+	handleCheckout: _propTypes2.default.func,
+	requestInfo: _propTypes2.default.object,
+	selectBranch: _propTypes2.default.func,
+	startCheckout: _propTypes2.default.func,
+	startReturn: _propTypes2.default.func
+};
+
+exports.default = BorrowerDashboard;
+
+},{"mdbreact":63,"prop-types":95,"react":148,"reactstrap":242}],301:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = require('prop-types');
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _reactstrap = require('reactstrap');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var BorrowerLoginForm = function BorrowerLoginForm(props) {
+	var handleLoginAttempt = props.handleLoginAttempt;
+
+	var enteredCardNumber = -1;
+
+	function handleCardNoChange(e) {
+		enteredCardNumber = e.target.value;
+	}
+	function submitLoginAttempt() {
+		handleLoginAttempt(enteredCardNumber);
+	}
+	return _react2.default.createElement(
+		_reactstrap.Form,
+		{ onSubmit: submitLoginAttempt },
+		_react2.default.createElement(
+			_reactstrap.FormGroup,
+			null,
+			_react2.default.createElement(
+				_reactstrap.Label,
+				{ 'for': 'formBorrowerCardNo' },
+				'Card Number'
+			),
+			_react2.default.createElement(_reactstrap.Input, {
+				type: 'number',
+				name: 'borrowerCardNo',
+				id: 'formBorrowerCardNo',
+				placeholder: 'Enter your Library Card #',
+				onChange: handleCardNoChange
+			})
+		),
+		_react2.default.createElement(
+			_reactstrap.Button,
+			null,
+			'Submit'
+		)
+	);
+};
+
+BorrowerLoginForm.propTypes = {
+	handleLoginAttempt: _propTypes2.default.func
+};
+
+exports.default = BorrowerLoginForm;
+
+},{"prop-types":95,"react":148,"reactstrap":242}],302:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = require('prop-types');
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _BorrowerLoginForm = require('./BorrowerLoginForm');
+
+var _BorrowerLoginForm2 = _interopRequireDefault(_BorrowerLoginForm);
+
+var _reactstrap = require('reactstrap');
+
+var _BorrowerDashboard = require('./BorrowerDashboard');
+
+var _BorrowerDashboard2 = _interopRequireDefault(_BorrowerDashboard);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+//import { MDBDataTable } from 'mdbreact';
+
+var BorrowerRender = function BorrowerRender(_ref) {
+	var borrower = _ref.borrower,
+	    borrowerDashboardInfo = _ref.borrowerDashboardInfo,
+	    handleCheckout = _ref.handleCheckout,
+	    handleLoginAttempt = _ref.handleLoginAttempt,
+	    requestInfo = _ref.requestInfo,
+	    selectBranch = _ref.selectBranch,
+	    startCheckout = _ref.startCheckout,
+	    startReturn = _ref.startReturn;
+
+	var content = '';
+	var doesRequestInfoExist = requestInfo;
+	if (!borrower && !doesRequestInfoExist) {
+		content = _react2.default.createElement(_BorrowerLoginForm2.default, { handleLoginAttempt: handleLoginAttempt });
+	}
+	if (!borrower && doesRequestInfoExist && requestInfo.loginPending) {
+		content = _react2.default.createElement(_reactstrap.Spinner, { type: 'grow', color: 'primary' });
+	}
+	if (!borrower && doesRequestInfoExist && requestInfo.loginFailed) {
+		content = _react2.default.createElement(
+			'div',
+			null,
+			_react2.default.createElement(
+				_reactstrap.Alert,
+				{ color: 'danger' },
+				'The entered card number does not exist in our system please try again or contact an administrator'
+			),
+			_react2.default.createElement(_BorrowerLoginForm2.default, { handleLoginAttempt: handleLoginAttempt })
+		);
+	}
+	if (borrower && doesRequestInfoExist && requestInfo.loginSuccessful) {
+		content = _react2.default.createElement(_BorrowerDashboard2.default, {
+			borrower: borrower,
+			dashboardInfo: borrowerDashboardInfo,
+			handleCheckout: handleCheckout,
+			requestInfo: requestInfo,
+			selectBranch: selectBranch,
+			startCheckout: startCheckout,
+			startReturn: startReturn
+		});
+	}
+	return _react2.default.createElement(
+		'div',
+		null,
+		_react2.default.createElement(
+			'h1',
+			null,
+			'Borrower'
+		),
+		content
+	);
+};
+
+BorrowerRender.propTypes = {
+	borrower: _propTypes2.default.object,
+	borrowerDashboardInfo: _propTypes2.default.object,
+	handleCheckout: _propTypes2.default.func,
+	handleLoginAttempt: _propTypes2.default.func,
+	requestInfo: _propTypes2.default.object,
+	selectBranch: _propTypes2.default.func,
+	startCheckout: _propTypes2.default.func,
+	startReturn: _propTypes2.default.func
+};
+
+exports.default = BorrowerRender;
+
+},{"./BorrowerDashboard":300,"./BorrowerLoginForm":301,"prop-types":95,"react":148,"reactstrap":242}],303:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -63581,7 +64585,7 @@ var Home = function Home() {
 
 exports.default = Home;
 
-},{"./header.js":321,"react":148}],299:[function(require,module,exports){
+},{"./header.js":331,"react":148}],304:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -63602,9 +64606,9 @@ var _reactRedux = require('react-redux');
 
 var _redux = require('redux');
 
-var _librarianBranchActions = require('../../actions/librarianBranchActions.js');
+var _librarianActions = require('../../actions/librarianActions.js');
 
-var librarianBranchActions = _interopRequireWildcard(_librarianBranchActions);
+var librarianActions = _interopRequireWildcard(_librarianActions);
 
 var _LibrarianBranchRender = require('./LibrarianBranchRender');
 
@@ -63624,7 +64628,6 @@ var LibrarianBranchContainer = function LibrarianBranchContainer(props) {
 	(0, _react.useEffect)(function () {
 		actions.readBranches();
 	}, []);
-
 	return _react2.default.createElement(
 		'div',
 		null,
@@ -63639,11 +64642,32 @@ var LibrarianBranchContainer = function LibrarianBranchContainer(props) {
 			)
 		),
 		_react2.default.createElement(_LibrarianBranchRender2.default, _extends({}, props, {
+			selectBranch: function selectBranch(branchId) {
+				return actions.selectBranch(branchId);
+			},
 			handleRefresh: function handleRefresh() {
 				return actions.readBranches();
 			},
 			handleUpdate: function handleUpdate(id, branchName, branchAddress) {
 				return actions.updateBranch(id, branchName, branchAddress);
+			},
+			startReadCopies: function startReadCopies(branch) {
+				return actions.readCopies(branch);
+			},
+			startReadNonCopies: function startReadNonCopies(branch) {
+				return actions.readNonCopies(branch);
+			},
+			Switch: function Switch() {
+				return actions.Switch();
+			},
+			branchSelect: function branchSelect() {
+				return actions.branchSelect();
+			},
+			setCopies: function setCopies(bookId, branchId, noOfCopies) {
+				return actions.setCopies(bookId, branchId, noOfCopies);
+			},
+			setNonCopies: function setNonCopies(bookId, branchId, noOfCopies) {
+				return actions.setNonCopies(bookId, branchId, noOfCopies);
 			}
 		}))
 	);
@@ -63652,13 +64676,17 @@ var LibrarianBranchContainer = function LibrarianBranchContainer(props) {
 function mapStateToProps(state) {
 	return {
 		branchData: state.branchReducer.branchData,
-		requestInfo: state.branchReducer.requestInfo
+		requestInfo: state.branchReducer.requestInfo,
+		requestInfoCopies: state.copiesReducer.requestInfo,
+		bookCopies: state.copiesReducer.bookCopies,
+		bookNonCopies: state.copiesReducer.bookNonCopies,
+		selectedBranch: state.copiesReducer.selectedBranch
 	};
 }
 
 function mapDispatchToProps(dispatch) {
 	return {
-		actions: (0, _redux.bindActionCreators)(librarianBranchActions, dispatch)
+		actions: (0, _redux.bindActionCreators)(librarianActions, dispatch)
 	};
 }
 
@@ -63668,7 +64696,7 @@ LibrarianBranchContainer.propTypes = {
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(LibrarianBranchContainer);
 
-},{"../../actions/librarianBranchActions.js":280,"./LibrarianBranchRender":300,"./LibrarianHeader":301,"prop-types":95,"react":148,"react-redux":124,"redux":249}],300:[function(require,module,exports){
+},{"../../actions/librarianActions.js":281,"./LibrarianBranchRender":305,"./LibrarianHeader":307,"prop-types":95,"react":148,"react-redux":124,"redux":249}],305:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -63687,15 +64715,52 @@ var _reactstrap = require('reactstrap');
 
 var _mdbreact = require('mdbreact');
 
+var _UpdateModal = require('../Modal/Librarian/UpdateModal');
+
+var _UpdateModal2 = _interopRequireDefault(_UpdateModal);
+
+var _UpdateBookCopiesModal = require('../Modal/Librarian/UpdateBookCopiesModal');
+
+var _UpdateBookCopiesModal2 = _interopRequireDefault(_UpdateBookCopiesModal);
+
+var _LibrarianCopiesRender = require('./LibrarianCopiesRender');
+
+var _LibrarianCopiesRender2 = _interopRequireDefault(_LibrarianCopiesRender);
+
+var _LibrarianNonCopiesRender = require('./LibrarianNonCopiesRender');
+
+var _LibrarianNonCopiesRender2 = _interopRequireDefault(_LibrarianNonCopiesRender);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var LibrarianBranchRender = function LibrarianBranchRender(_ref) {
-	var branchData = _ref.branchData,
+	var selectedBranch = _ref.selectedBranch,
+	    branchData = _ref.branchData,
 	    handleRefresh = _ref.handleRefresh,
-	    requestInfo = _ref.requestInfo;
+	    handleUpdate = _ref.handleUpdate,
+	    setCopies = _ref.setCopies,
+	    setNonCopies = _ref.setNonCopies,
+	    requestInfo = _ref.requestInfo,
+	    requestInfoCopies = _ref.requestInfoCopies,
+	    selectBranch = _ref.selectBranch,
+	    startReadCopies = _ref.startReadCopies,
+	    startReadNonCopies = _ref.startReadNonCopies,
+	    bookCopies = _ref.bookCopies,
+	    bookNonCopies = _ref.bookNonCopies,
+	    Switch = _ref.Switch,
+	    branchSelect = _ref.branchSelect;
 
 	var content = '';
-	if (!branchData || requestInfo.readPending) {
+	var branchTable = '';
+
+	if (selectedBranch > 0 && bookCopies === undefined && !requestInfoCopies.readCopiesPending && !requestInfoCopies.readCopiesSuccessful) {
+		startReadCopies(selectedBranch);
+	}
+	if (selectedBranch > 0 && bookNonCopies === undefined && !requestInfoCopies.readNonCopiesPending && !requestInfoCopies.readNonCopiesSuccessful) {
+		startReadNonCopies(selectedBranch);
+	}
+
+	if (!branchData || requestInfo.readPending || requestInfo.readCopiesPending || requestInfo.readNonCopiesPending) {
 		content = _react2.default.createElement(
 			'div',
 			{ className: 'd-flex justify-content-center' },
@@ -63721,20 +64786,27 @@ var LibrarianBranchRender = function LibrarianBranchRender(_ref) {
 				field: 'branchAddress',
 				sort: 'asc'
 			}, {
-				label: 'Update Branch Details',
+				label: 'Update Branch',
+				field: 'update',
 				sort: 'asc'
 			}, {
-				label: 'Modify BookCopies',
+				label: 'Select',
+				field: 'select',
 				sort: 'asc'
 			}],
 			rows: getTableBodyContent()
 		};
-		return _react2.default.createElement(
+		branchTable = _react2.default.createElement(
 			_react2.default.Fragment,
 			null,
 			_react2.default.createElement(
 				'div',
 				{ className: 'mainblock' },
+				_react2.default.createElement(
+					'h1',
+					null,
+					'Branches'
+				),
 				_react2.default.createElement(
 					_reactstrap.Button,
 					{ onClick: function onClick() {
@@ -63765,46 +64837,313 @@ var LibrarianBranchRender = function LibrarianBranchRender(_ref) {
 		return branchData.branches.map(function (obj) {
 			// Deep Clone object to avoid adding to it while mapping over it during map
 			var newObj = JSON.parse(JSON.stringify(obj));
-			/*
-   newObj.extend = (
-   <div>
-   <ExtendModal
-   buttonLabel="Extend"
-   handleExtend={handleExtend}
-   handleRefresh={handleRefresh}
-   id={newObj.branchId}
-   currentBranchName={newObj.branchName}
-   currentBranchAddress={newObj.branchAddress}
-   />
-   </div>
-   );
-   */
+			newObj.update = _react2.default.createElement(
+				'div',
+				null,
+				_react2.default.createElement(_UpdateModal2.default, {
+					buttonLabel: 'Update',
+					handleUpdate: handleUpdate,
+					handleRefresh: handleRefresh,
+					id: newObj.branchId,
+					currentBranchName: newObj.branchName,
+					currentBranchAddress: newObj.branchAddress
+				})
+			);
+			newObj.copies = _react2.default.createElement(
+				'div',
+				null,
+				_react2.default.createElement(_UpdateBookCopiesModal2.default, {
+					buttonLabel: 'Books',
+					branchId: newObj.branchId,
+					branchName: newObj.branchName,
+					handleRefresh: handleRefresh,
+					setCopies: setCopies
+				})
+			);
+			newObj.select = _react2.default.createElement(
+				_reactstrap.Button,
+				{ onClick: function onClick() {
+						return selectBranch(newObj.branchId);
+					} },
+				'Select'
+			);
 
 			return newObj;
 		});
 	}
+
+	function test() {
+		branchSelect();
+	}
+	function changeView() {
+		Switch();
+	}
+	function showNonBookCopies() {
+		return _react2.default.createElement(
+			'div',
+			null,
+			_react2.default.createElement(
+				_reactstrap.Button,
+				{ color: 'warning', onClick: test },
+				' Branch Selector '
+			),
+			_react2.default.createElement(
+				_reactstrap.Button,
+				{ color: 'primary', onClick: changeView },
+				' View Books In Library '
+			),
+			_react2.default.createElement(
+				_reactstrap.Button,
+				{ color: 'info', disabled: true },
+				' View Books not in Library'
+			),
+			_react2.default.createElement(_LibrarianNonCopiesRender2.default, {
+				branchData: branchData,
+				selectedBranch: selectedBranch,
+				handleRefresh: handleRefresh,
+				setNonCopies: setNonCopies,
+				requestInfoCopies: requestInfoCopies,
+				bookNonCopies: bookNonCopies
+			})
+		);
+	}
+
+	function showBookCopies() {
+		return _react2.default.createElement(
+			'div',
+			null,
+			_react2.default.createElement(
+				_reactstrap.Button,
+				{ color: 'warning', onClick: test },
+				' Branch Selector '
+			),
+			_react2.default.createElement(
+				_reactstrap.Button,
+				{ color: 'info', disabled: true },
+				' View Books In Library '
+			),
+			_react2.default.createElement(
+				_reactstrap.Button,
+				{ color: 'primary', onClick: changeView },
+				' View Books not in Library'
+			),
+			_react2.default.createElement(_LibrarianCopiesRender2.default, {
+				branchData: branchData,
+				selectedBranch: selectedBranch,
+				handleRefresh: handleRefresh,
+				setCopies: setCopies,
+				requestInfoCopies: requestInfoCopies,
+				bookCopies: bookCopies
+			})
+		);
+	}
+
+	function showTable() {
+		if (branchData && requestInfo && requestInfoCopies && requestInfoCopies.readCopiesSuccessful && requestInfoCopies.readNonCopiesSuccessful) {
+			if (!requestInfoCopies.inLibrary) {
+				return showNonBookCopies();
+			} else {
+				return showBookCopies();
+			}
+		} else if (requestInfo && requestInfo.readSuccessful && branchData) {
+			return branchTable;
+		}
+		return _react2.default.createElement(
+			'h1',
+			null,
+			' ERROR '
+		);
+	}
+
+	return _react2.default.createElement(
+		'div',
+		null,
+		content,
+		showTable()
+	);
+};
+
+LibrarianBranchRender.propTypes = {
+	branchSelect: _propTypes2.default.func,
+	Switch: _propTypes2.default.func,
+	branchData: _propTypes2.default.object,
+	bookCopies: _propTypes2.default.array,
+	bookNonCopies: _propTypes2.default.array,
+	selectedBranch: _propTypes2.default.number,
+	selectBranch: _propTypes2.default.func,
+	handleRefresh: _propTypes2.default.func,
+	handleUpdate: _propTypes2.default.func,
+	setCopies: _propTypes2.default.func,
+	setNonCopies: _propTypes2.default.func,
+	requestInfo: _propTypes2.default.object,
+	requestInfoCopies: _propTypes2.default.object,
+	startReadCopies: _propTypes2.default.func,
+	startReadNonCopies: _propTypes2.default.func
+};
+
+exports.default = LibrarianBranchRender;
+
+},{"../Modal/Librarian/UpdateBookCopiesModal":328,"../Modal/Librarian/UpdateModal":330,"./LibrarianCopiesRender":306,"./LibrarianNonCopiesRender":308,"mdbreact":63,"prop-types":95,"react":148,"reactstrap":242}],306:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = require('prop-types');
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _reactstrap = require('reactstrap');
+
+var _mdbreact = require('mdbreact');
+
+var _UpdateBookCopiesModal = require('../Modal/Librarian/UpdateBookCopiesModal');
+
+var _UpdateBookCopiesModal2 = _interopRequireDefault(_UpdateBookCopiesModal);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var LibrarianCopiesRender = function LibrarianCopiesRender(_ref) {
+	var branchData = _ref.branchData,
+	    selectedBranch = _ref.selectedBranch,
+	    handleRefresh = _ref.handleRefresh,
+	    bookCopies = _ref.bookCopies,
+	    setCopies = _ref.setCopies;
+
+	var content = '';
+	/*
+ console.log("..........");
+ console.log("LIBRARIAN COPIES RENDER");
+ console.log("book copies:");
+ console.log(bookCopies);
+ console.log("..........");
+ */
+	var branchName = 'null';
+	/* get branchName */
+	branchData.branches.map(function (branch) {
+		if (branch.branchId == selectedBranch) {
+			branchName = branch.branchName;
+		}
+	});
+
+	var data = {
+		columns: [{
+			label: 'Book Name',
+			field: 'title',
+			sort: 'asc'
+		}, {
+			label: 'Authors',
+			field: 'authors',
+			sort: 'asc'
+		}, {
+			label: 'Copies',
+			field: 'numberOfCopies',
+			sort: 'asc'
+		}, {
+			label: 'Set Copies',
+			field: 'copies',
+			sort: 'asc'
+		}],
+		rows: getTableBodyContent()
+	};
+	content = _react2.default.createElement(
+		_react2.default.Fragment,
+		null,
+		_react2.default.createElement(
+			'div',
+			{ className: 'mainblock' },
+			_react2.default.createElement(
+				_reactstrap.Button,
+				{ onClick: function onClick() {
+						return handleRefresh();
+					} },
+				'Refresh Data'
+			),
+			' ',
+			_react2.default.createElement(_mdbreact.MDBDataTable, {
+				striped: true,
+				bordered: true,
+				small: true,
+				responsive: true,
+				data: data
+			})
+		)
+	);
+
+	if (!selectedBranch || !bookCopies) {
+		content = _react2.default.createElement(
+			'div',
+			{ className: 'alert alert-danger', role: 'alert' },
+			'Error while loading books!'
+		);
+	}
+	function getAuthors(Authors) {
+		if (Authors.length === 0) {
+			return "No Author";
+		} else {
+			var authors = "";
+			for (var i = 0; i < Authors.length; i++) {
+				authors = authors.concat(Authors[i].authorName);
+				if (i < Authors.length - 1) {
+					authors = authors.concat(", ");
+				}
+			}
+			return authors;
+		}
+	}
+	function getTableBodyContent() {
+		return bookCopies.map(function (obj) {
+			// Deep Clone object to avoid adding to it while mapping over it during map
+			var newObj = JSON.parse(JSON.stringify(obj));
+			newObj.title = obj.book.title;
+			newObj.authors = getAuthors(obj.book.authors);
+			newObj.copies = _react2.default.createElement(
+				'div',
+				null,
+				_react2.default.createElement(_UpdateBookCopiesModal2.default, {
+					buttonLabel: 'Copies',
+					bookId: newObj.book.bookId,
+					branchId: newObj.branch.branchId,
+					branchName: newObj.branch.branchName,
+					noOfCopies: newObj.numberOfCopies,
+					setCopies: setCopies,
+					handleRefresh: handleRefresh
+				})
+			);
+			return newObj;
+		});
+	}
+
 	return _react2.default.createElement(
 		'div',
 		null,
 		_react2.default.createElement(
 			'h1',
 			null,
-			'Branch'
+			'Books In ',
+			branchName
 		),
 		content
 	);
 };
 
-LibrarianBranchRender.propTypes = {
+LibrarianCopiesRender.propTypes = {
 	branchData: _propTypes2.default.object,
+	bookCopies: _propTypes2.default.array,
+	selectedBranch: _propTypes2.default.number,
 	handleRefresh: _propTypes2.default.func,
-	//handleExtend: PropTypes.func,
-	requestInfo: _propTypes2.default.object
+	setCopies: _propTypes2.default.func,
+	requestInfoCopies: _propTypes2.default.object
 };
 
-exports.default = LibrarianBranchRender;
+exports.default = LibrarianCopiesRender;
 
-},{"mdbreact":63,"prop-types":95,"react":148,"reactstrap":242}],301:[function(require,module,exports){
+},{"../Modal/Librarian/UpdateBookCopiesModal":328,"mdbreact":63,"prop-types":95,"react":148,"reactstrap":242}],307:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -63858,7 +65197,165 @@ var LibrarianHeader = function LibrarianHeader() {
 
 exports.default = LibrarianHeader;
 
-},{"react":148,"react-router-dom":135}],302:[function(require,module,exports){
+},{"react":148,"react-router-dom":135}],308:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = require('prop-types');
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _reactstrap = require('reactstrap');
+
+var _mdbreact = require('mdbreact');
+
+var _UpdateBookNonCopiesModal = require('../Modal/Librarian/UpdateBookNonCopiesModal');
+
+var _UpdateBookNonCopiesModal2 = _interopRequireDefault(_UpdateBookNonCopiesModal);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var LibrarianNonCopiesRender = function LibrarianNonCopiesRender(_ref) {
+	var branchData = _ref.branchData,
+	    selectedBranch = _ref.selectedBranch,
+	    handleRefresh = _ref.handleRefresh,
+	    bookNonCopies = _ref.bookNonCopies,
+	    setNonCopies = _ref.setNonCopies;
+
+	var content = '';
+	/*
+ console.log("..........");
+ console.log("LIBRARIAN NON COPIES RENDER");
+ console.log("non book copies:");
+ console.log(bookNonCopies);
+ console.log("branch data");
+ console.log(branchData);
+ console.log("..........");
+ */
+	var branchName = 'null';
+	/* get branchName */
+	branchData.branches.map(function (branch) {
+		if (branch.branchId == selectedBranch) {
+			branchName = branch.branchName;
+		}
+	});
+
+	var data = {
+		columns: [{
+			label: 'Book Name',
+			field: 'title',
+			sort: 'asc'
+		}, {
+			label: 'Authors',
+			field: 'authors',
+			sort: 'asc'
+		}, {
+			label: 'Add Copies',
+			field: 'copies',
+			sort: 'asc'
+		}],
+		rows: getTableBodyContent()
+	};
+	content = _react2.default.createElement(
+		_react2.default.Fragment,
+		null,
+		_react2.default.createElement(
+			'div',
+			{ className: 'mainblock' },
+			_react2.default.createElement(
+				_reactstrap.Button,
+				{ onClick: function onClick() {
+						return handleRefresh();
+					} },
+				'Refresh Data'
+			),
+			' ',
+			_react2.default.createElement(_mdbreact.MDBDataTable, {
+				striped: true,
+				bordered: true,
+				small: true,
+				responsive: true,
+				data: data
+			})
+		)
+	);
+
+	if (!selectedBranch || !bookNonCopies) {
+		content = _react2.default.createElement(
+			'div',
+			{ className: 'alert alert-danger', role: 'alert' },
+			'Error while loading books!'
+		);
+	}
+	function getAuthors(Authors) {
+		if (Authors.length === 0) {
+			return "No Author";
+		} else {
+			var authors = "";
+			for (var i = 0; i < Authors.length; i++) {
+				authors = authors.concat(Authors[i].authorName);
+				if (i < Authors.length - 1) {
+					authors = authors.concat(", ");
+				}
+			}
+			return authors;
+		}
+	}
+	function getTableBodyContent() {
+		return bookNonCopies.map(function (obj) {
+			// Deep Clone object to avoid adding to it while mapping over it during map
+			var newObj = JSON.parse(JSON.stringify(obj));
+			newObj.title = obj.title;
+			newObj.authors = getAuthors(obj.authors);
+			newObj.copies = _react2.default.createElement(
+				'div',
+				null,
+				_react2.default.createElement(_UpdateBookNonCopiesModal2.default, {
+					buttonLabel: 'Copies',
+					bookId: newObj.bookId,
+					branchId: selectedBranch,
+					branchName: branchName,
+					noOfCopies: 0,
+					setNonCopies: setNonCopies,
+					handleRefresh: handleRefresh
+				})
+			);
+			return newObj;
+		});
+	}
+
+	return _react2.default.createElement(
+		'div',
+		null,
+		_react2.default.createElement(
+			'h1',
+			null,
+			'Books not in ',
+			branchName
+		),
+		content
+	);
+};
+
+LibrarianNonCopiesRender.propTypes = {
+	branchData: _propTypes2.default.object,
+	bookNonCopies: _propTypes2.default.array,
+	selectedBranch: _propTypes2.default.number,
+	handleRefresh: _propTypes2.default.func,
+	setNonCopies: _propTypes2.default.func,
+	requestInfoCopies: _propTypes2.default.object
+};
+
+exports.default = LibrarianNonCopiesRender;
+
+},{"../Modal/Librarian/UpdateBookNonCopiesModal":329,"mdbreact":63,"prop-types":95,"react":148,"reactstrap":242}],309:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -63975,7 +65472,7 @@ CreateModal.propTypes = {
 
 exports.default = CreateModal;
 
-},{"prop-types":95,"react":148,"reactstrap":242}],303:[function(require,module,exports){
+},{"prop-types":95,"react":148,"reactstrap":242}],310:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -64085,7 +65582,7 @@ DeleteModal.propTypes = {
 
 exports.default = DeleteModal;
 
-},{"prop-types":95,"react":148,"reactstrap":242}],304:[function(require,module,exports){
+},{"prop-types":95,"react":148,"reactstrap":242}],311:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -64207,7 +65704,7 @@ UpdateModal.propTypes = {
 
 exports.default = UpdateModal;
 
-},{"prop-types":95,"react":148,"reactstrap":242}],305:[function(require,module,exports){
+},{"prop-types":95,"react":148,"reactstrap":242}],312:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -64230,22 +65727,113 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var CreateModal = function CreateModal(props) {
 	var buttonLabel = props.buttonLabel,
-	    handleCreate = props.handleCreate;
+	    handleCreate = props.handleCreate,
+	    handleRefresh = props.handleRefresh,
+	    publishers = props.publishers,
+	    authors = props.authors,
+	    genres = props.genres;
+	/* deprecated alerts */
 
+	if (!alert) {
+		var _alert = "";
+	}
 	var newBookName = '';
-	var newPubId = '';
-
-	function createBook(newBookName, newPubId) {
-		handleCreate(newBookName, newPubId);
+	var newPubId = 0;
+	var newPub = "";
+	var authorKeys = [];
+	var genreKeys = [];
+	function createBook() {
+		if (newBookName !== "" && newPubId > 0 && authorKeys.length > 0 && genreKeys.length > 0) {
+			/* push author objects into newAuthors variable */
+			var newAuthors = [];
+			for (var i = 0; i < authors.length; i++) {
+				if (authorKeys.includes(authors[i].authorId.toString())) {
+					newAuthors.push(authors[i]);
+				}
+			}
+			/* push genre objects into newGenres variable */
+			var newGenres = [];
+			for (var _i = 0; _i < genres.length; _i++) {
+				if (genreKeys.includes(genres[_i].genreId.toString())) {
+					newGenres.push(genres[_i]);
+				}
+			}
+			handleCreate(newBookName, newPub, newAuthors, newGenres);
+			toggle();
+		} else {
+			alert = _react2.default.createElement(
+				'div',
+				null,
+				_react2.default.createElement(
+					_reactstrap.UncontrolledAlert,
+					{ color: 'warning' },
+					'ERROR: Invalid Input!'
+				)
+			);
+			handleRefresh();
+		}
 		//handleRefresh();
-		toggle(); //need to figure out how to make create button be unpressed
 	}
 
 	function handleNameChange(e) {
 		newBookName = e.target.value;
 	}
 	function handlePublisherChange(e) {
-		newPubId = e.target.value;
+		if (e.target.value > 0) {
+			newPubId = e.target.value;
+			var _iteratorNormalCompletion = true;
+			var _didIteratorError = false;
+			var _iteratorError = undefined;
+
+			try {
+				for (var _iterator = publishers[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+					var publisher = _step.value;
+
+					if (publisher.publisherId == newPubId) {
+						newPub = publisher;
+					}
+				}
+			} catch (err) {
+				_didIteratorError = true;
+				_iteratorError = err;
+			} finally {
+				try {
+					if (!_iteratorNormalCompletion && _iterator.return) {
+						_iterator.return();
+					}
+				} finally {
+					if (_didIteratorError) {
+						throw _iteratorError;
+					}
+				}
+			}
+		} else {
+			console.log("ERROR");
+		}
+	}
+
+	function handleAuthorsChange(e) {
+		authorKeys = [];
+		var author = "";
+		var length = e.target.options.length;
+		for (var i = 0; i < length; i++) {
+			author = e.target.options[i];
+			if (author.selected) {
+				authorKeys.push(author.value);
+			}
+		}
+	}
+
+	function handleGenresChange(e) {
+		genreKeys = [];
+		var genre = "";
+		var length = e.target.options.length;
+		for (var i = 0; i < length; i++) {
+			genre = e.target.options[i];
+			if (genre.selected) {
+				genreKeys.push(genre.value);
+			}
+		}
 	}
 
 	var _useState = (0, _react.useState)(false),
@@ -64276,6 +65864,7 @@ var CreateModal = function CreateModal(props) {
 			_react2.default.createElement(
 				_reactstrap.ModalBody,
 				null,
+				alert,
 				_react2.default.createElement(
 					_reactstrap.Form,
 					null,
@@ -64284,8 +65873,8 @@ var CreateModal = function CreateModal(props) {
 						null,
 						_react2.default.createElement(
 							_reactstrap.Label,
-							{ 'for': 'formBookName' },
-							' Book Name'
+							{ form: 'formBookName' },
+							' Book Name '
 						),
 						_react2.default.createElement(_reactstrap.Input, {
 							type: 'text',
@@ -64300,16 +65889,83 @@ var CreateModal = function CreateModal(props) {
 						null,
 						_react2.default.createElement(
 							_reactstrap.Label,
-							{ 'for': 'formPubId' },
-							'Book Publisher'
+							{ form: 'formPublisher' },
+							' Book Publisher '
 						),
-						_react2.default.createElement(_reactstrap.Input, {
-							type: 'text',
-							name: 'pubId',
-							id: 'formPubId',
-							placeholder: 'New Publisher',
-							onChange: handlePublisherChange
-						})
+						_react2.default.createElement(
+							_reactstrap.Input,
+							{
+								type: 'select',
+								name: 'publisher',
+								id: 'formPublisher',
+								placeholder: 'New Publisher',
+								onChange: handlePublisherChange
+							},
+							_react2.default.createElement(
+								'option',
+								{ key: 0, value: 0, unselectable: 'on' },
+								'SELECT'
+							),
+							publishers.map(function (publisher) {
+								return _react2.default.createElement(
+									'option',
+									{ key: publisher.publisherId, value: publisher.publisherId },
+									publisher.publisherName + ", " + publisher.publisherAddress
+								);
+							})
+						)
+					),
+					_react2.default.createElement(
+						_reactstrap.FormGroup,
+						null,
+						_react2.default.createElement(
+							_reactstrap.Label,
+							{ form: 'formAuthors' },
+							' Authors (select at least 1)'
+						),
+						_react2.default.createElement(
+							_reactstrap.Input,
+							{
+								type: 'select',
+								name: 'author',
+								id: 'formAuthor',
+								onChange: handleAuthorsChange,
+								multiple: true
+							},
+							authors.map(function (author) {
+								return _react2.default.createElement(
+									'option',
+									{ key: author.authorId, value: author.authorId },
+									author.authorName
+								);
+							})
+						)
+					),
+					_react2.default.createElement(
+						_reactstrap.FormGroup,
+						null,
+						_react2.default.createElement(
+							_reactstrap.Label,
+							{ form: 'formGenres' },
+							' Genres (select at least 1)'
+						),
+						_react2.default.createElement(
+							_reactstrap.Input,
+							{
+								type: 'select',
+								name: 'genre',
+								id: 'formGenre',
+								onChange: handleGenresChange,
+								multiple: true
+							},
+							genres.map(function (genre) {
+								return _react2.default.createElement(
+									'option',
+									{ key: genre.genreId, value: genre.genreId },
+									genre.genreName
+								);
+							})
+						)
 					)
 				),
 				_react2.default.createElement(
@@ -64317,9 +65973,7 @@ var CreateModal = function CreateModal(props) {
 					{
 						color: 'primary',
 						className: 'twobuttons',
-						onClick: function onClick() {
-							createBook(newBookName, newPubId);
-						}
+						onClick: createBook
 					},
 					'Create'
 				),
@@ -64338,6 +65992,9 @@ var CreateModal = function CreateModal(props) {
 };
 
 CreateModal.propTypes = {
+	publishers: _propTypes2.default.array,
+	authors: _propTypes2.default.array,
+	genres: _propTypes2.default.array,
 	buttonLabel: _propTypes2.default.string,
 	handleRefresh: _propTypes2.default.func,
 	handleCreate: _propTypes2.default.func
@@ -64345,7 +66002,7 @@ CreateModal.propTypes = {
 
 exports.default = CreateModal;
 
-},{"prop-types":95,"react":148,"reactstrap":242}],306:[function(require,module,exports){
+},{"prop-types":95,"react":148,"reactstrap":242}],313:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -64368,18 +66025,17 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var DeleteModal = function DeleteModal(props) {
 	var buttonLabel = props.buttonLabel,
-	    currentTitle = props.currentTitle,
+	    title = props.title,
 	    handleDelete = props.handleDelete,
-	    id = props.id;
+	    bookId = props.bookId;
 
 	var _useState = (0, _react.useState)(false),
 	    _useState2 = _slicedToArray(_useState, 2),
 	    modal = _useState2[0],
 	    setModal = _useState2[1];
 
-	function deleteBook(id) {
-		handleDelete(id);
-		//handleRefresh();
+	function deleteBook(bookId) {
+		handleDelete(bookId);
 		toggle();
 	}
 
@@ -64417,7 +66073,7 @@ var DeleteModal = function DeleteModal(props) {
 							{ 'for': 'title' },
 							'Name:'
 						),
-						_react2.default.createElement(_reactstrap.Input, { plaintext: true, value: currentTitle })
+						_react2.default.createElement(_reactstrap.Input, { readOnly: true, value: title })
 					),
 					_react2.default.createElement(
 						_reactstrap.Button,
@@ -64425,7 +66081,7 @@ var DeleteModal = function DeleteModal(props) {
 							color: 'primary',
 							className: 'twobuttons',
 							onClick: function onClick() {
-								deleteBook(id);
+								deleteBook(bookId);
 							}
 						},
 						'Yes'
@@ -64449,13 +66105,13 @@ DeleteModal.propTypes = {
 	buttonLabel: _propTypes2.default.string,
 	handleDelete: _propTypes2.default.func,
 	handleRefresh: _propTypes2.default.func,
-	id: _propTypes2.default.number,
-	currentTitle: _propTypes2.default.string
+	bookId: _propTypes2.default.number,
+	title: _propTypes2.default.string
 };
 
 exports.default = DeleteModal;
 
-},{"prop-types":95,"react":148,"reactstrap":242}],307:[function(require,module,exports){
+},{"prop-types":95,"react":148,"reactstrap":242}],314:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -64478,25 +66134,136 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var UpdateModal = function UpdateModal(props) {
 	var buttonLabel = props.buttonLabel,
-	    currentPubId = props.currentPubId,
 	    currentTitle = props.currentTitle,
+	    currentPub = props.currentPub,
+	    currentAuthors = props.currentAuthors,
+	    currentGenres = props.currentGenres,
 	    handleUpdate = props.handleUpdate,
-	    id = props.id;
+	    handleRefresh = props.handleRefresh,
+	    publishers = props.publishers,
+	    authors = props.authors,
+	    genres = props.genres,
+	    bookId = props.bookId;
 
-	var newTitle = currentTitle;
-	var newPubId = currentPubId;
+	var newPubId = currentPub.publisherId;
+	var newBookName = currentTitle;
+	var newPub = currentPub;
+	var authorKeys = [];
+	for (var i = 0; i < currentAuthors.length; i++) {
+		authorKeys.push(currentAuthors[i].authorId.toString());
+	}
+	var genreKeys = [];
+	for (var _i = 0; _i < currentGenres.length; _i++) {
+		genreKeys.push(currentGenres[_i].genreId.toString());
+	}
 
-	function updateBook(id, newTitle, newPubId) {
-		handleUpdate(id, newTitle, newPubId);
-		//handleRefresh(); //Causes the weird update issue where the bookData contains only requestPending because books is being loaded again
-		toggle(); //need to figure out how to make update button be unpressed
+	if (!alert) {
+		var _alert = "";
+	}
+
+	function updateBook() {
+		if (newBookName !== "" && newPubId > 0 && authorKeys.length > 0 && genreKeys.length > 0) {
+			/* push author objects into newAuthors variable */
+			var newAuthors = [];
+			for (var _i2 = 0; _i2 < authors.length; _i2++) {
+				if (authorKeys.includes(authors[_i2].authorId.toString())) {
+					newAuthors.push(authors[_i2]);
+				}
+			}
+			/* push genre objects into newGenres variable */
+			var newGenres = [];
+			for (var _i3 = 0; _i3 < genres.length; _i3++) {
+				if (genreKeys.includes(genres[_i3].genreId.toString())) {
+					newGenres.push(genres[_i3]);
+				}
+			}
+			handleUpdate(bookId, newBookName, newPub, newAuthors, newGenres);
+			toggle();
+		} else {
+			alert = _react2.default.createElement(
+				'div',
+				null,
+				_react2.default.createElement(
+					_reactstrap.UncontrolledAlert,
+					{ color: 'warning' },
+					'ERROR: Invalid Input!'
+				)
+			);
+			handleRefresh();
+		}
 	}
 
 	function handleNameChange(e) {
-		newTitle = e.target.value;
+		if (!e.target.value || e.target.value.length > 45) {
+			alert = _react2.default.createElement(
+				'div',
+				null,
+				_react2.default.createElement(
+					_reactstrap.UncontrolledAlert,
+					{ color: 'warning' },
+					'ERROR: Invalid Book Title!'
+				)
+			);
+		} else {
+			newBookName = e.target.value;
+		}
 	}
-	function handleAddressChange(e) {
-		newPubId = e.target.value;
+	function handlePublisherChange(e) {
+		if (e.target.value > 0) {
+			newPubId = e.target.value;
+			var _iteratorNormalCompletion = true;
+			var _didIteratorError = false;
+			var _iteratorError = undefined;
+
+			try {
+				for (var _iterator = publishers[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+					var publisher = _step.value;
+
+					if (publisher.publisherId == newPubId) {
+						newPub = publisher;
+					}
+				}
+			} catch (err) {
+				_didIteratorError = true;
+				_iteratorError = err;
+			} finally {
+				try {
+					if (!_iteratorNormalCompletion && _iterator.return) {
+						_iterator.return();
+					}
+				} finally {
+					if (_didIteratorError) {
+						throw _iteratorError;
+					}
+				}
+			}
+		} else {
+			console.log("ERROR");
+		}
+	}
+
+	function handleAuthorsChange(e) {
+		authorKeys = [];
+		var author = "";
+		var length = e.target.options.length;
+		for (var _i4 = 0; _i4 < length; _i4++) {
+			author = e.target.options[_i4];
+			if (author.selected) {
+				authorKeys.push(author.value);
+			}
+		}
+	}
+
+	function handleGenresChange(e) {
+		genreKeys = [];
+		var genre = "";
+		var length = e.target.options.length;
+		for (var _i5 = 0; _i5 < length; _i5++) {
+			genre = e.target.options[_i5];
+			if (genre.selected) {
+				genreKeys.push(genre.value);
+			}
+		}
 	}
 
 	var _useState = (0, _react.useState)(false),
@@ -64522,11 +66289,12 @@ var UpdateModal = function UpdateModal(props) {
 			_react2.default.createElement(
 				_reactstrap.ModalHeader,
 				{ toggle: toggle },
-				'Update Book'
+				'Create Book'
 			),
 			_react2.default.createElement(
 				_reactstrap.ModalBody,
 				null,
+				alert,
 				_react2.default.createElement(
 					_reactstrap.Form,
 					null,
@@ -64535,13 +66303,13 @@ var UpdateModal = function UpdateModal(props) {
 						null,
 						_react2.default.createElement(
 							_reactstrap.Label,
-							{ 'for': 'formTitle' },
-							'Title'
+							{ form: 'formBookName' },
+							' Book Name '
 						),
 						_react2.default.createElement(_reactstrap.Input, {
 							type: 'text',
 							name: 'title',
-							id: 'formTitle',
+							id: 'formBookName',
 							defaultValue: currentTitle,
 							onChange: handleNameChange
 						})
@@ -64551,16 +66319,81 @@ var UpdateModal = function UpdateModal(props) {
 						null,
 						_react2.default.createElement(
 							_reactstrap.Label,
-							{ 'for': 'formPubId' },
-							'PubId'
+							{ form: 'formPublisher' },
+							' Book Publisher '
 						),
-						_react2.default.createElement(_reactstrap.Input, {
-							type: 'text',
-							name: 'bookAddress',
-							id: 'formPubId',
-							defaultValue: currentPubId,
-							onChange: handleAddressChange
-						})
+						_react2.default.createElement(
+							_reactstrap.Input,
+							{
+								type: 'select',
+								name: 'publisher',
+								id: 'formPublisher',
+								placeholder: 'New Publisher',
+								onChange: handlePublisherChange,
+								defaultValue: newPubId.toString()
+							},
+							publishers.map(function (publisher) {
+								return _react2.default.createElement(
+									'option',
+									{ key: publisher.publisherId, value: publisher.publisherId },
+									publisher.publisherName + ", " + publisher.publisherAddress
+								);
+							})
+						)
+					),
+					_react2.default.createElement(
+						_reactstrap.FormGroup,
+						null,
+						_react2.default.createElement(
+							_reactstrap.Label,
+							{ form: 'formAuthors' },
+							' Authors (select at least 1)'
+						),
+						_react2.default.createElement(
+							_reactstrap.Input,
+							{
+								type: 'select',
+								name: 'author',
+								id: 'formAuthor',
+								onChange: handleAuthorsChange,
+								defaultValue: authorKeys,
+								multiple: true
+							},
+							authors.map(function (author) {
+								return _react2.default.createElement(
+									'option',
+									{ key: author.authorId, value: author.authorId },
+									author.authorName
+								);
+							})
+						)
+					),
+					_react2.default.createElement(
+						_reactstrap.FormGroup,
+						null,
+						_react2.default.createElement(
+							_reactstrap.Label,
+							{ form: 'formGenres' },
+							' Genres (select at least 1)'
+						),
+						_react2.default.createElement(
+							_reactstrap.Input,
+							{
+								type: 'select',
+								name: 'genre',
+								id: 'formGenre',
+								onChange: handleGenresChange,
+								defaultValue: genreKeys,
+								multiple: true
+							},
+							genres.map(function (genre) {
+								return _react2.default.createElement(
+									'option',
+									{ key: genre.genreId, value: genre.genreId },
+									genre.genreName
+								);
+							})
+						)
 					)
 				),
 				_react2.default.createElement(
@@ -64568,11 +66401,9 @@ var UpdateModal = function UpdateModal(props) {
 					{
 						color: 'primary',
 						className: 'twobuttons',
-						onClick: function onClick() {
-							updateBook(id, newTitle, newPubId);
-						}
+						onClick: updateBook
 					},
-					'Update'
+					'Create'
 				),
 				_react2.default.createElement(
 					_reactstrap.Button,
@@ -64589,17 +66420,22 @@ var UpdateModal = function UpdateModal(props) {
 };
 
 UpdateModal.propTypes = {
+	publishers: _propTypes2.default.array,
+	authors: _propTypes2.default.array,
+	genres: _propTypes2.default.array,
 	buttonLabel: _propTypes2.default.string,
 	handleRefresh: _propTypes2.default.func,
 	handleUpdate: _propTypes2.default.func,
 	currentTitle: _propTypes2.default.string,
-	currentPubId: _propTypes2.default.string,
-	id: _propTypes2.default.number
+	currentPub: _propTypes2.default.object,
+	currentAuthors: _propTypes2.default.array,
+	currentGenres: _propTypes2.default.array,
+	bookId: _propTypes2.default.number
 };
 
 exports.default = UpdateModal;
 
-},{"prop-types":95,"react":148,"reactstrap":242}],308:[function(require,module,exports){
+},{"prop-types":95,"react":148,"reactstrap":242}],315:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -64756,7 +66592,7 @@ CreateModal.propTypes = {
 
 exports.default = CreateModal;
 
-},{"prop-types":95,"react":148,"reactstrap":242}],309:[function(require,module,exports){
+},{"prop-types":95,"react":148,"reactstrap":242}],316:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -64898,7 +66734,7 @@ DeleteModal.propTypes = {
 
 exports.default = DeleteModal;
 
-},{"prop-types":95,"react":148,"reactstrap":242}],310:[function(require,module,exports){
+},{"prop-types":95,"react":148,"reactstrap":242}],317:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -65063,7 +66899,7 @@ UpdateModal.propTypes = {
 
 exports.default = UpdateModal;
 
-},{"prop-types":95,"react":148,"reactstrap":242}],311:[function(require,module,exports){
+},{"prop-types":95,"react":148,"reactstrap":242}],318:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -65201,7 +67037,7 @@ CreateModal.propTypes = {
 
 exports.default = CreateModal;
 
-},{"prop-types":95,"react":148,"reactstrap":242}],312:[function(require,module,exports){
+},{"prop-types":95,"react":148,"reactstrap":242}],319:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -65323,7 +67159,7 @@ DeleteModal.propTypes = {
 
 exports.default = DeleteModal;
 
-},{"prop-types":95,"react":148,"reactstrap":242}],313:[function(require,module,exports){
+},{"prop-types":95,"react":148,"reactstrap":242}],320:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -65467,7 +67303,7 @@ UpdateModal.propTypes = {
 
 exports.default = UpdateModal;
 
-},{"prop-types":95,"react":148,"reactstrap":242}],314:[function(require,module,exports){
+},{"prop-types":95,"react":148,"reactstrap":242}],321:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -65584,7 +67420,7 @@ CreateModal.propTypes = {
 
 exports.default = CreateModal;
 
-},{"prop-types":95,"react":148,"reactstrap":242}],315:[function(require,module,exports){
+},{"prop-types":95,"react":148,"reactstrap":242}],322:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -65694,7 +67530,7 @@ DeleteModal.propTypes = {
 
 exports.default = DeleteModal;
 
-},{"prop-types":95,"react":148,"reactstrap":242}],316:[function(require,module,exports){
+},{"prop-types":95,"react":148,"reactstrap":242}],323:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -65817,7 +67653,7 @@ UpdateModal.propTypes = {
 
 exports.default = UpdateModal;
 
-},{"prop-types":95,"react":148,"reactstrap":242}],317:[function(require,module,exports){
+},{"prop-types":95,"react":148,"reactstrap":242}],324:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -65960,7 +67796,7 @@ ExtendModal.propTypes = {
 
 exports.default = ExtendModal;
 
-},{"prop-types":95,"react":148,"reactstrap":242}],318:[function(require,module,exports){
+},{"prop-types":95,"react":148,"reactstrap":242}],325:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -66118,7 +67954,7 @@ CreateModal.propTypes = {
 
 exports.default = CreateModal;
 
-},{"prop-types":95,"react":148,"reactstrap":242}],319:[function(require,module,exports){
+},{"prop-types":95,"react":148,"reactstrap":242}],326:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -66251,7 +68087,7 @@ DeleteModal.propTypes = {
 
 exports.default = DeleteModal;
 
-},{"prop-types":95,"react":148,"reactstrap":242}],320:[function(require,module,exports){
+},{"prop-types":95,"react":148,"reactstrap":242}],327:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -66416,7 +68252,299 @@ UpdateModal.propTypes = {
 
 exports.default = UpdateModal;
 
-},{"prop-types":95,"react":148,"reactstrap":242}],321:[function(require,module,exports){
+},{"prop-types":95,"react":148,"reactstrap":242}],328:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactstrap = require('reactstrap');
+
+var _propTypes = require('prop-types');
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var UpdateBookCopiesModal = function UpdateBookCopiesModal(props) {
+    var buttonLabel = props.buttonLabel,
+        bookId = props.bookId,
+        branchId = props.branchId,
+        branchName = props.branchName,
+        noOfCopies = props.noOfCopies,
+        setCopies = props.setCopies;
+
+
+    var newCopies = noOfCopies;
+    if (!alert) {
+        var alert = '';
+    }
+
+    var _useState = (0, _react.useState)(false),
+        _useState2 = _slicedToArray(_useState, 2),
+        modal = _useState2[0],
+        setModal = _useState2[1];
+
+    var toggle = function toggle() {
+        setModal(!modal);
+    };
+
+    function handleCopies(e) {
+        newCopies = e.target.value;
+    }
+
+    function validateInput(newCopies) {
+        if (newCopies >= 0) {
+            setCopies(bookId, branchId, newCopies);
+            toggle();
+        } else {
+            alert = _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(
+                    _reactstrap.Alert,
+                    { color: 'warning' },
+                    'ERROR: Negative Number!'
+                )
+            );
+        }
+    }
+
+    return _react2.default.createElement(
+        'div',
+        null,
+        _react2.default.createElement(
+            _reactstrap.Button,
+            { color: 'primary', onClick: toggle },
+            buttonLabel
+        ),
+        _react2.default.createElement(
+            _reactstrap.Modal,
+            { isOpen: modal, toggle: toggle, size: 'xl' },
+            _react2.default.createElement(
+                _reactstrap.ModalHeader,
+                { toggle: toggle },
+                'Update Book Copies for ',
+                branchName,
+                ' '
+            ),
+            _react2.default.createElement(
+                _reactstrap.ModalBody,
+                null,
+                alert,
+                _react2.default.createElement(
+                    _reactstrap.Form,
+                    null,
+                    _react2.default.createElement(
+                        _reactstrap.FormGroup,
+                        null,
+                        _react2.default.createElement(
+                            _reactstrap.Label,
+                            { 'for': 'numberOfCopies' },
+                            'Number of Copies'
+                        ),
+                        _react2.default.createElement(_reactstrap.Input, {
+                            className: 'formNumberOfCopies',
+                            defaultValue: noOfCopies,
+                            min: 0,
+                            input: 'integer',
+                            onChange: handleCopies
+                        })
+                    )
+                ),
+                _react2.default.createElement(
+                    _reactstrap.Button,
+                    {
+                        color: 'primary',
+                        className: 'twobuttons',
+                        onClick: function onClick() {
+                            validateInput(newCopies);
+                        }
+                    },
+                    'Update'
+                ),
+                _react2.default.createElement(
+                    _reactstrap.Button,
+                    {
+                        color: 'danger',
+                        className: 'twobuttons',
+                        onClick: toggle },
+                    'Exit'
+                )
+            )
+        )
+    );
+};
+
+UpdateBookCopiesModal.propTypes = {
+    buttonLabel: _propTypes2.default.string,
+    handleRefresh: _propTypes2.default.func,
+    handleCopies: _propTypes2.default.func,
+    validateInput: _propTypes2.default.func,
+    setCopies: _propTypes2.default.func,
+    bookId: _propTypes2.default.number,
+    branchName: _propTypes2.default.string,
+    branchId: _propTypes2.default.number,
+    noOfCopies: _propTypes2.default.number
+};
+
+exports.default = UpdateBookCopiesModal;
+
+},{"prop-types":95,"react":148,"reactstrap":242}],329:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactstrap = require('reactstrap');
+
+var _propTypes = require('prop-types');
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var UpdateBookNonCopiesModal = function UpdateBookNonCopiesModal(props) {
+    var buttonLabel = props.buttonLabel,
+        bookId = props.bookId,
+        branchId = props.branchId,
+        branchName = props.branchName,
+        noOfCopies = props.noOfCopies,
+        setNonCopies = props.setNonCopies;
+
+
+    var newCopies = noOfCopies;
+    if (!alert) {
+        var alert = '';
+    }
+
+    var _useState = (0, _react.useState)(false),
+        _useState2 = _slicedToArray(_useState, 2),
+        modal = _useState2[0],
+        setModal = _useState2[1];
+
+    var toggle = function toggle() {
+        setModal(!modal);
+    };
+
+    function handleCopies(e) {
+        newCopies = e.target.value;
+    }
+
+    function validateInput(newCopies) {
+        if (newCopies > 0) {
+            setNonCopies(bookId, branchId, newCopies);
+            toggle();
+        } else {
+            alert = _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(
+                    _reactstrap.Alert,
+                    { color: 'warning' },
+                    'ERROR: Non-Positive Number!'
+                )
+            );
+        }
+    }
+
+    return _react2.default.createElement(
+        'div',
+        null,
+        _react2.default.createElement(
+            _reactstrap.Button,
+            { color: 'primary', onClick: toggle },
+            buttonLabel
+        ),
+        _react2.default.createElement(
+            _reactstrap.Modal,
+            { isOpen: modal, toggle: toggle, size: 'xl' },
+            _react2.default.createElement(
+                _reactstrap.ModalHeader,
+                { toggle: toggle },
+                'Update Book Copies for ',
+                branchName,
+                ' '
+            ),
+            _react2.default.createElement(
+                _reactstrap.ModalBody,
+                null,
+                alert,
+                _react2.default.createElement(
+                    _reactstrap.Form,
+                    null,
+                    _react2.default.createElement(
+                        _reactstrap.FormGroup,
+                        null,
+                        _react2.default.createElement(
+                            _reactstrap.Label,
+                            { 'for': 'numberOfCopies' },
+                            'Number of Copies'
+                        ),
+                        _react2.default.createElement(_reactstrap.Input, {
+                            className: 'formNumberOfCopies',
+                            defaultValue: noOfCopies,
+                            min: 0,
+                            input: 'integer',
+                            onChange: handleCopies
+                        })
+                    )
+                ),
+                _react2.default.createElement(
+                    _reactstrap.Button,
+                    {
+                        color: 'primary',
+                        className: 'twobuttons',
+                        onClick: function onClick() {
+                            validateInput(newCopies);
+                        }
+                    },
+                    'Update'
+                ),
+                _react2.default.createElement(
+                    _reactstrap.Button,
+                    {
+                        color: 'danger',
+                        className: 'twobuttons',
+                        onClick: toggle },
+                    'Exit'
+                )
+            )
+        )
+    );
+};
+
+UpdateBookNonCopiesModal.propTypes = {
+    buttonLabel: _propTypes2.default.string,
+    handleRefresh: _propTypes2.default.func,
+    handleCopies: _propTypes2.default.func,
+    validateInput: _propTypes2.default.func,
+    setNonCopies: _propTypes2.default.func,
+    bookId: _propTypes2.default.number,
+    branchName: _propTypes2.default.string,
+    branchId: _propTypes2.default.number,
+    noOfCopies: _propTypes2.default.number
+};
+
+exports.default = UpdateBookNonCopiesModal;
+
+},{"prop-types":95,"react":148,"reactstrap":242}],330:[function(require,module,exports){
+arguments[4][320][0].apply(exports,arguments)
+},{"dup":320,"prop-types":95,"react":148,"reactstrap":242}],331:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -66447,11 +68575,7 @@ var Header = function Header() {
 					_react2.default.createElement(
 						_reactRouterDom.Link,
 						{ to: '/', className: 'navbar-brand' },
-						_react2.default.createElement('img', {
-							width: '90px',
-							height: '30px',
-							src: 'images/logo.png'
-						})
+						_react2.default.createElement('img', { width: '90px', height: '30px', src: 'images/logo.png' })
 					)
 				),
 				_react2.default.createElement(
@@ -66477,8 +68601,8 @@ var Header = function Header() {
 					{ className: 'list-inline-item' },
 					_react2.default.createElement(
 						_reactRouterDom.Link,
-						{ to: '/', replace: true },
-						'Borrower_Home'
+						{ to: '/Borrower', replace: true },
+						'Borrower'
 					)
 				),
 				_react2.default.createElement(
@@ -66497,11 +68621,11 @@ var Header = function Header() {
 
 exports.default = Header;
 
-},{"react":148,"react-router-dom":135}],322:[function(require,module,exports){
+},{"react":148,"react-router-dom":135}],332:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+	value: true
 });
 var CREATE_BOOK_REQUEST = exports.CREATE_BOOK_REQUEST = 'CREATE_BOOK_REQUEST';
 var CREATE_BOOK_FAILURE = exports.CREATE_BOOK_FAILURE = 'CREATE_BOOK_FAILURE';
@@ -66555,18 +68679,35 @@ var DELETE_BORROWER_REQUEST = exports.DELETE_BORROWER_REQUEST = 'DELETE_BORROWER
 var DELETE_BORROWER_FAILURE = exports.DELETE_BORROWER_FAILURE = 'DELETE_BORROWER_FAILURE';
 var DELETE_BORROWER_SUCCESSFUL = exports.DELETE_BORROWER_SUCCESSFUL = 'DELETE_BORROWER_SUCCESSFUL';
 
-var CREATE_PUBLISHER_REQUEST = exports.CREATE_PUBLISHER_REQUEST = 'CREATE_PUBLISHER_REQUEST';
-var CREATE_PUBLISHER_FAILURE = exports.CREATE_PUBLISHER_FAILURE = 'CREATE_PUBLISHER_FAILURE';
-var CREATE_PUBLISHER_SUCCESSFUL = exports.CREATE_PUBLISHER_SUCCESSFUL = 'CREATE_PUBLISHER_SUCCESSFUL';
-var READ_PUBLISHERS_SUCCESSFUL = exports.READ_PUBLISHERS_SUCCESSFUL = 'READ_PUBLISHERS_SUCCESSFUL';
-var READ_PUBLISHERS_PENDING = exports.READ_PUBLISHERS_PENDING = 'READ_PUBLISHERS_PENDING';
-var READ_PUBLISHERS_FAILURE = exports.READ_PUBLISHERS_FAILURE = 'READ_PUBLISHERS_FAILURE';
-var UPDATE_PUBLISHER_REQUEST = exports.UPDATE_PUBLISHER_REQUEST = 'UPDATE_PUBLISHER_REQUEST';
-var UPDATE_PUBLISHER_FAILURE = exports.UPDATE_PUBLISHER_FAILURE = 'UPDATE_PUBLISHER_FAILURE';
-var UPDATE_PUBLISHER_SUCCESSFUL = exports.UPDATE_PUBLISHER_SUCCESSFUL = 'UPDATE_PUBLISHER_SUCCESSFUL';
-var DELETE_PUBLISHER_REQUEST = exports.DELETE_PUBLISHER_REQUEST = 'DELETE_PUBLISHER_REQUEST';
-var DELETE_PUBLISHER_FAILURE = exports.DELETE_PUBLISHER_FAILURE = 'DELETE_PUBLISHER_FAILURE';
-var DELETE_PUBLISHER_SUCCESSFUL = exports.DELETE_PUBLISHER_SUCCESSFUL = 'DELETE_PUBLISHER_SUCCESSFUL';
+var CREATE_COPIES_REQUEST = exports.CREATE_COPIES_REQUEST = 'CREATE_COPIES_REQUEST';
+var CREATE_COPIES_FAILURE = exports.CREATE_COPIES_FAILURE = 'CREATE_COPIES_FAILURE';
+var CREATE_COPIES_SUCCESSFUL = exports.CREATE_COPIES_SUCCESSFUL = 'CREATE_COPIES_SUCCESSFUL';
+var CREATE_NON_COPIES_REQUEST = exports.CREATE_NON_COPIES_REQUEST = 'CREATE_NON_COPIES_REQUEST';
+var CREATE_NON_COPIES_FAILURE = exports.CREATE_NON_COPIES_FAILURE = 'CREATE_NON_COPIES_FAILURE';
+var CREATE_NON_COPIES_SUCCESSFUL = exports.CREATE_NON_COPIES_SUCCESSFUL = 'CREATE_NON_COPIES_SUCCESSFUL';
+
+var BRANCH_SELECT = exports.BRANCH_SELECT = 'BRANCH_SELECT';
+
+var READ_COPIES_SUCCESSFUL = exports.READ_COPIES_SUCCESSFUL = 'READ_COPIES_SUCCESSFUL';
+var READ_COPIES_PENDING = exports.READ_COPIES_PENDING = 'READ_COPIES_PENDING';
+var READ_COPIES_FAILURE = exports.READ_COPIES_FAILURE = 'READ_COPIES_FAILURE';
+
+var READ_NON_COPIES_SUCCESSFUL = exports.READ_NON_COPIES_SUCCESSFUL = 'READ_NON_COPIES_SUCCESSFUL';
+var READ_NON_COPIES_PENDING = exports.READ_NON_COPIES_PENDING = 'READ_NON_COPIES_PENDING';
+var READ_NON_COPIES_FAILURE = exports.READ_NON_COPIES_FAILURE = 'READ_NON_COPIES_FAILURE';
+
+var LIBRARIAN_START_READ_BRANCH_BOOKS = exports.LIBRARIAN_START_READ_BRANCH_BOOKS = 'LIBRARIAN_START_READ_BRANCH_BOOKS';
+var LIBRARIAN_START_READ_NON_BRANCH_BOOKS = exports.LIBRARIAN_START_READ_NON_BRANCH_BOOKS = 'LIBRARIAN_START_READ_NON_BRANCH_BOOKS';
+var LIBRARIAN_READ_ALL_BRANCHES_FAILED = exports.LIBRARIAN_READ_ALL_BRANCHES_FAILED = 'LIBRARIAN_READ_ALL_BRANCHES_FAILED';
+var LIBRARIAN_READ_ALL_BRANCHES_SUCCESSFUL = exports.LIBRARIAN_READ_ALL_BRANCHES_SUCCESSFUL = 'LIBRARIAN_READ_ALL_BRANCHES_SUCCESSFUL';
+var LIBRARIAN_DASHBOARD_SELECT_BRANCH = exports.LIBRARIAN_DASHBOARD_SELECT_BRANCH = 'LIBRARIAN_DASHBOARD_SELECT_BRANCH';
+var LIBRARIAN_DASHBOARD_READ_BOOKS_FAILED = exports.LIBRARIAN_DASHBOARD_READ_BOOKS_FAILED = 'LIBRARIAN_DASHBOARD_READ_BOOKS_FAILED';
+var LIBRARIAN_DASHBOARD_READ_BOOKS_SUCCESSFUL = exports.LIBRARIAN_DASHBOARD_READ_BOOKS_SUCCESSFUL = 'LIBRARIAN_DASHBOARD_READ_BOOKS_SUCCESSFUL';
+var LIBRARIAN_READ_BRANCH_BOOKS_PENDING = exports.LIBRARIAN_READ_BRANCH_BOOKS_PENDING = 'LIBRARIAN_READ_BRANCH_BOOKS_PENDING';
+var LIBRARIAN_READ_BRANCH_BOOKS_FAILURE = exports.LIBRARIAN_READ_BRANCH_BOOKS_FAILURE = 'LIBRARIAN_READ_BRANCH_BOOKS_FAILURE';
+var LIBRARIAN_READ_BRANCH_BOOKS_SUCCESSFUL = exports.LIBRARIAN_READ_BRANCH_BOOKS_SUCCESSFUL = 'LIBRARIAN_READ_BRANCH_BOOKS_SUCCESSFUL';
+var LIBRARIAN_SELECT_BRANCH = exports.LIBRARIAN_SELECT_BRANCH = 'LIBRARIAN_SELECT_BRANCH';
+var LIBRARIAN_SWITCH = exports.LIBRARIAN_SWITCH = 'LIBRARIAN_SWITCH';
 
 var CREATE_GENRE_REQUEST = exports.CREATE_GENRE_REQUEST = 'CREATE_GENRE_REQUEST';
 var CREATE_GENRE_EXISTS = exports.CREATE_GENRE_EXISTS = 'CREATE_GENRE_EXISTS';
@@ -66590,7 +68731,34 @@ var EXTEND_LOAN_REQUEST = exports.EXTEND_LOAN_REQUEST = 'EXTEND_LOAN_REQUEST';
 var EXTEND_LOAN_FAILURE = exports.EXTEND_LOAN_FAILURE = 'EXTEND_LOAN_FAILURE';
 var EXTEND_LOAN_SUCCESSFUL = exports.EXTEND_LOAN_SUCCESSFUL = 'EXTEND_LOAN_SUCCESSFUL';
 
-},{}],323:[function(require,module,exports){
+var CREATE_PUBLISHER_REQUEST = exports.CREATE_PUBLISHER_REQUEST = 'CREATE_PUBLISHER_REQUEST';
+var CREATE_PUBLISHER_FAILURE = exports.CREATE_PUBLISHER_FAILURE = 'CREATE_PUBLISHER_FAILURE';
+var CREATE_PUBLISHER_SUCCESSFUL = exports.CREATE_PUBLISHER_SUCCESSFUL = 'CREATE_PUBLISHER_SUCCESSFUL';
+var READ_PUBLISHERS_SUCCESSFUL = exports.READ_PUBLISHERS_SUCCESSFUL = 'READ_PUBLISHERS_SUCCESSFUL';
+var READ_PUBLISHERS_PENDING = exports.READ_PUBLISHERS_PENDING = 'READ_PUBLISHERS_PENDING';
+var READ_PUBLISHERS_FAILURE = exports.READ_PUBLISHERS_FAILURE = 'READ_PUBLISHERS_FAILURE';
+var UPDATE_PUBLISHER_REQUEST = exports.UPDATE_PUBLISHER_REQUEST = 'UPDATE_PUBLISHER_REQUEST';
+var UPDATE_PUBLISHER_FAILURE = exports.UPDATE_PUBLISHER_FAILURE = 'UPDATE_PUBLISHER_FAILURE';
+var UPDATE_PUBLISHER_SUCCESSFUL = exports.UPDATE_PUBLISHER_SUCCESSFUL = 'UPDATE_PUBLISHER_SUCCESSFUL';
+var DELETE_PUBLISHER_REQUEST = exports.DELETE_PUBLISHER_REQUEST = 'DELETE_PUBLISHER_REQUEST';
+var DELETE_PUBLISHER_FAILURE = exports.DELETE_PUBLISHER_FAILURE = 'DELETE_PUBLISHER_FAILURE';
+var DELETE_PUBLISHER_SUCCESSFUL = exports.DELETE_PUBLISHER_SUCCESSFUL = 'DELETE_PUBLISHER_SUCCESSFUL';
+
+var BORROWER_LOGIN_PENDING = exports.BORROWER_LOGIN_PENDING = 'BORROWER_LOGIN_PENDING';
+var BORROWER_LOGIN_FAILURE = exports.BORROWER_LOGIN_FAILURE = 'BORROWER_LOGIN_FAILURE';
+var BORROWER_LOGIN_SUCCESSFUL = exports.BORROWER_LOGIN_SUCCESSFUL = 'BORROWER_LOGIN_SUCCESSFUL';
+var BORROWER_START_CHECKOUT = exports.BORROWER_START_CHECKOUT = 'BORROWER_START_CHECKOUT';
+var BORROWER_START_RETURN = exports.BORROWER_START_RETURN = 'BORROWER_START_RETURN';
+var BORROWER_READ_ALL_BRANCHES_FAILED = exports.BORROWER_READ_ALL_BRANCHES_FAILED = 'BORROWER_READ_ALL_BRANCHES_FAILED';
+var BORROWER_READ_ALL_BRANCHES_SUCCESSFUL = exports.BORROWER_READ_ALL_BRANCHES_SUCCESSFUL = 'BORROWER_READ_ALL_BRANCHES_SUCCESSFUL';
+var BORROWER_DASHBOARD_SELECT_BRANCH = exports.BORROWER_DASHBOARD_SELECT_BRANCH = 'BORROWER_DASHBOARD_SELECT_BRANCH';
+var BORROWER_DASHBOARD_READ_BOOKS_FAILED = exports.BORROWER_DASHBOARD_READ_BOOKS_FAILED = 'BORROWER_DASHBOARD_READ_BOOKS_FAILED';
+var BORROWER_DASHBOARD_READ_BOOKS_SUCCESSFUL = exports.BORROWER_DASHBOARD_READ_BOOKS_SUCCESSFUL = 'BORROWER_DASHBOARD_READ_BOOKS_SUCCESSFUL';
+var BORROWER_CHECKOUT_PENDING = exports.BORROWER_CHECKOUT_PENDING = 'BORROWER_CHECKOUT_PENDING';
+var BORROWER_CHECKOUT_FAILURE = exports.BORROWER_CHECKOUT_FAILURE = 'BORROWER_CHECKOUT_FAILURE';
+var BORROWER_CHECKOUT_SUCCESSFUL = exports.BORROWER_CHECKOUT_SUCCESSFUL = 'BORROWER_CHECKOUT_SUCCESSFUL';
+
+},{}],333:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -66598,9 +68766,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 var ADMIN_PORT = exports.ADMIN_PORT = 'http://localhost:8090/';
 var LIBRARIAN_PORT = exports.LIBRARIAN_PORT = 'http://localhost:8090/';
-var BORROWER_PORT = exports.BORROWER_PORT = 'http://localhost:8080/';
+var BORROWER_PORT = exports.BORROWER_PORT = 'http://localhost:8081/';
 
-},{}],324:[function(require,module,exports){
+},{}],334:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -66635,7 +68803,7 @@ _reactDom2.default.render(_react2.default.createElement(
 	)
 ), document.getElementById('app'));
 
-},{"./components/App.js":297,"./store/configureStore":333,"react":148,"react-dom":99,"react-redux":124,"react-router-dom":135}],325:[function(require,module,exports){
+},{"./components/App.js":298,"./store/configureStore":344,"react":148,"react-dom":99,"react-redux":124,"react-router-dom":135}],335:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -66784,8 +68952,8 @@ function authorReducer() {
 	}
 }
 
-},{"../constants/actionTypes":322}],326:[function(require,module,exports){
-'use strict';
+},{"../constants/actionTypes":332}],336:[function(require,module,exports){
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
 	value: true
@@ -66795,7 +68963,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 exports.default = bookReducer;
 
-var _actionTypes = require('../constants/actionTypes');
+var _actionTypes = require("../constants/actionTypes");
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
@@ -66806,7 +68974,8 @@ function bookReducer() {
 	switch (action.type) {
 		case _actionTypes.READ_BOOKS_PENDING:
 			return _extends({}, state, {
-				requestInfo: _extends({}, state.requestInfo, { readPending: true })
+				requestInfo: _extends({}, state.requestInfo, { readPending: true,
+					readPublisherPending: true, readAuthorPending: true, readGenrePending: true })
 			});
 		case _actionTypes.READ_BOOKS_FAILURE:
 			return _extends({}, state, {
@@ -66824,6 +68993,66 @@ function bookReducer() {
 					readFailed: false,
 					readSuccessful: true,
 					readPending: false
+				})
+			});
+		case _actionTypes.READ_PUBLISHERS_PENDING:
+			return _extends({}, state, {
+				requestInfo: _extends({}, state.requestInfo, { readPending: true })
+			});
+		case _actionTypes.READ_PUBLISHERS_FAILURE:
+			return _extends({}, state, {
+				requestInfo: _extends({}, state.requestInfo, {
+					readPublisherFailed: true,
+					readPublisherPending: false
+				})
+			});
+		case _actionTypes.READ_PUBLISHERS_SUCCESSFUL:
+			return _extends({}, state, {
+				publisherData: action.data,
+				requestInfo: _extends({}, state.requestInfo, {
+					readPublisherFailed: false,
+					readPublisherSuccessful: true,
+					readPublisherPending: false
+				})
+			});
+		case _actionTypes.READ_AUTHORS_PENDING:
+			return _extends({}, state, {
+				requestInfo: _extends({}, state.requestInfo, { readPending: true })
+			});
+		case _actionTypes.READ_AUTHORS_FAILURE:
+			return _extends({}, state, {
+				requestInfo: _extends({}, state.requestInfo, {
+					readAuthorFailed: true,
+					readAuthorPending: false
+				})
+			});
+		case _actionTypes.READ_AUTHORS_SUCCESSFUL:
+			return _extends({}, state, {
+				authorData: action.data,
+				requestInfo: _extends({}, state.requestInfo, {
+					readAuthorFailed: false,
+					readAuthorSuccessful: true,
+					readAuthorPending: false
+				})
+			});
+		case _actionTypes.READ_GENRES_PENDING:
+			return _extends({}, state, {
+				requestInfo: _extends({}, state.requestInfo, { readPending: true })
+			});
+		case _actionTypes.READ_GENRES_FAILURE:
+			return _extends({}, state, {
+				requestInfo: _extends({}, state.requestInfo, {
+					readGenreFailed: true,
+					readGenrePending: false
+				})
+			});
+		case _actionTypes.READ_GENRES_SUCCESSFUL:
+			return _extends({}, state, {
+				genreData: action.data,
+				requestInfo: _extends({}, state.requestInfo, {
+					readGenreFailed: false,
+					readGenreSuccessful: true,
+					readGenrePending: false
 				})
 			});
 		case _actionTypes.DELETE_BOOK_REQUEST:
@@ -66845,6 +69074,8 @@ function bookReducer() {
 			});
 		case _actionTypes.DELETE_BOOK_SUCCESSFUL:
 			{
+				console.log("delete_book_successful");
+				console.log(action);
 				var newBooks = state.bookData.books.filter(function (book) {
 					return book.bookId != action.deletedId;
 				});
@@ -66933,7 +69164,7 @@ function bookReducer() {
 	}
 }
 
-},{"../constants/actionTypes":322}],327:[function(require,module,exports){
+},{"../constants/actionTypes":332}],337:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -67079,12 +69310,170 @@ function borrowerReducer() {
 					})
 				});
 			}
+		case _actionTypes.BORROWER_LOGIN_PENDING:
+			{
+				return _extends({}, state, {
+					borrowerDashboardInfo: null,
+					loggedInBorrower: null,
+					requestInfo: _extends({}, state.requestInfo, {
+						loginPending: true,
+						loginSuccessful: false,
+						loginFailed: false
+					})
+				});
+			}
+		case _actionTypes.BORROWER_LOGIN_FAILURE:
+			{
+				return _extends({}, state, {
+					borrowerDashboardInfo: null,
+					loggedInBorrower: null,
+					requestInfo: _extends({}, state.requestInfo, {
+						loginPending: false,
+						loginSuccessful: false,
+						loginFailed: true
+					})
+				});
+			}
+		case _actionTypes.BORROWER_LOGIN_SUCCESSFUL:
+			{
+				return _extends({}, state, {
+					borrowerDashboardInfo: {
+						isCheckingOut: false,
+						isReturning: false
+					},
+					loggedInBorrower: action.data,
+					requestInfo: _extends({}, state.requestInfo, {
+						loginPending: false,
+						loginSuccessful: true,
+						loginFailed: false
+					})
+				});
+			}
+		case _actionTypes.BORROWER_START_CHECKOUT:
+			{
+				return _extends({}, state, {
+					borrowerDashboardInfo: {
+						isCheckingOut: true,
+						isReturning: false
+					},
+					requestInfo: _extends({}, state.requestInfo, {
+						branchesPending: true,
+						branchesSuccessful: false,
+						branchesFailed: false
+					})
+				});
+			}
+		case _actionTypes.BORROWER_READ_ALL_BRANCHES_FAILED:
+			{
+				return _extends({}, state, {
+					borrowerDashboardInfo: _extends({}, state.borrowerDashboardInfo),
+					requestInfo: _extends({}, state.requestInfo, {
+						branchesPending: false,
+						branchesSuccessful: false,
+						branchesFailed: true
+					})
+				});
+			}
+		case _actionTypes.BORROWER_READ_ALL_BRANCHES_SUCCESSFUL:
+			{
+				return _extends({}, state, {
+					borrowerDashboardInfo: _extends({}, state.borrowerDashboardInfo, {
+						branches: action.data
+					}),
+					requestInfo: _extends({}, state.requestInfo, {
+						branchesPending: false,
+						branchesSuccessful: true,
+						branchesFailed: false
+					})
+				});
+			}
+		case _actionTypes.BORROWER_START_RETURN:
+			{
+				return _extends({}, state, {
+					borrowerDashboardInfo: {
+						isCheckingOut: false,
+						isReturning: true
+					}
+				});
+			}
+		case _actionTypes.BORROWER_DASHBOARD_SELECT_BRANCH:
+			{
+				return _extends({}, state, {
+					borrowerDashboardInfo: _extends({}, state.borrowerDashboardInfo, {
+						selectedBranch: action.selectedBranch
+					}),
+					requestInfo: _extends({}, state.requestInfo, {
+						booksPending: true,
+						booksSuccessful: false,
+						booksFailed: false
+					})
+				});
+			}
+		case _actionTypes.BORROWER_DASHBOARD_READ_BOOKS_SUCCESSFUL:
+			{
+				return _extends({}, state, {
+					borrowerDashboardInfo: _extends({}, state.borrowerDashboardInfo, {
+						books: action.booksAvailable
+					}),
+					requestInfo: _extends({}, state.requestInfo, {
+						booksPending: false,
+						booksSuccessful: true,
+						booksFailed: false
+					})
+				});
+			}
+		case _actionTypes.BORROWER_DASHBOARD_READ_BOOKS_FAILED:
+			{
+				return _extends({}, state, {
+					borrowerDashboardInfo: _extends({}, state.borrowerDashboardInfo),
+					requestInfo: _extends({}, state.requestInfo, {
+						booksPending: false,
+						booksSuccessful: false,
+						booksFailed: true
+					})
+				});
+			}
+		case _actionTypes.BORROWER_CHECKOUT_PENDING:
+			{
+				return _extends({}, state, {
+					borrowerDashboardInfo: _extends({}, state.borrowerDashboardInfo),
+					requestInfo: _extends({}, state.requestInfo, {
+						checkoutPending: true,
+						checkoutSuccessful: false,
+						checkoutFailed: false
+					})
+				});
+			}
+		case _actionTypes.BORROWER_CHECKOUT_FAILURE:
+			{
+				return _extends({}, state, {
+					borrowerDashboardInfo: _extends({}, state.borrowerDashboardInfo),
+					requestInfo: _extends({}, state.requestInfo, {
+						checkoutPending: false,
+						checkoutSuccessful: false,
+						checkoutFailed: true
+					})
+				});
+			}
+		case _actionTypes.BORROWER_CHECKOUT_SUCCESSFUL:
+			{
+				return _extends({}, state, {
+					borrowerDashboardInfo: _extends({}, state.borrowerDashboardInfo, {
+						newLoan: action.newLoan
+					}),
+					requestInfo: _extends({}, state.requestInfo, {
+						checkoutPending: false,
+						checkoutSuccessful: true,
+						checkoutFailed: false
+					})
+				});
+			}
 		default:
 			return state;
 	}
 }
 
-},{"../constants/actionTypes":322}],328:[function(require,module,exports){
+},{"../constants/actionTypes":332}],338:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -67123,7 +69512,8 @@ function branchReducer() {
 				requestInfo: _extends({}, state.requestInfo, {
 					readFailed: false,
 					readSuccessful: true,
-					readPending: false
+					readPending: false,
+					test: true
 				})
 			});
 		case _actionTypes.DELETE_BRANCH_REQUEST:
@@ -67233,7 +69623,208 @@ function branchReducer() {
 	}
 }
 
-},{"../constants/actionTypes":322}],329:[function(require,module,exports){
+},{"../constants/actionTypes":332}],339:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+exports.default = copiesReducer;
+
+var _actionTypes = require("../constants/actionTypes");
+
+function copiesReducer() {
+	var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+	var action = arguments[1];
+
+	switch (action.type) {
+		case _actionTypes.READ_COPIES_PENDING:
+			return _extends({}, state, {
+				requestInfo: _extends({}, state.requestInfo, { readCopiesPending: true })
+			});
+		case _actionTypes.READ_COPIES_SUCCESSFUL:
+			return _extends({}, state, {
+				bookCopies: action.data,
+				requestInfo: _extends({}, state.requestInfo, {
+					readCopiesSuccessful: true,
+					readCopiesPending: false,
+					inLibrary: true
+				})
+			});
+		case _actionTypes.READ_COPIES_FAILURE:
+			return _extends({}, state, {
+				requestInfo: _extends({}, state.requestInfo, {
+					readFailed: true,
+					readPending: false
+				})
+			});
+		case _actionTypes.READ_NON_COPIES_PENDING:
+			return _extends({}, state, {
+				requestInfo: _extends({}, state.requestInfo, { readNonCopiesPending: true })
+			});
+		case _actionTypes.READ_NON_COPIES_SUCCESSFUL:
+			return _extends({}, state, {
+				bookNonCopies: action.data,
+				requestInfo: _extends({}, state.requestInfo, {
+					readNonCopiesSuccessful: true,
+					readCopiesPending: false,
+					inLibrary: true
+				})
+			});
+		case _actionTypes.READ_NON_COPIES_FAILURE:
+			return _extends({}, state, {
+				requestInfo: _extends({}, state.requestInfo, {
+					readFailed: true,
+					readPending: false
+				})
+			});
+		case _actionTypes.CREATE_COPIES_REQUEST:
+			return _extends({}, state, {
+
+				requestInfo: _extends({}, state.requestInfo, {
+					creating: true,
+					createFailed: false,
+					createSuccess: false
+				})
+			});
+		case _actionTypes.CREATE_COPIES_FAILURE:
+			return _extends({}, state, {
+				requestInfo: _extends({}, state.requestInfo, {
+					createFailed: true,
+					creating: false
+				})
+			});
+
+		case _actionTypes.CREATE_NON_COPIES_REQUEST:
+			return _extends({}, state, {
+				requestInfo: _extends({}, state.requestInfo, {
+					creating: true,
+					createFailed: false,
+					createSuccess: false
+				})
+			});
+		case _actionTypes.CREATE_NON_COPIES_FAILURE:
+			return _extends({}, state, {
+				requestInfo: _extends({}, state.requestInfo, {
+					createFailed: true,
+					creating: false
+				})
+			});
+		case _actionTypes.CREATE_NON_COPIES_SUCCESSFUL:
+			{
+				var tempCopy = JSON.parse(JSON.stringify(state.bookCopies));
+				var tempNotCopy = JSON.parse(JSON.stringify(state.bookNonCopies));
+				var tempBook = null;
+				/* remove book from bookNonCopies */
+				tempNotCopy = tempNotCopy.filter(function (b1) {
+					if (b1.bookId === action.data.book.bookId) {
+						console.log("WHOA");
+						tempBook = b1;
+						return false;
+					}{
+						return true;
+					}
+				});
+				/* add book to bookCopies */
+				var newBookCopy = {
+					book: tempBook,
+					branch: { branchId: state.selectedBranch },
+					key: { branchId: state.selectedBranch, bookId: tempBook.bookId },
+					numberOfCopies: action.data.numberOfCopies
+				};
+				tempCopy.unshift(newBookCopy);
+				return _extends({}, state, {
+					bookNonCopies: tempNotCopy,
+					bookCopies: tempCopy,
+					requestInfo: _extends({}, state.requestInfo, {
+						createNonCopiesSuccessful: true,
+						creating: false
+					})
+				});
+			}
+		//
+		case _actionTypes.CREATE_COPIES_SUCCESSFUL:
+			{
+				var _tempCopy = JSON.parse(JSON.stringify(state.bookCopies));
+				var _tempNotCopy = JSON.parse(JSON.stringify(state.bookNonCopies));
+				/* removes book from library copies view */
+				if (action.data.numberOfCopies === 0) {
+					_tempCopy = _tempCopy.filter(function (b1) {
+						if (b1.book.bookId === action.data.book.bookId) {
+							_tempNotCopy.unshift(b1.book);
+							return false;
+						}
+						return b1.book.bookId !== action.data.book.bookId;
+					});
+					return _extends({}, state, {
+						bookCopies: _tempCopy,
+						bookNonCopies: _tempNotCopy,
+						requestInfo: _extends({}, state.requestInfo, {
+							createCopiesSuccessful: true,
+							creating: false
+						})
+					});
+				} else {
+					_tempCopy = _tempCopy.map(function (b2) {
+						if (b2.book.bookId === action.data.book.bookId) {
+							b2.numberOfCopies = action.data.numberOfCopies;
+							return b2;
+						} else {
+							return b2;
+						}
+					});
+					return _extends({}, state, {
+						bookCopies: _tempCopy,
+						requestInfo: _extends({}, state.requestInfo, {
+							readCopiesSuccessful: true,
+							creating: false
+						})
+					});
+				}
+			}
+
+		case _actionTypes.LIBRARIAN_SELECT_BRANCH:
+			{
+				return _extends({}, state, {
+					selectedBranch: action.data,
+					requestInfo: _extends({}, state.requestInfo, {
+						booksPending: true,
+						booksSuccessful: false,
+						booksFailed: false
+					})
+				});
+			}
+
+		/* reset select branch */
+		case _actionTypes.BRANCH_SELECT:
+			{
+				return _extends({}, state, {
+					bookCopies: undefined,
+					bookNonCopies: undefined,
+					selectedBranch: undefined,
+					requestInfo: {
+						readSuccessful: true
+					},
+					requestInfoCopies: undefined
+				});
+			}
+		case _actionTypes.LIBRARIAN_SWITCH:
+			{
+				return _extends({}, state, {
+					requestInfo: _extends({}, state.requestInfo, {
+						inLibrary: !state.requestInfo.inLibrary
+					})
+				});
+			}
+		default:
+			return state;
+	}
+}
+
+},{"../constants/actionTypes":332}],340:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -67411,7 +70002,7 @@ function genreReducer() {
 	}
 }
 
-},{"../constants/actionTypes":322}],330:[function(require,module,exports){
+},{"../constants/actionTypes":332}],341:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -67436,6 +70027,10 @@ var _branchReducer = require('./branchReducer');
 
 var _branchReducer2 = _interopRequireDefault(_branchReducer);
 
+var _copiesReducer = require('./copiesReducer');
+
+var _copiesReducer2 = _interopRequireDefault(_copiesReducer);
+
 var _genreReducer = require('./genreReducer');
 
 var _genreReducer2 = _interopRequireDefault(_genreReducer);
@@ -67455,6 +70050,7 @@ var rootReducer = (0, _redux.combineReducers)({
 	bookReducer: _bookReducer2.default,
 	borrowerReducer: _borrowerReducer2.default,
 	branchReducer: _branchReducer2.default,
+	copiesReducer: _copiesReducer2.default,
 	genreReducer: _genreReducer2.default,
 	loanReducer: _loanReducer2.default,
 	publisherReducer: _publisherReducer2.default
@@ -67462,8 +70058,8 @@ var rootReducer = (0, _redux.combineReducers)({
 
 exports.default = rootReducer;
 
-},{"./authorReducer":325,"./bookReducer":326,"./borrowerReducer":327,"./branchReducer":328,"./genreReducer":329,"./loanReducer":331,"./publisherReducer":332,"redux":249}],331:[function(require,module,exports){
-"use strict";
+},{"./authorReducer":335,"./bookReducer":336,"./borrowerReducer":337,"./branchReducer":338,"./copiesReducer":339,"./genreReducer":340,"./loanReducer":342,"./publisherReducer":343,"redux":249}],342:[function(require,module,exports){
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
 	value: true
@@ -67473,7 +70069,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 exports.default = loanReducer;
 
-var _actionTypes = require("../constants/actionTypes");
+var _actionTypes = require('../constants/actionTypes');
 
 function loanReducer() {
 	var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
@@ -67527,24 +70123,6 @@ function loanReducer() {
 						requestInfo: _extends({}, state.requestInfo)
 					});
 				} else {
-					/* asdf 
-     return {
-     	...state,
-     	borrowerData: {
-     		...state.borrowerData,
-     		borrowers: updatedBorrowers,
-     	},
-     	requestInfo: {
-     		...state.requestInfo,
-     		updateSuccess: true,
-     		updating: false,
-     	},
-     };
-     asdf*/
-					console.log("map test: action.extendLoan");
-					console.log(action.extendLoan);
-					console.log("map test state.loanData.loans:");
-					console.log(state.loanData.loans);
 					var extendLoans = state.loanData.loans.map(function (loan) {
 						return action.extendLoan.key.bookId === loan.key.bookId && action.extendLoan.key.branchId === loan.key.branchId && action.extendLoan.key.cardNo === loan.key.cardNo ? action.extendLoan : loan;
 					});
@@ -67564,7 +70142,7 @@ function loanReducer() {
 	}
 }
 
-},{"../constants/actionTypes":322}],332:[function(require,module,exports){
+},{"../constants/actionTypes":332}],343:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -67713,7 +70291,7 @@ function publisherReducer() {
 	}
 }
 
-},{"../constants/actionTypes":322}],333:[function(require,module,exports){
+},{"../constants/actionTypes":332}],344:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -67738,12 +70316,12 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function configureStore(initialState) {
 	var middlewares = [(0, _reduxImmutableStateInvariant2.default)(), _reduxThunk2.default];
-
-	var store = (0, _redux.createStore)(_reducers2.default, initialState, _redux.applyMiddleware.apply(undefined, middlewares));
+	var composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || _redux.compose;
+	var store = (0, _redux.createStore)(_reducers2.default, initialState, composeEnhancers(_redux.applyMiddleware.apply(undefined, middlewares)));
 
 	return store;
 }
 
 exports.default = configureStore;
 
-},{"../reducers":330,"redux":249,"redux-immutable-state-invariant":245,"redux-thunk":248}]},{},[324]);
+},{"../reducers":341,"redux":249,"redux-immutable-state-invariant":245,"redux-thunk":248}]},{},[334]);

@@ -4,6 +4,15 @@ import {
 	READ_BOOKS_PENDING,
 	READ_BOOKS_FAILURE,
 	READ_BOOKS_SUCCESSFUL,
+	READ_PUBLISHERS_PENDING,
+	READ_PUBLISHERS_FAILURE,
+	READ_PUBLISHERS_SUCCESSFUL,
+	READ_AUTHORS_PENDING,
+	READ_AUTHORS_FAILURE,
+	READ_AUTHORS_SUCCESSFUL,
+	READ_GENRES_PENDING,
+	READ_GENRES_FAILURE,
+	READ_GENRES_SUCCESSFUL,
 	DELETE_BOOK_REQUEST,
 	DELETE_BOOK_FAILURE,
 	DELETE_BOOK_SUCCESSFUL,
@@ -30,6 +39,50 @@ export const readBooks = () => {
 			});
 	};
 };
+export const readPublishers = () => {
+	return (dispatch) => {
+		dispatch(_readPublisherStarted());
+		return axios
+			.get(ADMIN_PORT + 'getPublishers')
+			.then((res) => {
+				dispatch(_readPublisherSuccess(res));
+			})
+			.catch((error) => {
+				console.log(error);
+				dispatch(_readPublisherFailed(error));
+			});
+	};
+};
+
+export const readAuthors = () => {
+	return (dispatch) => {
+		dispatch(_readAuthorStarted());
+		return axios
+			.get(ADMIN_PORT + 'getAuthors')
+			.then((res) => {
+				dispatch(_readAuthorSuccess(res));
+			})
+			.catch((error) => {
+				console.log(error);
+				dispatch(_readAuthorFailed(error));
+			});
+	};
+};
+
+export const readGenres = () => {
+	return (dispatch) => {
+		dispatch(_readGenreStarted());
+		return axios
+			.get(ADMIN_PORT + 'getGenres')
+			.then((res) => {
+				dispatch(_readGenreSuccess(res));
+			})
+			.catch((error) => {
+				console.log(error);
+				dispatch(_readGenreFailed(error));
+			});
+	};
+};
 
 export const deleteBook = (bookId) => {
 	return (dispatch) => {
@@ -48,14 +101,26 @@ export const deleteBook = (bookId) => {
 	};
 };
 
-export const updateBook = (bookId, publisherId, title) => {
+export const updateBook = (bookId, title, publisher, authors, genres) => {
 	return (dispatch) => {
 		dispatch(_updateBookRequest());
+		console.log("bookId:");
+		console.log(bookId);
+		console.log("book title:");
+		console.log(title);
+		console.log("publisher");
+		console.log(publisher);
+		console.log("authors");
+		console.log(authors);
+		console.log("genres");
+		console.log(genres);
 		return axios
 			.put(ADMIN_PORT + 'updateBook', {
 				bookId: bookId,
-                title: title,
-                pubId: publisherId,
+				title: title,
+				publisher: publisher,
+				authors: authors,
+				genres: genres,
 			})
 			.then((res) => {
 				dispatch(_updateBookSuccess(res));
@@ -67,13 +132,15 @@ export const updateBook = (bookId, publisherId, title) => {
 	};
 };
 
-export const createBook = (title, publisherId) => {
+export const createBook = (title, publisher, authors, genres) => {
 	return (dispatch) => {
 		dispatch(_createBookRequest());
 		return axios
 			.post(ADMIN_PORT + 'addBook', {
-                title: title,
-                pubId: publisherId,
+				title: title,
+				publisher: publisher,
+				authors: authors,
+				genres: genres,
 			})
 			.then((res) => {
 				dispatch(_createBookSuccess(res));
@@ -104,6 +171,67 @@ const _readBookStarted = () => {
 		type: READ_BOOKS_PENDING,
 	};
 };
+
+const _readPublisherSuccess = (res) => {
+	return {
+		type: READ_PUBLISHERS_SUCCESSFUL,
+		data: res.data,
+	};
+};
+
+const _readPublisherFailed = (error) => {
+	return {
+		type: READ_PUBLISHERS_FAILURE,
+		error,
+	};
+};
+
+const _readPublisherStarted = () => {
+	return {
+		type: READ_PUBLISHERS_PENDING,
+	};
+};
+
+const _readAuthorSuccess = (res) => {
+	return {
+		type: READ_AUTHORS_SUCCESSFUL,
+		data: res.data,
+	};
+};
+
+const _readAuthorFailed = (error) => {
+	return {
+		type: READ_AUTHORS_FAILURE,
+		error,
+	};
+};
+
+const _readAuthorStarted = () => {
+	return {
+		type: READ_AUTHORS_PENDING,
+	};
+};
+
+const _readGenreSuccess = (res) => {
+	return {
+		type: READ_GENRES_SUCCESSFUL,
+		data: res.data,
+	};
+};
+
+const _readGenreFailed = (error) => {
+	return {
+		type: READ_GENRES_FAILURE,
+		error,
+	};
+};
+
+const _readGenreStarted = () => {
+	return {
+		type: READ_GENRES_PENDING,
+	};
+};
+
 
 const _deleteBookRequest = () => {
 	return {
