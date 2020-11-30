@@ -60248,7 +60248,7 @@ var _createAuthorFailed = function _createAuthorFailed(error) {
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
-exports.createBook = exports.updateBook = exports.deleteBook = exports.readBooks = undefined;
+exports.createBook = exports.updateBook = exports.deleteBook = exports.readGenres = exports.readAuthors = exports.readPublishers = exports.readBooks = undefined;
 
 var _axios = require('axios');
 
@@ -60271,6 +60271,41 @@ var readBooks = exports.readBooks = function readBooks() {
 		});
 	};
 };
+var readPublishers = exports.readPublishers = function readPublishers() {
+	return function (dispatch) {
+		dispatch(_readPublisherStarted());
+		return _axios2.default.get(_connections.ADMIN_PORT + 'getPublishers').then(function (res) {
+			dispatch(_readPublisherSuccess(res));
+		}).catch(function (error) {
+			console.log(error);
+			dispatch(_readPublisherFailed(error));
+		});
+	};
+};
+
+var readAuthors = exports.readAuthors = function readAuthors() {
+	return function (dispatch) {
+		dispatch(_readAuthorStarted());
+		return _axios2.default.get(_connections.ADMIN_PORT + 'getAuthors').then(function (res) {
+			dispatch(_readAuthorSuccess(res));
+		}).catch(function (error) {
+			console.log(error);
+			dispatch(_readAuthorFailed(error));
+		});
+	};
+};
+
+var readGenres = exports.readGenres = function readGenres() {
+	return function (dispatch) {
+		dispatch(_readGenreStarted());
+		return _axios2.default.get(_connections.ADMIN_PORT + 'getGenres').then(function (res) {
+			dispatch(_readGenreSuccess(res));
+		}).catch(function (error) {
+			console.log(error);
+			dispatch(_readGenreFailed(error));
+		});
+	};
+};
 
 var deleteBook = exports.deleteBook = function deleteBook(bookId) {
 	return function (dispatch) {
@@ -60286,13 +60321,25 @@ var deleteBook = exports.deleteBook = function deleteBook(bookId) {
 	};
 };
 
-var updateBook = exports.updateBook = function updateBook(bookId, publisherId, title) {
+var updateBook = exports.updateBook = function updateBook(bookId, title, publisher, authors, genres) {
 	return function (dispatch) {
 		dispatch(_updateBookRequest());
+		console.log("bookId:");
+		console.log(bookId);
+		console.log("book title:");
+		console.log(title);
+		console.log("publisher");
+		console.log(publisher);
+		console.log("authors");
+		console.log(authors);
+		console.log("genres");
+		console.log(genres);
 		return _axios2.default.put(_connections.ADMIN_PORT + 'updateBook', {
 			bookId: bookId,
 			title: title,
-			pubId: publisherId
+			publisher: publisher,
+			authors: authors,
+			genres: genres
 		}).then(function (res) {
 			dispatch(_updateBookSuccess(res));
 		}).catch(function (error) {
@@ -60302,12 +60349,14 @@ var updateBook = exports.updateBook = function updateBook(bookId, publisherId, t
 	};
 };
 
-var createBook = exports.createBook = function createBook(title, publisherId) {
+var createBook = exports.createBook = function createBook(title, publisher, authors, genres) {
 	return function (dispatch) {
 		dispatch(_createBookRequest());
 		return _axios2.default.post(_connections.ADMIN_PORT + 'addBook', {
 			title: title,
-			pubId: publisherId
+			publisher: publisher,
+			authors: authors,
+			genres: genres
 		}).then(function (res) {
 			dispatch(_createBookSuccess(res));
 		}).catch(function (error) {
@@ -60334,6 +60383,66 @@ var _readBookFailed = function _readBookFailed(error) {
 var _readBookStarted = function _readBookStarted() {
 	return {
 		type: _actionTypes.READ_BOOKS_PENDING
+	};
+};
+
+var _readPublisherSuccess = function _readPublisherSuccess(res) {
+	return {
+		type: _actionTypes.READ_PUBLISHERS_SUCCESSFUL,
+		data: res.data
+	};
+};
+
+var _readPublisherFailed = function _readPublisherFailed(error) {
+	return {
+		type: _actionTypes.READ_PUBLISHERS_FAILURE,
+		error: error
+	};
+};
+
+var _readPublisherStarted = function _readPublisherStarted() {
+	return {
+		type: _actionTypes.READ_PUBLISHERS_PENDING
+	};
+};
+
+var _readAuthorSuccess = function _readAuthorSuccess(res) {
+	return {
+		type: _actionTypes.READ_AUTHORS_SUCCESSFUL,
+		data: res.data
+	};
+};
+
+var _readAuthorFailed = function _readAuthorFailed(error) {
+	return {
+		type: _actionTypes.READ_AUTHORS_FAILURE,
+		error: error
+	};
+};
+
+var _readAuthorStarted = function _readAuthorStarted() {
+	return {
+		type: _actionTypes.READ_AUTHORS_PENDING
+	};
+};
+
+var _readGenreSuccess = function _readGenreSuccess(res) {
+	return {
+		type: _actionTypes.READ_GENRES_SUCCESSFUL,
+		data: res.data
+	};
+};
+
+var _readGenreFailed = function _readGenreFailed(error) {
+	return {
+		type: _actionTypes.READ_GENRES_FAILURE,
+		error: error
+	};
+};
+
+var _readGenreStarted = function _readGenreStarted() {
+	return {
+		type: _actionTypes.READ_GENRES_PENDING
 	};
 };
 
@@ -62035,6 +62144,9 @@ var AdminBookContainer = function AdminBookContainer(props) {
 
 	(0, _react.useEffect)(function () {
 		actions.readBooks();
+		actions.readPublishers();
+		actions.readAuthors();
+		actions.readGenres();
 	}, []);
 
 	return _react2.default.createElement(
@@ -62054,14 +62166,14 @@ var AdminBookContainer = function AdminBookContainer(props) {
 			handleRefresh: function handleRefresh() {
 				return actions.readBooks();
 			},
-			handleDelete: function handleDelete(bookId, publisherId) {
-				return actions.deleteBook(bookId, publisherId);
+			handleDelete: function handleDelete(bookId) {
+				return actions.deleteBook(bookId);
 			},
-			handleUpdate: function handleUpdate(bookId, title) {
-				return actions.updateBook(bookId, title);
+			handleUpdate: function handleUpdate(bookId, title, publisher, authors, genres) {
+				return actions.updateBook(bookId, title, publisher, authors, genres);
 			},
-			handleCreate: function handleCreate(title, publisherId) {
-				return actions.createBook(title, publisherId);
+			handleCreate: function handleCreate(title, publisherId, authors, genres) {
+				return actions.createBook(title, publisherId, authors, genres);
 			}
 		}))
 	);
@@ -62070,6 +62182,9 @@ var AdminBookContainer = function AdminBookContainer(props) {
 function mapStateToProps(state) {
 	return {
 		bookData: state.bookReducer.bookData,
+		publisherData: state.bookReducer.publisherData,
+		authorData: state.bookReducer.authorData,
+		genreData: state.bookReducer.genreData,
 		requestInfo: state.bookReducer.requestInfo
 	};
 }
@@ -62121,6 +62236,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var AdminBookRender = function AdminBookRender(_ref) {
 	var bookData = _ref.bookData,
+	    publisherData = _ref.publisherData,
+	    authorData = _ref.authorData,
+	    genreData = _ref.genreData,
 	    handleRefresh = _ref.handleRefresh,
 	    handleDelete = _ref.handleDelete,
 	    handleUpdate = _ref.handleUpdate,
@@ -62128,7 +62246,7 @@ var AdminBookRender = function AdminBookRender(_ref) {
 	    requestInfo = _ref.requestInfo;
 
 	var content = '';
-	if (!bookData || requestInfo.readPending) {
+	if (!bookData || requestInfo.readPending || requestInfo.readPublisherPending || requestInfo.readAuthorPending || requestInfo.readGenrePending) {
 		content = _react2.default.createElement(
 			'div',
 			{ className: 'd-flex justify-content-center' },
@@ -62143,7 +62261,17 @@ var AdminBookRender = function AdminBookRender(_ref) {
 			)
 		);
 	}
-	if (bookData && requestInfo.readSuccessful) {
+	if (bookData && requestInfo.readSuccessful && requestInfo.readPublisherSuccessful && requestInfo.readAuthorSuccessful && requestInfo.readGenreSuccessful) {
+		console.log("Book Data");
+		console.log(bookData);
+		console.log("Publisher Data");
+		console.log(publisherData);
+		console.log("Author Data");
+		console.log(authorData);
+		console.log("Genre Data");
+		console.log(genreData);
+		console.log("requestInfo:");
+		console.log(requestInfo);
 		var data = {
 			columns: [
 			/*
@@ -62187,6 +62315,9 @@ var AdminBookRender = function AdminBookRender(_ref) {
 				{ className: 'mainblock' },
 				_react2.default.createElement(_CreateModal2.default, {
 					buttonLabel: 'Create New Book',
+					publishers: publisherData,
+					authors: authorData,
+					genres: genreData,
 					handleCreate: handleCreate,
 					handleRefresh: handleRefresh
 				}),
@@ -62217,11 +62348,15 @@ var AdminBookRender = function AdminBookRender(_ref) {
 		);
 	}
 	function parsePublisherInfo(newObj) {
-		return newObj.publisher.publisherName;
+		if (!newObj.publisher) {
+			return "Null pubisher";
+		} else {
+			return newObj.publisher.publisherName;
+		}
 	}
 
 	function parseAuthors(newObj) {
-		if (newObj.authors.length == 0) {
+		if (!newObj.authors || newObj.authors.length === 0) {
 			return "\nNo Authors";
 		} else {
 			var authors = "";
@@ -62236,7 +62371,7 @@ var AdminBookRender = function AdminBookRender(_ref) {
 	}
 
 	function parseGenres(newObj) {
-		if (newObj.genres.length == 0) {
+		if (!newObj.genres || newObj.genres.length === 0) {
 			return "\nNo Genres";
 		} else {
 			var genres = "";
@@ -62252,9 +62387,6 @@ var AdminBookRender = function AdminBookRender(_ref) {
 
 	function getTableBodyContent() {
 		return bookData.books.map(function (obj) {
-			// Deep Clone object to bookId adding to it while mapping over it during map
-
-
 			var newObj = JSON.parse(JSON.stringify(obj));
 
 			newObj.publisherName = parsePublisherInfo(newObj);
@@ -62268,7 +62400,13 @@ var AdminBookRender = function AdminBookRender(_ref) {
 					handleUpdate: handleUpdate,
 					handleRefresh: handleRefresh,
 					bookId: newObj.bookId,
-					currentTitle: newObj.title
+					currentPub: newObj.publisher,
+					currentAuthors: newObj.authors,
+					currentGenres: newObj.genres,
+					currentTitle: newObj.title,
+					publishers: publisherData,
+					authors: authorData,
+					genres: genreData
 				})
 			);
 
@@ -62280,7 +62418,7 @@ var AdminBookRender = function AdminBookRender(_ref) {
 					handleDelete: handleDelete,
 					handleRefresh: handleRefresh,
 					bookId: newObj.bookId,
-					currentTitle: newObj.title
+					title: newObj.title
 				})
 			);
 			return newObj;
@@ -62300,6 +62438,9 @@ var AdminBookRender = function AdminBookRender(_ref) {
 
 AdminBookRender.propTypes = {
 	bookData: _propTypes2.default.object,
+	publisherData: _propTypes2.default.array,
+	authorData: _propTypes2.default.array,
+	genreData: _propTypes2.default.array,
 	handleRefresh: _propTypes2.default.func,
 	handleDelete: _propTypes2.default.func,
 	handleUpdate: _propTypes2.default.func,
@@ -65586,22 +65727,113 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var CreateModal = function CreateModal(props) {
 	var buttonLabel = props.buttonLabel,
-	    handleCreate = props.handleCreate;
+	    handleCreate = props.handleCreate,
+	    handleRefresh = props.handleRefresh,
+	    publishers = props.publishers,
+	    authors = props.authors,
+	    genres = props.genres;
+	/* deprecated alerts */
 
+	if (!alert) {
+		var _alert = "";
+	}
 	var newBookName = '';
-	var newPubId = '';
-
-	function createBook(newBookName, newPubId) {
-		handleCreate(newBookName, newPubId);
+	var newPubId = 0;
+	var newPub = "";
+	var authorKeys = [];
+	var genreKeys = [];
+	function createBook() {
+		if (newBookName !== "" && newPubId > 0 && authorKeys.length > 0 && genreKeys.length > 0) {
+			/* push author objects into newAuthors variable */
+			var newAuthors = [];
+			for (var i = 0; i < authors.length; i++) {
+				if (authorKeys.includes(authors[i].authorId.toString())) {
+					newAuthors.push(authors[i]);
+				}
+			}
+			/* push genre objects into newGenres variable */
+			var newGenres = [];
+			for (var _i = 0; _i < genres.length; _i++) {
+				if (genreKeys.includes(genres[_i].genreId.toString())) {
+					newGenres.push(genres[_i]);
+				}
+			}
+			handleCreate(newBookName, newPub, newAuthors, newGenres);
+			toggle();
+		} else {
+			alert = _react2.default.createElement(
+				'div',
+				null,
+				_react2.default.createElement(
+					_reactstrap.UncontrolledAlert,
+					{ color: 'warning' },
+					'ERROR: Invalid Input!'
+				)
+			);
+			handleRefresh();
+		}
 		//handleRefresh();
-		toggle(); //need to figure out how to make create button be unpressed
 	}
 
 	function handleNameChange(e) {
 		newBookName = e.target.value;
 	}
 	function handlePublisherChange(e) {
-		newPubId = e.target.value;
+		if (e.target.value > 0) {
+			newPubId = e.target.value;
+			var _iteratorNormalCompletion = true;
+			var _didIteratorError = false;
+			var _iteratorError = undefined;
+
+			try {
+				for (var _iterator = publishers[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+					var publisher = _step.value;
+
+					if (publisher.publisherId == newPubId) {
+						newPub = publisher;
+					}
+				}
+			} catch (err) {
+				_didIteratorError = true;
+				_iteratorError = err;
+			} finally {
+				try {
+					if (!_iteratorNormalCompletion && _iterator.return) {
+						_iterator.return();
+					}
+				} finally {
+					if (_didIteratorError) {
+						throw _iteratorError;
+					}
+				}
+			}
+		} else {
+			console.log("ERROR");
+		}
+	}
+
+	function handleAuthorsChange(e) {
+		authorKeys = [];
+		var author = "";
+		var length = e.target.options.length;
+		for (var i = 0; i < length; i++) {
+			author = e.target.options[i];
+			if (author.selected) {
+				authorKeys.push(author.value);
+			}
+		}
+	}
+
+	function handleGenresChange(e) {
+		genreKeys = [];
+		var genre = "";
+		var length = e.target.options.length;
+		for (var i = 0; i < length; i++) {
+			genre = e.target.options[i];
+			if (genre.selected) {
+				genreKeys.push(genre.value);
+			}
+		}
 	}
 
 	var _useState = (0, _react.useState)(false),
@@ -65632,6 +65864,7 @@ var CreateModal = function CreateModal(props) {
 			_react2.default.createElement(
 				_reactstrap.ModalBody,
 				null,
+				alert,
 				_react2.default.createElement(
 					_reactstrap.Form,
 					null,
@@ -65640,8 +65873,8 @@ var CreateModal = function CreateModal(props) {
 						null,
 						_react2.default.createElement(
 							_reactstrap.Label,
-							{ 'for': 'formBookName' },
-							' Book Name'
+							{ form: 'formBookName' },
+							' Book Name '
 						),
 						_react2.default.createElement(_reactstrap.Input, {
 							type: 'text',
@@ -65656,16 +65889,83 @@ var CreateModal = function CreateModal(props) {
 						null,
 						_react2.default.createElement(
 							_reactstrap.Label,
-							{ 'for': 'formPubId' },
-							'Book Publisher'
+							{ form: 'formPublisher' },
+							' Book Publisher '
 						),
-						_react2.default.createElement(_reactstrap.Input, {
-							type: 'text',
-							name: 'pubId',
-							id: 'formPubId',
-							placeholder: 'New Publisher',
-							onChange: handlePublisherChange
-						})
+						_react2.default.createElement(
+							_reactstrap.Input,
+							{
+								type: 'select',
+								name: 'publisher',
+								id: 'formPublisher',
+								placeholder: 'New Publisher',
+								onChange: handlePublisherChange
+							},
+							_react2.default.createElement(
+								'option',
+								{ key: 0, value: 0, unselectable: 'on' },
+								'SELECT'
+							),
+							publishers.map(function (publisher) {
+								return _react2.default.createElement(
+									'option',
+									{ key: publisher.publisherId, value: publisher.publisherId },
+									publisher.publisherName + ", " + publisher.publisherAddress
+								);
+							})
+						)
+					),
+					_react2.default.createElement(
+						_reactstrap.FormGroup,
+						null,
+						_react2.default.createElement(
+							_reactstrap.Label,
+							{ form: 'formAuthors' },
+							' Authors (select at least 1)'
+						),
+						_react2.default.createElement(
+							_reactstrap.Input,
+							{
+								type: 'select',
+								name: 'author',
+								id: 'formAuthor',
+								onChange: handleAuthorsChange,
+								multiple: true
+							},
+							authors.map(function (author) {
+								return _react2.default.createElement(
+									'option',
+									{ key: author.authorId, value: author.authorId },
+									author.authorName
+								);
+							})
+						)
+					),
+					_react2.default.createElement(
+						_reactstrap.FormGroup,
+						null,
+						_react2.default.createElement(
+							_reactstrap.Label,
+							{ form: 'formGenres' },
+							' Genres (select at least 1)'
+						),
+						_react2.default.createElement(
+							_reactstrap.Input,
+							{
+								type: 'select',
+								name: 'genre',
+								id: 'formGenre',
+								onChange: handleGenresChange,
+								multiple: true
+							},
+							genres.map(function (genre) {
+								return _react2.default.createElement(
+									'option',
+									{ key: genre.genreId, value: genre.genreId },
+									genre.genreName
+								);
+							})
+						)
 					)
 				),
 				_react2.default.createElement(
@@ -65673,9 +65973,7 @@ var CreateModal = function CreateModal(props) {
 					{
 						color: 'primary',
 						className: 'twobuttons',
-						onClick: function onClick() {
-							createBook(newBookName, newPubId);
-						}
+						onClick: createBook
 					},
 					'Create'
 				),
@@ -65694,6 +65992,9 @@ var CreateModal = function CreateModal(props) {
 };
 
 CreateModal.propTypes = {
+	publishers: _propTypes2.default.array,
+	authors: _propTypes2.default.array,
+	genres: _propTypes2.default.array,
 	buttonLabel: _propTypes2.default.string,
 	handleRefresh: _propTypes2.default.func,
 	handleCreate: _propTypes2.default.func
@@ -65724,18 +66025,17 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var DeleteModal = function DeleteModal(props) {
 	var buttonLabel = props.buttonLabel,
-	    currentTitle = props.currentTitle,
+	    title = props.title,
 	    handleDelete = props.handleDelete,
-	    id = props.id;
+	    bookId = props.bookId;
 
 	var _useState = (0, _react.useState)(false),
 	    _useState2 = _slicedToArray(_useState, 2),
 	    modal = _useState2[0],
 	    setModal = _useState2[1];
 
-	function deleteBook(id) {
-		handleDelete(id);
-		//handleRefresh();
+	function deleteBook(bookId) {
+		handleDelete(bookId);
 		toggle();
 	}
 
@@ -65773,7 +66073,7 @@ var DeleteModal = function DeleteModal(props) {
 							{ 'for': 'title' },
 							'Name:'
 						),
-						_react2.default.createElement(_reactstrap.Input, { plaintext: true, value: currentTitle })
+						_react2.default.createElement(_reactstrap.Input, { readOnly: true, value: title })
 					),
 					_react2.default.createElement(
 						_reactstrap.Button,
@@ -65781,7 +66081,7 @@ var DeleteModal = function DeleteModal(props) {
 							color: 'primary',
 							className: 'twobuttons',
 							onClick: function onClick() {
-								deleteBook(id);
+								deleteBook(bookId);
 							}
 						},
 						'Yes'
@@ -65805,8 +66105,8 @@ DeleteModal.propTypes = {
 	buttonLabel: _propTypes2.default.string,
 	handleDelete: _propTypes2.default.func,
 	handleRefresh: _propTypes2.default.func,
-	id: _propTypes2.default.number,
-	currentTitle: _propTypes2.default.string
+	bookId: _propTypes2.default.number,
+	title: _propTypes2.default.string
 };
 
 exports.default = DeleteModal;
@@ -65834,25 +66134,136 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var UpdateModal = function UpdateModal(props) {
 	var buttonLabel = props.buttonLabel,
-	    currentPubId = props.currentPubId,
 	    currentTitle = props.currentTitle,
+	    currentPub = props.currentPub,
+	    currentAuthors = props.currentAuthors,
+	    currentGenres = props.currentGenres,
 	    handleUpdate = props.handleUpdate,
-	    id = props.id;
+	    handleRefresh = props.handleRefresh,
+	    publishers = props.publishers,
+	    authors = props.authors,
+	    genres = props.genres,
+	    bookId = props.bookId;
 
-	var newTitle = currentTitle;
-	var newPubId = currentPubId;
+	var newPubId = currentPub.publisherId;
+	var newBookName = currentTitle;
+	var newPub = currentPub;
+	var authorKeys = [];
+	for (var i = 0; i < currentAuthors.length; i++) {
+		authorKeys.push(currentAuthors[i].authorId.toString());
+	}
+	var genreKeys = [];
+	for (var _i = 0; _i < currentGenres.length; _i++) {
+		genreKeys.push(currentGenres[_i].genreId.toString());
+	}
 
-	function updateBook(id, newTitle, newPubId) {
-		handleUpdate(id, newTitle, newPubId);
-		//handleRefresh(); //Causes the weird update issue where the bookData contains only requestPending because books is being loaded again
-		toggle(); //need to figure out how to make update button be unpressed
+	if (!alert) {
+		var _alert = "";
+	}
+
+	function updateBook() {
+		if (newBookName !== "" && newPubId > 0 && authorKeys.length > 0 && genreKeys.length > 0) {
+			/* push author objects into newAuthors variable */
+			var newAuthors = [];
+			for (var _i2 = 0; _i2 < authors.length; _i2++) {
+				if (authorKeys.includes(authors[_i2].authorId.toString())) {
+					newAuthors.push(authors[_i2]);
+				}
+			}
+			/* push genre objects into newGenres variable */
+			var newGenres = [];
+			for (var _i3 = 0; _i3 < genres.length; _i3++) {
+				if (genreKeys.includes(genres[_i3].genreId.toString())) {
+					newGenres.push(genres[_i3]);
+				}
+			}
+			handleUpdate(bookId, newBookName, newPub, newAuthors, newGenres);
+			toggle();
+		} else {
+			alert = _react2.default.createElement(
+				'div',
+				null,
+				_react2.default.createElement(
+					_reactstrap.UncontrolledAlert,
+					{ color: 'warning' },
+					'ERROR: Invalid Input!'
+				)
+			);
+			handleRefresh();
+		}
 	}
 
 	function handleNameChange(e) {
-		newTitle = e.target.value;
+		if (!e.target.value || e.target.value.length > 45) {
+			alert = _react2.default.createElement(
+				'div',
+				null,
+				_react2.default.createElement(
+					_reactstrap.UncontrolledAlert,
+					{ color: 'warning' },
+					'ERROR: Invalid Book Title!'
+				)
+			);
+		} else {
+			newBookName = e.target.value;
+		}
 	}
-	function handleAddressChange(e) {
-		newPubId = e.target.value;
+	function handlePublisherChange(e) {
+		if (e.target.value > 0) {
+			newPubId = e.target.value;
+			var _iteratorNormalCompletion = true;
+			var _didIteratorError = false;
+			var _iteratorError = undefined;
+
+			try {
+				for (var _iterator = publishers[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+					var publisher = _step.value;
+
+					if (publisher.publisherId == newPubId) {
+						newPub = publisher;
+					}
+				}
+			} catch (err) {
+				_didIteratorError = true;
+				_iteratorError = err;
+			} finally {
+				try {
+					if (!_iteratorNormalCompletion && _iterator.return) {
+						_iterator.return();
+					}
+				} finally {
+					if (_didIteratorError) {
+						throw _iteratorError;
+					}
+				}
+			}
+		} else {
+			console.log("ERROR");
+		}
+	}
+
+	function handleAuthorsChange(e) {
+		authorKeys = [];
+		var author = "";
+		var length = e.target.options.length;
+		for (var _i4 = 0; _i4 < length; _i4++) {
+			author = e.target.options[_i4];
+			if (author.selected) {
+				authorKeys.push(author.value);
+			}
+		}
+	}
+
+	function handleGenresChange(e) {
+		genreKeys = [];
+		var genre = "";
+		var length = e.target.options.length;
+		for (var _i5 = 0; _i5 < length; _i5++) {
+			genre = e.target.options[_i5];
+			if (genre.selected) {
+				genreKeys.push(genre.value);
+			}
+		}
 	}
 
 	var _useState = (0, _react.useState)(false),
@@ -65878,11 +66289,12 @@ var UpdateModal = function UpdateModal(props) {
 			_react2.default.createElement(
 				_reactstrap.ModalHeader,
 				{ toggle: toggle },
-				'Update Book'
+				'Create Book'
 			),
 			_react2.default.createElement(
 				_reactstrap.ModalBody,
 				null,
+				alert,
 				_react2.default.createElement(
 					_reactstrap.Form,
 					null,
@@ -65891,13 +66303,13 @@ var UpdateModal = function UpdateModal(props) {
 						null,
 						_react2.default.createElement(
 							_reactstrap.Label,
-							{ 'for': 'formTitle' },
-							'Title'
+							{ form: 'formBookName' },
+							' Book Name '
 						),
 						_react2.default.createElement(_reactstrap.Input, {
 							type: 'text',
 							name: 'title',
-							id: 'formTitle',
+							id: 'formBookName',
 							defaultValue: currentTitle,
 							onChange: handleNameChange
 						})
@@ -65907,16 +66319,81 @@ var UpdateModal = function UpdateModal(props) {
 						null,
 						_react2.default.createElement(
 							_reactstrap.Label,
-							{ 'for': 'formPubId' },
-							'PubId'
+							{ form: 'formPublisher' },
+							' Book Publisher '
 						),
-						_react2.default.createElement(_reactstrap.Input, {
-							type: 'text',
-							name: 'bookAddress',
-							id: 'formPubId',
-							defaultValue: currentPubId,
-							onChange: handleAddressChange
-						})
+						_react2.default.createElement(
+							_reactstrap.Input,
+							{
+								type: 'select',
+								name: 'publisher',
+								id: 'formPublisher',
+								placeholder: 'New Publisher',
+								onChange: handlePublisherChange,
+								defaultValue: newPubId.toString()
+							},
+							publishers.map(function (publisher) {
+								return _react2.default.createElement(
+									'option',
+									{ key: publisher.publisherId, value: publisher.publisherId },
+									publisher.publisherName + ", " + publisher.publisherAddress
+								);
+							})
+						)
+					),
+					_react2.default.createElement(
+						_reactstrap.FormGroup,
+						null,
+						_react2.default.createElement(
+							_reactstrap.Label,
+							{ form: 'formAuthors' },
+							' Authors (select at least 1)'
+						),
+						_react2.default.createElement(
+							_reactstrap.Input,
+							{
+								type: 'select',
+								name: 'author',
+								id: 'formAuthor',
+								onChange: handleAuthorsChange,
+								defaultValue: authorKeys,
+								multiple: true
+							},
+							authors.map(function (author) {
+								return _react2.default.createElement(
+									'option',
+									{ key: author.authorId, value: author.authorId },
+									author.authorName
+								);
+							})
+						)
+					),
+					_react2.default.createElement(
+						_reactstrap.FormGroup,
+						null,
+						_react2.default.createElement(
+							_reactstrap.Label,
+							{ form: 'formGenres' },
+							' Genres (select at least 1)'
+						),
+						_react2.default.createElement(
+							_reactstrap.Input,
+							{
+								type: 'select',
+								name: 'genre',
+								id: 'formGenre',
+								onChange: handleGenresChange,
+								defaultValue: genreKeys,
+								multiple: true
+							},
+							genres.map(function (genre) {
+								return _react2.default.createElement(
+									'option',
+									{ key: genre.genreId, value: genre.genreId },
+									genre.genreName
+								);
+							})
+						)
 					)
 				),
 				_react2.default.createElement(
@@ -65924,11 +66401,9 @@ var UpdateModal = function UpdateModal(props) {
 					{
 						color: 'primary',
 						className: 'twobuttons',
-						onClick: function onClick() {
-							updateBook(id, newTitle, newPubId);
-						}
+						onClick: updateBook
 					},
-					'Update'
+					'Create'
 				),
 				_react2.default.createElement(
 					_reactstrap.Button,
@@ -65945,12 +66420,17 @@ var UpdateModal = function UpdateModal(props) {
 };
 
 UpdateModal.propTypes = {
+	publishers: _propTypes2.default.array,
+	authors: _propTypes2.default.array,
+	genres: _propTypes2.default.array,
 	buttonLabel: _propTypes2.default.string,
 	handleRefresh: _propTypes2.default.func,
 	handleUpdate: _propTypes2.default.func,
 	currentTitle: _propTypes2.default.string,
-	currentPubId: _propTypes2.default.string,
-	id: _propTypes2.default.number
+	currentPub: _propTypes2.default.object,
+	currentAuthors: _propTypes2.default.array,
+	currentGenres: _propTypes2.default.array,
+	bookId: _propTypes2.default.number
 };
 
 exports.default = UpdateModal;
@@ -68473,7 +68953,7 @@ function authorReducer() {
 }
 
 },{"../constants/actionTypes":332}],336:[function(require,module,exports){
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
 	value: true
@@ -68483,7 +68963,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 exports.default = bookReducer;
 
-var _actionTypes = require('../constants/actionTypes');
+var _actionTypes = require("../constants/actionTypes");
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
@@ -68494,7 +68974,8 @@ function bookReducer() {
 	switch (action.type) {
 		case _actionTypes.READ_BOOKS_PENDING:
 			return _extends({}, state, {
-				requestInfo: _extends({}, state.requestInfo, { readPending: true })
+				requestInfo: _extends({}, state.requestInfo, { readPending: true,
+					readPublisherPending: true, readAuthorPending: true, readGenrePending: true })
 			});
 		case _actionTypes.READ_BOOKS_FAILURE:
 			return _extends({}, state, {
@@ -68512,6 +68993,66 @@ function bookReducer() {
 					readFailed: false,
 					readSuccessful: true,
 					readPending: false
+				})
+			});
+		case _actionTypes.READ_PUBLISHERS_PENDING:
+			return _extends({}, state, {
+				requestInfo: _extends({}, state.requestInfo, { readPending: true })
+			});
+		case _actionTypes.READ_PUBLISHERS_FAILURE:
+			return _extends({}, state, {
+				requestInfo: _extends({}, state.requestInfo, {
+					readPublisherFailed: true,
+					readPublisherPending: false
+				})
+			});
+		case _actionTypes.READ_PUBLISHERS_SUCCESSFUL:
+			return _extends({}, state, {
+				publisherData: action.data,
+				requestInfo: _extends({}, state.requestInfo, {
+					readPublisherFailed: false,
+					readPublisherSuccessful: true,
+					readPublisherPending: false
+				})
+			});
+		case _actionTypes.READ_AUTHORS_PENDING:
+			return _extends({}, state, {
+				requestInfo: _extends({}, state.requestInfo, { readPending: true })
+			});
+		case _actionTypes.READ_AUTHORS_FAILURE:
+			return _extends({}, state, {
+				requestInfo: _extends({}, state.requestInfo, {
+					readAuthorFailed: true,
+					readAuthorPending: false
+				})
+			});
+		case _actionTypes.READ_AUTHORS_SUCCESSFUL:
+			return _extends({}, state, {
+				authorData: action.data,
+				requestInfo: _extends({}, state.requestInfo, {
+					readAuthorFailed: false,
+					readAuthorSuccessful: true,
+					readAuthorPending: false
+				})
+			});
+		case _actionTypes.READ_GENRES_PENDING:
+			return _extends({}, state, {
+				requestInfo: _extends({}, state.requestInfo, { readPending: true })
+			});
+		case _actionTypes.READ_GENRES_FAILURE:
+			return _extends({}, state, {
+				requestInfo: _extends({}, state.requestInfo, {
+					readGenreFailed: true,
+					readGenrePending: false
+				})
+			});
+		case _actionTypes.READ_GENRES_SUCCESSFUL:
+			return _extends({}, state, {
+				genreData: action.data,
+				requestInfo: _extends({}, state.requestInfo, {
+					readGenreFailed: false,
+					readGenreSuccessful: true,
+					readGenrePending: false
 				})
 			});
 		case _actionTypes.DELETE_BOOK_REQUEST:
@@ -68533,6 +69074,8 @@ function bookReducer() {
 			});
 		case _actionTypes.DELETE_BOOK_SUCCESSFUL:
 			{
+				console.log("delete_book_successful");
+				console.log(action);
 				var newBooks = state.bookData.books.filter(function (book) {
 					return book.bookId != action.deletedId;
 				});

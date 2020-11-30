@@ -4,7 +4,12 @@ import {
 	READ_BOOKS_SUCCESSFUL,
 	READ_BOOKS_FAILURE,
 	READ_BOOKS_PENDING,
+	DELETE_BOOK_REQUEST,
+	DELETE_BOOK_SUCCESSFUL,
+	DELETE_BOOK_FAILURE,
 } from '../constants/actionTypes';
+
+import { ADMIN_PORT } from '../constants/connections';
 
 export const readBooks = () => {
 	return (dispatch) => {
@@ -18,6 +23,23 @@ export const readBooks = () => {
 			.catch((error) => {
 				console.log(error);
 				dispatch(_readBookFailed(error));
+			});
+	};
+};
+
+export const deleteBook = (id) => {
+	return (dispatch) => {
+		dispatch(_deleteBookRequest());
+		return axios
+			.delete(ADMIN_PORT + 'deleteBook', {
+				data: { bookId: id },
+			})
+			.then((res) => {
+				dispatch(_deleteBookSuccess(res));
+			})
+			.catch((error) => {
+				console.log(error);
+				dispatch(_deleteBookFailed(error));
 			});
 	};
 };
@@ -39,5 +61,26 @@ const _readBookFailed = (error) => {
 const _readBookStarted = () => {
 	return {
 		type: READ_BOOKS_PENDING,
+	};
+};
+
+const _deleteBookRequest = () => {
+	return {
+		type: DELETE_BOOK_REQUEST,
+	};
+};
+
+const _deleteBookSuccess = (res) => {
+	return {
+		type: DELETE_BOOK_SUCCESSFUL,
+		data: res.data,
+		deletedId: res.data.bookId,
+	};
+};
+
+const _deleteBookFailed = (error) => {
+	return {
+		type: DELETE_BOOK_FAILURE,
+		error,
 	};
 };
