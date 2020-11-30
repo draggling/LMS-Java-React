@@ -14,11 +14,13 @@ const LibrarianCopiesRender = ({
 	setCopies,
 }) => {
 	let content = '';
+	/*
 	console.log("..........");
 	console.log("LIBRARIAN COPIES RENDER");
 	console.log("book copies:");
 	console.log(bookCopies);
 	console.log("..........");
+	*/
 	let branchName = 'null'
 	/* get branchName */
 	branchData.branches.map(branch => {
@@ -78,7 +80,7 @@ const LibrarianCopiesRender = ({
 	}
 	function getAuthors(Authors) {
 		if(Authors.length === 0) {
-			return "No Authors"
+			return "No Author"
 		} else {
 			let authors = "";
 			for(let i = 0; i < Authors.length; i++) {

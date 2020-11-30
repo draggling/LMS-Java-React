@@ -23,7 +23,12 @@ import {
 	CREATE_COPIES_SUCCESSFUL,
 	CREATE_COPIES_FAILURE,
 
+	CREATE_NON_COPIES_REQUEST,
+	CREATE_NON_COPIES_SUCCESSFUL,
+	CREATE_NON_COPIES_FAILURE,
+
 	LIBRARIAN_SWITCH,
+	BRANCH_SELECT,
 } from '../constants/actionTypes';
 import { ADMIN_PORT, LIBRARIAN_PORT } from '../constants/connections';
 
@@ -113,6 +118,25 @@ export const setCopies = (bookId, branchId, numOfCopies) => {
 	};
 };
 
+export const setNonCopies = (bookId, branchId, numOfCopies) => {
+	return (dispatch) => {
+		dispatch(_createNonCopiesRequest());
+		return axios
+			.post(LIBRARIAN_PORT + 'librarian/setBookCopies', {
+				book: {bookId: bookId},
+				branch: {branchId: branchId},
+				numberOfCopies: numOfCopies,
+			})
+			.then((res) => {
+				dispatch(_createNonCopiesSuccess(res));
+			})
+			.catch((error) => {
+				console.log(error); 
+				dispatch(_createNonCopiesFailed(error));
+			});
+	};
+};
+
 export const selectBranch = (branch) => {
 	return (dispatch) => { 
 		dispatch(_selectBranch(branch));
@@ -126,6 +150,18 @@ export const Switch = () => {
 	}
 }
 
+/* resets branch information */
+export const branchSelect = () => {
+	console.log("branchSelect");
+	return (dispatch) =>
+		dispatch(_branchSelect());
+}
+
+const _branchSelect = () => {
+	return {
+		type: BRANCH_SELECT,
+	};
+}
 const _SwitchRequest = () => {
 	return {
 		type: LIBRARIAN_SWITCH,
@@ -237,6 +273,26 @@ const _createCopiesSuccess = (res) => {
 const _createCopiesFailed = (error) => {
 	return {
 		type: CREATE_COPIES_FAILURE,
+		error,
+	};
+};
+
+const _createNonCopiesRequest = () => {
+	return {
+		type: CREATE_NON_COPIES_REQUEST,
+	};
+};
+
+const _createNonCopiesSuccess = (res) => {
+	return {
+		type: CREATE_NON_COPIES_SUCCESSFUL,
+		data: res.data,
+	};
+};
+
+const _createNonCopiesFailed = (error) => {
+	return {
+		type: CREATE_NON_COPIES_FAILURE,
 		error,
 	};
 };

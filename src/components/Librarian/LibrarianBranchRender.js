@@ -15,6 +15,7 @@ const LibrarianBranchRender =  ({
 	handleRefresh,
 	handleUpdate,
 	setCopies,
+	setNonCopies,
 	requestInfo,
 	requestInfoCopies,
 	selectBranch,
@@ -23,6 +24,7 @@ const LibrarianBranchRender =  ({
 	bookCopies,
 	bookNonCopies,
 	Switch,
+	branchSelect,
 }) => {
 	let content = '';
 	let branchTable = '';
@@ -130,20 +132,23 @@ const LibrarianBranchRender =  ({
 		});
 	}
 
-
+	function test() {
+		branchSelect();
+	}
 	function changeView() {
 		Switch();
 	}
 	function showNonBookCopies() {
 		return(
 			<div>
-				<Button color="success" disabled> View Books In Library </Button>
-				<Button color="primary" onClick={changeView}> View Books not in Library</Button>
+				<Button color="warning" onClick={test}> Branch Selector </Button>
+				<Button color="primary" onClick={changeView}> View Books In Library </Button>
+				<Button color="info" disabled> View Books not in Library</Button>
 				<LibrarianNonCopiesRender
 				branchData = {branchData}
 				selectedBranch = {selectedBranch}
 				handleRefresh = {handleRefresh}
-				setCopies = {setCopies}
+				setNonCopies = {setNonCopies}
 				requestInfoCopies = {requestInfoCopies} 
 				bookNonCopies = {bookNonCopies}
 				/>
@@ -155,7 +160,8 @@ const LibrarianBranchRender =  ({
 	function showBookCopies() {
 		return(
 			<div>
-				<Button color="success" disabled> View Books In Library </Button>
+				<Button color="warning" onClick={test}> Branch Selector </Button>
+				<Button color="info" disabled> View Books In Library </Button>
 				<Button color="primary" onClick={changeView}> View Books not in Library</Button>
 				<LibrarianCopiesRender
 				branchData = {branchData}
@@ -176,7 +182,7 @@ const LibrarianBranchRender =  ({
 			&& requestInfoCopies.readNonCopiesSuccessful)) {
 			if(!requestInfoCopies.inLibrary) {
 				return showNonBookCopies();
-			} else {
+			} else{
 				return showBookCopies();
 			}
 		} else if(requestInfo && requestInfo.readSuccessful && branchData) {
@@ -194,6 +200,7 @@ const LibrarianBranchRender =  ({
 };
 
 LibrarianBranchRender.propTypes = {
+	branchSelect: PropTypes.func,
 	Switch: PropTypes.func,
 	branchData: PropTypes.object,
 	bookCopies: PropTypes.array,
@@ -203,6 +210,7 @@ LibrarianBranchRender.propTypes = {
 	handleRefresh: PropTypes.func,
 	handleUpdate: PropTypes.func,
 	setCopies: PropTypes.func,
+	setNonCopies: PropTypes.func,
 	requestInfo: PropTypes.object,
 	requestInfoCopies: PropTypes.object,
 	startReadCopies: PropTypes.func,

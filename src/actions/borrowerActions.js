@@ -16,6 +16,9 @@ import {
 	BORROWER_READ_ALL_BRANCHES_SUCCESSFUL,
 	BORROWER_START_CHECKOUT,
 	BORROWER_START_RETURN,
+	BORROWER_RETURN_PENDING,
+	BORROWER_RETURN_FAILURE,
+	BORROWER_RETURN_SUCCESSFUL,
 } from '../constants/actionTypes';
 import { BORROWER_PORT } from '../constants/connections';
 
@@ -74,6 +77,21 @@ export const processCheckout = (book, borrower, branch) => {
 			.catch((error) => {
 				console.log(error);
 				dispatch(_processCheckoutFailed(error));
+			});
+	};
+};
+
+export const processReturn = (loanToReturn) => {
+	return (dispatch) => {
+		dispatch(_processReturn());
+		return axios
+			.put(BORROWER_PORT + 'borrower/bookLoanReturn', loanToReturn)
+			.then((response) => {
+				dispatch(_processReturnSuccess(response));
+			})
+			.catch((error) => {
+				console.log(error);
+				dispatch(_processReturnFailed(error));
 			});
 	};
 };
@@ -188,6 +206,24 @@ const _processCheckoutSuccess = (res) => {
 	return {
 		type: BORROWER_CHECKOUT_SUCCESSFUL,
 		newLoan: res.data,
+	};
+};
+
+const _processReturn = () => {
+	return {
+		type: BORROWER_RETURN_PENDING,
+	};
+};
+const _processReturnFailed = (error) => {
+	return {
+		type: BORROWER_RETURN_FAILURE,
+		error,
+	};
+};
+const _processReturnSuccess = (res) => {
+	return {
+		type: BORROWER_RETURN_SUCCESSFUL,
+		loan: res.data,
 	};
 };
 const _startReturn = () => {

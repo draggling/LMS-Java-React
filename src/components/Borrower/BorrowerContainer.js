@@ -27,6 +27,9 @@ const BorrowerContainer = (props) => {
 	function handleLoginAttempt(cardNo) {
 		actions.attemptLogin(cardNo);
 	}
+	function handleReturn(loan) {
+		actions.processReturn(loan);
+	}
 	function selectBranch(branch) {
 		actions.selectBranchForCheckout(branch);
 	}
@@ -112,9 +115,13 @@ const BorrowerContainer = (props) => {
 				content.push(<Spinner type="grow" color="primary" key={1} />);
 			} else if (requestInfo.loansSuccessful) {
 				content.push(
-					<ReturnLoansTable loans={borrowerDashboardInfo.loans} key={1} />
+					<ReturnLoansTable
+						handleReturn={handleReturn}
+						loans={borrowerDashboardInfo.loans}
+						key={1}
+					/>
 				);
-				//
+				//Have Popup for return date if loan
 				//
 				//
 				//

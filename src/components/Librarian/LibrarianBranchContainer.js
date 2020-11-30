@@ -29,8 +29,11 @@ const LibrarianBranchContainer = (props) => {
 				startReadCopies={(branch) => actions.readCopies(branch)}
 				startReadNonCopies={(branch) => actions.readNonCopies(branch)}
 				Switch={() => actions.Switch()}
+				branchSelect={() => actions.branchSelect()}
 				setCopies={(bookId, branchId, noOfCopies) => 
 					actions.setCopies(bookId, branchId, noOfCopies)}
+				setNonCopies={(bookId, branchId, noOfCopies) => 
+					actions.setNonCopies(bookId, branchId, noOfCopies)}
 			/>
 		</div>
 	);

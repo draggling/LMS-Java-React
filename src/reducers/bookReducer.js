@@ -2,6 +2,15 @@ import {
 	READ_BOOKS_SUCCESSFUL,
 	READ_BOOKS_PENDING,
 	READ_BOOKS_FAILURE,
+	READ_PUBLISHERS_SUCCESSFUL,
+	READ_PUBLISHERS_PENDING,
+	READ_PUBLISHERS_FAILURE,
+	READ_AUTHORS_SUCCESSFUL,
+	READ_AUTHORS_PENDING,
+	READ_AUTHORS_FAILURE,
+	READ_GENRES_SUCCESSFUL,
+	READ_GENRES_PENDING,
+	READ_GENRES_FAILURE,
 	DELETE_BOOK_REQUEST,
 	DELETE_BOOK_FAILURE,
 	DELETE_BOOK_SUCCESSFUL,
@@ -18,7 +27,8 @@ export default function bookReducer(state = {}, action) {
 		case READ_BOOKS_PENDING:
 			return {
 				...state,
-				requestInfo: { ...state.requestInfo, readPending: true },
+				requestInfo: { ...state.requestInfo, readPending: true,
+				readPublisherPending: true, readAuthorPending: true, readGenrePending: true},
 			};
 		case READ_BOOKS_FAILURE:
 			return {
@@ -40,6 +50,81 @@ export default function bookReducer(state = {}, action) {
 					readFailed: false,
 					readSuccessful: true,
 					readPending: false,
+				},
+			};
+		case READ_PUBLISHERS_PENDING:
+			return {
+				...state,
+				requestInfo: { ...state.requestInfo, readPending: true },
+			};
+		case READ_PUBLISHERS_FAILURE:
+			return {
+				...state,
+				requestInfo: {
+					...state.requestInfo,
+					readPublisherFailed: true,
+					readPublisherPending: false,
+				},
+			};
+		case READ_PUBLISHERS_SUCCESSFUL:
+			return {
+				...state,
+				publisherData: action.data,
+				requestInfo: {
+					...state.requestInfo,
+					readPublisherFailed: false,
+					readPublisherSuccessful: true,
+					readPublisherPending: false,
+				},
+			};	
+		case READ_AUTHORS_PENDING:
+			return {
+				...state,
+				requestInfo: { ...state.requestInfo, readPending: true },
+			};
+		case READ_AUTHORS_FAILURE:
+			return {
+				...state,
+				requestInfo: {
+					...state.requestInfo,
+					readAuthorFailed: true,
+					readAuthorPending: false,
+				},
+			};
+		case READ_AUTHORS_SUCCESSFUL:
+			return {
+				...state,
+				authorData: action.data,
+				requestInfo: {
+					...state.requestInfo,
+					readAuthorFailed: false,
+					readAuthorSuccessful: true,
+					readAuthorPending: false,
+				},
+			};
+		case READ_GENRES_PENDING:
+			return {
+				...state,
+				requestInfo: { ...state.requestInfo, readPending: true },
+			};
+		case READ_GENRES_FAILURE:
+			return {
+				...state,
+				requestInfo: {
+					...state.requestInfo,
+					readGenreFailed: true,
+					readGenrePending: false,
+				},
+			};
+		case READ_GENRES_SUCCESSFUL:
+			return {
+				...state,
+				genreData: action.data,
+				requestInfo: {
+					...state.requestInfo,
+					readGenreFailed: false,
+					readGenreSuccessful: true,
+					readGenrePending: false,
 				},
 			};
 		case DELETE_BOOK_REQUEST:
@@ -68,6 +153,8 @@ export default function bookReducer(state = {}, action) {
 				},
 			};
 		case DELETE_BOOK_SUCCESSFUL: {
+			console.log("delete_book_successful");
+			console.log(action);
 			const newBooks = state.bookData.books.filter((book) => {
 				return book.bookId != action.deletedId;
 			});

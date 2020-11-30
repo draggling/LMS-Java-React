@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { MDBDataTable } from 'mdbreact';
 import { Button } from 'reactstrap';
 
-const ReturnLoansTable = ({ loans }) => {
+const ReturnLoansTable = ({ handleReturn, loans }) => {
 	console.log(loans);
 
 	function parseBranchInfo(newObj) {
@@ -106,17 +106,16 @@ const ReturnLoansTable = ({ loans }) => {
 	}
 
 	function getTableBodyContent() {
-		return loans.map((obj) => {
-			let tempbook = parseBookInfo(obj);
+		return loans.map((loan) => {
+			let tempbook = parseBookInfo(loan);
 			const flatten = require('flat').flatten;
-			let loanCopy = flatten(obj);
+			let loanCopy = flatten(loan);
 			loanCopy.bookInfo = tempbook;
 			/* will fix later */
 			loanCopy.branchInfo = parseBranchInfo(loanCopy);
 			loanCopy.parsedDueDate = formatDate(loanCopy.dueDate);
 			loanCopy.parsedDateOut = formatDate(loanCopy.dateOut);
-			console.log(loanCopy);
-			loanCopy.extend = <Button>Select</Button>;
+			loanCopy.return = <Button onClick={() => handleReturn(loan)}>Select</Button>;
 			return loanCopy;
 		});
 	}
@@ -143,8 +142,8 @@ const ReturnLoansTable = ({ loans }) => {
 				sort: 'asc',
 			},
 			{
-				label: 'Extend Due Date',
-				field: 'extend',
+				label: 'Return',
+				field: 'return',
 				sort: 'asc',
 			},
 		],
@@ -153,7 +152,7 @@ const ReturnLoansTable = ({ loans }) => {
 	return (
 		<React.Fragment>
 			<div className="mainblock" key={2}>
-				<Button onClick={() => handleRefresh()}>Refresh Data</Button>{' '}
+				{/* <Button onClick={() => handleRefresh()}>Refresh Data</Button>{' '} */}
 				<MDBDataTable striped bordered small responsive data={data} />
 			</div>
 		</React.Fragment>
@@ -162,5 +161,6 @@ const ReturnLoansTable = ({ loans }) => {
 
 ReturnLoansTable.propTypes = {
 	loans: PropTypes.array,
+	handleReturn: PropTypes.func,
 };
 export default ReturnLoansTable;

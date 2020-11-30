@@ -26,6 +26,9 @@ import {
 	BORROWER_READ_ALL_BRANCHES_SUCCESSFUL,
 	BORROWER_START_CHECKOUT,
 	BORROWER_START_RETURN,
+	BORROWER_RETURN_PENDING,
+	BORROWER_RETURN_FAILURE,
+	BORROWER_RETURN_SUCCESSFUL,
 } from '../constants/actionTypes';
 
 export default function borrowerReducer(state = {}, action) {
@@ -83,8 +86,6 @@ export default function borrowerReducer(state = {}, action) {
 				},
 			};
 		case DELETE_BORROWER_SUCCESSFUL: {
-			console.log(state.borrowerData.borrowers);
-			console.log(action);
 			const newBorrowers = state.borrowerData.borrowers.filter((borrower) => {
 				return borrower.borrowerCardNo != action.deletedId;
 			});
@@ -412,6 +413,61 @@ export default function borrowerReducer(state = {}, action) {
 				borrowerDashboardInfo: {
 					...state.borrowerDashboardInfo,
 					newLoan: action.newLoan,
+				},
+				requestInfo: {
+					...state.requestInfo,
+					checkoutPending: false,
+					checkoutSuccessful: true,
+					checkoutFailed: false,
+				},
+			};
+		}
+		case BORROWER_RETURN_PENDING: {
+			return {
+				...state,
+				borrowerDashboardInfo: {
+					...state.borrowerDashboardInfo,
+				},
+				requestInfo: {
+					...state.requestInfo,
+					returnPending: true,
+					returnSuccessful: false,
+					returnFailed: false,
+				},
+			};
+		}
+		case BORROWER_RETURN_FAILURE: {
+			return {
+				...state,
+				borrowerDashboardInfo: {
+					...state.borrowerDashboardInfo,
+				},
+				requestInfo: {
+					...state.requestInfo,
+					checkoutPending: false,
+					checkoutSuccessful: false,
+					checkoutFailed: true,
+				},
+			};
+		}
+		case BORROWER_RETURN_SUCCESSFUL: {
+			console.log('action', action.loan);
+			console.log('');
+			const newLoanList = state.borrowerDashboardInfo.loans.filter((loan) => {
+				console.log(loan);
+
+				return (
+					loan.key.bookId != action.loan.key.bookId &&
+					loan.key.branchId != action.loan.key.branchId &&
+					loan.key.cardNo != action.loan.key.cardNo
+				);
+			});
+			return {
+				...state,
+				borrowerDashboardInfo: {
+					...state.borrowerDashboardInfo,
+					loans: newLoanList,
+					updatedLoan: action.loan,
 				},
 				requestInfo: {
 					...state.requestInfo,
