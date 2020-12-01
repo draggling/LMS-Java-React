@@ -408,10 +408,16 @@ export default function borrowerReducer(state = {}, action) {
 			};
 		}
 		case BORROWER_CHECKOUT_SUCCESSFUL: {
+			let updateAvailbleBookList = state.borrowerDashboardInfo.books.filter(
+				(book) => {
+					return book.bookId != action.newLoan.key.bookId;
+				}
+			);
 			return {
 				...state,
 				borrowerDashboardInfo: {
 					...state.borrowerDashboardInfo,
+					books: updateAvailbleBookList,
 					newLoan: action.newLoan,
 				},
 				requestInfo: {
@@ -451,11 +457,7 @@ export default function borrowerReducer(state = {}, action) {
 			};
 		}
 		case BORROWER_RETURN_SUCCESSFUL: {
-			console.log('action', action.loan);
-			console.log('');
 			const newLoanList = state.borrowerDashboardInfo.loans.filter((loan) => {
-				console.log(loan);
-
 				return (
 					loan.key.bookId != action.loan.key.bookId &&
 					loan.key.branchId != action.loan.key.branchId &&

@@ -37,12 +37,16 @@ export const attemptLogin = (cardNo) => {
 	};
 };
 
-export const selectBranchForCheckout = (branch) => {
+export const selectBranchForCheckout = (branch, cardNo) => {
 	return (dispatch) => {
 		dispatch(_selectBranch(branch));
 		return axios
 			.get(
-				BORROWER_PORT + 'borrower/getBooksAvailableFromBranch/' + branch.branchId
+				BORROWER_PORT +
+					'borrower/getBooksAvailableFromBranchForBorrower/' +
+					branch.branchId +
+					'/' +
+					cardNo
 			)
 			.then((response) => {
 				dispatch(_readBooksAtBranchSuccess(response));

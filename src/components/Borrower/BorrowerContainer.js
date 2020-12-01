@@ -31,7 +31,7 @@ const BorrowerContainer = (props) => {
 		actions.processReturn(loan);
 	}
 	function selectBranch(branch) {
-		actions.selectBranchForCheckout(branch);
+		actions.selectBranchForCheckout(branch, borrower.borrowerCardNo);
 	}
 	function startCheckout() {
 		actions.startCheckout();
