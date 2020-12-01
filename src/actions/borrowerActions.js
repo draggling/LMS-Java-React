@@ -104,7 +104,7 @@ export const startCheckout = () => {
 	return (dispatch) => {
 		dispatch(_startCheckout());
 		return axios
-			.get(BORROWER_PORT + 'borrower/getLibraryBranches')
+			.get(BORROWER_PORT + 'borrower/getLibraryBranchesWithAvailableBooks')
 			.then((response) => {
 				dispatch(_getAllBranchesSuccessful(response));
 			})
