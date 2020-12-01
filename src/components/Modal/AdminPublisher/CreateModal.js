@@ -17,11 +17,7 @@ const CreateModal = (props) => {
 	let newPublisherAddress = '';
 	let newPublisherPhone = '';
 
-	function createPublisher(
-		newPublisherName,
-		newPublisherAddress,
-		newPublisherPhone
-	) {
+	function createPublisher(newPublisherName, newPublisherAddress, newPublisherPhone) {
 		handleCreate(newPublisherName, newPublisherAddress, newPublisherPhone);
 		toggle(); //need to figure out how to make create button be unpressed
 	}
@@ -49,16 +45,14 @@ const CreateModal = (props) => {
 				<ModalBody>
 					<Form>
 						<FormGroup>
-							<Label for="formPublisherName">
-								{' '}
-								Publisher Name
-							</Label>
+							<Label for="formPublisherName"> Publisher Name</Label>
 							<Input
 								type="text"
-								name="branchName"
 								id="formPublisherName"
-								placeholder="New Publisher Name"
+								maxLength={45}
+								name="branchName"
 								onChange={handleNameChange}
+								placeholder="New Publisher Name"
 							/>
 						</FormGroup>
 
@@ -66,10 +60,11 @@ const CreateModal = (props) => {
 							<Label for="formPublisherAddress">Address</Label>
 							<Input
 								type="text"
-								name="branchAddress"
 								id="formPublisherAddress"
-								placeholder="New Address"
+								maxLength={45}
+								name="branchAddress"
 								onChange={handleAddressChange}
+								placeholder="New Address"
 							/>
 						</FormGroup>
 
@@ -77,10 +72,11 @@ const CreateModal = (props) => {
 							<Label for="formPublisherPhone">Phone</Label>
 							<Input
 								type="text"
-								name="branchPhone"
 								id="formPublisherPhone"
-								placeholder="New Phone Number"
+								maxLength={45}
+								name="branchPhone"
 								onChange={handlePhoneChange}
+								placeholder="New Phone Number"
 							/>
 						</FormGroup>
 					</Form>
@@ -97,11 +93,7 @@ const CreateModal = (props) => {
 					>
 						Create
 					</Button>
-					<Button
-						color="danger"
-						className="twobuttons"
-						onClick={toggle}
-					>
+					<Button color="danger" className="twobuttons" onClick={toggle}>
 						Cancel
 					</Button>
 				</ModalBody>

@@ -51,9 +51,10 @@ const UpdateModal = (props) => {
 							<Label for="formBranchName">BranchName</Label>
 							<Input
 								type="text"
-								name="branchName"
-								id="formBranchName"
 								defaultValue={currentBranchName}
+								id="formBranchName"
+								maxLength={45}
+								name="branchName"
 								onChange={handleNameChange}
 							/>
 						</FormGroup>
@@ -62,9 +63,10 @@ const UpdateModal = (props) => {
 							<Label for="formBranchAddress">BranchAddress</Label>
 							<Input
 								type="text"
-								name="branchAddress"
-								id="formBranchAddress"
 								defaultValue={currentBranchAddress}
+								id="formBranchAddress"
+								maxLength={45}
+								name="branchAddress"
 								onChange={handleAddressChange}
 							/>
 						</FormGroup>
@@ -78,11 +80,7 @@ const UpdateModal = (props) => {
 					>
 						Update
 					</Button>
-					<Button
-						color="danger"
-						className="twobuttons"
-						onClick={toggle}
-					>
+					<Button color="danger" className="twobuttons" onClick={toggle}>
 						Cancel
 					</Button>
 				</ModalBody>

@@ -13,7 +13,8 @@ import PropTypes from 'prop-types';
 import { UncontrolledAlert } from 'reactstrap';
 
 const CreateModal = (props) => {
-	const { buttonLabel, 
+	const {
+		buttonLabel,
 		handleCreate,
 		handleRefresh,
 		publishers,
@@ -21,27 +22,32 @@ const CreateModal = (props) => {
 		genres,
 	} = props;
 	/* deprecated alerts */
-	if(!alert) {
-		let alert = "";
+	if (!alert) {
+		let alert = '';
 	}
 	let newBookName = '';
 	let newPubId = 0;
-	let newPub = "";
+	let newPub = '';
 	let authorKeys = [];
 	let genreKeys = [];
 	function createBook() {
-		if(newBookName !== "" && newPubId > 0 && authorKeys.length > 0 && genreKeys.length > 0) {
+		if (
+			newBookName !== '' &&
+			newPubId > 0 &&
+			authorKeys.length > 0 &&
+			genreKeys.length > 0
+		) {
 			/* push author objects into newAuthors variable */
 			let newAuthors = [];
-			for(let i = 0; i < authors.length; i++) {
-				if(authorKeys.includes(authors[i].authorId.toString())) {
+			for (let i = 0; i < authors.length; i++) {
+				if (authorKeys.includes(authors[i].authorId.toString())) {
 					newAuthors.push(authors[i]);
 				}
 			}
 			/* push genre objects into newGenres variable */
 			let newGenres = [];
-			for(let i = 0; i < genres.length; i++) {
-				if(genreKeys.includes(genres[i].genreId.toString())) {
+			for (let i = 0; i < genres.length; i++) {
+				if (genreKeys.includes(genres[i].genreId.toString())) {
 					newGenres.push(genres[i]);
 				}
 			}
@@ -49,11 +55,11 @@ const CreateModal = (props) => {
 			toggle();
 		} else {
 			alert = (
-                <div>
-                    <UncontrolledAlert color="warning">
-                    ERROR: Invalid Input!
-                    </UncontrolledAlert>
-                </div>
+				<div>
+					<UncontrolledAlert color="warning">
+						ERROR: Invalid Input!
+					</UncontrolledAlert>
+				</div>
 			);
 			handleRefresh();
 		}
@@ -64,39 +70,39 @@ const CreateModal = (props) => {
 		newBookName = e.target.value;
 	}
 	function handlePublisherChange(e) {
-		if(e.target.value > 0) {
+		if (e.target.value > 0) {
 			newPubId = e.target.value;
 			for (const publisher of publishers) {
-				if(publisher.publisherId == newPubId) {
+				if (publisher.publisherId == newPubId) {
 					newPub = publisher;
 				}
 			}
 		} else {
-			console.log("ERROR");
+			console.log('ERROR');
 		}
 	}
 
 	function handleAuthorsChange(e) {
 		authorKeys = [];
-		let author = "";
+		let author = '';
 		let length = e.target.options.length;
-		for(let i = 0; i < length; i++) {
+		for (let i = 0; i < length; i++) {
 			author = e.target.options[i];
-			if(author.selected) {
+			if (author.selected) {
 				authorKeys.push(author.value);
-			} 
+			}
 		}
 	}
 
 	function handleGenresChange(e) {
 		genreKeys = [];
-		let genre = "";
+		let genre = '';
 		let length = e.target.options.length;
-		for(let i = 0; i < length; i++) {
+		for (let i = 0; i < length; i++) {
 			genre = e.target.options[i];
-			if(genre.selected) {
+			if (genre.selected) {
 				genreKeys.push(genre.value);
-			} 
+			}
 		}
 	}
 
@@ -117,25 +123,33 @@ const CreateModal = (props) => {
 							<Label form="formBookName"> Book Name </Label>
 							<Input
 								type="text"
-								name="title"
 								id="formBookName"
-								placeholder="New Book Name"
+								maxLength={45}
+								name="title"
 								onChange={handleNameChange}
+								placeholder="New Book Name"
 							/>
 						</FormGroup>
 						<FormGroup>
 							<Label form="formPublisher"> Book Publisher </Label>
 							<Input
 								type="select"
-								name="publisher"
 								id="formPublisher"
-								placeholder="New Publisher"
+								name="publisher"
 								onChange={handlePublisherChange}
+								placeholder="New Publisher"
 							>
-								<option key={0} value={0} unselectable='on'>SELECT</option>
+								<option key={0} value={0} unselectable="on">
+									SELECT
+								</option>
 								{publishers.map((publisher) => (
-									<option key={publisher.publisherId} value={publisher.publisherId}>
-										{publisher.publisherName + ", " + publisher.publisherAddress}
+									<option
+										key={publisher.publisherId}
+										value={publisher.publisherId}
+									>
+										{publisher.publisherName +
+											', ' +
+											publisher.publisherAddress}
 									</option>
 								))}
 							</Input>
@@ -144,10 +158,10 @@ const CreateModal = (props) => {
 							<Label form="formAuthors"> Authors (select at least 1)</Label>
 							<Input
 								type="select"
-								name="author"
 								id="formAuthor"
-								onChange={handleAuthorsChange}
 								multiple
+								name="author"
+								onChange={handleAuthorsChange}
 							>
 								{authors.map((author) => (
 									<option key={author.authorId} value={author.authorId}>
@@ -160,10 +174,10 @@ const CreateModal = (props) => {
 							<Label form="formGenres"> Genres (select at least 1)</Label>
 							<Input
 								type="select"
-								name="genre"
 								id="formGenre"
-								onChange={handleGenresChange}
 								multiple
+								name="genre"
+								onChange={handleGenresChange}
 							>
 								{genres.map((genre) => (
 									<option key={genre.genreId} value={genre.genreId}>
@@ -173,18 +187,10 @@ const CreateModal = (props) => {
 							</Input>
 						</FormGroup>
 					</Form>
-					<Button
-						color="primary"
-						className="twobuttons"
-						onClick={createBook}
-					>
+					<Button color="primary" className="twobuttons" onClick={createBook}>
 						Create
 					</Button>
-					<Button
-						color="danger"
-						className="twobuttons"
-						onClick={toggle}
-					>
+					<Button color="danger" className="twobuttons" onClick={toggle}>
 						Cancel
 					</Button>
 				</ModalBody>

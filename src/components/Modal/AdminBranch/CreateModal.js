@@ -45,23 +45,23 @@ const CreateModal = (props) => {
 							<Label for="formBranchName"> Branch Name</Label>
 							<Input
 								type="text"
-								name="branchName"
 								id="formBranchName"
-								placeholder="New Branch Name"
+								maxLength={45}
+								name="branchName"
 								onChange={handleNameChange}
+								placeholder="New Branch Name"
 							/>
 						</FormGroup>
 
 						<FormGroup>
-							<Label for="formBranchAddress">
-								Branch Address
-							</Label>
+							<Label for="formBranchAddress">Branch Address</Label>
 							<Input
 								type="text"
-								name="branchAddress"
 								id="formBranchAddress"
-								placeholder="New Address"
+								maxLength={45}
+								name="branchAddress"
 								onChange={handleAddressChange}
+								placeholder="New Address"
 							/>
 						</FormGroup>
 					</Form>
@@ -74,11 +74,7 @@ const CreateModal = (props) => {
 					>
 						Create
 					</Button>
-					<Button
-						color="danger"
-						className="twobuttons"
-						onClick={toggle}
-					>
+					<Button color="danger" className="twobuttons" onClick={toggle}>
 						Cancel
 					</Button>
 				</ModalBody>

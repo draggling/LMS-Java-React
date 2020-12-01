@@ -17,11 +17,7 @@ const CreateModal = (props) => {
 	let newBorrowerAddress = '';
 	let newBorrowerPhone = '';
 
-	function createBorrower(
-		newBorrowerName,
-		newBorrowerAddress,
-		newBorrowerPhone
-	) {
+	function createBorrower(newBorrowerName, newBorrowerAddress, newBorrowerPhone) {
 		handleCreate(newBorrowerName, newBorrowerAddress, newBorrowerPhone);
 		toggle(); //need to figure out how to make create button be unpressed
 	}
@@ -52,36 +48,35 @@ const CreateModal = (props) => {
 							<Label for="formBorrowerName"> Borrower Name</Label>
 							<Input
 								type="text"
-								name="borrowerName"
 								id="formBorrowerName"
-								placeholder="New Borrower Name"
+								maxLength={45}
+								name="borrowerName"
 								onChange={handleNameChange}
+								placeholder="New Borrower Name"
 							/>
 						</FormGroup>
 
 						<FormGroup>
-							<Label for="formBorrowerAddress">
-								Borrower Address
-							</Label>
+							<Label for="formBorrowerAddress">Borrower Address</Label>
 							<Input
 								type="text"
-								name="borrowerAddress"
 								id="formBorrowerAddress"
-								placeholder="New Address"
+								maxLength={45}
+								name="borrowerAddress"
 								onChange={handleAddressChange}
+								placeholder="New Address"
 							/>
 						</FormGroup>
 
 						<FormGroup>
-							<Label for="formBorrowerPhone">
-								Borrower Phone
-							</Label>
+							<Label for="formBorrowerPhone">Borrower Phone</Label>
 							<Input
 								type="text"
-								name="borrowerPhone"
 								id="formBorrowerPhone"
-								placeholder="New Phone Number"
+								maxLength={45}
+								name="borrowerPhone"
 								onChange={handlePhoneChange}
+								placeholder="New Phone Number"
 							/>
 						</FormGroup>
 					</Form>
@@ -98,11 +93,7 @@ const CreateModal = (props) => {
 					>
 						Create
 					</Button>
-					<Button
-						color="danger"
-						className="twobuttons"
-						onClick={toggle}
-					>
+					<Button color="danger" className="twobuttons" onClick={toggle}>
 						Cancel
 					</Button>
 				</ModalBody>
