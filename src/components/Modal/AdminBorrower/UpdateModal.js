@@ -30,12 +30,7 @@ const UpdateModal = (props) => {
 		newBorrowerAddress,
 		newBorrowerPhone
 	) {
-		handleUpdate(
-			cardNo,
-			newBorrowerName,
-			newBorrowerAddress,
-			newBorrowerPhone
-		);
+		handleUpdate(cardNo, newBorrowerName, newBorrowerAddress, newBorrowerPhone);
 		toggle(); //need to figure out how to make update button be unpressed
 	}
 
@@ -65,35 +60,34 @@ const UpdateModal = (props) => {
 							<Label for="formBorrowerName">BorrowerName</Label>
 							<Input
 								type="text"
-								name="borrowerName"
 								cardNo="formBorrowerName"
 								defaultValue={currentBorrowerName}
+								maxLength={45}
+								name="borrowerName"
 								onChange={handleNameChange}
 							/>
 						</FormGroup>
 
 						<FormGroup>
-							<Label for="formBorrowerAddress">
-								BorrowerAddress
-							</Label>
+							<Label for="formBorrowerAddress">BorrowerAddress</Label>
 							<Input
 								type="text"
-								name="borrowerAddress"
 								cardNo="formBorrowerAddress"
 								defaultValue={currentBorrowerAddress}
+								maxLength={45}
+								name="borrowerAddress"
 								onChange={handleAddressChange}
 							/>
 						</FormGroup>
 
 						<FormGroup>
-							<Label for="formBorrowerPhone">
-								BorrowerPhoneNumber
-							</Label>
+							<Label for="formBorrowerPhone">BorrowerPhoneNumber</Label>
 							<Input
 								type="text"
-								name="borrowerPhone"
 								cardNo="formBorrowerPhone"
 								defaultValue={currentBorrowerPhone}
+								maxLength={45}
+								name="borrowerPhone"
 								onChange={handlePhoneChange}
 							/>
 						</FormGroup>
@@ -112,11 +106,7 @@ const UpdateModal = (props) => {
 					>
 						Update
 					</Button>
-					<Button
-						color="danger"
-						className="twobuttons"
-						onClick={toggle}
-					>
+					<Button color="danger" className="twobuttons" onClick={toggle}>
 						Cancel
 					</Button>
 				</ModalBody>

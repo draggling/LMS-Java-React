@@ -41,9 +41,10 @@ const UpdateModal = (props) => {
 							<Label for="formAuthorName">Author Name</Label>
 							<Input
 								type="text"
-								name="authorName"
 								authorId="formAuthorName"
 								defaultValue={currentAuthorName}
+								maxLength={45}
+								name="authorName"
 								onChange={handleNameChange}
 							/>
 						</FormGroup>
@@ -57,11 +58,7 @@ const UpdateModal = (props) => {
 					>
 						Update
 					</Button>
-					<Button
-						color="danger"
-						className="twobuttons"
-						onClick={toggle}
-					>
+					<Button color="danger" className="twobuttons" onClick={toggle}>
 						Cancel
 					</Button>
 				</ModalBody>

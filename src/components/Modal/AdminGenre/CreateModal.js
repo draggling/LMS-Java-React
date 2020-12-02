@@ -40,13 +40,13 @@ const CreateModal = (props) => {
 							<Label for="formGenreName"> Genre Name</Label>
 							<Input
 								type="text"
-								name="genreName"
 								id="formGenreName"
-								placeholder="New Genre Name"
+								maxLength={45}
+								name="genreName"
 								onChange={handleNameChange}
+								placeholder="New Genre Name"
 							/>
 						</FormGroup>
-						
 					</Form>
 					<Button
 						color="primary"
@@ -57,11 +57,7 @@ const CreateModal = (props) => {
 					>
 						Create
 					</Button>
-					<Button
-						color="danger"
-						className="twobuttons"
-						onClick={toggle}
-					>
+					<Button color="danger" className="twobuttons" onClick={toggle}>
 						Cancel
 					</Button>
 				</ModalBody>
