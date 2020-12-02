@@ -18,8 +18,6 @@ const AdminGenreRender = ({
 	let content = '';
 	let alert = '';
 
-	console.log("requestInfo");
-	console.log(requestInfo);
 	if(requestInfo !== undefined && requestInfo.exists !== undefined && requestInfo.exists) {
 			alert = (
 			<div>

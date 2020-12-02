@@ -408,7 +408,7 @@ export default function borrowerReducer(state = {}, action) {
 			};
 		}
 		case BORROWER_CHECKOUT_SUCCESSFUL: {
-			let updateAvailbleBookList = state.borrowerDashboardInfo.books.filter(
+			let updateAvailableBookList = state.borrowerDashboardInfo.books.filter(
 				(book) => {
 					return book.bookId != action.newLoan.key.bookId;
 				}
@@ -417,7 +417,7 @@ export default function borrowerReducer(state = {}, action) {
 				...state,
 				borrowerDashboardInfo: {
 					...state.borrowerDashboardInfo,
-					books: updateAvailbleBookList,
+					books: updateAvailableBookList,
 					newLoan: action.newLoan,
 				},
 				requestInfo: {

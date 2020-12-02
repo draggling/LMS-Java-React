@@ -44,7 +44,6 @@ const CheckoutBookTable = ({ books, borrower, branch, handleCheckout }) => {
 		return books.map((book) => {
 			// Deep Clone object to bookId adding to it while mapping over it during map
 			let bookDeepCopy = JSON.parse(JSON.stringify(book));
-
 			bookDeepCopy.publisherName = parsePublisherInfo(bookDeepCopy);
 			bookDeepCopy.authorInfo = parseAuthors(bookDeepCopy);
 			bookDeepCopy.genreInfo = parseGenres(bookDeepCopy);

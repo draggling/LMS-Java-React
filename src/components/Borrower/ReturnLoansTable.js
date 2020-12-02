@@ -6,12 +6,12 @@ import { MDBDataTable } from 'mdbreact';
 import { Button } from 'reactstrap';
 
 const ReturnLoansTable = ({ handleReturn, loans }) => {
-	console.log(loans);
+	//console.log(loans);
 
 	function parseBranchInfo(newObj) {
 		let rawData = newObj['branch.branchName'] + '\n' + newObj['branch.branchAddress'];
 		rawData = rawData.split('\n');
-		let parsedBranch = rawData.map((line) => <div key={line.id}>{line}</div>);
+		let parsedBranch = rawData.map((line) => <div key={line.	id}>{line}</div>);
 		return parsedBranch;
 	}
 
