@@ -5,6 +5,7 @@ import { MDBDataTable } from 'mdbreact';
 import DeleteModal from '../../Modal/AdminBook/DeleteModal';
 import UpdateModal from '../../Modal/AdminBook/UpdateModal';
 import CreateModal from '../../Modal/AdminBook/CreateModal';
+import Spinner from '../../Util/Spinner'
 
 const AdminBookRender = ({
 	bookData,
@@ -20,13 +21,7 @@ const AdminBookRender = ({
 	let content = '';
 	if (!bookData || requestInfo.readPending || requestInfo.readPublisherPending 
 		|| requestInfo.readAuthorPending || requestInfo.readGenrePending) {
-		content = (
-			<div className="d-flex justify-content-center">
-				<div className="spinner-border" role="status">
-					<span className="sr-only">Loading...</span>
-				</div>
-			</div>
-		);
+		content = Spinner();
 	}
 	if (bookData && requestInfo.readSuccessful && requestInfo.readPublisherSuccessful
 		&& requestInfo.readAuthorSuccessful && requestInfo.readGenreSuccessful) {
@@ -195,7 +190,6 @@ const AdminBookRender = ({
 	}
 	return (
 		<div>
-			<h1>Books</h1>
 			{content}
 		</div>
 	);
