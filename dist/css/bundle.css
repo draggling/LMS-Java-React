@@ -24,7 +24,7 @@
 .header-dropdown{
     font-family: 'Monaco';
     font-size: 20px;
-    word-spacing: 5px;
+    word-spacing: 8px;
     color: teal;
     line-height: 1.15;
 }
@@ -37,4 +37,10 @@
 .header_dropdown:active{
     text-decoration: underline;
     cursor: pointer,
+}
+
+.logo{
+    width:"80px";
+    height:"80px";
+    src:"./images/books.png";
 }

@@ -21,15 +21,13 @@ const CreateModal = (props) => {
 		authors,
 		genres,
 	} = props;
-	/* deprecated alerts */
-	if (!alert) {
-		let alert = '';
-	}
+	/* deprecated errorAlerts */
 	let newBookName = '';
 	let newPubId = 0;
 	let newPub = '';
 	let authorKeys = [];
 	let genreKeys = [];
+	let errorHandler = errorHandler || {error: false, message: ""};
 	function createBook() {
 		if (
 			newBookName !== '' &&
@@ -54,7 +52,8 @@ const CreateModal = (props) => {
 			handleCreate(newBookName, newPub, newAuthors, newGenres);
 			toggle();
 		} else {
-			alert = (
+			errorHandler.error = true;
+			errorHandler.message = (
 				<div>
 					<UncontrolledAlert color="warning">
 						ERROR: Invalid Input!
@@ -117,7 +116,7 @@ const CreateModal = (props) => {
 			<Modal isOpen={modal} toggle={toggle}>
 				<ModalHeader toggle={toggle}>Create Book</ModalHeader>
 				<ModalBody>
-					{alert}
+					{errorHandler && errorHandler.error && errorHandler.message}
 					<Form>
 						<FormGroup>
 							<Label form="formBookName"> Book Name </Label>

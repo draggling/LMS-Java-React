@@ -10,11 +10,7 @@ const LibrarianHeader = () => {
 				<ul className="list-inline">
 					<li className="list-inline-item">
 						<Link to="/" className="navbar-brand">
-							<img
-								width="90px"
-								height="30px"
-								src="images/logo.png"
-							/>
+							<img width="80px" height="80px" src="images/books.png" />
 						</Link>
 					</li>
 					<li className="list-inline-item">

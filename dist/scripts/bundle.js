@@ -61378,7 +61378,7 @@ var _loginAttemptInitiated = function _loginAttemptInitiated() {
 };
 var _loginAttemptFailed = function _loginAttemptFailed(error) {
 	return {
-		type: _actionTypes.BORROWER_LOGIN_FAILED,
+		type: _actionTypes.BORROWER_LOGIN_FAILURE,
 		error: error
 	};
 };
@@ -61760,11 +61760,7 @@ var AdminHeader = function AdminHeader() {
 					_react2.default.createElement(
 						_reactRouterDom.Link,
 						{ to: '/', className: 'navbar-brand' },
-						_react2.default.createElement('img', {
-							width: '90px',
-							height: '30px',
-							src: 'images/logo.png'
-						})
+						_react2.default.createElement('img', { width: '80px', height: '80px', src: 'images/books.png' })
 					)
 				),
 				_react2.default.createElement(
@@ -61781,8 +61777,8 @@ var AdminHeader = function AdminHeader() {
 					{ className: 'list-inline-item' },
 					_react2.default.createElement(
 						_reactRouterDom.Link,
-						{ to: '/AdminBranch', replace: true },
-						'Branches'
+						{ to: '/AdminAuthor', replace: true },
+						'Authors'
 					)
 				),
 				_react2.default.createElement(
@@ -61799,8 +61795,8 @@ var AdminHeader = function AdminHeader() {
 					{ className: 'list-inline-item' },
 					_react2.default.createElement(
 						_reactRouterDom.Link,
-						{ to: '/AdminAuthor', replace: true },
-						'Authors'
+						{ to: '/AdminBorrower', replace: true },
+						'Borrowers'
 					)
 				),
 				_react2.default.createElement(
@@ -61808,8 +61804,8 @@ var AdminHeader = function AdminHeader() {
 					{ className: 'list-inline-item' },
 					_react2.default.createElement(
 						_reactRouterDom.Link,
-						{ to: '/AdminPublisher', replace: true },
-						'Publishers'
+						{ to: '/AdminBranch', replace: true },
+						'Branches'
 					)
 				),
 				_react2.default.createElement(
@@ -61826,8 +61822,8 @@ var AdminHeader = function AdminHeader() {
 					{ className: 'list-inline-item' },
 					_react2.default.createElement(
 						_reactRouterDom.Link,
-						{ to: '/AdminBorrower', replace: true },
-						'Borrowers'
+						{ to: '/AdminPublisher', replace: true },
+						'Publishers'
 					)
 				),
 				_react2.default.createElement(
@@ -64771,7 +64767,7 @@ var Header = function Header() {
 					_react2.default.createElement(
 						_reactRouterDom.Link,
 						{ to: '/', className: 'navbar-brand' },
-						_react2.default.createElement('img', { width: '90px', height: '30px', src: 'images/logo.png' })
+						_react2.default.createElement('img', { width: '80px', height: '80px', src: 'images/books.png' })
 					)
 				),
 				_react2.default.createElement(
@@ -64850,10 +64846,11 @@ var Header = function Header() {
 								{ tag: _reactRouterDom.Link, to: '/AdminBranch' },
 								'Publishers'
 							),
+							_react2.default.createElement(_reactstrap.DropdownItem, { divider: true }),
 							_react2.default.createElement(
 								_reactstrap.DropdownItem,
 								{ tag: _reactRouterDom.Link, to: '/AdminLoan' },
-								'Loans'
+								'Loaned Books'
 							),
 							_react2.default.createElement(
 								_reactstrap.DropdownItem,
@@ -65495,11 +65492,7 @@ var LibrarianHeader = function LibrarianHeader() {
 					_react2.default.createElement(
 						_reactRouterDom.Link,
 						{ to: '/', className: 'navbar-brand' },
-						_react2.default.createElement('img', {
-							width: '90px',
-							height: '30px',
-							src: 'images/logo.png'
-						})
+						_react2.default.createElement('img', { width: '80px', height: '80px', src: 'images/books.png' })
 					)
 				),
 				_react2.default.createElement(
@@ -66047,16 +66040,14 @@ var CreateModal = function CreateModal(props) {
 	    publishers = props.publishers,
 	    authors = props.authors,
 	    genres = props.genres;
-	/* deprecated alerts */
+	/* deprecated errorAlerts */
 
-	if (!alert) {
-		var _alert = '';
-	}
 	var newBookName = '';
 	var newPubId = 0;
 	var newPub = '';
 	var authorKeys = [];
 	var genreKeys = [];
+	var errorHandler = errorHandler || { error: false, message: "" };
 	function createBook() {
 		if (newBookName !== '' && newPubId > 0 && authorKeys.length > 0 && genreKeys.length > 0) {
 			/* push author objects into newAuthors variable */
@@ -66076,7 +66067,8 @@ var CreateModal = function CreateModal(props) {
 			handleCreate(newBookName, newPub, newAuthors, newGenres);
 			toggle();
 		} else {
-			alert = _react2.default.createElement(
+			errorHandler.error = true;
+			errorHandler.message = _react2.default.createElement(
 				'div',
 				null,
 				_react2.default.createElement(
@@ -66179,7 +66171,7 @@ var CreateModal = function CreateModal(props) {
 			_react2.default.createElement(
 				_reactstrap.ModalBody,
 				null,
-				alert,
+				errorHandler && errorHandler.error && errorHandler.message,
 				_react2.default.createElement(
 					_reactstrap.Form,
 					null,
@@ -66468,9 +66460,7 @@ var UpdateModal = function UpdateModal(props) {
 		genreKeys.push(currentGenres[_i].genreId.toString());
 	}
 
-	if (!alert) {
-		var _alert = '';
-	}
+	var alertMessage = alertMessage || '';
 
 	function updateBook() {
 		if (newBookName !== '' && newPubId > 0 && authorKeys.length > 0 && genreKeys.length > 0) {
@@ -66488,10 +66478,11 @@ var UpdateModal = function UpdateModal(props) {
 					newGenres.push(genres[_i3]);
 				}
 			}
+			alertMessage = "";
 			handleUpdate(bookId, newBookName, newPub, newAuthors, newGenres);
 			toggle();
 		} else {
-			alert = _react2.default.createElement(
+			alertMessage = _react2.default.createElement(
 				'div',
 				null,
 				_react2.default.createElement(
@@ -66506,7 +66497,7 @@ var UpdateModal = function UpdateModal(props) {
 
 	function handleNameChange(e) {
 		if (!e.target.value || e.target.value.length > 45) {
-			alert = _react2.default.createElement(
+			alertMessage = _react2.default.createElement(
 				'div',
 				null,
 				_react2.default.createElement(
@@ -66605,7 +66596,7 @@ var UpdateModal = function UpdateModal(props) {
 			_react2.default.createElement(
 				_reactstrap.ModalBody,
 				null,
-				alert,
+				alertMessage,
 				_react2.default.createElement(
 					_reactstrap.Form,
 					null,
@@ -68881,7 +68872,7 @@ var Header = function Header() {
 					_react2.default.createElement(
 						_reactRouterDom.Link,
 						{ to: '/', className: 'navbar-brand' },
-						_react2.default.createElement('img', { width: '90px', height: '30px', src: 'images/logo.png' })
+						_react2.default.createElement('img', { width: '80px', height: '80px', src: 'images/books.png' })
 					)
 				),
 				_react2.default.createElement(
@@ -68960,10 +68951,11 @@ var Header = function Header() {
 								{ tag: _reactRouterDom.Link, to: '/AdminBranch' },
 								'Publishers'
 							),
+							_react2.default.createElement(_reactstrap.DropdownItem, { divider: true }),
 							_react2.default.createElement(
 								_reactstrap.DropdownItem,
 								{ tag: _reactRouterDom.Link, to: '/AdminLoan' },
-								'Loans'
+								'Loaned Books'
 							),
 							_react2.default.createElement(
 								_reactstrap.DropdownItem,
