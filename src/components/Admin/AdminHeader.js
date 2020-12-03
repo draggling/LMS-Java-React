@@ -10,11 +10,7 @@ const AdminHeader = () => {
 				<ul className="list-inline">
 					<li className="list-inline-item">
 						<Link to="/" className="navbar-brand">
-							<img
-								width="90px"
-								height="30px"
-								src="images/logo.png"
-							/>
+							<img width="65pxpx" height="65px" src="../images/admin.png" />
 						</Link>
 					</li>
 					<li className="list-inline-item">
@@ -23,8 +19,8 @@ const AdminHeader = () => {
 						</Link>
 					</li>
 					<li className="list-inline-item">
-						<Link to="/AdminBranch" replace>
-							Branches
+						<Link to="/AdminAuthor" replace>
+							Authors
 						</Link>
 					</li>
 					<li className="list-inline-item">
@@ -33,13 +29,13 @@ const AdminHeader = () => {
 						</Link>
 					</li>
 					<li className="list-inline-item">
-						<Link to="/AdminAuthor" replace>
-							Authors
+						<Link to="/AdminBorrower" replace>
+							Borrowers
 						</Link>
 					</li>
 					<li className="list-inline-item">
-						<Link to="/AdminPublisher" replace>
-							Publishers
+						<Link to="/AdminBranch" replace>
+							Branches
 						</Link>
 					</li>
 					<li className="list-inline-item">
@@ -48,8 +44,8 @@ const AdminHeader = () => {
 						</Link>
 					</li>
 					<li className="list-inline-item">
-						<Link to="/AdminBorrower" replace>
-							Borrowers
+						<Link to="/AdminPublisher" replace>
+							Publishers
 						</Link>
 					</li>
 					<li className="list-inline-item">

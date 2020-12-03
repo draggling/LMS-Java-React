@@ -15,7 +15,7 @@ const BorrowerLoginForm = (props) => {
 		handleLoginAttempt(enteredCardNumber);
 	}
 	return (
-		<Form onSubmit={submitLoginAttempt}>
+		<Form className="mainblock" onSubmit={submitLoginAttempt}>
 			<FormGroup>
 				<Label for="formBorrowerCardNo">Card Number</Label>
 				<Input

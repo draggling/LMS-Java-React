@@ -30,12 +30,7 @@ const UpdateModal = (props) => {
 		newPublisherAddress,
 		newPublisherPhone
 	) {
-		handleUpdate(
-			id,
-			newPublisherName,
-			newPublisherAddress,
-			newPublisherPhone
-		);
+		handleUpdate(id, newPublisherName, newPublisherAddress, newPublisherPhone);
 		toggle(); //need to figure out how to make update button be unpressed
 	}
 
@@ -62,14 +57,13 @@ const UpdateModal = (props) => {
 				<ModalBody>
 					<Form>
 						<FormGroup>
-							<Label for="formPublisherName">
-								Publisher Name
-							</Label>
+							<Label for="formPublisherName">Publisher Name</Label>
 							<Input
 								type="text"
-								name="publisherName"
-								id="formPublisherName"
 								defaultValue={currentPublisherName}
+								id="formPublisherName"
+								maxLength={45}
+								name="publisherName"
 								onChange={handleNameChange}
 							/>
 						</FormGroup>
@@ -78,9 +72,10 @@ const UpdateModal = (props) => {
 							<Label for="formPublisherAddress">Address</Label>
 							<Input
 								type="text"
-								name="publisherAddress"
-								id="formPublisherAddress"
 								defaultValue={currentPublisherAddress}
+								id="formPublisherAddress"
+								maxLength={45}
+								name="publisherAddress"
 								onChange={handleAddressChange}
 							/>
 						</FormGroup>
@@ -89,9 +84,10 @@ const UpdateModal = (props) => {
 							<Label for="formPublisherPhone">Phone Number</Label>
 							<Input
 								type="text"
-								name="publisherPhone"
-								id="formPublisherPhone"
 								defaultValue={currentPublisherPhone}
+								id="formPublisherPhone"
+								maxLength={45}
+								name="publisherPhone"
 								onChange={handlePhoneChange}
 							/>
 						</FormGroup>
@@ -110,11 +106,7 @@ const UpdateModal = (props) => {
 					>
 						Update
 					</Button>
-					<Button
-						color="danger"
-						className="twobuttons"
-						onClick={toggle}
-					>
+					<Button color="danger" className="twobuttons" onClick={toggle}>
 						Cancel
 					</Button>
 				</ModalBody>

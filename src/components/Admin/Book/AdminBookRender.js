@@ -8,6 +8,9 @@ import CreateModal from '../../Modal/AdminBook/CreateModal';
 
 const AdminBookRender = ({
 	bookData,
+	publisherData,
+	authorData,
+	genreData,
 	handleRefresh,
 	handleDelete,
 	handleUpdate,
@@ -15,7 +18,8 @@ const AdminBookRender = ({
 	requestInfo,
 }) => {
 	let content = '';
-	if (!bookData || requestInfo.readPending) {
+	if (!bookData || requestInfo.readPending || requestInfo.readPublisherPending 
+		|| requestInfo.readAuthorPending || requestInfo.readGenrePending) {
 		content = (
 			<div className="d-flex justify-content-center">
 				<div className="spinner-border" role="status">
@@ -24,7 +28,20 @@ const AdminBookRender = ({
 			</div>
 		);
 	}
-	if (bookData && requestInfo.readSuccessful) {
+	if (bookData && requestInfo.readSuccessful && requestInfo.readPublisherSuccessful
+		&& requestInfo.readAuthorSuccessful && requestInfo.readGenreSuccessful) {
+		/*
+		console.log("Book Data");
+		console.log(bookData);
+		console.log("Publisher Data");
+		console.log(publisherData);
+		console.log("Author Data");
+		console.log(authorData);
+		console.log("Genre Data");
+		console.log(genreData);
+		console.log("requestInfo:");
+		console.log(requestInfo);
+		*/
 		let data = {
 			columns: [
 				/*
@@ -71,6 +88,9 @@ const AdminBookRender = ({
 				<div className="mainblock">
 					<CreateModal
 						buttonLabel="Create New Book"
+						publishers = {publisherData}
+						authors = {authorData}
+						genres = {genreData}
 						handleCreate={handleCreate}
 						handleRefresh={handleRefresh}
 					/>
@@ -97,11 +117,15 @@ const AdminBookRender = ({
 		);
     }
     function parsePublisherInfo(newObj) {
-        return newObj.publisher.publisherName;
+		if(!newObj.publisher) {
+			return "Null pubisher";
+		} else {
+			return newObj.publisher.publisherName;
+		}
     }
 
 	function parseAuthors(newObj) {
-		if(newObj.authors.length == 0) {
+		if(!newObj.authors || newObj.authors.length === 0) {
 			return "\nNo Authors"
 		} else {
 			let authors =  "";
@@ -116,7 +140,7 @@ const AdminBookRender = ({
     }
     
 	function parseGenres(newObj) {
-		if(newObj.genres.length == 0) {
+		if(!newObj.genres || newObj.genres.length === 0) {
 			return "\nNo Genres"
 		} else {
 			let genres =  "";
@@ -132,9 +156,6 @@ const AdminBookRender = ({
 
 	function getTableBodyContent() {
 		return bookData.books.map((obj) => {
-            // Deep Clone object to bookId adding to it while mapping over it during map
-
-
 			let newObj = JSON.parse(JSON.stringify(obj));
 
             newObj.publisherName = parsePublisherInfo(newObj);
@@ -147,7 +168,13 @@ const AdminBookRender = ({
 						handleUpdate={handleUpdate}
 						handleRefresh={handleRefresh}
 						bookId={newObj.bookId}
+						currentPub={newObj.publisher}
+						currentAuthors={newObj.authors}
+						currentGenres={newObj.genres}
 						currentTitle={newObj.title}
+						publishers = {publisherData}
+						authors = {authorData}
+						genres = {genreData}
 					/>
 				</div>
 			);
@@ -159,7 +186,7 @@ const AdminBookRender = ({
 						handleDelete={handleDelete}
 						handleRefresh={handleRefresh}
 						bookId={newObj.bookId}
-						currentTitle={newObj.title}
+						title={newObj.title}
 					/>
 				</div>
 			);
@@ -176,6 +203,9 @@ const AdminBookRender = ({
 
 AdminBookRender.propTypes = {
 	bookData: PropTypes.object,
+	publisherData: PropTypes.array,
+	authorData: PropTypes.array,
+	genreData: PropTypes.array,
 	handleRefresh: PropTypes.func,
 	handleDelete: PropTypes.func,
 	handleUpdate: PropTypes.func,

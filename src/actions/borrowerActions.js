@@ -8,12 +8,17 @@ import {
 	BORROWER_DASHBOARD_READ_BOOKS_SUCCESSFUL,
 	BORROWER_DASHBOARD_SELECT_BRANCH,
 	BORROWER_LOGIN_PENDING,
-	BORROWER_LOGIN_FAILED,
+	BORROWER_LOGIN_FAILURE,
 	BORROWER_LOGIN_SUCCESSFUL,
+	BORROWER_READ_ACTIVE_LOANS_FAILED,
+	BORROWER_READ_ACTIVE_LOANS_SUCCESSFUL,
 	BORROWER_READ_ALL_BRANCHES_FAILED,
 	BORROWER_READ_ALL_BRANCHES_SUCCESSFUL,
 	BORROWER_START_CHECKOUT,
 	BORROWER_START_RETURN,
+	BORROWER_RETURN_PENDING,
+	BORROWER_RETURN_FAILURE,
+	BORROWER_RETURN_SUCCESSFUL,
 } from '../constants/actionTypes';
 import { BORROWER_PORT } from '../constants/connections';
 
@@ -32,12 +37,16 @@ export const attemptLogin = (cardNo) => {
 	};
 };
 
-export const selectBranchForCheckout = (branch) => {
+export const selectBranchForCheckout = (branch, cardNo) => {
 	return (dispatch) => {
 		dispatch(_selectBranch(branch));
 		return axios
 			.get(
-				BORROWER_PORT + 'borrower/getBooksAvailableFromBranch/' + branch.branchId
+				BORROWER_PORT +
+					'borrower/getBooksAvailableFromBranchForBorrower/' +
+					branch.branchId +
+					'/' +
+					cardNo
 			)
 			.then((response) => {
 				dispatch(_readBooksAtBranchSuccess(response));
@@ -76,11 +85,26 @@ export const processCheckout = (book, borrower, branch) => {
 	};
 };
 
+export const processReturn = (loanToReturn) => {
+	return (dispatch) => {
+		dispatch(_processReturn());
+		return axios
+			.put(BORROWER_PORT + 'borrower/bookLoanReturn', loanToReturn)
+			.then((response) => {
+				dispatch(_processReturnSuccess(response));
+			})
+			.catch((error) => {
+				console.log(error);
+				dispatch(_processReturnFailed(error));
+			});
+	};
+};
+
 export const startCheckout = () => {
 	return (dispatch) => {
 		dispatch(_startCheckout());
 		return axios
-			.get(BORROWER_PORT + 'borrower/getLibraryBranches')
+			.get(BORROWER_PORT + 'borrower/getLibraryBranchesWithAvailableBooks')
 			.then((response) => {
 				dispatch(_getAllBranchesSuccessful(response));
 			})
@@ -90,9 +114,18 @@ export const startCheckout = () => {
 			});
 	};
 };
-export const startReturn = () => {
+export const startReturn = (borrowerCardNo) => {
 	return (dispatch) => {
 		dispatch(_startReturn());
+		return axios
+			.get(BORROWER_PORT + 'borrower/getActiveLoansForBorrower/' + borrowerCardNo)
+			.then((response) => {
+				dispatch(_getActiveLoansForBorrowerSuccessful(response));
+			})
+			.catch((error) => {
+				console.log(error);
+				dispatch(_getActiveLoansForBorrowerFailed(error));
+			});
 	};
 };
 
@@ -115,7 +148,7 @@ const _loginAttemptInitiated = () => {
 };
 const _loginAttemptFailed = (error) => {
 	return {
-		type: BORROWER_LOGIN_FAILED,
+		type: BORROWER_LOGIN_FAILURE,
 		error,
 	};
 };
@@ -135,6 +168,18 @@ const _selectBranch = (branch) => {
 const _startCheckout = () => {
 	return {
 		type: BORROWER_START_CHECKOUT,
+	};
+};
+const _getActiveLoansForBorrowerSuccessful = (res) => {
+	return {
+		type: BORROWER_READ_ACTIVE_LOANS_SUCCESSFUL,
+		loans: res.data,
+	};
+};
+const _getActiveLoansForBorrowerFailed = (error) => {
+	return {
+		type: BORROWER_READ_ACTIVE_LOANS_FAILED,
+		error,
 	};
 };
 const _getAllBranchesFailed = (error) => {
@@ -165,6 +210,24 @@ const _processCheckoutSuccess = (res) => {
 	return {
 		type: BORROWER_CHECKOUT_SUCCESSFUL,
 		newLoan: res.data,
+	};
+};
+
+const _processReturn = () => {
+	return {
+		type: BORROWER_RETURN_PENDING,
+	};
+};
+const _processReturnFailed = (error) => {
+	return {
+		type: BORROWER_RETURN_FAILURE,
+		error,
+	};
+};
+const _processReturnSuccess = (res) => {
+	return {
+		type: BORROWER_RETURN_SUCCESSFUL,
+		loan: res.data,
 	};
 };
 const _startReturn = () => {

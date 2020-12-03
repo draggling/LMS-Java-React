@@ -1,4 +1,3 @@
-
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button } from 'reactstrap';
@@ -18,8 +17,6 @@ const AdminGenreRender = ({
 	let content = '';
 	let alert = '';
 
-	console.log("requestInfo");
-	console.log(requestInfo);
 	if(requestInfo !== undefined && requestInfo.exists !== undefined && requestInfo.exists) {
 			alert = (
 			<div>

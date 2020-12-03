@@ -12,23 +12,12 @@ import {
 import PropTypes from 'prop-types';
 
 const UpdateModal = (props) => {
-	const {
-		buttonLabel,
-		currentGenreName,
-		handleUpdate,
-        genreId,
-	} = props;
+	const { buttonLabel, currentGenreName, handleUpdate, genreId } = props;
 	let newGenreName = currentGenreName;
 	let defaultName = currentGenreName;
 
-	function updateGenre(
-		genreId,
-		newGenreName,
-	) {
-		handleUpdate(
-			genreId,
-			newGenreName,
-		);
+	function updateGenre(genreId, newGenreName) {
+		handleUpdate(genreId, newGenreName);
 		//handleRefresh(); //Causes the weird update issue where the genreData contains only requestPending because books is being loaded again
 		toggle(); //need to figure out how to make update button be unpressed
 	}
@@ -50,36 +39,29 @@ const UpdateModal = (props) => {
 				<ModalBody>
 					<Form>
 						<FormGroup>
-							<Label for="formGenreName">
-								Genre Name
-							</Label>
+							<Label for="formGenreName">Genre Name</Label>
 							<Input
 								type="text"
-								name="genreName"
-								genreid="formGenreName"
 								defaultValue={currentGenreName}
+								genreid="formGenreName"
+								maxLength={45}
+								name="genreName"
 								onChange={handleNameChange}
 							/>
 						</FormGroup>
-
 					</Form>
 					<Button
 						color="primary"
 						className="twobuttons"
 						onClick={() => {
-							(defaultName.toLowerCase() === newGenreName.toLowerCase()) ? toggle() : updateGenre(
-								genreId,
-								newGenreName,
-								);
+							defaultName.toLowerCase() === newGenreName.toLowerCase()
+								? toggle()
+								: updateGenre(genreId, newGenreName);
 						}}
 					>
 						Update
 					</Button>
-					<Button
-						color="danger"
-						className="twobuttons"
-						onClick={toggle}
-					>
+					<Button color="danger" className="twobuttons" onClick={toggle}>
 						Cancel
 					</Button>
 				</ModalBody>
