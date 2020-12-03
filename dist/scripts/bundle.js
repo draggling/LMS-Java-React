@@ -64733,15 +64733,29 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
 var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
 var _reactRouterDom = require('react-router-dom');
 
+var _reactstrap = require('reactstrap');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var Header = function Header() {
+	var _useState = (0, _react.useState)(false),
+	    _useState2 = _slicedToArray(_useState, 2),
+	    dropdownOpen = _useState2[0],
+	    setDropdownOpen = _useState2[1];
+
+	var toggle = function toggle() {
+		return setDropdownOpen(function (prevState) {
+			return !prevState;
+		});
+	};
 	return _react2.default.createElement(
 		'nav',
 		{ className: 'navbar navbar-inverse' },
@@ -64775,7 +64789,7 @@ var Header = function Header() {
 					_react2.default.createElement(
 						_reactRouterDom.Link,
 						{ to: '/LibrarianBranch', replace: true },
-						'Librarian_Home'
+						'Librarian'
 					)
 				),
 				_react2.default.createElement(
@@ -64791,9 +64805,62 @@ var Header = function Header() {
 					'li',
 					{ className: 'list-inline-item' },
 					_react2.default.createElement(
-						_reactRouterDom.Link,
-						{ to: '/AdminHome', replace: true },
-						'Administrator_Home'
+						_reactstrap.Dropdown,
+						{ className: 'header-dropdown', isOpen: dropdownOpen, toggle: toggle },
+						_react2.default.createElement(
+							_reactstrap.DropdownToggle,
+							{
+								caret: true,
+								tag: 'span',
+								'data-toggle': 'dropdown',
+								'aria-expanded': dropdownOpen },
+							'Administrator'
+						),
+						_react2.default.createElement(
+							_reactstrap.DropdownMenu,
+							null,
+							_react2.default.createElement(
+								_reactstrap.DropdownItem,
+								{ tag: _reactRouterDom.Link, to: '/AdminHome' },
+								'Home'
+							),
+							_react2.default.createElement(_reactstrap.DropdownItem, { divider: true }),
+							_react2.default.createElement(
+								_reactstrap.DropdownItem,
+								{ tag: _reactRouterDom.Link, to: '/AdminAuthor' },
+								'Authors'
+							),
+							_react2.default.createElement(
+								_reactstrap.DropdownItem,
+								{ tag: _reactRouterDom.Link, to: '/AdminBook' },
+								'Books'
+							),
+							_react2.default.createElement(
+								_reactstrap.DropdownItem,
+								{ tag: _reactRouterDom.Link, to: '/AdminBorrower' },
+								'Borrowers'
+							),
+							_react2.default.createElement(
+								_reactstrap.DropdownItem,
+								{ tag: _reactRouterDom.Link, to: '/AdminGenre' },
+								'Genres'
+							),
+							_react2.default.createElement(
+								_reactstrap.DropdownItem,
+								{ tag: _reactRouterDom.Link, to: '/AdminBranch' },
+								'Publishers'
+							),
+							_react2.default.createElement(
+								_reactstrap.DropdownItem,
+								{ tag: _reactRouterDom.Link, to: '/AdminLoan' },
+								'Loans'
+							),
+							_react2.default.createElement(
+								_reactstrap.DropdownItem,
+								null,
+								' '
+							)
+						)
 					)
 				)
 			)
@@ -64803,7 +64870,7 @@ var Header = function Header() {
 
 exports.default = Header;
 
-},{"react":148,"react-router-dom":135}],305:[function(require,module,exports){
+},{"react":148,"react-router-dom":135,"reactstrap":242}],305:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -68776,15 +68843,29 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
 var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
 var _reactRouterDom = require('react-router-dom');
 
+var _reactstrap = require('reactstrap');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var Header = function Header() {
+	var _useState = (0, _react.useState)(false),
+	    _useState2 = _slicedToArray(_useState, 2),
+	    dropdownOpen = _useState2[0],
+	    setDropdownOpen = _useState2[1];
+
+	var toggle = function toggle() {
+		return setDropdownOpen(function (prevState) {
+			return !prevState;
+		});
+	};
 	return _react2.default.createElement(
 		'nav',
 		{ className: 'navbar navbar-inverse' },
@@ -68818,7 +68899,7 @@ var Header = function Header() {
 					_react2.default.createElement(
 						_reactRouterDom.Link,
 						{ to: '/LibrarianBranch', replace: true },
-						'Librarian_Home'
+						'Librarian'
 					)
 				),
 				_react2.default.createElement(
@@ -68834,9 +68915,62 @@ var Header = function Header() {
 					'li',
 					{ className: 'list-inline-item' },
 					_react2.default.createElement(
-						_reactRouterDom.Link,
-						{ to: '/AdminHome', replace: true },
-						'Administrator_Home'
+						_reactstrap.Dropdown,
+						{ className: 'header-dropdown', isOpen: dropdownOpen, toggle: toggle },
+						_react2.default.createElement(
+							_reactstrap.DropdownToggle,
+							{
+								caret: true,
+								tag: 'span',
+								'data-toggle': 'dropdown',
+								'aria-expanded': dropdownOpen },
+							'Administrator'
+						),
+						_react2.default.createElement(
+							_reactstrap.DropdownMenu,
+							null,
+							_react2.default.createElement(
+								_reactstrap.DropdownItem,
+								{ tag: _reactRouterDom.Link, to: '/AdminHome' },
+								'Home'
+							),
+							_react2.default.createElement(_reactstrap.DropdownItem, { divider: true }),
+							_react2.default.createElement(
+								_reactstrap.DropdownItem,
+								{ tag: _reactRouterDom.Link, to: '/AdminAuthor' },
+								'Authors'
+							),
+							_react2.default.createElement(
+								_reactstrap.DropdownItem,
+								{ tag: _reactRouterDom.Link, to: '/AdminBook' },
+								'Books'
+							),
+							_react2.default.createElement(
+								_reactstrap.DropdownItem,
+								{ tag: _reactRouterDom.Link, to: '/AdminBorrower' },
+								'Borrowers'
+							),
+							_react2.default.createElement(
+								_reactstrap.DropdownItem,
+								{ tag: _reactRouterDom.Link, to: '/AdminGenre' },
+								'Genres'
+							),
+							_react2.default.createElement(
+								_reactstrap.DropdownItem,
+								{ tag: _reactRouterDom.Link, to: '/AdminBranch' },
+								'Publishers'
+							),
+							_react2.default.createElement(
+								_reactstrap.DropdownItem,
+								{ tag: _reactRouterDom.Link, to: '/AdminLoan' },
+								'Loans'
+							),
+							_react2.default.createElement(
+								_reactstrap.DropdownItem,
+								null,
+								' '
+							)
+						)
 					)
 				)
 			)
@@ -68846,7 +68980,7 @@ var Header = function Header() {
 
 exports.default = Header;
 
-},{"react":148,"react-router-dom":135}],334:[function(require,module,exports){
+},{"react":148,"react-router-dom":135,"reactstrap":242}],334:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {

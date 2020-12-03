@@ -1,9 +1,13 @@
 'use strict';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
+
 
 const Header = () => {
+	const [dropdownOpen, setDropdownOpen] = useState(false);
+	const toggle = () => setDropdownOpen(prevState => !prevState);
 	return (
 		<nav className="navbar navbar-inverse">
 			<div className="container-fluid">
@@ -20,7 +24,7 @@ const Header = () => {
 					</li>
 					<li className="list-inline-item">
 						<Link to="/LibrarianBranch" replace>
-							Librarian_Home
+							Librarian
 						</Link>
 					</li>
 					<li className="list-inline-item">
@@ -29,9 +33,27 @@ const Header = () => {
 						</Link>
 					</li>
 					<li className="list-inline-item">
-						<Link to="/AdminHome" replace>
-							Administrator_Home
-						</Link>
+					<Dropdown className="header-dropdown" isOpen={dropdownOpen} toggle={toggle}>
+     					<DropdownToggle 
+						 caret
+						 tag="span"
+						 data-toggle="dropdown"
+						 aria-expanded={dropdownOpen}>
+       						 Administrator
+       					</DropdownToggle>
+      					<DropdownMenu>
+						  	<DropdownItem tag={Link} to="/AdminHome">Home</DropdownItem>
+							<DropdownItem divider />
+							<DropdownItem tag={Link} to="/AdminAuthor">Authors</DropdownItem>
+        					<DropdownItem tag={Link} to="/AdminBook">Books</DropdownItem>
+							<DropdownItem tag={Link} to="/AdminBorrower">Borrowers</DropdownItem>
+							<DropdownItem tag={Link} to="/AdminGenre">Genres</DropdownItem>
+							<DropdownItem tag={Link} to="/AdminBranch">Publishers</DropdownItem>
+							<DropdownItem tag={Link} to="/AdminLoan">Loans</DropdownItem>
+
+							<DropdownItem> </DropdownItem>
+      					</DropdownMenu>
+    				</Dropdown>
 					</li>
 				</ul>
 			</div>
