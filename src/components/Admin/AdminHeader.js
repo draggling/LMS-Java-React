@@ -10,7 +10,7 @@ const AdminHeader = () => {
 				<ul className="list-inline">
 					<li className="list-inline-item">
 						<Link to="/" className="navbar-brand">
-							<img width="80px" height="80px" src="images/books.png" />
+							<img width="65pxpx" height="65px" src="../images/admin.png" />
 						</Link>
 					</li>
 					<li className="list-inline-item">

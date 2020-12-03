@@ -61760,7 +61760,7 @@ var AdminHeader = function AdminHeader() {
 					_react2.default.createElement(
 						_reactRouterDom.Link,
 						{ to: '/', className: 'navbar-brand' },
-						_react2.default.createElement('img', { width: '80px', height: '80px', src: 'images/books.png' })
+						_react2.default.createElement('img', { width: '65pxpx', height: '65px', src: '../images/admin.png' })
 					)
 				),
 				_react2.default.createElement(
@@ -64110,16 +64110,13 @@ var _ReturnLoansTable = require('./ReturnLoansTable');
 
 var _ReturnLoansTable2 = _interopRequireDefault(_ReturnLoansTable);
 
-var _Header = require('../Header');
+var _BorrowerHeader = require('./BorrowerHeader');
 
-var _Header2 = _interopRequireDefault(_Header);
+var _BorrowerHeader2 = _interopRequireDefault(_BorrowerHeader);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-//import BorrowerRender from './BorrowerRender';
-//import BorrowerHeader from './BorrowerHeader';
 
 var BorrowerContainer = function BorrowerContainer(props) {
 	var actions = props.actions,
@@ -64250,7 +64247,7 @@ var BorrowerContainer = function BorrowerContainer(props) {
 	return _react2.default.createElement(
 		'div',
 		null,
-		_react2.default.createElement(_Header2.default, null),
+		_react2.default.createElement(_BorrowerHeader2.default, null),
 		_react2.default.createElement(
 			'div',
 			{ className: 'jumbotron' },
@@ -64287,7 +64284,57 @@ BorrowerContainer.propTypes = {
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(BorrowerContainer);
 
-},{"../../actions/borrowerActions":280,"../Header":304,"./BorrowerLoginForm":300,"./CheckoutBookTable":301,"./CheckoutBranchTable":302,"./ReturnLoansTable":303,"prop-types":95,"react":148,"react-redux":124,"reactstrap":242,"redux":249}],300:[function(require,module,exports){
+},{"../../actions/borrowerActions":280,"./BorrowerHeader":300,"./BorrowerLoginForm":301,"./CheckoutBookTable":302,"./CheckoutBranchTable":303,"./ReturnLoansTable":304,"prop-types":95,"react":148,"react-redux":124,"reactstrap":242,"redux":249}],300:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactRouterDom = require('react-router-dom');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var BorrowerHeader = function BorrowerHeader() {
+	return _react2.default.createElement(
+		'nav',
+		{ className: 'navbar navbar-inverse' },
+		_react2.default.createElement(
+			'div',
+			{ className: 'container-fluid' },
+			_react2.default.createElement(
+				'ul',
+				{ className: 'list-inline' },
+				_react2.default.createElement(
+					'li',
+					{ className: 'list-inline-item' },
+					_react2.default.createElement(
+						_reactRouterDom.Link,
+						{ to: '/', className: 'navbar-brand' },
+						_react2.default.createElement('img', { width: '65px', height: '65px', src: '../images/borrower.png' })
+					)
+				),
+				_react2.default.createElement(
+					'li',
+					{ className: 'list-inline-item' },
+					_react2.default.createElement(
+						_reactRouterDom.Link,
+						{ to: '/', replace: true },
+						'Home'
+					)
+				)
+			)
+		)
+	);
+};
+
+exports.default = BorrowerHeader;
+
+},{"react":148,"react-router-dom":135}],301:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -64350,7 +64397,7 @@ BorrowerLoginForm.propTypes = {
 
 exports.default = BorrowerLoginForm;
 
-},{"prop-types":95,"react":148,"reactstrap":242}],301:[function(require,module,exports){
+},{"prop-types":95,"react":148,"reactstrap":242}],302:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -64470,7 +64517,7 @@ CheckoutBookTable.propTypes = {
 };
 exports.default = CheckoutBookTable;
 
-},{"mdbreact":63,"prop-types":95,"react":148,"reactstrap":242}],302:[function(require,module,exports){
+},{"mdbreact":63,"prop-types":95,"react":148,"reactstrap":242}],303:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -64538,7 +64585,7 @@ CheckoutBranchTable.propTypes = {
 
 exports.default = CheckoutBranchTable;
 
-},{"mdbreact":63,"prop-types":95,"react":148,"reactstrap":242}],303:[function(require,module,exports){
+},{"mdbreact":63,"prop-types":95,"react":148,"reactstrap":242}],304:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -64722,152 +64769,7 @@ ReturnLoansTable.propTypes = {
 };
 exports.default = ReturnLoansTable;
 
-},{"flat":43,"mdbreact":63,"prop-types":95,"react":148,"reactstrap":242}],304:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-
-var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
-
-var _react = require('react');
-
-var _react2 = _interopRequireDefault(_react);
-
-var _reactRouterDom = require('react-router-dom');
-
-var _reactstrap = require('reactstrap');
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var Header = function Header() {
-	var _useState = (0, _react.useState)(false),
-	    _useState2 = _slicedToArray(_useState, 2),
-	    dropdownOpen = _useState2[0],
-	    setDropdownOpen = _useState2[1];
-
-	var toggle = function toggle() {
-		return setDropdownOpen(function (prevState) {
-			return !prevState;
-		});
-	};
-	return _react2.default.createElement(
-		'nav',
-		{ className: 'navbar navbar-inverse' },
-		_react2.default.createElement(
-			'div',
-			{ className: 'container-fluid' },
-			_react2.default.createElement(
-				'ul',
-				{ className: 'list-inline' },
-				_react2.default.createElement(
-					'li',
-					{ className: 'list-inline-item' },
-					_react2.default.createElement(
-						_reactRouterDom.Link,
-						{ to: '/', className: 'navbar-brand' },
-						_react2.default.createElement('img', { width: '80px', height: '80px', src: 'images/books.png' })
-					)
-				),
-				_react2.default.createElement(
-					'li',
-					{ className: 'list-inline-item' },
-					_react2.default.createElement(
-						_reactRouterDom.Link,
-						{ to: '/', replace: true },
-						'Home'
-					)
-				),
-				_react2.default.createElement(
-					'li',
-					{ className: 'list-inline-item' },
-					_react2.default.createElement(
-						_reactRouterDom.Link,
-						{ to: '/LibrarianBranch', replace: true },
-						'Librarian'
-					)
-				),
-				_react2.default.createElement(
-					'li',
-					{ className: 'list-inline-item' },
-					_react2.default.createElement(
-						_reactRouterDom.Link,
-						{ to: '/Borrower', replace: true },
-						'Borrower'
-					)
-				),
-				_react2.default.createElement(
-					'li',
-					{ className: 'list-inline-item' },
-					_react2.default.createElement(
-						_reactstrap.Dropdown,
-						{ className: 'header-dropdown', isOpen: dropdownOpen, toggle: toggle },
-						_react2.default.createElement(
-							_reactstrap.DropdownToggle,
-							{
-								caret: true,
-								tag: 'span',
-								'data-toggle': 'dropdown',
-								'aria-expanded': dropdownOpen },
-							'Administrator'
-						),
-						_react2.default.createElement(
-							_reactstrap.DropdownMenu,
-							null,
-							_react2.default.createElement(
-								_reactstrap.DropdownItem,
-								{ tag: _reactRouterDom.Link, to: '/AdminHome' },
-								'Home'
-							),
-							_react2.default.createElement(_reactstrap.DropdownItem, { divider: true }),
-							_react2.default.createElement(
-								_reactstrap.DropdownItem,
-								{ tag: _reactRouterDom.Link, to: '/AdminAuthor' },
-								'Authors'
-							),
-							_react2.default.createElement(
-								_reactstrap.DropdownItem,
-								{ tag: _reactRouterDom.Link, to: '/AdminBook' },
-								'Books'
-							),
-							_react2.default.createElement(
-								_reactstrap.DropdownItem,
-								{ tag: _reactRouterDom.Link, to: '/AdminBorrower' },
-								'Borrowers'
-							),
-							_react2.default.createElement(
-								_reactstrap.DropdownItem,
-								{ tag: _reactRouterDom.Link, to: '/AdminGenre' },
-								'Genres'
-							),
-							_react2.default.createElement(
-								_reactstrap.DropdownItem,
-								{ tag: _reactRouterDom.Link, to: '/AdminBranch' },
-								'Publishers'
-							),
-							_react2.default.createElement(_reactstrap.DropdownItem, { divider: true }),
-							_react2.default.createElement(
-								_reactstrap.DropdownItem,
-								{ tag: _reactRouterDom.Link, to: '/AdminLoan' },
-								'Loaned Books'
-							),
-							_react2.default.createElement(
-								_reactstrap.DropdownItem,
-								null,
-								' '
-							)
-						)
-					)
-				)
-			)
-		)
-	);
-};
-
-exports.default = Header;
-
-},{"react":148,"react-router-dom":135,"reactstrap":242}],305:[function(require,module,exports){
+},{"flat":43,"mdbreact":63,"prop-types":95,"react":148,"reactstrap":242}],305:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -65492,7 +65394,7 @@ var LibrarianHeader = function LibrarianHeader() {
 					_react2.default.createElement(
 						_reactRouterDom.Link,
 						{ to: '/', className: 'navbar-brand' },
-						_react2.default.createElement('img', { width: '80px', height: '80px', src: 'images/books.png' })
+						_react2.default.createElement('img', { width: '65px', height: '65px', src: 'images/books.png' })
 					)
 				),
 				_react2.default.createElement(
@@ -68872,7 +68774,7 @@ var Header = function Header() {
 					_react2.default.createElement(
 						_reactRouterDom.Link,
 						{ to: '/', className: 'navbar-brand' },
-						_react2.default.createElement('img', { width: '80px', height: '80px', src: 'images/books.png' })
+						_react2.default.createElement('img', { width: '90px', height: '65px', src: 'images/home.png' })
 					)
 				),
 				_react2.default.createElement(

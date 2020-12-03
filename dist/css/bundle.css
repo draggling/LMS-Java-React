@@ -10,22 +10,24 @@
 .mainblock {
     width: 95%;
     height: 50px;
+    position: static;
     margin: 0 auto;
 }
 
 .navbar a{
     font-family: 'Monaco';
     font-size: 20px;
-    word-spacing: 5px;
     color: teal;
     line-height: 1.15;
+    margin: 7px;
+    padding-bottom: 20px;
 }
 
 .header-dropdown{
     font-family: 'Monaco';
     font-size: 20px;
-    word-spacing: 8px;
     color: teal;
+    height: 20px;
     line-height: 1.15;
 }
 
@@ -37,10 +39,4 @@
 .header_dropdown:active{
     text-decoration: underline;
     cursor: pointer,
-}
-
-.logo{
-    width:"80px";
-    height:"80px";
-    src:"./images/books.png";
 }
