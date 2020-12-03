@@ -5,6 +5,7 @@ import { MDBDataTable, Alert} from 'mdbreact';
 import DeleteModal from '../../Modal/AdminGenre/DeleteModal';
 import UpdateModal from '../../Modal/AdminGenre/UpdateModal';
 import CreateModal from '../../Modal/AdminGenre/CreateModal';
+import Spinner from '../../Util/Spinner'
 
 const AdminGenreRender = ({
 	genreData,
@@ -16,6 +17,9 @@ const AdminGenreRender = ({
 }) => {
 	let content = '';
 	let alert = '';
+	if (!genreData || requestInfo.readPending) {
+		content = Spinner();
+	}
 
 	if(requestInfo !== undefined && requestInfo.exists !== undefined && requestInfo.exists) {
 			alert = (

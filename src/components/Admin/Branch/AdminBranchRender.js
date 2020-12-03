@@ -7,6 +7,7 @@ import { MDBDataTable } from 'mdbreact';
 import DeleteModal from '../../Modal/AdminBranch/DeleteModal';
 import UpdateModal from '../../Modal/AdminBranch/UpdateModal';
 import CreateModal from '../../Modal/AdminBranch/CreateModal';
+import Spinner from '../../Util/Spinner'
 
 const AdminBranchRender = ({
 	branchData,
@@ -18,13 +19,7 @@ const AdminBranchRender = ({
 }) => {
 	let content = '';
 	if (!branchData || requestInfo.readPending) {
-		content = (
-			<div className="d-flex justify-content-center">
-				<div className="spinner-border" role="status">
-					<span className="sr-only">Loading...</span>
-				</div>
-			</div>
-		);
+		content = Spinner();
 	}
 	if (branchData && requestInfo.readSuccessful) {
 		let data = {

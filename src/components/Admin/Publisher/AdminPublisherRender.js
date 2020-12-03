@@ -7,6 +7,7 @@ import { MDBDataTable } from 'mdbreact';
 import DeleteModal from '../../Modal/AdminPublisher/DeleteModal';
 import UpdateModal from '../../Modal/AdminPublisher/UpdateModal';
 import CreateModal from '../../Modal/AdminPublisher/CreateModal';
+import Spinner from '../../Util/Spinner'
 
 const AdminPublisherRender = ({
 	publisherData,
@@ -18,13 +19,7 @@ const AdminPublisherRender = ({
 }) => {
 	let content = '';
 	if (!publisherData || requestInfo.readPending) {
-		content = (
-			<div className="d-flex justify-content-center">
-				<div className="spinner-border" role="status">
-					<span className="sr-only">Loading...</span>
-				</div>
-			</div>
-		);
+		content = Spinner();
 	}
 	if (publisherData && requestInfo.readSuccessful) {
 		let data = {
