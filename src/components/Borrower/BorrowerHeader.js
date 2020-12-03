@@ -3,14 +3,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const LibrarianHeader = () => {
+const BorrowerHeader = () => {
 	return (
 		<nav className="navbar navbar-inverse">
 			<div className="container-fluid">
 				<ul className="list-inline">
 					<li className="list-inline-item">
 						<Link to="/" className="navbar-brand">
-							<img width="65px" height="65px" src="images/books.png" />
+							<img width="65px" height="65px" src="../images/borrower.png" />
 						</Link>
 					</li>
 					<li className="list-inline-item">
@@ -24,4 +24,4 @@ const LibrarianHeader = () => {
 	);
 };
 
-export default LibrarianHeader;
+export default BorrowerHeader;

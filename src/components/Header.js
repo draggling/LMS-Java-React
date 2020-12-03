@@ -14,7 +14,7 @@ const Header = () => {
 				<ul className="list-inline">
 					<li className="list-inline-item">
 						<Link to="/" className="navbar-brand">
-							<img width="80px" height="80px" src="images/books.png" />
+							<img width="90px" height="65px" src="images/home.png" />
 						</Link>
 					</li>
 					<li className="list-inline-item">
