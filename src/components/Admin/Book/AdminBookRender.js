@@ -30,6 +30,7 @@ const AdminBookRender = ({
 	}
 	if (bookData && requestInfo.readSuccessful && requestInfo.readPublisherSuccessful
 		&& requestInfo.readAuthorSuccessful && requestInfo.readGenreSuccessful) {
+		/*
 		console.log("Book Data");
 		console.log(bookData);
 		console.log("Publisher Data");
@@ -40,6 +41,7 @@ const AdminBookRender = ({
 		console.log(genreData);
 		console.log("requestInfo:");
 		console.log(requestInfo);
+		*/
 		let data = {
 			columns: [
 				/*

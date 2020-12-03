@@ -61288,10 +61288,10 @@ var attemptLogin = exports.attemptLogin = function attemptLogin(cardNo) {
 	};
 };
 
-var selectBranchForCheckout = exports.selectBranchForCheckout = function selectBranchForCheckout(branch) {
+var selectBranchForCheckout = exports.selectBranchForCheckout = function selectBranchForCheckout(branch, cardNo) {
 	return function (dispatch) {
 		dispatch(_selectBranch(branch));
-		return _axios2.default.get(_connections.BORROWER_PORT + 'borrower/getBooksAvailableFromBranch/' + branch.branchId).then(function (response) {
+		return _axios2.default.get(_connections.BORROWER_PORT + 'borrower/getBooksAvailableFromBranchForBorrower/' + branch.branchId + '/' + cardNo).then(function (response) {
 			dispatch(_readBooksAtBranchSuccess(response));
 		}).catch(function (error) {
 			console.log(error);
@@ -61339,7 +61339,7 @@ var processReturn = exports.processReturn = function processReturn(loanToReturn)
 var startCheckout = exports.startCheckout = function startCheckout() {
 	return function (dispatch) {
 		dispatch(_startCheckout());
-		return _axios2.default.get(_connections.BORROWER_PORT + 'borrower/getLibraryBranches').then(function (response) {
+		return _axios2.default.get(_connections.BORROWER_PORT + 'borrower/getLibraryBranchesWithAvailableBooks').then(function (response) {
 			dispatch(_getAllBranchesSuccessful(response));
 		}).catch(function (error) {
 			console.log(error);
@@ -61378,7 +61378,7 @@ var _loginAttemptInitiated = function _loginAttemptInitiated() {
 };
 var _loginAttemptFailed = function _loginAttemptFailed(error) {
 	return {
-		type: _actionTypes.BORROWER_LOGIN_FAILED,
+		type: _actionTypes.BORROWER_LOGIN_FAILURE,
 		error: error
 	};
 };
@@ -61579,7 +61579,6 @@ var selectBranch = exports.selectBranch = function selectBranch(branch) {
 };
 
 var Switch = exports.Switch = function Switch() {
-	console.log("switching views");
 	return function (dispatch) {
 		dispatch(_SwitchRequest());
 	};
@@ -61587,7 +61586,6 @@ var Switch = exports.Switch = function Switch() {
 
 /* resets branch information */
 var branchSelect = exports.branchSelect = function branchSelect() {
-	console.log("branchSelect");
 	return function (dispatch) {
 		return dispatch(_branchSelect());
 	};
@@ -61762,11 +61760,7 @@ var AdminHeader = function AdminHeader() {
 					_react2.default.createElement(
 						_reactRouterDom.Link,
 						{ to: '/', className: 'navbar-brand' },
-						_react2.default.createElement('img', {
-							width: '90px',
-							height: '30px',
-							src: 'images/logo.png'
-						})
+						_react2.default.createElement('img', { width: '80px', height: '80px', src: 'images/books.png' })
 					)
 				),
 				_react2.default.createElement(
@@ -61783,8 +61777,8 @@ var AdminHeader = function AdminHeader() {
 					{ className: 'list-inline-item' },
 					_react2.default.createElement(
 						_reactRouterDom.Link,
-						{ to: '/AdminBranch', replace: true },
-						'Branches'
+						{ to: '/AdminAuthor', replace: true },
+						'Authors'
 					)
 				),
 				_react2.default.createElement(
@@ -61801,8 +61795,8 @@ var AdminHeader = function AdminHeader() {
 					{ className: 'list-inline-item' },
 					_react2.default.createElement(
 						_reactRouterDom.Link,
-						{ to: '/AdminAuthor', replace: true },
-						'Authors'
+						{ to: '/AdminBorrower', replace: true },
+						'Borrowers'
 					)
 				),
 				_react2.default.createElement(
@@ -61810,8 +61804,8 @@ var AdminHeader = function AdminHeader() {
 					{ className: 'list-inline-item' },
 					_react2.default.createElement(
 						_reactRouterDom.Link,
-						{ to: '/AdminPublisher', replace: true },
-						'Publishers'
+						{ to: '/AdminBranch', replace: true },
+						'Branches'
 					)
 				),
 				_react2.default.createElement(
@@ -61828,8 +61822,8 @@ var AdminHeader = function AdminHeader() {
 					{ className: 'list-inline-item' },
 					_react2.default.createElement(
 						_reactRouterDom.Link,
-						{ to: '/AdminBorrower', replace: true },
-						'Borrowers'
+						{ to: '/AdminPublisher', replace: true },
+						'Publishers'
 					)
 				),
 				_react2.default.createElement(
@@ -62310,16 +62304,18 @@ var AdminBookRender = function AdminBookRender(_ref) {
 		);
 	}
 	if (bookData && requestInfo.readSuccessful && requestInfo.readPublisherSuccessful && requestInfo.readAuthorSuccessful && requestInfo.readGenreSuccessful) {
-		console.log("Book Data");
-		console.log(bookData);
-		console.log("Publisher Data");
-		console.log(publisherData);
-		console.log("Author Data");
-		console.log(authorData);
-		console.log("Genre Data");
-		console.log(genreData);
-		console.log("requestInfo:");
-		console.log(requestInfo);
+		/*
+  console.log("Book Data");
+  console.log(bookData);
+  console.log("Publisher Data");
+  console.log(publisherData);
+  console.log("Author Data");
+  console.log(authorData);
+  console.log("Genre Data");
+  console.log(genreData);
+  console.log("requestInfo:");
+  console.log(requestInfo);
+  */
 		var data = {
 			columns: [
 			/*
@@ -63177,8 +63173,6 @@ var AdminGenreRender = function AdminGenreRender(_ref) {
 	var content = '';
 	var alert = '';
 
-	console.log("requestInfo");
-	console.log(requestInfo);
 	if (requestInfo !== undefined && requestInfo.exists !== undefined && requestInfo.exists) {
 		alert = _react2.default.createElement(
 			'div',
@@ -64147,7 +64141,7 @@ var BorrowerContainer = function BorrowerContainer(props) {
 		actions.processReturn(loan);
 	}
 	function selectBranch(branch) {
-		actions.selectBranchForCheckout(branch);
+		actions.selectBranchForCheckout(branch, borrower.borrowerCardNo);
 	}
 	function startCheckout() {
 		actions.startCheckout();
@@ -64421,7 +64415,6 @@ var CheckoutBookTable = function CheckoutBookTable(_ref) {
 		return books.map(function (book) {
 			// Deep Clone object to bookId adding to it while mapping over it during map
 			var bookDeepCopy = JSON.parse(JSON.stringify(book));
-
 			bookDeepCopy.publisherName = parsePublisherInfo(bookDeepCopy);
 			bookDeepCopy.authorInfo = parseAuthors(bookDeepCopy);
 			bookDeepCopy.genreInfo = parseGenres(bookDeepCopy);
@@ -64570,7 +64563,7 @@ var ReturnLoansTable = function ReturnLoansTable(_ref) {
 	var handleReturn = _ref.handleReturn,
 	    loans = _ref.loans;
 
-	console.log(loans);
+	//console.log(loans);
 
 	function parseBranchInfo(newObj) {
 		var rawData = newObj['branch.branchName'] + '\n' + newObj['branch.branchAddress'];
@@ -64736,15 +64729,29 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
 var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
 var _reactRouterDom = require('react-router-dom');
 
+var _reactstrap = require('reactstrap');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var Header = function Header() {
+	var _useState = (0, _react.useState)(false),
+	    _useState2 = _slicedToArray(_useState, 2),
+	    dropdownOpen = _useState2[0],
+	    setDropdownOpen = _useState2[1];
+
+	var toggle = function toggle() {
+		return setDropdownOpen(function (prevState) {
+			return !prevState;
+		});
+	};
 	return _react2.default.createElement(
 		'nav',
 		{ className: 'navbar navbar-inverse' },
@@ -64760,7 +64767,7 @@ var Header = function Header() {
 					_react2.default.createElement(
 						_reactRouterDom.Link,
 						{ to: '/', className: 'navbar-brand' },
-						_react2.default.createElement('img', { width: '90px', height: '30px', src: 'images/logo.png' })
+						_react2.default.createElement('img', { width: '80px', height: '80px', src: 'images/books.png' })
 					)
 				),
 				_react2.default.createElement(
@@ -64778,7 +64785,7 @@ var Header = function Header() {
 					_react2.default.createElement(
 						_reactRouterDom.Link,
 						{ to: '/LibrarianBranch', replace: true },
-						'Librarian_Home'
+						'Librarian'
 					)
 				),
 				_react2.default.createElement(
@@ -64794,9 +64801,63 @@ var Header = function Header() {
 					'li',
 					{ className: 'list-inline-item' },
 					_react2.default.createElement(
-						_reactRouterDom.Link,
-						{ to: '/AdminHome', replace: true },
-						'Administrator_Home'
+						_reactstrap.Dropdown,
+						{ className: 'header-dropdown', isOpen: dropdownOpen, toggle: toggle },
+						_react2.default.createElement(
+							_reactstrap.DropdownToggle,
+							{
+								caret: true,
+								tag: 'span',
+								'data-toggle': 'dropdown',
+								'aria-expanded': dropdownOpen },
+							'Administrator'
+						),
+						_react2.default.createElement(
+							_reactstrap.DropdownMenu,
+							null,
+							_react2.default.createElement(
+								_reactstrap.DropdownItem,
+								{ tag: _reactRouterDom.Link, to: '/AdminHome' },
+								'Home'
+							),
+							_react2.default.createElement(_reactstrap.DropdownItem, { divider: true }),
+							_react2.default.createElement(
+								_reactstrap.DropdownItem,
+								{ tag: _reactRouterDom.Link, to: '/AdminAuthor' },
+								'Authors'
+							),
+							_react2.default.createElement(
+								_reactstrap.DropdownItem,
+								{ tag: _reactRouterDom.Link, to: '/AdminBook' },
+								'Books'
+							),
+							_react2.default.createElement(
+								_reactstrap.DropdownItem,
+								{ tag: _reactRouterDom.Link, to: '/AdminBorrower' },
+								'Borrowers'
+							),
+							_react2.default.createElement(
+								_reactstrap.DropdownItem,
+								{ tag: _reactRouterDom.Link, to: '/AdminGenre' },
+								'Genres'
+							),
+							_react2.default.createElement(
+								_reactstrap.DropdownItem,
+								{ tag: _reactRouterDom.Link, to: '/AdminBranch' },
+								'Publishers'
+							),
+							_react2.default.createElement(_reactstrap.DropdownItem, { divider: true }),
+							_react2.default.createElement(
+								_reactstrap.DropdownItem,
+								{ tag: _reactRouterDom.Link, to: '/AdminLoan' },
+								'Loaned Books'
+							),
+							_react2.default.createElement(
+								_reactstrap.DropdownItem,
+								null,
+								' '
+							)
+						)
 					)
 				)
 			)
@@ -64806,7 +64867,7 @@ var Header = function Header() {
 
 exports.default = Header;
 
-},{"react":148,"react-router-dom":135}],305:[function(require,module,exports){
+},{"react":148,"react-router-dom":135,"reactstrap":242}],305:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -65431,11 +65492,7 @@ var LibrarianHeader = function LibrarianHeader() {
 					_react2.default.createElement(
 						_reactRouterDom.Link,
 						{ to: '/', className: 'navbar-brand' },
-						_react2.default.createElement('img', {
-							width: '90px',
-							height: '30px',
-							src: 'images/logo.png'
-						})
+						_react2.default.createElement('img', { width: '80px', height: '80px', src: 'images/books.png' })
 					)
 				),
 				_react2.default.createElement(
@@ -65689,10 +65746,11 @@ var CreateModal = function CreateModal(props) {
 						),
 						_react2.default.createElement(_reactstrap.Input, {
 							type: 'text',
-							name: 'authorName',
 							id: 'formAuthorName',
-							placeholder: 'New Author Name',
-							onChange: handleNameChange
+							maxLength: 45,
+							name: 'authorName',
+							onChange: handleNameChange,
+							placeholder: 'New Author Name'
 						})
 					)
 				),
@@ -65709,11 +65767,7 @@ var CreateModal = function CreateModal(props) {
 				),
 				_react2.default.createElement(
 					_reactstrap.Button,
-					{
-						color: 'danger',
-						className: 'twobuttons',
-						onClick: toggle
-					},
+					{ color: 'danger', className: 'twobuttons', onClick: toggle },
 					'Cancel'
 				)
 			)
@@ -65919,9 +65973,10 @@ var UpdateModal = function UpdateModal(props) {
 						),
 						_react2.default.createElement(_reactstrap.Input, {
 							type: 'text',
-							name: 'authorName',
 							authorId: 'formAuthorName',
 							defaultValue: currentAuthorName,
+							maxLength: 45,
+							name: 'authorName',
 							onChange: handleNameChange
 						})
 					)
@@ -65939,11 +65994,7 @@ var UpdateModal = function UpdateModal(props) {
 				),
 				_react2.default.createElement(
 					_reactstrap.Button,
-					{
-						color: 'danger',
-						className: 'twobuttons',
-						onClick: toggle
-					},
+					{ color: 'danger', className: 'twobuttons', onClick: toggle },
 					'Cancel'
 				)
 			)
@@ -65989,18 +66040,16 @@ var CreateModal = function CreateModal(props) {
 	    publishers = props.publishers,
 	    authors = props.authors,
 	    genres = props.genres;
-	/* deprecated alerts */
+	/* deprecated errorAlerts */
 
-	if (!alert) {
-		var _alert = "";
-	}
 	var newBookName = '';
 	var newPubId = 0;
-	var newPub = "";
+	var newPub = '';
 	var authorKeys = [];
 	var genreKeys = [];
+	var errorHandler = errorHandler || { error: false, message: "" };
 	function createBook() {
-		if (newBookName !== "" && newPubId > 0 && authorKeys.length > 0 && genreKeys.length > 0) {
+		if (newBookName !== '' && newPubId > 0 && authorKeys.length > 0 && genreKeys.length > 0) {
 			/* push author objects into newAuthors variable */
 			var newAuthors = [];
 			for (var i = 0; i < authors.length; i++) {
@@ -66018,7 +66067,8 @@ var CreateModal = function CreateModal(props) {
 			handleCreate(newBookName, newPub, newAuthors, newGenres);
 			toggle();
 		} else {
-			alert = _react2.default.createElement(
+			errorHandler.error = true;
+			errorHandler.message = _react2.default.createElement(
 				'div',
 				null,
 				_react2.default.createElement(
@@ -66065,13 +66115,13 @@ var CreateModal = function CreateModal(props) {
 				}
 			}
 		} else {
-			console.log("ERROR");
+			console.log('ERROR');
 		}
 	}
 
 	function handleAuthorsChange(e) {
 		authorKeys = [];
-		var author = "";
+		var author = '';
 		var length = e.target.options.length;
 		for (var i = 0; i < length; i++) {
 			author = e.target.options[i];
@@ -66083,7 +66133,7 @@ var CreateModal = function CreateModal(props) {
 
 	function handleGenresChange(e) {
 		genreKeys = [];
-		var genre = "";
+		var genre = '';
 		var length = e.target.options.length;
 		for (var i = 0; i < length; i++) {
 			genre = e.target.options[i];
@@ -66121,7 +66171,7 @@ var CreateModal = function CreateModal(props) {
 			_react2.default.createElement(
 				_reactstrap.ModalBody,
 				null,
-				alert,
+				errorHandler && errorHandler.error && errorHandler.message,
 				_react2.default.createElement(
 					_reactstrap.Form,
 					null,
@@ -66135,10 +66185,11 @@ var CreateModal = function CreateModal(props) {
 						),
 						_react2.default.createElement(_reactstrap.Input, {
 							type: 'text',
-							name: 'title',
 							id: 'formBookName',
-							placeholder: 'New Book Name',
-							onChange: handleNameChange
+							maxLength: 45,
+							name: 'title',
+							onChange: handleNameChange,
+							placeholder: 'New Book Name'
 						})
 					),
 					_react2.default.createElement(
@@ -66153,10 +66204,10 @@ var CreateModal = function CreateModal(props) {
 							_reactstrap.Input,
 							{
 								type: 'select',
-								name: 'publisher',
 								id: 'formPublisher',
-								placeholder: 'New Publisher',
-								onChange: handlePublisherChange
+								name: 'publisher',
+								onChange: handlePublisherChange,
+								placeholder: 'New Publisher'
 							},
 							_react2.default.createElement(
 								'option',
@@ -66166,8 +66217,11 @@ var CreateModal = function CreateModal(props) {
 							publishers.map(function (publisher) {
 								return _react2.default.createElement(
 									'option',
-									{ key: publisher.publisherId, value: publisher.publisherId },
-									publisher.publisherName + ", " + publisher.publisherAddress
+									{
+										key: publisher.publisherId,
+										value: publisher.publisherId
+									},
+									publisher.publisherName + ', ' + publisher.publisherAddress
 								);
 							})
 						)
@@ -66184,10 +66238,10 @@ var CreateModal = function CreateModal(props) {
 							_reactstrap.Input,
 							{
 								type: 'select',
-								name: 'author',
 								id: 'formAuthor',
-								onChange: handleAuthorsChange,
-								multiple: true
+								multiple: true,
+								name: 'author',
+								onChange: handleAuthorsChange
 							},
 							authors.map(function (author) {
 								return _react2.default.createElement(
@@ -66210,10 +66264,10 @@ var CreateModal = function CreateModal(props) {
 							_reactstrap.Input,
 							{
 								type: 'select',
-								name: 'genre',
 								id: 'formGenre',
-								onChange: handleGenresChange,
-								multiple: true
+								multiple: true,
+								name: 'genre',
+								onChange: handleGenresChange
 							},
 							genres.map(function (genre) {
 								return _react2.default.createElement(
@@ -66227,20 +66281,12 @@ var CreateModal = function CreateModal(props) {
 				),
 				_react2.default.createElement(
 					_reactstrap.Button,
-					{
-						color: 'primary',
-						className: 'twobuttons',
-						onClick: createBook
-					},
+					{ color: 'primary', className: 'twobuttons', onClick: createBook },
 					'Create'
 				),
 				_react2.default.createElement(
 					_reactstrap.Button,
-					{
-						color: 'danger',
-						className: 'twobuttons',
-						onClick: toggle
-					},
+					{ color: 'danger', className: 'twobuttons', onClick: toggle },
 					'Cancel'
 				)
 			)
@@ -66414,12 +66460,10 @@ var UpdateModal = function UpdateModal(props) {
 		genreKeys.push(currentGenres[_i].genreId.toString());
 	}
 
-	if (!alert) {
-		var _alert = "";
-	}
+	var alertMessage = alertMessage || '';
 
 	function updateBook() {
-		if (newBookName !== "" && newPubId > 0 && authorKeys.length > 0 && genreKeys.length > 0) {
+		if (newBookName !== '' && newPubId > 0 && authorKeys.length > 0 && genreKeys.length > 0) {
 			/* push author objects into newAuthors variable */
 			var newAuthors = [];
 			for (var _i2 = 0; _i2 < authors.length; _i2++) {
@@ -66434,10 +66478,11 @@ var UpdateModal = function UpdateModal(props) {
 					newGenres.push(genres[_i3]);
 				}
 			}
+			alertMessage = "";
 			handleUpdate(bookId, newBookName, newPub, newAuthors, newGenres);
 			toggle();
 		} else {
-			alert = _react2.default.createElement(
+			alertMessage = _react2.default.createElement(
 				'div',
 				null,
 				_react2.default.createElement(
@@ -66452,7 +66497,7 @@ var UpdateModal = function UpdateModal(props) {
 
 	function handleNameChange(e) {
 		if (!e.target.value || e.target.value.length > 45) {
-			alert = _react2.default.createElement(
+			alertMessage = _react2.default.createElement(
 				'div',
 				null,
 				_react2.default.createElement(
@@ -66495,13 +66540,13 @@ var UpdateModal = function UpdateModal(props) {
 				}
 			}
 		} else {
-			console.log("ERROR");
+			console.log('ERROR');
 		}
 	}
 
 	function handleAuthorsChange(e) {
 		authorKeys = [];
-		var author = "";
+		var author = '';
 		var length = e.target.options.length;
 		for (var _i4 = 0; _i4 < length; _i4++) {
 			author = e.target.options[_i4];
@@ -66513,7 +66558,7 @@ var UpdateModal = function UpdateModal(props) {
 
 	function handleGenresChange(e) {
 		genreKeys = [];
-		var genre = "";
+		var genre = '';
 		var length = e.target.options.length;
 		for (var _i5 = 0; _i5 < length; _i5++) {
 			genre = e.target.options[_i5];
@@ -66551,7 +66596,7 @@ var UpdateModal = function UpdateModal(props) {
 			_react2.default.createElement(
 				_reactstrap.ModalBody,
 				null,
-				alert,
+				alertMessage,
 				_react2.default.createElement(
 					_reactstrap.Form,
 					null,
@@ -66565,9 +66610,10 @@ var UpdateModal = function UpdateModal(props) {
 						),
 						_react2.default.createElement(_reactstrap.Input, {
 							type: 'text',
-							name: 'title',
-							id: 'formBookName',
 							defaultValue: currentTitle,
+							id: 'formBookName',
+							maxLength: 45,
+							name: 'title',
 							onChange: handleNameChange
 						})
 					),
@@ -66583,17 +66629,20 @@ var UpdateModal = function UpdateModal(props) {
 							_reactstrap.Input,
 							{
 								type: 'select',
-								name: 'publisher',
+								defaultValue: newPubId.toString(),
 								id: 'formPublisher',
-								placeholder: 'New Publisher',
+								name: 'publisher',
 								onChange: handlePublisherChange,
-								defaultValue: newPubId.toString()
+								placeholder: 'New Publisher'
 							},
 							publishers.map(function (publisher) {
 								return _react2.default.createElement(
 									'option',
-									{ key: publisher.publisherId, value: publisher.publisherId },
-									publisher.publisherName + ", " + publisher.publisherAddress
+									{
+										key: publisher.publisherId,
+										value: publisher.publisherId
+									},
+									publisher.publisherName + ', ' + publisher.publisherAddress
 								);
 							})
 						)
@@ -66610,11 +66659,11 @@ var UpdateModal = function UpdateModal(props) {
 							_reactstrap.Input,
 							{
 								type: 'select',
-								name: 'author',
-								id: 'formAuthor',
-								onChange: handleAuthorsChange,
 								defaultValue: authorKeys,
-								multiple: true
+								id: 'formAuthor',
+								multiple: true,
+								name: 'author',
+								onChange: handleAuthorsChange
 							},
 							authors.map(function (author) {
 								return _react2.default.createElement(
@@ -66637,11 +66686,11 @@ var UpdateModal = function UpdateModal(props) {
 							_reactstrap.Input,
 							{
 								type: 'select',
-								name: 'genre',
-								id: 'formGenre',
-								onChange: handleGenresChange,
 								defaultValue: genreKeys,
-								multiple: true
+								id: 'formGenre',
+								multiple: true,
+								name: 'genre',
+								onChange: handleGenresChange
 							},
 							genres.map(function (genre) {
 								return _react2.default.createElement(
@@ -66655,20 +66704,12 @@ var UpdateModal = function UpdateModal(props) {
 				),
 				_react2.default.createElement(
 					_reactstrap.Button,
-					{
-						color: 'primary',
-						className: 'twobuttons',
-						onClick: updateBook
-					},
+					{ color: 'primary', className: 'twobuttons', onClick: updateBook },
 					'Create'
 				),
 				_react2.default.createElement(
 					_reactstrap.Button,
-					{
-						color: 'danger',
-						className: 'twobuttons',
-						onClick: toggle
-					},
+					{ color: 'danger', className: 'twobuttons', onClick: toggle },
 					'Cancel'
 				)
 			)
@@ -66777,10 +66818,11 @@ var CreateModal = function CreateModal(props) {
 						),
 						_react2.default.createElement(_reactstrap.Input, {
 							type: 'text',
-							name: 'borrowerName',
 							id: 'formBorrowerName',
-							placeholder: 'New Borrower Name',
-							onChange: handleNameChange
+							maxLength: 45,
+							name: 'borrowerName',
+							onChange: handleNameChange,
+							placeholder: 'New Borrower Name'
 						})
 					),
 					_react2.default.createElement(
@@ -66793,10 +66835,11 @@ var CreateModal = function CreateModal(props) {
 						),
 						_react2.default.createElement(_reactstrap.Input, {
 							type: 'text',
-							name: 'borrowerAddress',
 							id: 'formBorrowerAddress',
-							placeholder: 'New Address',
-							onChange: handleAddressChange
+							maxLength: 45,
+							name: 'borrowerAddress',
+							onChange: handleAddressChange,
+							placeholder: 'New Address'
 						})
 					),
 					_react2.default.createElement(
@@ -66809,10 +66852,11 @@ var CreateModal = function CreateModal(props) {
 						),
 						_react2.default.createElement(_reactstrap.Input, {
 							type: 'text',
-							name: 'borrowerPhone',
 							id: 'formBorrowerPhone',
-							placeholder: 'New Phone Number',
-							onChange: handlePhoneChange
+							maxLength: 45,
+							name: 'borrowerPhone',
+							onChange: handlePhoneChange,
+							placeholder: 'New Phone Number'
 						})
 					)
 				),
@@ -66829,11 +66873,7 @@ var CreateModal = function CreateModal(props) {
 				),
 				_react2.default.createElement(
 					_reactstrap.Button,
-					{
-						color: 'danger',
-						className: 'twobuttons',
-						onClick: toggle
-					},
+					{ color: 'danger', className: 'twobuttons', onClick: toggle },
 					'Cancel'
 				)
 			)
@@ -67080,9 +67120,10 @@ var UpdateModal = function UpdateModal(props) {
 						),
 						_react2.default.createElement(_reactstrap.Input, {
 							type: 'text',
-							name: 'borrowerName',
 							cardNo: 'formBorrowerName',
 							defaultValue: currentBorrowerName,
+							maxLength: 45,
+							name: 'borrowerName',
 							onChange: handleNameChange
 						})
 					),
@@ -67096,9 +67137,10 @@ var UpdateModal = function UpdateModal(props) {
 						),
 						_react2.default.createElement(_reactstrap.Input, {
 							type: 'text',
-							name: 'borrowerAddress',
 							cardNo: 'formBorrowerAddress',
 							defaultValue: currentBorrowerAddress,
+							maxLength: 45,
+							name: 'borrowerAddress',
 							onChange: handleAddressChange
 						})
 					),
@@ -67112,9 +67154,10 @@ var UpdateModal = function UpdateModal(props) {
 						),
 						_react2.default.createElement(_reactstrap.Input, {
 							type: 'text',
-							name: 'borrowerPhone',
 							cardNo: 'formBorrowerPhone',
 							defaultValue: currentBorrowerPhone,
+							maxLength: 45,
+							name: 'borrowerPhone',
 							onChange: handlePhoneChange
 						})
 					)
@@ -67132,11 +67175,7 @@ var UpdateModal = function UpdateModal(props) {
 				),
 				_react2.default.createElement(
 					_reactstrap.Button,
-					{
-						color: 'danger',
-						className: 'twobuttons',
-						onClick: toggle
-					},
+					{ color: 'danger', className: 'twobuttons', onClick: toggle },
 					'Cancel'
 				)
 			)
@@ -67238,10 +67277,11 @@ var CreateModal = function CreateModal(props) {
 						),
 						_react2.default.createElement(_reactstrap.Input, {
 							type: 'text',
-							name: 'branchName',
 							id: 'formBranchName',
-							placeholder: 'New Branch Name',
-							onChange: handleNameChange
+							maxLength: 45,
+							name: 'branchName',
+							onChange: handleNameChange,
+							placeholder: 'New Branch Name'
 						})
 					),
 					_react2.default.createElement(
@@ -67254,10 +67294,11 @@ var CreateModal = function CreateModal(props) {
 						),
 						_react2.default.createElement(_reactstrap.Input, {
 							type: 'text',
-							name: 'branchAddress',
 							id: 'formBranchAddress',
-							placeholder: 'New Address',
-							onChange: handleAddressChange
+							maxLength: 45,
+							name: 'branchAddress',
+							onChange: handleAddressChange,
+							placeholder: 'New Address'
 						})
 					)
 				),
@@ -67274,11 +67315,7 @@ var CreateModal = function CreateModal(props) {
 				),
 				_react2.default.createElement(
 					_reactstrap.Button,
-					{
-						color: 'danger',
-						className: 'twobuttons',
-						onClick: toggle
-					},
+					{ color: 'danger', className: 'twobuttons', onClick: toggle },
 					'Cancel'
 				)
 			)
@@ -67501,9 +67538,10 @@ var UpdateModal = function UpdateModal(props) {
 						),
 						_react2.default.createElement(_reactstrap.Input, {
 							type: 'text',
-							name: 'branchName',
-							id: 'formBranchName',
 							defaultValue: currentBranchName,
+							id: 'formBranchName',
+							maxLength: 45,
+							name: 'branchName',
 							onChange: handleNameChange
 						})
 					),
@@ -67517,9 +67555,10 @@ var UpdateModal = function UpdateModal(props) {
 						),
 						_react2.default.createElement(_reactstrap.Input, {
 							type: 'text',
-							name: 'branchAddress',
-							id: 'formBranchAddress',
 							defaultValue: currentBranchAddress,
+							id: 'formBranchAddress',
+							maxLength: 45,
+							name: 'branchAddress',
 							onChange: handleAddressChange
 						})
 					)
@@ -67537,11 +67576,7 @@ var UpdateModal = function UpdateModal(props) {
 				),
 				_react2.default.createElement(
 					_reactstrap.Button,
-					{
-						color: 'danger',
-						className: 'twobuttons',
-						onClick: toggle
-					},
+					{ color: 'danger', className: 'twobuttons', onClick: toggle },
 					'Cancel'
 				)
 			)
@@ -67637,10 +67672,11 @@ var CreateModal = function CreateModal(props) {
 						),
 						_react2.default.createElement(_reactstrap.Input, {
 							type: 'text',
-							name: 'genreName',
 							id: 'formGenreName',
-							placeholder: 'New Genre Name',
-							onChange: handleNameChange
+							maxLength: 45,
+							name: 'genreName',
+							onChange: handleNameChange,
+							placeholder: 'New Genre Name'
 						})
 					)
 				),
@@ -67657,11 +67693,7 @@ var CreateModal = function CreateModal(props) {
 				),
 				_react2.default.createElement(
 					_reactstrap.Button,
-					{
-						color: 'danger',
-						className: 'twobuttons',
-						onClick: toggle
-					},
+					{ color: 'danger', className: 'twobuttons', onClick: toggle },
 					'Cancel'
 				)
 			)
@@ -67868,9 +67900,10 @@ var UpdateModal = function UpdateModal(props) {
 						),
 						_react2.default.createElement(_reactstrap.Input, {
 							type: 'text',
-							name: 'genreName',
-							genreid: 'formGenreName',
 							defaultValue: currentGenreName,
+							genreid: 'formGenreName',
+							maxLength: 45,
+							name: 'genreName',
 							onChange: handleNameChange
 						})
 					)
@@ -67888,11 +67921,7 @@ var UpdateModal = function UpdateModal(props) {
 				),
 				_react2.default.createElement(
 					_reactstrap.Button,
-					{
-						color: 'danger',
-						className: 'twobuttons',
-						onClick: toggle
-					},
+					{ color: 'danger', className: 'twobuttons', onClick: toggle },
 					'Cancel'
 				)
 			)
@@ -68134,15 +68163,15 @@ var CreateModal = function CreateModal(props) {
 						_react2.default.createElement(
 							_reactstrap.Label,
 							{ 'for': 'formPublisherName' },
-							' ',
-							'Publisher Name'
+							' Publisher Name'
 						),
 						_react2.default.createElement(_reactstrap.Input, {
 							type: 'text',
-							name: 'branchName',
 							id: 'formPublisherName',
-							placeholder: 'New Publisher Name',
-							onChange: handleNameChange
+							maxLength: 45,
+							name: 'branchName',
+							onChange: handleNameChange,
+							placeholder: 'New Publisher Name'
 						})
 					),
 					_react2.default.createElement(
@@ -68155,10 +68184,11 @@ var CreateModal = function CreateModal(props) {
 						),
 						_react2.default.createElement(_reactstrap.Input, {
 							type: 'text',
-							name: 'branchAddress',
 							id: 'formPublisherAddress',
-							placeholder: 'New Address',
-							onChange: handleAddressChange
+							maxLength: 45,
+							name: 'branchAddress',
+							onChange: handleAddressChange,
+							placeholder: 'New Address'
 						})
 					),
 					_react2.default.createElement(
@@ -68171,10 +68201,11 @@ var CreateModal = function CreateModal(props) {
 						),
 						_react2.default.createElement(_reactstrap.Input, {
 							type: 'text',
-							name: 'branchPhone',
 							id: 'formPublisherPhone',
-							placeholder: 'New Phone Number',
-							onChange: handlePhoneChange
+							maxLength: 45,
+							name: 'branchPhone',
+							onChange: handlePhoneChange,
+							placeholder: 'New Phone Number'
 						})
 					)
 				),
@@ -68191,11 +68222,7 @@ var CreateModal = function CreateModal(props) {
 				),
 				_react2.default.createElement(
 					_reactstrap.Button,
-					{
-						color: 'danger',
-						className: 'twobuttons',
-						onClick: toggle
-					},
+					{ color: 'danger', className: 'twobuttons', onClick: toggle },
 					'Cancel'
 				)
 			)
@@ -68433,9 +68460,10 @@ var UpdateModal = function UpdateModal(props) {
 						),
 						_react2.default.createElement(_reactstrap.Input, {
 							type: 'text',
-							name: 'publisherName',
-							id: 'formPublisherName',
 							defaultValue: currentPublisherName,
+							id: 'formPublisherName',
+							maxLength: 45,
+							name: 'publisherName',
 							onChange: handleNameChange
 						})
 					),
@@ -68449,9 +68477,10 @@ var UpdateModal = function UpdateModal(props) {
 						),
 						_react2.default.createElement(_reactstrap.Input, {
 							type: 'text',
-							name: 'publisherAddress',
-							id: 'formPublisherAddress',
 							defaultValue: currentPublisherAddress,
+							id: 'formPublisherAddress',
+							maxLength: 45,
+							name: 'publisherAddress',
 							onChange: handleAddressChange
 						})
 					),
@@ -68465,9 +68494,10 @@ var UpdateModal = function UpdateModal(props) {
 						),
 						_react2.default.createElement(_reactstrap.Input, {
 							type: 'text',
-							name: 'publisherPhone',
-							id: 'formPublisherPhone',
 							defaultValue: currentPublisherPhone,
+							id: 'formPublisherPhone',
+							maxLength: 45,
+							name: 'publisherPhone',
 							onChange: handlePhoneChange
 						})
 					)
@@ -68485,11 +68515,7 @@ var UpdateModal = function UpdateModal(props) {
 				),
 				_react2.default.createElement(
 					_reactstrap.Button,
-					{
-						color: 'danger',
-						className: 'twobuttons',
-						onClick: toggle
-					},
+					{ color: 'danger', className: 'twobuttons', onClick: toggle },
 					'Cancel'
 				)
 			)
@@ -68808,15 +68834,29 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
 var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
 var _reactRouterDom = require('react-router-dom');
 
+var _reactstrap = require('reactstrap');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var Header = function Header() {
+	var _useState = (0, _react.useState)(false),
+	    _useState2 = _slicedToArray(_useState, 2),
+	    dropdownOpen = _useState2[0],
+	    setDropdownOpen = _useState2[1];
+
+	var toggle = function toggle() {
+		return setDropdownOpen(function (prevState) {
+			return !prevState;
+		});
+	};
 	return _react2.default.createElement(
 		'nav',
 		{ className: 'navbar navbar-inverse' },
@@ -68832,7 +68872,7 @@ var Header = function Header() {
 					_react2.default.createElement(
 						_reactRouterDom.Link,
 						{ to: '/', className: 'navbar-brand' },
-						_react2.default.createElement('img', { width: '90px', height: '30px', src: 'images/logo.png' })
+						_react2.default.createElement('img', { width: '80px', height: '80px', src: 'images/books.png' })
 					)
 				),
 				_react2.default.createElement(
@@ -68850,7 +68890,7 @@ var Header = function Header() {
 					_react2.default.createElement(
 						_reactRouterDom.Link,
 						{ to: '/LibrarianBranch', replace: true },
-						'Librarian_Home'
+						'Librarian'
 					)
 				),
 				_react2.default.createElement(
@@ -68866,9 +68906,63 @@ var Header = function Header() {
 					'li',
 					{ className: 'list-inline-item' },
 					_react2.default.createElement(
-						_reactRouterDom.Link,
-						{ to: '/AdminHome', replace: true },
-						'Administrator_Home'
+						_reactstrap.Dropdown,
+						{ className: 'header-dropdown', isOpen: dropdownOpen, toggle: toggle },
+						_react2.default.createElement(
+							_reactstrap.DropdownToggle,
+							{
+								caret: true,
+								tag: 'span',
+								'data-toggle': 'dropdown',
+								'aria-expanded': dropdownOpen },
+							'Administrator'
+						),
+						_react2.default.createElement(
+							_reactstrap.DropdownMenu,
+							null,
+							_react2.default.createElement(
+								_reactstrap.DropdownItem,
+								{ tag: _reactRouterDom.Link, to: '/AdminHome' },
+								'Home'
+							),
+							_react2.default.createElement(_reactstrap.DropdownItem, { divider: true }),
+							_react2.default.createElement(
+								_reactstrap.DropdownItem,
+								{ tag: _reactRouterDom.Link, to: '/AdminAuthor' },
+								'Authors'
+							),
+							_react2.default.createElement(
+								_reactstrap.DropdownItem,
+								{ tag: _reactRouterDom.Link, to: '/AdminBook' },
+								'Books'
+							),
+							_react2.default.createElement(
+								_reactstrap.DropdownItem,
+								{ tag: _reactRouterDom.Link, to: '/AdminBorrower' },
+								'Borrowers'
+							),
+							_react2.default.createElement(
+								_reactstrap.DropdownItem,
+								{ tag: _reactRouterDom.Link, to: '/AdminGenre' },
+								'Genres'
+							),
+							_react2.default.createElement(
+								_reactstrap.DropdownItem,
+								{ tag: _reactRouterDom.Link, to: '/AdminBranch' },
+								'Publishers'
+							),
+							_react2.default.createElement(_reactstrap.DropdownItem, { divider: true }),
+							_react2.default.createElement(
+								_reactstrap.DropdownItem,
+								{ tag: _reactRouterDom.Link, to: '/AdminLoan' },
+								'Loaned Books'
+							),
+							_react2.default.createElement(
+								_reactstrap.DropdownItem,
+								null,
+								' '
+							)
+						)
 					)
 				)
 			)
@@ -68878,7 +68972,7 @@ var Header = function Header() {
 
 exports.default = Header;
 
-},{"react":148,"react-router-dom":135}],334:[function(require,module,exports){
+},{"react":148,"react-router-dom":135,"reactstrap":242}],334:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -69215,7 +69309,7 @@ function authorReducer() {
 }
 
 },{"../constants/actionTypes":334}],338:[function(require,module,exports){
-"use strict";
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
 	value: true
@@ -69225,7 +69319,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 exports.default = bookReducer;
 
-var _actionTypes = require("../constants/actionTypes");
+var _actionTypes = require('../constants/actionTypes');
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
@@ -69336,8 +69430,6 @@ function bookReducer() {
 			});
 		case _actionTypes.DELETE_BOOK_SUCCESSFUL:
 			{
-				console.log("delete_book_successful");
-				console.log(action);
 				var newBooks = state.bookData.books.filter(function (book) {
 					return book.bookId != action.deletedId;
 				});
@@ -69747,8 +69839,12 @@ function borrowerReducer() {
 			}
 		case _actionTypes.BORROWER_CHECKOUT_SUCCESSFUL:
 			{
+				var updateAvailableBookList = state.borrowerDashboardInfo.books.filter(function (book) {
+					return book.bookId != action.newLoan.key.bookId;
+				});
 				return _extends({}, state, {
 					borrowerDashboardInfo: _extends({}, state.borrowerDashboardInfo, {
+						books: updateAvailableBookList,
 						newLoan: action.newLoan
 					}),
 					requestInfo: _extends({}, state.requestInfo, {
@@ -69782,11 +69878,7 @@ function borrowerReducer() {
 			}
 		case _actionTypes.BORROWER_RETURN_SUCCESSFUL:
 			{
-				console.log('action', action.loan);
-				console.log('');
 				var newLoanList = state.borrowerDashboardInfo.loans.filter(function (loan) {
-					console.log(loan);
-
 					return loan.key.bookId != action.loan.key.bookId && loan.key.branchId != action.loan.key.branchId && loan.key.cardNo != action.loan.key.cardNo;
 				});
 				return _extends({}, state, {

@@ -153,8 +153,6 @@ export default function bookReducer(state = {}, action) {
 				},
 			};
 		case DELETE_BOOK_SUCCESSFUL: {
-			console.log("delete_book_successful");
-			console.log(action);
 			const newBooks = state.bookData.books.filter((book) => {
 				return book.bookId != action.deletedId;
 			});

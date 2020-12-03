@@ -144,7 +144,6 @@ export const selectBranch = (branch) => {
 };
 
 export const Switch = () => {
-	console.log("switching views");
 	return (dispatch) => {
 		dispatch(_SwitchRequest());
 	}
@@ -152,7 +151,6 @@ export const Switch = () => {
 
 /* resets branch information */
 export const branchSelect = () => {
-	console.log("branchSelect");
 	return (dispatch) =>
 		dispatch(_branchSelect());
 }
