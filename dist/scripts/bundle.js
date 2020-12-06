@@ -64495,7 +64495,6 @@ var AdminBookRender = function AdminBookRender(_ref) {
 				}),
 				_react2.default.createElement(_mdbreact.MDBDataTable, { className: 'table',
 					striped: true,
-					hover: true,
 					small: true,
 					responsive: true,
 					data: data

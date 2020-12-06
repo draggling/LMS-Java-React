@@ -67,7 +67,6 @@ const AdminBookRender = ({
 					/>
 					<MDBDataTable className="table"
 						striped
-						hover
 						small
 						responsive
 						data={data}
