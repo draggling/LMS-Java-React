@@ -72,7 +72,7 @@ const AdminPublisherRender = ({
 					</Button>{' '}
 					<MDBDataTable
 						striped
-						bordered
+						//bordered
 						small
 						responsive
 						data={data}
@@ -126,7 +126,6 @@ const AdminPublisherRender = ({
 	}
 	return (
 		<div>
-			<h1>Publishers</h1>
 			{content}
 		</div>
 	);

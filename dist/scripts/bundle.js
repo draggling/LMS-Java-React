@@ -64291,11 +64291,6 @@ var AdminAuthorRender = function AdminAuthorRender(_ref) {
 	return _react2.default.createElement(
 		'div',
 		null,
-		_react2.default.createElement(
-			'h1',
-			null,
-			'Authors'
-		),
 		content
 	);
 };
@@ -64425,8 +64420,6 @@ var _propTypes = require('prop-types');
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _reactstrap = require('reactstrap');
-
 var _mdbreact = require('mdbreact');
 
 var _DeleteModal = require('../../Modal/AdminBook/DeleteModal');
@@ -64463,28 +64456,8 @@ var AdminBookRender = function AdminBookRender(_ref) {
 		content = (0, _Spinner2.default)();
 	}
 	if (bookData && requestInfo.readSuccessful && requestInfo.readPublisherSuccessful && requestInfo.readAuthorSuccessful && requestInfo.readGenreSuccessful) {
-		/*
-  console.log("Book Data");
-  console.log(bookData);
-  console.log("Publisher Data");
-  console.log(publisherData);
-  console.log("Author Data");
-  console.log(authorData);
-  console.log("Genre Data");
-  console.log(genreData);
-  console.log("requestInfo:");
-  console.log(requestInfo);
-  */
 		var data = {
-			columns: [
-			/*
-   {
-   	label: 'Book Id',
-   	field: 'bookId',
-   	sort: 'asc',
-   },
-   */
-			{
+			columns: [{
 				label: 'Book Name',
 				field: 'title',
 				sort: 'asc'
@@ -64493,20 +64466,16 @@ var AdminBookRender = function AdminBookRender(_ref) {
 				field: 'publisherName'
 			}, {
 				label: 'Authors',
-				field: 'authorInfo',
-				sort: 'asc'
+				field: 'authorInfo'
 			}, {
 				label: 'Genres',
-				field: 'genreInfo',
-				sort: 'asc'
+				field: 'genreInfo'
 			}, {
 				label: 'Update',
-				field: 'update',
-				sort: 'asc'
+				field: 'update'
 			}, {
 				label: 'Delete',
-				field: 'delete',
-				sort: 'asc'
+				field: 'delete'
 			}],
 			rows: getTableBodyContent()
 		};
@@ -64524,17 +64493,9 @@ var AdminBookRender = function AdminBookRender(_ref) {
 					handleCreate: handleCreate,
 					handleRefresh: handleRefresh
 				}),
-				_react2.default.createElement(
-					_reactstrap.Button,
-					{ onClick: function onClick() {
-							return handleRefresh();
-						} },
-					'Refresh Data'
-				),
-				' ',
-				_react2.default.createElement(_mdbreact.MDBDataTable, {
+				_react2.default.createElement(_mdbreact.MDBDataTable, { className: 'table',
 					striped: true,
-					bordered: true,
+					hover: true,
 					small: true,
 					responsive: true,
 					data: data
@@ -64648,7 +64609,7 @@ AdminBookRender.propTypes = {
 
 exports.default = AdminBookRender;
 
-},{"../../Modal/AdminBook/CreateModal":331,"../../Modal/AdminBook/DeleteModal":332,"../../Modal/AdminBook/UpdateModal":333,"../../Util/Spinner":350,"mdbreact":75,"prop-types":107,"react":165,"reactstrap":259}],305:[function(require,module,exports){
+},{"../../Modal/AdminBook/CreateModal":331,"../../Modal/AdminBook/DeleteModal":332,"../../Modal/AdminBook/UpdateModal":333,"../../Util/Spinner":350,"mdbreact":75,"prop-types":107,"react":165}],305:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -64835,9 +64796,9 @@ var AdminBorrowerRender = function AdminBorrowerRender(_ref) {
 				),
 				' ',
 				_react2.default.createElement(_mdbreact.MDBDataTable, {
-					striped: true,
-					bordered: true,
-					small: true,
+					striped: true
+					//bordered
+					, small: true,
 					responsive: true,
 					data: data
 				})
@@ -64890,11 +64851,6 @@ var AdminBorrowerRender = function AdminBorrowerRender(_ref) {
 	return _react2.default.createElement(
 		'div',
 		null,
-		_react2.default.createElement(
-			'h1',
-			null,
-			'Borroweres'
-		),
 		content
 	);
 };
@@ -65101,9 +65057,9 @@ var AdminBranchRender = function AdminBranchRender(_ref) {
 				),
 				' ',
 				_react2.default.createElement(_mdbreact.MDBDataTable, {
-					striped: true,
-					bordered: true,
-					small: true,
+					striped: true
+					//bordered
+					, small: true,
 					responsive: true,
 					data: data
 				})
@@ -65154,11 +65110,6 @@ var AdminBranchRender = function AdminBranchRender(_ref) {
 	return _react2.default.createElement(
 		'div',
 		null,
-		_react2.default.createElement(
-			'h1',
-			null,
-			'Branches'
-		),
 		content
 	);
 };
@@ -65388,9 +65339,9 @@ var AdminGenreRender = function AdminGenreRender(_ref) {
 				),
 				' ',
 				_react2.default.createElement(_mdbreact.MDBDataTable, {
-					striped: true,
-					bordered: true,
-					small: true,
+					striped: true
+					//bordered
+					, small: true,
 					responsive: true,
 					data: data
 				})
@@ -65439,11 +65390,6 @@ var AdminGenreRender = function AdminGenreRender(_ref) {
 	return _react2.default.createElement(
 		'div',
 		null,
-		_react2.default.createElement(
-			'h1',
-			null,
-			'Genres'
-		),
 		content
 	);
 };
@@ -65629,9 +65575,9 @@ var AdminLoanRender = function AdminLoanRender(_ref) {
 				),
 				' ',
 				_react2.default.createElement(_mdbreact.MDBDataTable, {
-					striped: true,
-					bordered: true,
-					small: true,
+					striped: true
+					//bordered
+					, small: true,
 					responsive: true,
 					data: data
 				})
@@ -65803,11 +65749,6 @@ var AdminLoanRender = function AdminLoanRender(_ref) {
 	return _react2.default.createElement(
 		'div',
 		null,
-		_react2.default.createElement(
-			'h1',
-			null,
-			'Loans'
-		),
 		content
 	);
 };
@@ -66016,9 +65957,9 @@ var AdminPublisherRender = function AdminPublisherRender(_ref) {
 				),
 				' ',
 				_react2.default.createElement(_mdbreact.MDBDataTable, {
-					striped: true,
-					bordered: true,
-					small: true,
+					striped: true
+					//bordered
+					, small: true,
 					responsive: true,
 					data: data
 				})
@@ -66071,11 +66012,6 @@ var AdminPublisherRender = function AdminPublisherRender(_ref) {
 	return _react2.default.createElement(
 		'div',
 		null,
-		_react2.default.createElement(
-			'h1',
-			null,
-			'Publishers'
-		),
 		content
 	);
 };
@@ -66173,7 +66109,7 @@ var App = exports.App = function (_React$Component) {
 		value: function render() {
 			return _react2.default.createElement(
 				'div',
-				null,
+				{ className: 'app' },
 				_react2.default.createElement(
 					_reactRouterDom.Switch,
 					null,
@@ -66241,6 +66177,10 @@ var _BorrowerHeader = require('./BorrowerHeader');
 
 var _BorrowerHeader2 = _interopRequireDefault(_BorrowerHeader);
 
+var _Spinner = require('../Util/Spinner');
+
+var _Spinner2 = _interopRequireDefault(_Spinner);
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -66280,7 +66220,7 @@ var BorrowerContainer = function BorrowerContainer(props) {
 			content = _react2.default.createElement(_BorrowerLoginForm2.default, { handleLoginAttempt: handleLoginAttempt });
 		}
 		if (doesRequestInfoExist && requestInfo.loginPending) {
-			content = _react2.default.createElement(_reactstrap.Spinner, { type: 'grow', color: 'primary' });
+			content = (0, _Spinner2.default)();
 		}
 		if (doesRequestInfoExist && requestInfo.loginFailed) {
 			content = _react2.default.createElement(
@@ -66314,7 +66254,7 @@ var BorrowerContainer = function BorrowerContainer(props) {
 		if (borrowerDashboardInfo.isCheckingOut) {
 			if (!borrowerDashboardInfo.selectedBranch) {
 				if (requestInfo.branchesPending) {
-					content.push(_react2.default.createElement(_reactstrap.Spinner, { type: 'grow', color: 'primary', key: 1 }));
+					content.push(_react2.default.createElement(_Spinner2.default, { type: 'grow', color: 'primary', key: 1 }));
 				} else if (requestInfo.branchesSuccessful) {
 					content.push(_react2.default.createElement(_CheckoutBranchTable2.default, {
 						branches: borrowerDashboardInfo.branches,
@@ -66330,7 +66270,7 @@ var BorrowerContainer = function BorrowerContainer(props) {
 				}
 			} else if (borrowerDashboardInfo.selectedBranch) {
 				if (requestInfo.booksPending) {
-					content.push(_react2.default.createElement(_reactstrap.Spinner, { type: 'grow', color: 'primary', key: 1 }));
+					content.push(_react2.default.createElement(_Spinner2.default, { type: 'grow', color: 'primary', key: 1 }));
 				} else if (requestInfo.booksSuccessful) {
 					content.push(_react2.default.createElement(_CheckoutBookTable2.default, {
 						books: borrowerDashboardInfo.books,
@@ -66350,7 +66290,7 @@ var BorrowerContainer = function BorrowerContainer(props) {
 		} else if (borrowerDashboardInfo.isReturning) {
 			content.push('return clicked!');
 			if (requestInfo.loansPending) {
-				content.push(_react2.default.createElement(_reactstrap.Spinner, { type: 'grow', color: 'primary', key: 1 }));
+				content.push(_react2.default.createElement(_Spinner2.default, { type: 'grow', color: 'primary', key: 1 }));
 			} else if (requestInfo.loansSuccessful) {
 				content.push(_react2.default.createElement(_ReturnLoansTable2.default, {
 					handleReturn: handleReturn,
@@ -66411,7 +66351,7 @@ BorrowerContainer.propTypes = {
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(BorrowerContainer);
 
-},{"../../actions/borrowerActions":297,"./BorrowerHeader":317,"./BorrowerLoginForm":318,"./CheckoutBookTable":319,"./CheckoutBranchTable":320,"./ReturnLoansTable":321,"prop-types":107,"react":165,"react-redux":136,"reactstrap":259,"redux":266}],317:[function(require,module,exports){
+},{"../../actions/borrowerActions":297,"../Util/Spinner":350,"./BorrowerHeader":317,"./BorrowerLoginForm":318,"./CheckoutBookTable":319,"./CheckoutBranchTable":320,"./ReturnLoansTable":321,"prop-types":107,"react":165,"react-redux":136,"reactstrap":259,"redux":266}],317:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -66631,7 +66571,7 @@ var CheckoutBookTable = function CheckoutBookTable(_ref) {
 		_react2.default.createElement(
 			'div',
 			{ className: 'mainblock' },
-			_react2.default.createElement(_mdbreact.MDBDataTable, { striped: true, bordered: true, small: true, responsive: true, data: data })
+			_react2.default.createElement(_mdbreact.MDBDataTable, { striped: true, small: true, responsive: true, data: data })
 		)
 	);
 };
@@ -66701,7 +66641,7 @@ var CheckoutBranchTable = function CheckoutBranchTable(_ref) {
 	return _react2.default.createElement(
 		'div',
 		{ className: 'mainblock' },
-		_react2.default.createElement(_mdbreact.MDBDataTable, { striped: true, bordered: true, small: true, responsive: true, data: data })
+		_react2.default.createElement(_mdbreact.MDBDataTable, { striped: true, small: true, responsive: true, data: data })
 	);
 };
 
@@ -66916,7 +66856,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var Home = function Home() {
 	return _react2.default.createElement(
 		'div',
-		null,
+		{ className: 'main' },
 		_react2.default.createElement(_header2.default, null),
 		_react2.default.createElement(
 			'div',
@@ -67078,6 +67018,10 @@ var _LibrarianNonCopiesRender = require('./LibrarianNonCopiesRender');
 
 var _LibrarianNonCopiesRender2 = _interopRequireDefault(_LibrarianNonCopiesRender);
 
+var _Spinner = require('../Util/Spinner');
+
+var _Spinner2 = _interopRequireDefault(_Spinner);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var LibrarianBranchRender = function LibrarianBranchRender(_ref) {
@@ -67108,19 +67052,7 @@ var LibrarianBranchRender = function LibrarianBranchRender(_ref) {
 	}
 
 	if (!branchData || requestInfo.readPending || requestInfo.readCopiesPending || requestInfo.readNonCopiesPending) {
-		content = _react2.default.createElement(
-			'div',
-			{ className: 'd-flex justify-content-center' },
-			_react2.default.createElement(
-				'div',
-				{ className: 'spinner-border', role: 'status' },
-				_react2.default.createElement(
-					'span',
-					{ className: 'sr-only' },
-					'Loading...'
-				)
-			)
-		);
+		content = (0, _Spinner2.default)();
 	}
 	if (branchData && requestInfo.readSuccessful) {
 		var data = {
@@ -67164,7 +67096,6 @@ var LibrarianBranchRender = function LibrarianBranchRender(_ref) {
 				' ',
 				_react2.default.createElement(_mdbreact.MDBDataTable, {
 					striped: true,
-					bordered: true,
 					small: true,
 					responsive: true,
 					data: data
@@ -67330,7 +67261,7 @@ LibrarianBranchRender.propTypes = {
 
 exports.default = LibrarianBranchRender;
 
-},{"../Modal/Librarian/UpdateBookCopiesModal":347,"../Modal/Librarian/UpdateModal":349,"./LibrarianCopiesRender":325,"./LibrarianNonCopiesRender":327,"mdbreact":75,"prop-types":107,"react":165,"reactstrap":259}],325:[function(require,module,exports){
+},{"../Modal/Librarian/UpdateBookCopiesModal":347,"../Modal/Librarian/UpdateModal":349,"../Util/Spinner":350,"./LibrarianCopiesRender":325,"./LibrarianNonCopiesRender":327,"mdbreact":75,"prop-types":107,"react":165,"reactstrap":259}],325:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -71003,12 +70934,17 @@ var Header = function Header() {
 							),
 							_react2.default.createElement(
 								_reactstrap.DropdownItem,
+								{ tag: _reactRouterDom.Link, to: '/AdminBranch' },
+								' Branches'
+							),
+							_react2.default.createElement(
+								_reactstrap.DropdownItem,
 								{ tag: _reactRouterDom.Link, to: '/AdminGenre' },
 								'Genres'
 							),
 							_react2.default.createElement(
 								_reactstrap.DropdownItem,
-								{ tag: _reactRouterDom.Link, to: '/AdminBranch' },
+								{ tag: _reactRouterDom.Link, to: '/AdminPublisher' },
 								'Publishers'
 							),
 							_react2.default.createElement(_reactstrap.DropdownItem, { divider: true }),
@@ -71180,9 +71116,17 @@ var BORROWER_RETURN_SUCCESSFUL = exports.BORROWER_RETURN_SUCCESSFUL = 'BORROWER_
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-var ADMIN_PORT = exports.ADMIN_PORT = 'http://localhost:8090/';
-var LIBRARIAN_PORT = exports.LIBRARIAN_PORT = 'http://localhost:8090/';
-var BORROWER_PORT = exports.BORROWER_PORT = 'http://localhost:8081/';
+/*
+export const ADMIN_PORT = 'http://localhost:8090/';
+export const LIBRARIAN_PORT = 'http://localhost:8090/';
+export const BORROWER_PORT = 'http://localhost:8081/';
+*/
+// http://ec2-3-138-42-102.us-east-2.compute.amazonaws.com // elastic admin-librarian public ipv4 sdns address
+// http://ec2-13-58-11-233.us-east-2.compute.amazonaws.com // Borrower EC2 instance
+
+var ADMIN_PORT = exports.ADMIN_PORT = ' http://ec2-3-138-42-102.us-east-2.compute.amazonaws.com:8090/';
+var LIBRARIAN_PORT = exports.LIBRARIAN_PORT = ' http://ec2-3-138-42-102.us-east-2.compute.amazonaws.com:8090/';
+var BORROWER_PORT = exports.BORROWER_PORT = ' http://ec2-13-58-11-233.us-east-2.compute.amazonaws.com:8080/';
 
 },{}],354:[function(require,module,exports){
 'use strict';

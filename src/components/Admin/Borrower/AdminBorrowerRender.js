@@ -65,7 +65,7 @@ const AdminBorrowerRender = ({
 					</Button>{' '}
 					<MDBDataTable
 						striped
-						bordered
+						//bordered
 						small
 						responsive
 						data={data}
@@ -119,7 +119,6 @@ const AdminBorrowerRender = ({
 	}
 	return (
 		<div>
-			<h1>Borroweres</h1>
 			{content}
 		</div>
 	);

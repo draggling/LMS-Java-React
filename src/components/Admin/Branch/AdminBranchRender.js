@@ -67,7 +67,7 @@ const AdminBranchRender = ({
 					</Button>{' '}
 					<MDBDataTable
 						striped
-						bordered
+						//bordered
 						small
 						responsive
 						data={data}
@@ -119,7 +119,6 @@ const AdminBranchRender = ({
 	}
 	return (
 		<div>
-			<h1>Branches</h1>
 			{content}
 		</div>
 	);

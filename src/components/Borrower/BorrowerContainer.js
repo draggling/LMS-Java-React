@@ -3,7 +3,7 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Alert, Button, Spinner } from 'reactstrap';
+import { Alert, Button } from 'reactstrap';
 import { bindActionCreators } from 'redux';
 
 import * as borrowerActions from '../../actions/borrowerActions';
@@ -12,6 +12,8 @@ import CheckoutBranchTable from './CheckoutBranchTable';
 import CheckoutBookTable from './CheckoutBookTable';
 import ReturnLoansTable from './ReturnLoansTable';
 import BorrowerHeader from './BorrowerHeader';
+import Spinner from '../Util/Spinner';
+
 
 const BorrowerContainer = (props) => {
 	const { actions, borrower, borrowerDashboardInfo, requestInfo } = props;
@@ -44,7 +46,7 @@ const BorrowerContainer = (props) => {
 			content = <BorrowerLoginForm handleLoginAttempt={handleLoginAttempt} />;
 		}
 		if (doesRequestInfoExist && requestInfo.loginPending) {
-			content = <Spinner type="grow" color="primary" />;
+			content = Spinner();
 		}
 		if (doesRequestInfoExist && requestInfo.loginFailed) {
 			content = (

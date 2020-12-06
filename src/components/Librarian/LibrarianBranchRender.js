@@ -8,6 +8,8 @@ import UpdateModal from '../Modal/Librarian/UpdateModal';
 import UpdateBookCopiesModal from '../Modal/Librarian/UpdateBookCopiesModal'
 import LibrarianCopiesRender from './LibrarianCopiesRender';
 import LibrarianNonCopiesRender from './LibrarianNonCopiesRender';
+import Spinner from '../Util/Spinner'
+
 
 const LibrarianBranchRender =  ({
 	selectedBranch,
@@ -37,13 +39,7 @@ const LibrarianBranchRender =  ({
 	}
 
 	if (!branchData || requestInfo.readPending || requestInfo.readCopiesPending || requestInfo.readNonCopiesPending) {
-		content = (
-			<div className="d-flex justify-content-center">
-				<div className="spinner-border" role="status">
-					<span className="sr-only">Loading...</span>
-				</div>
-			</div>
-		);
+		content = Spinner();
 	}
 	if (branchData && requestInfo.readSuccessful) {
 		let data = {
@@ -80,7 +76,6 @@ const LibrarianBranchRender =  ({
 					</Button>{' '}
 					<MDBDataTable
 						striped
-						bordered
 						small
 						responsive
 						data={data}

@@ -110,7 +110,6 @@ const AdminAuthorRender = ({
 	}
 	return (
 		<div>
-			<h1>Authors</h1>
 			{content}
 		</div>
 	);

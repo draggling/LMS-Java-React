@@ -83,7 +83,7 @@ const AdminGenreRender = ({
 					</Button>{' '}
 					<MDBDataTable
 						striped
-						bordered
+						//bordered
 						small
 						responsive
 						data={data}
@@ -133,7 +133,6 @@ const AdminGenreRender = ({
 	}
 	return (
 		<div>
-			<h1>Genres</h1>
 			{content}
 		</div>
 	);

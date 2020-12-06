@@ -47,8 +47,9 @@ const Header = () => {
 							<DropdownItem tag={Link} to="/AdminAuthor">Authors</DropdownItem>
 							<DropdownItem tag={Link} to="/AdminBook">Books</DropdownItem>
 							<DropdownItem tag={Link} to="/AdminBorrower">Borrowers</DropdownItem>
+							<DropdownItem tag={Link} to="/AdminBranch">	Branches</DropdownItem>
 							<DropdownItem tag={Link} to="/AdminGenre">Genres</DropdownItem>
-							<DropdownItem tag={Link} to="/AdminBranch">Publishers</DropdownItem>
+							<DropdownItem tag={Link} to="/AdminPublisher">Publishers</DropdownItem>
 							<DropdownItem divider/>
 							<DropdownItem tag={Link} to="/AdminLoan">Loaned Books</DropdownItem>
 							<DropdownItem> </DropdownItem>

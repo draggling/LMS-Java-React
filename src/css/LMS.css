@@ -7,13 +7,29 @@
     margin: 0 auto;
 }
 
+
+/* background color */
+html, body, #app, #app>div {
+    height: 100%;
+    /*background-color: #E3F7F7;*/
+    background-color: #e6ebe9;
+}
+
+/* page descriptor block */
+.jumbotron {
+    /* background-color: #86A5BA; */
+    padding: 1rem 2rem;
+    background-color: #95ABBA;
+    text-align: center;
+}
+
 .navbar a{
     font-family: 'Monaco';
     font-size: 20px;
     color: teal;
     line-height: 1.15;
     margin: 7px;
-    padding-bottom: 20px;
+    padding-bottom: 10px;
 }
 
 .header-dropdown{
@@ -33,3 +49,39 @@
     text-decoration: underline;
     cursor: pointer,
 }
+
+/* mdbdatatable */
+.table thead th {
+    border-bottom: 0px;
+}
+
+.table td, .table th {
+    border-top: 0px;
+}
+
+.dataTables_wrapper dt-bootstrap4 table {
+    padding-left:25px;
+    padding-right:15px;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: #B4CEE0;
+    color: black;
+}
+
+.sorting:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.sorting_asc:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.sorting_desc:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+
