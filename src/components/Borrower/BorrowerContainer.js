@@ -20,7 +20,7 @@ const BorrowerContainer = (props) => {
 	useEffect(() => {
 		//actions.readBranches();
 	}, []);
-	let content = '';
+	let content = [];
 	function handleCheckout(book, borrower, branch) {
 		actions.processCheckout(book, borrower, branch);
 	}
@@ -43,13 +43,11 @@ const BorrowerContainer = (props) => {
 	let doesRequestInfoExist = requestInfo;
 	if (!borrower) {
 		if (!doesRequestInfoExist) {
-			content = <BorrowerLoginForm handleLoginAttempt={handleLoginAttempt} />;
-		}
-		if (doesRequestInfoExist && requestInfo.loginPending) {
-			content = <Spinner type="grow" color="primary" />;
-		}
-		if (doesRequestInfoExist && requestInfo.loginFailed) {
-			content = (
+			content.push(<BorrowerLoginForm handleLoginAttempt={handleLoginAttempt} />);
+		} else if (doesRequestInfoExist && requestInfo.loginPending) {
+			content.push(<Spinner type="grow" color="primary" />);
+		} else if (doesRequestInfoExist && requestInfo.loginFailed) {
+			content.push(
 				<div>
 					<Alert color="danger">
 						The entered card number does not exist in our system please try
@@ -60,13 +58,14 @@ const BorrowerContainer = (props) => {
 			);
 		}
 	} else if (borrower && doesRequestInfoExist && requestInfo.loginSuccessful) {
-		content = [
+		content.push(
 			//Make into its own component in the future
 			<div key={0}>
+				<h4>Welcome {borrower.borrowerName}</h4>
 				<Button onClick={startCheckout}>Check-out</Button>
 				<Button onClick={startReturn}>Return</Button>
-			</div>,
-		];
+			</div>
+		);
 		if (borrowerDashboardInfo.isCheckingOut) {
 			if (!borrowerDashboardInfo.selectedBranch) {
 				if (requestInfo.branchesPending) {
@@ -110,10 +109,14 @@ const BorrowerContainer = (props) => {
 				}
 			}
 		} else if (borrowerDashboardInfo.isReturning) {
-			content.push('return clicked!');
 			if (requestInfo.loansPending) {
 				content.push(<Spinner type="grow" color="primary" key={1} />);
 			} else if (requestInfo.loansSuccessful) {
+				//Have Popup for return date if loan
+				//
+				//
+				//
+				//
 				content.push(
 					<ReturnLoansTable
 						handleReturn={handleReturn}
@@ -121,11 +124,6 @@ const BorrowerContainer = (props) => {
 						key={1}
 					/>
 				);
-				//Have Popup for return date if loan
-				//
-				//
-				//
-				//
 			} else if (requestInfo.loansFailed) {
 				content.push(
 					<Alert color="danger" key={1}>
