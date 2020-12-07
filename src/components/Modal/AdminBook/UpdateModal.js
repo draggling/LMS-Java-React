@@ -38,9 +38,7 @@ const UpdateModal = (props) => {
 		genreKeys.push(currentGenres[i].genreId.toString());
 	}
 
-	if (!alert) {
-		let alert = '';
-	}
+	let alertMessage = alertMessage || '';
 
 	function updateBook() {
 		if (
@@ -63,10 +61,11 @@ const UpdateModal = (props) => {
 					newGenres.push(genres[i]);
 				}
 			}
+			alertMessage = ""
 			handleUpdate(bookId, newBookName, newPub, newAuthors, newGenres);
 			toggle();
 		} else {
-			alert = (
+			alertMessage = (
 				<div>
 					<UncontrolledAlert color="warning">
 						ERROR: Invalid Input!
@@ -79,7 +78,7 @@ const UpdateModal = (props) => {
 
 	function handleNameChange(e) {
 		if (!e.target.value || e.target.value.length > 45) {
-			alert = (
+			alertMessage = (
 				<div>
 					<UncontrolledAlert color="warning">
 						ERROR: Invalid Book Title!
@@ -138,7 +137,7 @@ const UpdateModal = (props) => {
 			<Modal isOpen={modal} toggle={toggle}>
 				<ModalHeader toggle={toggle}>Create Book</ModalHeader>
 				<ModalBody>
-					{alert}
+					{alertMessage}
 					<Form>
 						<FormGroup>
 							<Label form="formBookName"> Book Name </Label>

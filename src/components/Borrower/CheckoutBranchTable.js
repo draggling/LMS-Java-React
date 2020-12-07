@@ -37,7 +37,7 @@ const CheckoutBranchTable = ({ branches, selectBranch }) => {
 	};
 	return (
 		<div className="mainblock">
-			<MDBDataTable striped bordered small responsive data={data} />
+			<MDBDataTable striped small responsive data={data} />
 		</div>
 	);
 };

@@ -5,6 +5,7 @@ import { MDBDataTable } from 'mdbreact';
 import DeleteModal from '../../Modal/AdminAuthor/DeleteModal';
 import UpdateModal from '../../Modal/AdminAuthor/UpdateModal';
 import CreateModal from '../../Modal/AdminAuthor/CreateModal';
+import Spinner from '../../Util/Spinner'
 
 const AdminAuthorRender = ({
 	authorData,
@@ -16,13 +17,7 @@ const AdminAuthorRender = ({
 }) => {
 	let content = '';
 	if (!authorData || requestInfo.readPending) {
-		content = (
-			<div className="d-flex justify-content-center">
-				<div className="spinner-border" role="status">
-					<span className="sr-only">Loading...</span>
-				</div>
-			</div>
-		);
+		content = Spinner();
 	}
 	if (authorData && requestInfo.readSuccessful) {
 		let data = {
@@ -115,7 +110,6 @@ const AdminAuthorRender = ({
 	}
 	return (
 		<div>
-			<h1>Authors</h1>
 			{content}
 		</div>
 	);

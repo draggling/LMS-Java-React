@@ -7,6 +7,7 @@ import { MDBDataTable } from 'mdbreact';
 import DeleteModal from '../../Modal/AdminBorrower/DeleteModal';
 import UpdateModal from '../../Modal/AdminBorrower/UpdateModal';
 import CreateModal from '../../Modal/AdminBorrower/CreateModal';
+import Spinner from '../../Util/Spinner'
 
 const AdminBorrowerRender = ({
 	borrowerData,
@@ -18,13 +19,7 @@ const AdminBorrowerRender = ({
 }) => {
 	let content = '';
 	if (!borrowerData || requestInfo.readPending) {
-		content = (
-			<div className="d-flex justify-content-center">
-				<div className="spinner-border" role="status">
-					<span className="sr-only">Loading...</span>
-				</div>
-			</div>
-		);
+		content = Spinner();
 	}
 	if (borrowerData && requestInfo.readSuccessful) {
 		let data = {
@@ -70,7 +65,7 @@ const AdminBorrowerRender = ({
 					</Button>{' '}
 					<MDBDataTable
 						striped
-						bordered
+						//bordered
 						small
 						responsive
 						data={data}
@@ -124,7 +119,6 @@ const AdminBorrowerRender = ({
 	}
 	return (
 		<div>
-			<h1>Borroweres</h1>
 			{content}
 		</div>
 	);

@@ -3,7 +3,7 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Alert, Button, Spinner } from 'reactstrap';
+import { Alert, Button } from 'reactstrap';
 import { bindActionCreators } from 'redux';
 
 import * as borrowerActions from '../../actions/borrowerActions';
@@ -11,9 +11,8 @@ import BorrowerLoginForm from './BorrowerLoginForm';
 import CheckoutBranchTable from './CheckoutBranchTable';
 import CheckoutBookTable from './CheckoutBookTable';
 import ReturnLoansTable from './ReturnLoansTable';
-import Header from '../Header';
-//import BorrowerRender from './BorrowerRender';
-//import BorrowerHeader from './BorrowerHeader';
+import BorrowerHeader from './BorrowerHeader';
+import Spinner from '../Util/Spinner';
 
 const BorrowerContainer = (props) => {
 	const { actions, borrower, borrowerDashboardInfo, requestInfo } = props;
@@ -45,7 +44,7 @@ const BorrowerContainer = (props) => {
 		if (!doesRequestInfoExist) {
 			content.push(<BorrowerLoginForm handleLoginAttempt={handleLoginAttempt} />);
 		} else if (doesRequestInfoExist && requestInfo.loginPending) {
-			content.push(<Spinner type="grow" color="primary" />);
+			content.push(<Spinner />);
 		} else if (doesRequestInfoExist && requestInfo.loginFailed) {
 			content.push(
 				<div>
@@ -69,7 +68,7 @@ const BorrowerContainer = (props) => {
 		if (borrowerDashboardInfo.isCheckingOut) {
 			if (!borrowerDashboardInfo.selectedBranch) {
 				if (requestInfo.branchesPending) {
-					content.push(<Spinner type="grow" color="primary" key={1} />);
+					content.push(Spinner()); //add Key
 				} else if (requestInfo.branchesSuccessful) {
 					content.push(
 						<CheckoutBranchTable
@@ -88,7 +87,7 @@ const BorrowerContainer = (props) => {
 				}
 			} else if (borrowerDashboardInfo.selectedBranch) {
 				if (requestInfo.booksPending) {
-					content.push(<Spinner type="grow" color="primary" key={1} />);
+					content.push(Spinner());
 				} else if (requestInfo.booksSuccessful) {
 					content.push(
 						<CheckoutBookTable
@@ -136,7 +135,7 @@ const BorrowerContainer = (props) => {
 	}
 	return (
 		<div>
-			<Header />
+			<BorrowerHeader />
 			<div className="jumbotron">
 				<h1>Borrower Dashboard</h1>
 			</div>

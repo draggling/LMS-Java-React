@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Button } from 'reactstrap';
 import { MDBDataTable } from 'mdbreact';
 import ExtendModal from '../../Modal/AdminLoan/ExtendModal';
+import Spinner from '../../Util/Spinner'
 
 const AdminLoanRender = ({
 	loanData,
@@ -12,13 +13,7 @@ const AdminLoanRender = ({
 }) => {
 	let content = '';
 	if (!loanData || requestInfo.readPending) {
-		content = (
-			<div className="d-flex justify-content-center">
-				<div className="spinner-border" role="status">
-					<span className="sr-only">Loading...</span>
-				</div>
-			</div>
-		);
+		content = Spinner();
 	}
 	if (loanData && requestInfo.readSuccessful) {
 		let data = {
@@ -64,7 +59,7 @@ const AdminLoanRender = ({
 					</Button>{' '}
 					<MDBDataTable
 						striped
-						bordered
+						//bordered
 						small
 						responsive
 						data={data}
@@ -212,18 +207,15 @@ const AdminLoanRender = ({
 						bookId={newObj['key.bookId']}
 						branchId={newObj['key.branchId']}
 						dueDate={newObj.dueDate.slice(0,10)}
-						//daysToExtend={newObj.daysToExtend}
 					/>
 				</div>
 			);
-			//console.log("object");
-			//console.log(newObj);
+
 			return newObj;
 		});
 	}
 	return (
 		<div>
-			<h1>Loans</h1>
 			{content}
 		</div>
 	);
