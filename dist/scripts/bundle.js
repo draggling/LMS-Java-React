@@ -65018,7 +65018,7 @@ var _createAuthorFailed = function _createAuthorFailed(error) {
 	};
 };
 
-},{"../constants/actionTypes":357,"../constants/connections":358,"axios":21}],296:[function(require,module,exports){
+},{"../constants/actionTypes":359,"../constants/connections":360,"axios":21}],296:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -65283,7 +65283,7 @@ var _createBookFailed = function _createBookFailed(error) {
 	};
 };
 
-},{"../constants/actionTypes":357,"../constants/connections":358,"axios":21}],297:[function(require,module,exports){
+},{"../constants/actionTypes":359,"../constants/connections":360,"axios":21}],297:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -65441,7 +65441,7 @@ var _createBorrowerFailed = function _createBorrowerFailed(error) {
 	};
 };
 
-},{"../constants/actionTypes":357,"../constants/connections":358,"axios":21}],298:[function(require,module,exports){
+},{"../constants/actionTypes":359,"../constants/connections":360,"axios":21}],298:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -65597,7 +65597,7 @@ var _createBranchFailed = function _createBranchFailed(error) {
 	};
 };
 
-},{"../constants/actionTypes":357,"../constants/connections":358,"axios":21}],299:[function(require,module,exports){
+},{"../constants/actionTypes":359,"../constants/connections":360,"axios":21}],299:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -65782,7 +65782,7 @@ var _createGenreFailed = function _createGenreFailed(error) {
 	};
 };
 
-},{"../constants/actionTypes":357,"../constants/connections":358,"axios":21}],300:[function(require,module,exports){
+},{"../constants/actionTypes":359,"../constants/connections":360,"axios":21}],300:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -65876,7 +65876,7 @@ var _extendLoanFailed = function _extendLoanFailed(error) {
 	};
 };
 
-},{"../constants/actionTypes":357,"../constants/connections":358,"axios":21}],301:[function(require,module,exports){
+},{"../constants/actionTypes":359,"../constants/connections":360,"axios":21}],301:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -66034,13 +66034,13 @@ var _createPublisherFailed = function _createPublisherFailed(error) {
 	};
 };
 
-},{"../constants/actionTypes":357,"../constants/connections":358,"axios":21}],302:[function(require,module,exports){
+},{"../constants/actionTypes":359,"../constants/connections":360,"axios":21}],302:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
-exports.startReturn = exports.startCheckout = exports.processReturn = exports.processCheckout = exports.selectBranchForCheckout = exports.attemptLogin = undefined;
+exports.startReturn = exports.startCheckout = exports.selectBranchForCheckout = exports.processReturn = exports.processCheckout = exports.handleCloseReturnModal = exports.handleCloseCheckoutModal = exports.attemptLogin = undefined;
 
 var _axios = require('axios');
 
@@ -66064,15 +66064,15 @@ var attemptLogin = exports.attemptLogin = function attemptLogin(cardNo) {
 	};
 };
 
-var selectBranchForCheckout = exports.selectBranchForCheckout = function selectBranchForCheckout(branch, cardNo) {
+var handleCloseCheckoutModal = exports.handleCloseCheckoutModal = function handleCloseCheckoutModal() {
 	return function (dispatch) {
-		dispatch(_selectBranch(branch));
-		return _axios2.default.get(_connections.BORROWER_PORT + 'borrower/getBooksAvailableFromBranchForBorrower/' + branch.branchId + '/' + cardNo).then(function (response) {
-			dispatch(_readBooksAtBranchSuccess(response));
-		}).catch(function (error) {
-			console.log(error);
-			dispatch(_readBooksAtBranchFailed(error));
-		});
+		dispatch(_closeCheckoutModal());
+	};
+};
+
+var handleCloseReturnModal = exports.handleCloseReturnModal = function handleCloseReturnModal() {
+	return function (dispatch) {
+		dispatch(_closeReturnModal());
 	};
 };
 
@@ -66099,7 +66099,6 @@ var processCheckout = exports.processCheckout = function processCheckout(book, b
 		});
 	};
 };
-
 var processReturn = exports.processReturn = function processReturn(loanToReturn) {
 	return function (dispatch) {
 		dispatch(_processReturn());
@@ -66108,6 +66107,18 @@ var processReturn = exports.processReturn = function processReturn(loanToReturn)
 		}).catch(function (error) {
 			console.log(error);
 			dispatch(_processReturnFailed(error));
+		});
+	};
+};
+
+var selectBranchForCheckout = exports.selectBranchForCheckout = function selectBranchForCheckout(branch, cardNo) {
+	return function (dispatch) {
+		dispatch(_selectBranch(branch));
+		return _axios2.default.get(_connections.BORROWER_PORT + 'borrower/getBooksAvailableFromBranchForBorrower/' + branch.branchId + '/' + cardNo).then(function (response) {
+			dispatch(_readBooksAtBranchSuccess(response));
+		}).catch(function (error) {
+			console.log(error);
+			dispatch(_readBooksAtBranchFailed(error));
 		});
 	};
 };
@@ -66135,57 +66146,26 @@ var startReturn = exports.startReturn = function startReturn(borrowerCardNo) {
 	};
 };
 
-var _readBooksAtBranchSuccess = function _readBooksAtBranchSuccess(res) {
+var _closeCheckoutModal = function _closeCheckoutModal() {
 	return {
-		type: _actionTypes.BORROWER_DASHBOARD_READ_BOOKS_SUCCESSFUL,
-		booksAvailable: res.data
+		type: _actionTypes.BORROWER_CLOSE_CHECKOUT_MODAL
 	};
 };
-var _readBooksAtBranchFailed = function _readBooksAtBranchFailed(error) {
+var _closeReturnModal = function _closeReturnModal() {
 	return {
-		type: _actionTypes.BORROWER_DASHBOARD_READ_BOOKS_FAILED,
-		error: error
-	};
-};
-var _loginAttemptInitiated = function _loginAttemptInitiated() {
-	return {
-		type: _actionTypes.BORROWER_LOGIN_PENDING
-	};
-};
-var _loginAttemptFailed = function _loginAttemptFailed(error) {
-	return {
-		type: _actionTypes.BORROWER_LOGIN_FAILURE,
-		error: error
-	};
-};
-var _loginAttemptSuccessful = function _loginAttemptSuccessful(res) {
-	return {
-		type: _actionTypes.BORROWER_LOGIN_SUCCESSFUL,
-		data: res.data
-	};
-};
-
-var _selectBranch = function _selectBranch(branch) {
-	return {
-		type: _actionTypes.BORROWER_DASHBOARD_SELECT_BRANCH,
-		selectedBranch: branch
-	};
-};
-var _startCheckout = function _startCheckout() {
-	return {
-		type: _actionTypes.BORROWER_START_CHECKOUT
-	};
-};
-var _getActiveLoansForBorrowerSuccessful = function _getActiveLoansForBorrowerSuccessful(res) {
-	return {
-		type: _actionTypes.BORROWER_READ_ACTIVE_LOANS_SUCCESSFUL,
-		loans: res.data
+		type: _actionTypes.BORROWER_CLOSE_RETURN_MODAL
 	};
 };
 var _getActiveLoansForBorrowerFailed = function _getActiveLoansForBorrowerFailed(error) {
 	return {
 		type: _actionTypes.BORROWER_READ_ACTIVE_LOANS_FAILED,
 		error: error
+	};
+};
+var _getActiveLoansForBorrowerSuccessful = function _getActiveLoansForBorrowerSuccessful(res) {
+	return {
+		type: _actionTypes.BORROWER_READ_ACTIVE_LOANS_SUCCESSFUL,
+		loans: res.data
 	};
 };
 var _getAllBranchesFailed = function _getAllBranchesFailed(error) {
@@ -66197,6 +66177,23 @@ var _getAllBranchesFailed = function _getAllBranchesFailed(error) {
 var _getAllBranchesSuccessful = function _getAllBranchesSuccessful(res) {
 	return {
 		type: _actionTypes.BORROWER_READ_ALL_BRANCHES_SUCCESSFUL,
+		data: res.data
+	};
+};
+var _loginAttemptFailed = function _loginAttemptFailed(error) {
+	return {
+		type: _actionTypes.BORROWER_LOGIN_FAILURE,
+		error: error
+	};
+};
+var _loginAttemptInitiated = function _loginAttemptInitiated() {
+	return {
+		type: _actionTypes.BORROWER_LOGIN_PENDING
+	};
+};
+var _loginAttemptSuccessful = function _loginAttemptSuccessful(res) {
+	return {
+		type: _actionTypes.BORROWER_LOGIN_SUCCESSFUL,
 		data: res.data
 	};
 };
@@ -66218,7 +66215,6 @@ var _processCheckoutSuccess = function _processCheckoutSuccess(res) {
 		newLoan: res.data
 	};
 };
-
 var _processReturn = function _processReturn() {
 	return {
 		type: _actionTypes.BORROWER_RETURN_PENDING
@@ -66236,13 +66232,36 @@ var _processReturnSuccess = function _processReturnSuccess(res) {
 		loan: res.data
 	};
 };
+var _readBooksAtBranchFailed = function _readBooksAtBranchFailed(error) {
+	return {
+		type: _actionTypes.BORROWER_DASHBOARD_READ_BOOKS_FAILED,
+		error: error
+	};
+};
+var _readBooksAtBranchSuccess = function _readBooksAtBranchSuccess(res) {
+	return {
+		type: _actionTypes.BORROWER_DASHBOARD_READ_BOOKS_SUCCESSFUL,
+		booksAvailable: res.data
+	};
+};
+var _selectBranch = function _selectBranch(branch) {
+	return {
+		type: _actionTypes.BORROWER_DASHBOARD_SELECT_BRANCH,
+		selectedBranch: branch
+	};
+};
+var _startCheckout = function _startCheckout() {
+	return {
+		type: _actionTypes.BORROWER_START_CHECKOUT
+	};
+};
 var _startReturn = function _startReturn() {
 	return {
 		type: _actionTypes.BORROWER_START_RETURN
 	};
 };
 
-},{"../constants/actionTypes":357,"../constants/connections":358,"axios":21}],303:[function(require,module,exports){
+},{"../constants/actionTypes":359,"../constants/connections":360,"axios":21}],303:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -66505,7 +66524,7 @@ var _createNonCopiesFailed = function _createNonCopiesFailed(error) {
 	};
 };
 
-},{"../constants/actionTypes":357,"../constants/connections":358,"axios":21}],304:[function(require,module,exports){
+},{"../constants/actionTypes":359,"../constants/connections":360,"axios":21}],304:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -66891,7 +66910,7 @@ AdminAuthorRender.propTypes = {
 
 exports.default = AdminAuthorRender;
 
-},{"../../Modal/AdminAuthor/CreateModal":333,"../../Modal/AdminAuthor/DeleteModal":334,"../../Modal/AdminAuthor/UpdateModal":335,"../../Util/Spinner":355,"mdbreact":75,"prop-types":107,"react":170}],308:[function(require,module,exports){
+},{"../../Modal/AdminAuthor/CreateModal":335,"../../Modal/AdminAuthor/DeleteModal":336,"../../Modal/AdminAuthor/UpdateModal":337,"../../Util/Spinner":357,"mdbreact":75,"prop-types":107,"react":170}],308:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -67195,7 +67214,7 @@ AdminBookRender.propTypes = {
 
 exports.default = AdminBookRender;
 
-},{"../../Modal/AdminBook/CreateModal":336,"../../Modal/AdminBook/DeleteModal":337,"../../Modal/AdminBook/UpdateModal":338,"../../Util/Spinner":355,"mdbreact":75,"prop-types":107,"react":170}],310:[function(require,module,exports){
+},{"../../Modal/AdminBook/CreateModal":338,"../../Modal/AdminBook/DeleteModal":339,"../../Modal/AdminBook/UpdateModal":340,"../../Util/Spinner":357,"mdbreact":75,"prop-types":107,"react":170}],310:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -67444,7 +67463,7 @@ AdminBorrowerRender.propTypes = {
 
 exports.default = AdminBorrowerRender;
 
-},{"../../Modal/AdminBorrower/CreateModal":339,"../../Modal/AdminBorrower/DeleteModal":340,"../../Modal/AdminBorrower/UpdateModal":341,"../../Util/Spinner":355,"mdbreact":75,"prop-types":107,"react":170}],312:[function(require,module,exports){
+},{"../../Modal/AdminBorrower/CreateModal":341,"../../Modal/AdminBorrower/DeleteModal":342,"../../Modal/AdminBorrower/UpdateModal":343,"../../Util/Spinner":357,"mdbreact":75,"prop-types":107,"react":170}],312:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -67695,7 +67714,7 @@ AdminBranchRender.propTypes = {
 
 exports.default = AdminBranchRender;
 
-},{"../../Modal/AdminBranch/CreateModal":342,"../../Modal/AdminBranch/DeleteModal":343,"../../Modal/AdminBranch/UpdateModal":344,"../../Util/Spinner":355,"mdbreact":75,"prop-types":107,"react":170}],314:[function(require,module,exports){
+},{"../../Modal/AdminBranch/CreateModal":344,"../../Modal/AdminBranch/DeleteModal":345,"../../Modal/AdminBranch/UpdateModal":346,"../../Util/Spinner":357,"mdbreact":75,"prop-types":107,"react":170}],314:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -67967,7 +67986,7 @@ AdminGenreRender.propTypes = {
 
 exports.default = AdminGenreRender;
 
-},{"../../Modal/AdminGenre/CreateModal":345,"../../Modal/AdminGenre/DeleteModal":346,"../../Modal/AdminGenre/UpdateModal":347,"../../Util/Spinner":355,"mdbreact":75,"prop-types":107,"react":170}],316:[function(require,module,exports){
+},{"../../Modal/AdminGenre/CreateModal":347,"../../Modal/AdminGenre/DeleteModal":348,"../../Modal/AdminGenre/UpdateModal":349,"../../Util/Spinner":357,"mdbreact":75,"prop-types":107,"react":170}],316:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -68080,6 +68099,8 @@ var _ExtendModal2 = _interopRequireDefault(_ExtendModal);
 var _Spinner = require('../../Util/Spinner');
 
 var _Spinner2 = _interopRequireDefault(_Spinner);
+
+var _dateHelpers = require('../../../helpers/dateHelpers');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -68213,62 +68234,6 @@ var AdminLoanRender = function AdminLoanRender(_ref) {
 		}
 	}
 
-	function parseMonth(string) {
-		var num = parseInt(string);
-		switch (num) {
-			case 1:
-				return "January";
-			case 2:
-				return "February";
-			case 3:
-				return "March";
-			case 4:
-				return "April";
-			case 5:
-				return "May";
-			case 6:
-				return "June";
-			case 7:
-				return "July";
-			case 8:
-				return "August";
-			case 9:
-				return "September";
-			case 10:
-				return "October";
-			case 11:
-				return "November";
-			case 12:
-				return "December";
-			default:
-				return "ERROR";
-		}
-	}
-	function formatDate(obj) {
-		var concat = function concat(accumulator, currentValue) {
-			return accumulator + currentValue;
-		};
-		//2020-09-14T04:00:00Z
-		var array = Array.from(obj);
-		//09-14-2020 : 04:00AM
-		var am = true;
-		if (array.slice(11, 13).reduce(concat) < 12) {
-			am = true;
-		} else {
-			am = false;
-		}
-		var time = "";
-		// Parse hours depending on AM or PM
-		if (array.slice(11, 13).reduce(concat) > 12) {
-			time = array.slice(11, 13).reduce(concat) - 12 + array.slice(13, 16).reduce(concat) + (am ? "AM" : "PM");
-		} else {
-			time = parseInt(array.slice(11, 13).reduce(concat)) + array.slice(13, 16).reduce(concat) + (am ? "AM" : "PM");
-		}
-		// Parse Months
-		var month = parseMonth(array.slice(5, 7).reduce(concat));
-		return month + " " + parseInt(array.slice(8, 10).reduce(concat)) + ", " + array.slice(0, 4).reduce(concat) + " " + time;
-	}
-
 	function getTableBodyContent() {
 		return loanData.loans.map(function (obj) {
 			var tempbook = parseBookInfo(obj);
@@ -68278,8 +68243,8 @@ var AdminLoanRender = function AdminLoanRender(_ref) {
 			/* will fix later */
 			newObj.cardInfo = parseCardInfo(newObj);
 			newObj.branchInfo = parseBranchInfo(newObj);
-			newObj.parsedDueDate = formatDate(newObj.dueDate);
-			newObj.parsedDateOut = formatDate(newObj.dateOut);
+			newObj.parsedDueDate = (0, _dateHelpers.formatDate)(newObj.dueDate);
+			newObj.parsedDateOut = (0, _dateHelpers.formatDate)(newObj.dateOut);
 			//console.log("duedate: " + newObj.dueDate); 
 			//let newObj = JSON.parse(JSON.stringify(obj));
 			console.log(newObj);
@@ -68316,7 +68281,7 @@ AdminLoanRender.propTypes = {
 
 exports.default = AdminLoanRender;
 
-},{"../../Modal/AdminLoan/ExtendModal":348,"../../Util/Spinner":355,"flat":55,"mdbreact":75,"prop-types":107,"react":170}],318:[function(require,module,exports){
+},{"../../../helpers/dateHelpers":361,"../../Modal/AdminLoan/ExtendModal":350,"../../Util/Spinner":357,"flat":55,"mdbreact":75,"prop-types":107,"react":170}],318:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -68573,7 +68538,7 @@ AdminPublisherRender.propTypes = {
 
 exports.default = AdminPublisherRender;
 
-},{"../../Modal/AdminPublisher/CreateModal":349,"../../Modal/AdminPublisher/DeleteModal":350,"../../Modal/AdminPublisher/UpdateModal":351,"../../Util/Spinner":355,"mdbreact":75,"prop-types":107,"react":170}],320:[function(require,module,exports){
+},{"../../Modal/AdminPublisher/CreateModal":351,"../../Modal/AdminPublisher/DeleteModal":352,"../../Modal/AdminPublisher/UpdateModal":353,"../../Util/Spinner":357,"mdbreact":75,"prop-types":107,"react":170}],320:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -68678,7 +68643,7 @@ var App = exports.App = function (_React$Component) {
 	return App;
 }(_react2.default.Component);
 
-},{"./Admin/AdminHome.js":305,"./Admin/Author/AdminAuthorContainer":306,"./Admin/Book/AdminBookContainer":308,"./Admin/Borrower/AdminBorrowerContainer":310,"./Admin/Branch/AdminBranchContainer":312,"./Admin/Genre/AdminGenreContainer":314,"./Admin/Loan/AdminLoanContainer":316,"./Admin/Publisher/AdminPublisherContainer":318,"./Borrower/BorrowerContainer":321,"./Home.js":327,"./Librarian/LibrarianBranchContainer":328,"react":170,"react-router-dom":152}],321:[function(require,module,exports){
+},{"./Admin/AdminHome.js":305,"./Admin/Author/AdminAuthorContainer":306,"./Admin/Book/AdminBookContainer":308,"./Admin/Borrower/AdminBorrowerContainer":310,"./Admin/Branch/AdminBranchContainer":312,"./Admin/Genre/AdminGenreContainer":314,"./Admin/Loan/AdminLoanContainer":316,"./Admin/Publisher/AdminPublisherContainer":318,"./Borrower/BorrowerContainer":321,"./Home.js":329,"./Librarian/LibrarianBranchContainer":330,"react":170,"react-router-dom":152}],321:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -68715,6 +68680,14 @@ var _CheckoutBookTable = require('./CheckoutBookTable');
 
 var _CheckoutBookTable2 = _interopRequireDefault(_CheckoutBookTable);
 
+var _CheckoutConfirmationModal = require('./CheckoutConfirmationModal');
+
+var _CheckoutConfirmationModal2 = _interopRequireDefault(_CheckoutConfirmationModal);
+
+var _ReturnConfirmationModal = require('./ReturnConfirmationModal');
+
+var _ReturnConfirmationModal2 = _interopRequireDefault(_ReturnConfirmationModal);
+
 var _ReturnLoansTable = require('./ReturnLoansTable');
 
 var _ReturnLoansTable2 = _interopRequireDefault(_ReturnLoansTable);
@@ -68740,12 +68713,21 @@ var BorrowerContainer = function BorrowerContainer(props) {
 	(0, _react.useEffect)(function () {
 		//actions.readBranches();
 	}, []);
-	var content = '';
+	var content = [];
 	function handleCheckout(book, borrower, branch) {
 		actions.processCheckout(book, borrower, branch);
 	}
+	function handleCloseCheckoutModal() {
+		actions.handleCloseCheckoutModal();
+	}
+	function handleCloseReturnModal() {
+		actions.handleCloseReturnModal();
+	}
 	function handleLoginAttempt(cardNo) {
 		actions.attemptLogin(cardNo);
+	}
+	function handleLogout() {
+		console.log('Logout to be implemented');
 	}
 	function handleReturn(loan) {
 		actions.processReturn(loan);
@@ -68759,17 +68741,15 @@ var BorrowerContainer = function BorrowerContainer(props) {
 	function startReturn() {
 		actions.startReturn(borrower.borrowerCardNo);
 	}
-
+	console.log(requestInfo);
 	var doesRequestInfoExist = requestInfo;
 	if (!borrower) {
 		if (!doesRequestInfoExist) {
-			content = _react2.default.createElement(_BorrowerLoginForm2.default, { handleLoginAttempt: handleLoginAttempt });
-		}
-		if (doesRequestInfoExist && requestInfo.loginPending) {
-			content = (0, _Spinner2.default)();
-		}
-		if (doesRequestInfoExist && requestInfo.loginFailed) {
-			content = _react2.default.createElement(
+			content.push(_react2.default.createElement(_BorrowerLoginForm2.default, { handleLoginAttempt: handleLoginAttempt }));
+		} else if (doesRequestInfoExist && requestInfo.loginPending) {
+			content.push((0, _Spinner2.default)()); //add Key
+		} else if (doesRequestInfoExist && requestInfo.loginFailed) {
+			content.push(_react2.default.createElement(
 				'div',
 				null,
 				_react2.default.createElement(
@@ -68778,14 +68758,20 @@ var BorrowerContainer = function BorrowerContainer(props) {
 					'The entered card number does not exist in our system please try again or contact an administrator'
 				),
 				_react2.default.createElement(_BorrowerLoginForm2.default, { handleLoginAttempt: handleLoginAttempt })
-			);
+			));
 		}
 	} else if (borrower && doesRequestInfoExist && requestInfo.loginSuccessful) {
-		content = [
+		content.push(
 		//Make into its own component in the future
 		_react2.default.createElement(
 			'div',
 			{ key: 0 },
+			_react2.default.createElement(
+				'h4',
+				null,
+				'Welcome ',
+				borrower.borrowerName
+			),
 			_react2.default.createElement(
 				_reactstrap.Button,
 				{ onClick: startCheckout },
@@ -68795,12 +68781,17 @@ var BorrowerContainer = function BorrowerContainer(props) {
 				_reactstrap.Button,
 				{ onClick: startReturn },
 				'Return'
+			),
+			_react2.default.createElement(
+				_reactstrap.Button,
+				{ onClick: handleLogout },
+				'Logout'
 			)
-		)];
+		));
 		if (borrowerDashboardInfo.isCheckingOut) {
 			if (!borrowerDashboardInfo.selectedBranch) {
 				if (requestInfo.branchesPending) {
-					content.push(_react2.default.createElement(_Spinner2.default, { type: 'grow', color: 'primary', key: 1 }));
+					content.push((0, _Spinner2.default)()); //add Key
 				} else if (requestInfo.branchesSuccessful) {
 					content.push(_react2.default.createElement(_CheckoutBranchTable2.default, {
 						branches: borrowerDashboardInfo.branches,
@@ -68816,8 +68807,19 @@ var BorrowerContainer = function BorrowerContainer(props) {
 				}
 			} else if (borrowerDashboardInfo.selectedBranch) {
 				if (requestInfo.booksPending) {
-					content.push(_react2.default.createElement(_Spinner2.default, { type: 'grow', color: 'primary', key: 1 }));
+					content.push((0, _Spinner2.default)());
 				} else if (requestInfo.booksSuccessful) {
+					if (requestInfo.checkoutPending) {
+						console.log('checkout pending');
+					} else if (requestInfo.checkoutSuccessful) {
+						content.push(_react2.default.createElement(_CheckoutConfirmationModal2.default, {
+							key: 2,
+							handleClose: handleCloseCheckoutModal,
+							newestLoan: borrowerDashboardInfo.newestLoan
+						}));
+					} else if (requestInfo.checkoutFailed) {
+						console.log('checkout failed');
+					}
 					content.push(_react2.default.createElement(_CheckoutBookTable2.default, {
 						books: borrowerDashboardInfo.books,
 						borrower: borrower,
@@ -68834,20 +68836,25 @@ var BorrowerContainer = function BorrowerContainer(props) {
 				}
 			}
 		} else if (borrowerDashboardInfo.isReturning) {
-			content.push('return clicked!');
 			if (requestInfo.loansPending) {
-				content.push(_react2.default.createElement(_Spinner2.default, { type: 'grow', color: 'primary', key: 1 }));
+				content.push((0, _Spinner2.default)());
 			} else if (requestInfo.loansSuccessful) {
+				if (requestInfo.returnPending) {
+					console.log('return pending');
+				} else if (requestInfo.returnSuccessful) {
+					content.push(_react2.default.createElement(_ReturnConfirmationModal2.default, {
+						key: 2,
+						handleClose: handleCloseReturnModal,
+						newestReturn: borrowerDashboardInfo.updatedLoan
+					}));
+				} else if (requestInfo.returnFailed) {
+					console.log('return failed');
+				}
 				content.push(_react2.default.createElement(_ReturnLoansTable2.default, {
 					handleReturn: handleReturn,
 					loans: borrowerDashboardInfo.loans,
 					key: 1
 				}));
-				//Have Popup for return date if loan
-				//
-				//
-				//
-				//
 			} else if (requestInfo.loansFailed) {
 				content.push(_react2.default.createElement(
 					_reactstrap.Alert,
@@ -68864,11 +68871,13 @@ var BorrowerContainer = function BorrowerContainer(props) {
 		_react2.default.createElement(
 			'div',
 			{ className: 'jumbotron' },
+			_react2.default.createElement('img', { width: '65px', height: '65px', src: '../images/borrower.png' }),
 			_react2.default.createElement(
 				'h1',
 				null,
-				'Borrower Dashboard'
-			)
+				'\xA0\xA0Borrower Dashboard\xA0\xA0'
+			),
+			_react2.default.createElement('img', { width: '65px', height: '65px', src: '../images/borrower.png' })
 		),
 		content
 	);
@@ -68897,7 +68906,7 @@ BorrowerContainer.propTypes = {
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(BorrowerContainer);
 
-},{"../../actions/borrowerActions":302,"../Util/Spinner":355,"./BorrowerHeader":322,"./BorrowerLoginForm":323,"./CheckoutBookTable":324,"./CheckoutBranchTable":325,"./ReturnLoansTable":326,"prop-types":107,"react":170,"react-redux":141,"reactstrap":264,"redux":271}],322:[function(require,module,exports){
+},{"../../actions/borrowerActions":302,"../Util/Spinner":357,"./BorrowerHeader":322,"./BorrowerLoginForm":323,"./CheckoutBookTable":324,"./CheckoutBranchTable":325,"./CheckoutConfirmationModal":326,"./ReturnConfirmationModal":327,"./ReturnLoansTable":328,"prop-types":107,"react":170,"react-redux":141,"reactstrap":264,"redux":271}],322:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -68909,6 +68918,8 @@ var _react = require('react');
 var _react2 = _interopRequireDefault(_react);
 
 var _reactRouterDom = require('react-router-dom');
+
+var _ai = require('react-icons/ai');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -68927,17 +68938,8 @@ var BorrowerHeader = function BorrowerHeader() {
 					{ className: 'list-inline-item' },
 					_react2.default.createElement(
 						_reactRouterDom.Link,
-						{ to: '/', className: 'navbar-brand' },
-						_react2.default.createElement('img', { width: '65px', height: '65px', src: '../images/borrower.png' })
-					)
-				),
-				_react2.default.createElement(
-					'li',
-					{ className: 'list-inline-item' },
-					_react2.default.createElement(
-						_reactRouterDom.Link,
 						{ to: '/', replace: true },
-						'Home'
+						_react2.default.createElement(_ai.AiFillHome, { color: '#95ABBA' })
 					)
 				)
 			)
@@ -68947,7 +68949,7 @@ var BorrowerHeader = function BorrowerHeader() {
 
 exports.default = BorrowerHeader;
 
-},{"react":170,"react-router-dom":152}],323:[function(require,module,exports){
+},{"react":170,"react-icons/ai":112,"react-router-dom":152}],323:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -69205,6 +69207,200 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = require('prop-types');
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _reactstrap = require('reactstrap');
+
+var _dateHelpers = require('../../helpers/dateHelpers');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var CheckoutConfirmationModal = function CheckoutConfirmationModal(_ref) {
+	var handleClose = _ref.handleClose,
+	    newestLoan = _ref.newestLoan;
+
+	var _useState = (0, _react.useState)(true),
+	    _useState2 = _slicedToArray(_useState, 2),
+	    modal = _useState2[0],
+	    setModal = _useState2[1];
+
+	var toggle = function toggle() {
+		return setModal(!modal);
+	};
+
+	function handleModalClose() {
+		handleClose();
+		toggle();
+	}
+	return _react2.default.createElement(
+		_reactstrap.Modal,
+		{ isOpen: modal, onClosed: handleModalClose, toggle: toggle },
+		_react2.default.createElement(
+			_reactstrap.ModalHeader,
+			null,
+			'Checkout Successful!'
+		),
+		_react2.default.createElement(
+			_reactstrap.ModalBody,
+			null,
+			_react2.default.createElement(
+				'h4',
+				null,
+				'Book Loaned: '
+			),
+			_react2.default.createElement(
+				'p',
+				null,
+				newestLoan.book.title
+			),
+			_react2.default.createElement(
+				'h4',
+				null,
+				'Branch: '
+			),
+			_react2.default.createElement(
+				'p',
+				null,
+				newestLoan.branch.branchName
+			),
+			_react2.default.createElement(
+				'h4',
+				null,
+				'Your Due Date is: '
+			),
+			_react2.default.createElement(
+				'p',
+				null,
+				(0, _dateHelpers.formatDate)(newestLoan.dueDate)
+			),
+			_react2.default.createElement(
+				_reactstrap.Button,
+				{ color: 'secondary', className: '', onClick: toggle },
+				'Close'
+			)
+		)
+	);
+};
+
+CheckoutConfirmationModal.propTypes = {
+	handleClose: _propTypes2.default.func,
+	newestLoan: _propTypes2.default.object
+};
+
+exports.default = CheckoutConfirmationModal;
+
+},{"../../helpers/dateHelpers":361,"prop-types":107,"react":170,"reactstrap":264}],327:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = require('prop-types');
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _reactstrap = require('reactstrap');
+
+var _dateHelpers = require('../../helpers/dateHelpers');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var ReturnConfirmationModal = function ReturnConfirmationModal(_ref) {
+	var handleClose = _ref.handleClose,
+	    newestReturn = _ref.newestReturn;
+
+	var _useState = (0, _react.useState)(true),
+	    _useState2 = _slicedToArray(_useState, 2),
+	    modal = _useState2[0],
+	    setModal = _useState2[1];
+
+	var toggle = function toggle() {
+		return setModal(!modal);
+	};
+
+	function handleModalClose() {
+		handleClose();
+		toggle();
+	}
+	return _react2.default.createElement(
+		_reactstrap.Modal,
+		{ isOpen: modal, onClosed: handleModalClose, toggle: toggle },
+		_react2.default.createElement(
+			_reactstrap.ModalHeader,
+			null,
+			'Checkout Successful!'
+		),
+		_react2.default.createElement(
+			_reactstrap.ModalBody,
+			null,
+			_react2.default.createElement(
+				'h4',
+				null,
+				'Book Return: '
+			),
+			_react2.default.createElement(
+				'p',
+				null,
+				newestReturn.book.title
+			),
+			_react2.default.createElement(
+				'h4',
+				null,
+				'Branch: '
+			),
+			_react2.default.createElement(
+				'p',
+				null,
+				newestReturn.branch.branchName
+			),
+			_react2.default.createElement(
+				'h4',
+				null,
+				'Return date: '
+			),
+			_react2.default.createElement(
+				'p',
+				null,
+				(0, _dateHelpers.formatDate)(newestReturn.dateIn)
+			),
+			_react2.default.createElement(
+				_reactstrap.Button,
+				{ color: 'secondary', className: '', onClick: toggle },
+				'Close'
+			)
+		)
+	);
+};
+
+ReturnConfirmationModal.propTypes = {
+	handleClose: _propTypes2.default.func,
+	newestReturn: _propTypes2.default.object
+};
+
+exports.default = ReturnConfirmationModal;
+
+},{"../../helpers/dateHelpers":361,"prop-types":107,"react":170,"reactstrap":264}],328:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
 var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
@@ -69336,7 +69532,7 @@ var ReturnLoansTable = function ReturnLoansTable(_ref) {
 				{ onClick: function onClick() {
 						return handleReturn(loan);
 					} },
-				'Select'
+				'Return'
 			);
 			return loanCopy;
 		});
@@ -69351,11 +69547,11 @@ var ReturnLoansTable = function ReturnLoansTable(_ref) {
 			field: 'branchInfo',
 			sort: 'asc'
 		}, {
-			label: 'dateOut',
+			label: 'Checkout Date',
 			field: 'parsedDateOut',
 			sort: 'asc'
 		}, {
-			label: 'dueDate',
+			label: 'Due Date',
 			field: 'parsedDueDate',
 			sort: 'asc'
 		}, {
@@ -69382,7 +69578,7 @@ ReturnLoansTable.propTypes = {
 };
 exports.default = ReturnLoansTable;
 
-},{"flat":55,"mdbreact":75,"prop-types":107,"react":170,"reactstrap":264}],327:[function(require,module,exports){
+},{"flat":55,"mdbreact":75,"prop-types":107,"react":170,"reactstrap":264}],329:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -69420,7 +69616,7 @@ var Home = function Home() {
 
 exports.default = Home;
 
-},{"./header.js":356,"react":170}],328:[function(require,module,exports){
+},{"./header.js":358,"react":170}],330:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -69533,7 +69729,7 @@ LibrarianBranchContainer.propTypes = {
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(LibrarianBranchContainer);
 
-},{"../../actions/librarianActions.js":303,"./LibrarianBranchRender":329,"./LibrarianHeader":331,"prop-types":107,"react":170,"react-redux":141,"redux":271}],329:[function(require,module,exports){
+},{"../../actions/librarianActions.js":303,"./LibrarianBranchRender":331,"./LibrarianHeader":333,"prop-types":107,"react":170,"react-redux":141,"redux":271}],331:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -69829,7 +70025,7 @@ LibrarianBranchRender.propTypes = {
 
 exports.default = LibrarianBranchRender;
 
-},{"../Modal/Librarian/UpdateBookCopiesModal":352,"../Modal/Librarian/UpdateModal":354,"../Util/Spinner":355,"./LibrarianCopiesRender":330,"./LibrarianNonCopiesRender":332,"mdbreact":75,"prop-types":107,"react":170,"reactstrap":264}],330:[function(require,module,exports){
+},{"../Modal/Librarian/UpdateBookCopiesModal":354,"../Modal/Librarian/UpdateModal":356,"../Util/Spinner":357,"./LibrarianCopiesRender":332,"./LibrarianNonCopiesRender":334,"mdbreact":75,"prop-types":107,"react":170,"reactstrap":264}],332:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -69988,7 +70184,7 @@ LibrarianCopiesRender.propTypes = {
 
 exports.default = LibrarianCopiesRender;
 
-},{"../Modal/Librarian/UpdateBookCopiesModal":352,"mdbreact":75,"prop-types":107,"react":170,"reactstrap":264}],331:[function(require,module,exports){
+},{"../Modal/Librarian/UpdateBookCopiesModal":354,"mdbreact":75,"prop-types":107,"react":170,"reactstrap":264}],333:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -70032,7 +70228,7 @@ var LibrarianHeader = function LibrarianHeader() {
 
 exports.default = LibrarianHeader;
 
-},{"react":170,"react-icons/ai":112,"react-router-dom":152}],332:[function(require,module,exports){
+},{"react":170,"react-icons/ai":112,"react-router-dom":152}],334:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -70189,7 +70385,7 @@ LibrarianNonCopiesRender.propTypes = {
 
 exports.default = LibrarianNonCopiesRender;
 
-},{"../Modal/Librarian/UpdateBookNonCopiesModal":353,"mdbreact":75,"prop-types":107,"react":170,"reactstrap":264}],333:[function(require,module,exports){
+},{"../Modal/Librarian/UpdateBookNonCopiesModal":355,"mdbreact":75,"prop-types":107,"react":170,"reactstrap":264}],335:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -70303,7 +70499,7 @@ CreateModal.propTypes = {
 
 exports.default = CreateModal;
 
-},{"prop-types":107,"react":170,"reactstrap":264}],334:[function(require,module,exports){
+},{"prop-types":107,"react":170,"reactstrap":264}],336:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -70413,7 +70609,7 @@ DeleteModal.propTypes = {
 
 exports.default = DeleteModal;
 
-},{"prop-types":107,"react":170,"reactstrap":264}],335:[function(require,module,exports){
+},{"prop-types":107,"react":170,"reactstrap":264}],337:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -70532,7 +70728,7 @@ UpdateModal.propTypes = {
 
 exports.default = UpdateModal;
 
-},{"prop-types":107,"react":170,"reactstrap":264}],336:[function(require,module,exports){
+},{"prop-types":107,"react":170,"reactstrap":264}],338:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -70825,7 +71021,7 @@ CreateModal.propTypes = {
 
 exports.default = CreateModal;
 
-},{"prop-types":107,"react":170,"reactstrap":264}],337:[function(require,module,exports){
+},{"prop-types":107,"react":170,"reactstrap":264}],339:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -70934,7 +71130,7 @@ DeleteModal.propTypes = {
 
 exports.default = DeleteModal;
 
-},{"prop-types":107,"react":170,"reactstrap":264}],338:[function(require,module,exports){
+},{"prop-types":107,"react":170,"reactstrap":264}],340:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -71253,7 +71449,7 @@ UpdateModal.propTypes = {
 
 exports.default = UpdateModal;
 
-},{"prop-types":107,"react":170,"reactstrap":264}],339:[function(require,module,exports){
+},{"prop-types":107,"react":170,"reactstrap":264}],341:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -71409,7 +71605,7 @@ CreateModal.propTypes = {
 
 exports.default = CreateModal;
 
-},{"prop-types":107,"react":170,"reactstrap":264}],340:[function(require,module,exports){
+},{"prop-types":107,"react":170,"reactstrap":264}],342:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -71551,7 +71747,7 @@ DeleteModal.propTypes = {
 
 exports.default = DeleteModal;
 
-},{"prop-types":107,"react":170,"reactstrap":264}],341:[function(require,module,exports){
+},{"prop-types":107,"react":170,"reactstrap":264}],343:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -71715,7 +71911,7 @@ UpdateModal.propTypes = {
 
 exports.default = UpdateModal;
 
-},{"prop-types":107,"react":170,"reactstrap":264}],342:[function(require,module,exports){
+},{"prop-types":107,"react":170,"reactstrap":264}],344:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -71851,7 +72047,7 @@ CreateModal.propTypes = {
 
 exports.default = CreateModal;
 
-},{"prop-types":107,"react":170,"reactstrap":264}],343:[function(require,module,exports){
+},{"prop-types":107,"react":170,"reactstrap":264}],345:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -71973,7 +72169,7 @@ DeleteModal.propTypes = {
 
 exports.default = DeleteModal;
 
-},{"prop-types":107,"react":170,"reactstrap":264}],344:[function(require,module,exports){
+},{"prop-types":107,"react":170,"reactstrap":264}],346:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -72115,7 +72311,7 @@ UpdateModal.propTypes = {
 
 exports.default = UpdateModal;
 
-},{"prop-types":107,"react":170,"reactstrap":264}],345:[function(require,module,exports){
+},{"prop-types":107,"react":170,"reactstrap":264}],347:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -72229,7 +72425,7 @@ CreateModal.propTypes = {
 
 exports.default = CreateModal;
 
-},{"prop-types":107,"react":170,"reactstrap":264}],346:[function(require,module,exports){
+},{"prop-types":107,"react":170,"reactstrap":264}],348:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -72339,7 +72535,7 @@ DeleteModal.propTypes = {
 
 exports.default = DeleteModal;
 
-},{"prop-types":107,"react":170,"reactstrap":264}],347:[function(require,module,exports){
+},{"prop-types":107,"react":170,"reactstrap":264}],349:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -72459,7 +72655,7 @@ UpdateModal.propTypes = {
 
 exports.default = UpdateModal;
 
-},{"prop-types":107,"react":170,"reactstrap":264}],348:[function(require,module,exports){
+},{"prop-types":107,"react":170,"reactstrap":264}],350:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -72602,7 +72798,7 @@ ExtendModal.propTypes = {
 
 exports.default = ExtendModal;
 
-},{"prop-types":107,"react":170,"reactstrap":264}],349:[function(require,module,exports){
+},{"prop-types":107,"react":170,"reactstrap":264}],351:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -72758,7 +72954,7 @@ CreateModal.propTypes = {
 
 exports.default = CreateModal;
 
-},{"prop-types":107,"react":170,"reactstrap":264}],350:[function(require,module,exports){
+},{"prop-types":107,"react":170,"reactstrap":264}],352:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -72891,7 +73087,7 @@ DeleteModal.propTypes = {
 
 exports.default = DeleteModal;
 
-},{"prop-types":107,"react":170,"reactstrap":264}],351:[function(require,module,exports){
+},{"prop-types":107,"react":170,"reactstrap":264}],353:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -73055,7 +73251,7 @@ UpdateModal.propTypes = {
 
 exports.default = UpdateModal;
 
-},{"prop-types":107,"react":170,"reactstrap":264}],352:[function(require,module,exports){
+},{"prop-types":107,"react":170,"reactstrap":264}],354:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -73200,7 +73396,7 @@ UpdateBookCopiesModal.propTypes = {
 
 exports.default = UpdateBookCopiesModal;
 
-},{"prop-types":107,"react":170,"reactstrap":264}],353:[function(require,module,exports){
+},{"prop-types":107,"react":170,"reactstrap":264}],355:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -73345,9 +73541,9 @@ UpdateBookNonCopiesModal.propTypes = {
 
 exports.default = UpdateBookNonCopiesModal;
 
-},{"prop-types":107,"react":170,"reactstrap":264}],354:[function(require,module,exports){
-arguments[4][344][0].apply(exports,arguments)
-},{"dup":344,"prop-types":107,"react":170,"reactstrap":264}],355:[function(require,module,exports){
+},{"prop-types":107,"react":170,"reactstrap":264}],356:[function(require,module,exports){
+arguments[4][346][0].apply(exports,arguments)
+},{"dup":346,"prop-types":107,"react":170,"reactstrap":264}],357:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -73371,32 +73567,21 @@ var Spinner = function Spinner() {
 		key[_key] = arguments[_key];
 	}
 
-	var content = "";
+	var content = '';
 	key && _typeof(key[0] === 'number' || key[0] === 'string') ? content = _react2.default.createElement(
 		'div',
 		{ className: 'd-flex justify-content-center', key: key },
-		_react2.default.createElement(_RingLoader2.default, {
-			size: 150,
-			color: "#00ccff",
-			loading: true
-		}),
-		')'
+		_react2.default.createElement(_RingLoader2.default, { size: 150, color: '#00ccff', loading: true })
 	) : content = _react2.default.createElement(
 		'div',
 		{ className: 'd-flex justify-content-center' },
-		_react2.default.createElement(_RingLoader2.default, {
-			size: 150,
-			color: "#00ccff",
-			loading: true
-		}),
-		')'
+		_react2.default.createElement(_RingLoader2.default, { size: 150, color: '#00ccff', loading: true })
 	);
 	return content;
 };
-
 exports.default = Spinner;
 
-},{"react":170,"react-spinners/RingLoader":156}],356:[function(require,module,exports){
+},{"react":170,"react-spinners/RingLoader":156}],358:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -73540,7 +73725,7 @@ var Header = function Header() {
 
 exports.default = Header;
 
-},{"react":170,"react-icons/ai":112,"react-router-dom":152,"reactstrap":264}],357:[function(require,module,exports){
+},{"react":170,"react-icons/ai":112,"react-router-dom":152,"reactstrap":264}],359:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -73676,13 +73861,15 @@ var BORROWER_DASHBOARD_READ_BOOKS_SUCCESSFUL = exports.BORROWER_DASHBOARD_READ_B
 var BORROWER_CHECKOUT_PENDING = exports.BORROWER_CHECKOUT_PENDING = 'BORROWER_CHECKOUT_PENDING';
 var BORROWER_CHECKOUT_FAILURE = exports.BORROWER_CHECKOUT_FAILURE = 'BORROWER_CHECKOUT_FAILURE';
 var BORROWER_CHECKOUT_SUCCESSFUL = exports.BORROWER_CHECKOUT_SUCCESSFUL = 'BORROWER_CHECKOUT_SUCCESSFUL';
+var BORROWER_CLOSE_CHECKOUT_MODAL = exports.BORROWER_CLOSE_CHECKOUT_MODAL = 'BORROWER_CLOSE_CHECKOUT_MODAL';
 var BORROWER_READ_ACTIVE_LOANS_SUCCESSFUL = exports.BORROWER_READ_ACTIVE_LOANS_SUCCESSFUL = 'BORROWER_READ_ACTIVE_LOANS_SUCCESSFUL';
 var BORROWER_READ_ACTIVE_LOANS_FAILED = exports.BORROWER_READ_ACTIVE_LOANS_FAILED = 'BORROWER_READ_ACTIVE_LOANS_FAILED';
 var BORROWER_RETURN_PENDING = exports.BORROWER_RETURN_PENDING = 'BORROWER_RETURN_PENDING';
 var BORROWER_RETURN_FAILURE = exports.BORROWER_RETURN_FAILURE = 'BORROWER_RETURN_FAILURE';
 var BORROWER_RETURN_SUCCESSFUL = exports.BORROWER_RETURN_SUCCESSFUL = 'BORROWER_RETURN_SUCCESSFUL';
+var BORROWER_CLOSE_RETURN_MODAL = exports.BORROWER_CLOSE_RETURN_MODAL = 'BORROWER_CLOSE_RETURN_MODAL';
 
-},{}],358:[function(require,module,exports){
+},{}],360:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -73700,7 +73887,69 @@ var ADMIN_PORT = exports.ADMIN_PORT = ' http://ec2-3-138-42-102.us-east-2.comput
 var LIBRARIAN_PORT = exports.LIBRARIAN_PORT = ' http://ec2-3-138-42-102.us-east-2.compute.amazonaws.com:8090/';
 var BORROWER_PORT = exports.BORROWER_PORT = ' http://ec2-13-58-11-233.us-east-2.compute.amazonaws.com:8080/';
 
-},{}],359:[function(require,module,exports){
+},{}],361:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+var parseMonth = exports.parseMonth = function parseMonth(string) {
+	var num = parseInt(string);
+	switch (num) {
+		case 1:
+			return 'January';
+		case 2:
+			return 'February';
+		case 3:
+			return 'March';
+		case 4:
+			return 'April';
+		case 5:
+			return 'May';
+		case 6:
+			return 'June';
+		case 7:
+			return 'July';
+		case 8:
+			return 'August';
+		case 9:
+			return 'September';
+		case 10:
+			return 'October';
+		case 11:
+			return 'November';
+		case 12:
+			return 'December';
+		default:
+			return 'ERROR';
+	}
+};
+var formatDate = exports.formatDate = function formatDate(obj) {
+	var concat = function concat(accumulator, currentValue) {
+		return accumulator + currentValue;
+	};
+	//2020-09-14T04:00:00Z
+	var array = Array.from(obj);
+	//09-14-2020 : 04:00AM
+	var am = true;
+	if (array.slice(11, 13).reduce(concat) < 12) {
+		am = true;
+	} else {
+		am = false;
+	}
+	var time = '';
+	// Parse hours depending on AM or PM
+	if (array.slice(11, 13).reduce(concat) > 12) {
+		time = array.slice(11, 13).reduce(concat) - 12 + array.slice(13, 16).reduce(concat) + (am ? 'AM' : 'PM');
+	} else {
+		time = parseInt(array.slice(11, 13).reduce(concat)) + array.slice(13, 16).reduce(concat) + (am ? 'AM' : 'PM');
+	}
+	// Parse Months
+	var month = parseMonth(array.slice(5, 7).reduce(concat));
+	return month + ' ' + parseInt(array.slice(8, 10).reduce(concat)) + ', ' + array.slice(0, 4).reduce(concat) + ' ' + time;
+};
+
+},{}],362:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -73735,7 +73984,7 @@ _reactDom2.default.render(_react2.default.createElement(
 	)
 ), document.getElementById('app'));
 
-},{"./components/App.js":320,"./store/configureStore":369,"react":170,"react-dom":111,"react-redux":141,"react-router-dom":152}],360:[function(require,module,exports){
+},{"./components/App.js":320,"./store/configureStore":372,"react":170,"react-dom":111,"react-redux":141,"react-router-dom":152}],363:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -73884,7 +74133,7 @@ function authorReducer() {
 	}
 }
 
-},{"../constants/actionTypes":357}],361:[function(require,module,exports){
+},{"../constants/actionTypes":359}],364:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -74094,7 +74343,7 @@ function bookReducer() {
 	}
 }
 
-},{"../constants/actionTypes":357}],362:[function(require,module,exports){
+},{"../constants/actionTypes":359}],365:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -74136,6 +74385,7 @@ function borrowerReducer() {
 					readPending: false
 				})
 			});
+
 		case _actionTypes.DELETE_BORROWER_REQUEST:
 			return _extends({}, state, {
 				borrowerData: _extends({}, state.borrowerData),
@@ -74186,27 +74436,25 @@ function borrowerReducer() {
 				})
 			});
 		case _actionTypes.UPDATE_BORROWER_SUCCESSFUL:
-			{
-				if (state.borrowerData.readPending) {
-					/* Not needed if we continue to use toggle instead of handle refresh*/
-					return _extends({}, state, {
-						borrowerData: _extends({}, state.borrowerData),
-						requestInfo: _extends({}, state.requestInfo)
-					});
-				} else {
-					var updatedBorrowers = state.borrowerData.borrowers.map(function (borrower) {
-						return action.updatedBorrower.borrowerCardNo === borrower.borrowerCardNo ? action.updatedBorrower : borrower;
-					});
-					return _extends({}, state, {
-						borrowerData: _extends({}, state.borrowerData, {
-							borrowers: updatedBorrowers
-						}),
-						requestInfo: _extends({}, state.requestInfo, {
-							updateSuccess: true,
-							updating: false
-						})
-					});
-				}
+			if (state.borrowerData.readPending) {
+				/* Not needed if we continue to use toggle instead of handle refresh*/
+				return _extends({}, state, {
+					borrowerData: _extends({}, state.borrowerData),
+					requestInfo: _extends({}, state.requestInfo)
+				});
+			} else {
+				var updatedBorrowers = state.borrowerData.borrowers.map(function (borrower) {
+					return action.updatedBorrower.borrowerCardNo === borrower.borrowerCardNo ? action.updatedBorrower : borrower;
+				});
+				return _extends({}, state, {
+					borrowerData: _extends({}, state.borrowerData, {
+						borrowers: updatedBorrowers
+					}),
+					requestInfo: _extends({}, state.requestInfo, {
+						updateSuccess: true,
+						updating: false
+					})
+				});
 			}
 		case _actionTypes.CREATE_BORROWER_REQUEST:
 			return _extends({}, state, {
@@ -74239,180 +74487,122 @@ function borrowerReducer() {
 				});
 			}
 		case _actionTypes.BORROWER_LOGIN_PENDING:
-			{
-				return _extends({}, state, {
-					borrowerDashboardInfo: null,
-					loggedInBorrower: null,
-					requestInfo: _extends({}, state.requestInfo, {
-						loginPending: true,
-						loginSuccessful: false,
-						loginFailed: false
-					})
-				});
-			}
+			return _extends({}, state, {
+				borrowerDashboardInfo: null,
+				loggedInBorrower: null,
+				requestInfo: _extends({}, state.requestInfo, {
+					loginPending: true,
+					loginSuccessful: false,
+					loginFailed: false
+				})
+			});
 		case _actionTypes.BORROWER_LOGIN_FAILURE:
-			{
-				return _extends({}, state, {
-					borrowerDashboardInfo: null,
-					loggedInBorrower: null,
-					requestInfo: _extends({}, state.requestInfo, {
-						loginPending: false,
-						loginSuccessful: false,
-						loginFailed: true
-					})
-				});
-			}
+			return _extends({}, state, {
+				borrowerDashboardInfo: null,
+				loggedInBorrower: null,
+				requestInfo: _extends({}, state.requestInfo, {
+					loginPending: false,
+					loginSuccessful: false,
+					loginFailed: true
+				})
+			});
 		case _actionTypes.BORROWER_LOGIN_SUCCESSFUL:
-			{
-				return _extends({}, state, {
-					borrowerDashboardInfo: {
-						isCheckingOut: false,
-						isReturning: false
-					},
-					loggedInBorrower: action.data,
-					requestInfo: _extends({}, state.requestInfo, {
-						loginPending: false,
-						loginSuccessful: true,
-						loginFailed: false
-					})
-				});
-			}
+			return _extends({}, state, {
+				borrowerDashboardInfo: {
+					isCheckingOut: false,
+					isReturning: false
+				},
+				loggedInBorrower: action.data,
+				requestInfo: _extends({}, state.requestInfo, {
+					loginPending: false,
+					loginSuccessful: true,
+					loginFailed: false
+				})
+			});
+
 		case _actionTypes.BORROWER_START_CHECKOUT:
-			{
-				return _extends({}, state, {
-					borrowerDashboardInfo: {
-						isCheckingOut: true,
-						isReturning: false
-					},
-					requestInfo: _extends({}, state.requestInfo, {
-						branchesPending: true,
-						branchesSuccessful: false,
-						branchesFailed: false
-					})
-				});
-			}
-		case _actionTypes.BORROWER_READ_ACTIVE_LOANS_FAILED:
-			{
-				return _extends({}, state, {
-					borrowerDashboardInfo: _extends({}, state.borrowerDashboardInfo),
-					requestInfo: _extends({}, state.requestInfo, {
-						loansPending: false,
-						loansSuccessful: false,
-						loansFailed: true
-					})
-				});
-			}
-		case _actionTypes.BORROWER_READ_ACTIVE_LOANS_SUCCESSFUL:
-			{
-				return _extends({}, state, {
-					borrowerDashboardInfo: _extends({}, state.borrowerDashboardInfo, {
-						loans: action.loans
-					}),
-					requestInfo: _extends({}, state.requestInfo, {
-						loansPending: false,
-						loansSuccessful: true,
-						loansFailed: false
-					})
-				});
-			}
+			return _extends({}, state, {
+				borrowerDashboardInfo: {
+					isCheckingOut: true,
+					isReturning: false
+				},
+				requestInfo: _extends({}, state.requestInfo, {
+					branchesPending: true,
+					branchesSuccessful: false,
+					branchesFailed: false
+				})
+			});
 		case _actionTypes.BORROWER_READ_ALL_BRANCHES_FAILED:
-			{
-				return _extends({}, state, {
-					borrowerDashboardInfo: _extends({}, state.borrowerDashboardInfo),
-					requestInfo: _extends({}, state.requestInfo, {
-						branchesPending: false,
-						branchesSuccessful: false,
-						branchesFailed: true
-					})
-				});
-			}
+			return _extends({}, state, {
+				borrowerDashboardInfo: _extends({}, state.borrowerDashboardInfo),
+				requestInfo: _extends({}, state.requestInfo, {
+					branchesPending: false,
+					branchesSuccessful: false,
+					branchesFailed: true
+				})
+			});
 		case _actionTypes.BORROWER_READ_ALL_BRANCHES_SUCCESSFUL:
-			{
-				return _extends({}, state, {
-					borrowerDashboardInfo: _extends({}, state.borrowerDashboardInfo, {
-						branches: action.data
-					}),
-					requestInfo: _extends({}, state.requestInfo, {
-						branchesPending: false,
-						branchesSuccessful: true,
-						branchesFailed: false
-					})
-				});
-			}
-		case _actionTypes.BORROWER_START_RETURN:
-			{
-				return _extends({}, state, {
-					borrowerDashboardInfo: {
-						isCheckingOut: false,
-						isReturning: true,
-						selectedLoan: null
-					},
-					requestInfo: _extends({}, state.requestInfo, {
-						loansPending: true,
-						loansSuccessful: false,
-						loansFailed: false
-					})
-				});
-			}
+			return _extends({}, state, {
+				borrowerDashboardInfo: _extends({}, state.borrowerDashboardInfo, {
+					branches: action.data
+				}),
+				requestInfo: _extends({}, state.requestInfo, {
+					branchesPending: false,
+					branchesSuccessful: true,
+					branchesFailed: false
+				})
+			});
+
 		case _actionTypes.BORROWER_DASHBOARD_SELECT_BRANCH:
-			{
-				return _extends({}, state, {
-					borrowerDashboardInfo: _extends({}, state.borrowerDashboardInfo, {
-						selectedBranch: action.selectedBranch
-					}),
-					requestInfo: _extends({}, state.requestInfo, {
-						booksPending: true,
-						booksSuccessful: false,
-						booksFailed: false
-					})
-				});
-			}
+			return _extends({}, state, {
+				borrowerDashboardInfo: _extends({}, state.borrowerDashboardInfo, {
+					selectedBranch: action.selectedBranch
+				}),
+				requestInfo: _extends({}, state.requestInfo, {
+					booksPending: true,
+					booksSuccessful: false,
+					booksFailed: false
+				})
+			});
 		case _actionTypes.BORROWER_DASHBOARD_READ_BOOKS_SUCCESSFUL:
-			{
-				return _extends({}, state, {
-					borrowerDashboardInfo: _extends({}, state.borrowerDashboardInfo, {
-						books: action.booksAvailable
-					}),
-					requestInfo: _extends({}, state.requestInfo, {
-						booksPending: false,
-						booksSuccessful: true,
-						booksFailed: false
-					})
-				});
-			}
+			return _extends({}, state, {
+				borrowerDashboardInfo: _extends({}, state.borrowerDashboardInfo, {
+					books: action.booksAvailable
+				}),
+				requestInfo: _extends({}, state.requestInfo, {
+					booksPending: false,
+					booksSuccessful: true,
+					booksFailed: false
+				})
+			});
 		case _actionTypes.BORROWER_DASHBOARD_READ_BOOKS_FAILED:
-			{
-				return _extends({}, state, {
-					borrowerDashboardInfo: _extends({}, state.borrowerDashboardInfo),
-					requestInfo: _extends({}, state.requestInfo, {
-						booksPending: false,
-						booksSuccessful: false,
-						booksFailed: true
-					})
-				});
-			}
+			return _extends({}, state, {
+				borrowerDashboardInfo: _extends({}, state.borrowerDashboardInfo),
+				requestInfo: _extends({}, state.requestInfo, {
+					booksPending: false,
+					booksSuccessful: false,
+					booksFailed: true
+				})
+			});
+
 		case _actionTypes.BORROWER_CHECKOUT_PENDING:
-			{
-				return _extends({}, state, {
-					borrowerDashboardInfo: _extends({}, state.borrowerDashboardInfo),
-					requestInfo: _extends({}, state.requestInfo, {
-						checkoutPending: true,
-						checkoutSuccessful: false,
-						checkoutFailed: false
-					})
-				});
-			}
+			return _extends({}, state, {
+				borrowerDashboardInfo: _extends({}, state.borrowerDashboardInfo),
+				requestInfo: _extends({}, state.requestInfo, {
+					checkoutPending: true,
+					checkoutSuccessful: false,
+					checkoutFailed: false
+				})
+			});
 		case _actionTypes.BORROWER_CHECKOUT_FAILURE:
-			{
-				return _extends({}, state, {
-					borrowerDashboardInfo: _extends({}, state.borrowerDashboardInfo),
-					requestInfo: _extends({}, state.requestInfo, {
-						checkoutPending: false,
-						checkoutSuccessful: false,
-						checkoutFailed: true
-					})
-				});
-			}
+			return _extends({}, state, {
+				borrowerDashboardInfo: _extends({}, state.borrowerDashboardInfo),
+				requestInfo: _extends({}, state.requestInfo, {
+					checkoutPending: false,
+					checkoutSuccessful: false,
+					checkoutFailed: true
+				})
+			});
 		case _actionTypes.BORROWER_CHECKOUT_SUCCESSFUL:
 			{
 				var updateAvailableBookList = state.borrowerDashboardInfo.books.filter(function (book) {
@@ -74421,7 +74611,7 @@ function borrowerReducer() {
 				return _extends({}, state, {
 					borrowerDashboardInfo: _extends({}, state.borrowerDashboardInfo, {
 						books: updateAvailableBookList,
-						newLoan: action.newLoan
+						newestLoan: action.newLoan
 					}),
 					requestInfo: _extends({}, state.requestInfo, {
 						checkoutPending: false,
@@ -74430,28 +74620,69 @@ function borrowerReducer() {
 					})
 				});
 			}
+		case _actionTypes.BORROWER_CLOSE_CHECKOUT_MODAL:
+			{
+				return _extends({}, state, {
+					borrowerDashboardInfo: _extends({}, state.borrowerDashboardInfo, {
+						newestLoan: null
+					}),
+					requestInfo: _extends({}, state.requestInfo, {
+						checkoutSuccessful: false
+					})
+				});
+			}
+		case _actionTypes.BORROWER_START_RETURN:
+			return _extends({}, state, {
+				borrowerDashboardInfo: {
+					isCheckingOut: false,
+					isReturning: true,
+					selectedLoan: null
+				},
+				requestInfo: _extends({}, state.requestInfo, {
+					loansPending: true,
+					loansSuccessful: false,
+					loansFailed: false
+				})
+			});
+		case _actionTypes.BORROWER_READ_ACTIVE_LOANS_FAILED:
+			return _extends({}, state, {
+				borrowerDashboardInfo: _extends({}, state.borrowerDashboardInfo),
+				requestInfo: _extends({}, state.requestInfo, {
+					loansPending: false,
+					loansSuccessful: false,
+					loansFailed: true
+				})
+			});
+		case _actionTypes.BORROWER_READ_ACTIVE_LOANS_SUCCESSFUL:
+			return _extends({}, state, {
+				borrowerDashboardInfo: _extends({}, state.borrowerDashboardInfo, {
+					loans: action.loans
+				}),
+				requestInfo: _extends({}, state.requestInfo, {
+					loansPending: false,
+					loansSuccessful: true,
+					loansFailed: false
+				})
+			});
+
 		case _actionTypes.BORROWER_RETURN_PENDING:
-			{
-				return _extends({}, state, {
-					borrowerDashboardInfo: _extends({}, state.borrowerDashboardInfo),
-					requestInfo: _extends({}, state.requestInfo, {
-						returnPending: true,
-						returnSuccessful: false,
-						returnFailed: false
-					})
-				});
-			}
+			return _extends({}, state, {
+				borrowerDashboardInfo: _extends({}, state.borrowerDashboardInfo),
+				requestInfo: _extends({}, state.requestInfo, {
+					returnPending: true,
+					returnSuccessful: false,
+					returnFailed: false
+				})
+			});
 		case _actionTypes.BORROWER_RETURN_FAILURE:
-			{
-				return _extends({}, state, {
-					borrowerDashboardInfo: _extends({}, state.borrowerDashboardInfo),
-					requestInfo: _extends({}, state.requestInfo, {
-						checkoutPending: false,
-						checkoutSuccessful: false,
-						checkoutFailed: true
-					})
-				});
-			}
+			return _extends({}, state, {
+				borrowerDashboardInfo: _extends({}, state.borrowerDashboardInfo),
+				requestInfo: _extends({}, state.requestInfo, {
+					returnPending: false,
+					returnSuccessful: false,
+					returnFailed: true
+				})
+			});
 		case _actionTypes.BORROWER_RETURN_SUCCESSFUL:
 			{
 				var newLoanList = state.borrowerDashboardInfo.loans.filter(function (loan) {
@@ -74463,9 +74694,20 @@ function borrowerReducer() {
 						updatedLoan: action.loan
 					}),
 					requestInfo: _extends({}, state.requestInfo, {
-						checkoutPending: false,
-						checkoutSuccessful: true,
-						checkoutFailed: false
+						returnPending: false,
+						returnSuccessful: true,
+						returnFailed: false
+					})
+				});
+			}
+		case _actionTypes.BORROWER_CLOSE_RETURN_MODAL:
+			{
+				return _extends({}, state, {
+					borrowerDashboardInfo: _extends({}, state.borrowerDashboardInfo, {
+						updatedLoan: null
+					}),
+					requestInfo: _extends({}, state.requestInfo, {
+						returnSuccessful: false
 					})
 				});
 			}
@@ -74474,7 +74716,7 @@ function borrowerReducer() {
 	}
 }
 
-},{"../constants/actionTypes":357}],363:[function(require,module,exports){
+},{"../constants/actionTypes":359}],366:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -74624,7 +74866,7 @@ function branchReducer() {
 	}
 }
 
-},{"../constants/actionTypes":357}],364:[function(require,module,exports){
+},{"../constants/actionTypes":359}],367:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -74825,7 +75067,7 @@ function copiesReducer() {
 	}
 }
 
-},{"../constants/actionTypes":357}],365:[function(require,module,exports){
+},{"../constants/actionTypes":359}],368:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -75003,7 +75245,7 @@ function genreReducer() {
 	}
 }
 
-},{"../constants/actionTypes":357}],366:[function(require,module,exports){
+},{"../constants/actionTypes":359}],369:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -75059,7 +75301,7 @@ var rootReducer = (0, _redux.combineReducers)({
 
 exports.default = rootReducer;
 
-},{"./authorReducer":360,"./bookReducer":361,"./borrowerReducer":362,"./branchReducer":363,"./copiesReducer":364,"./genreReducer":365,"./loanReducer":367,"./publisherReducer":368,"redux":271}],367:[function(require,module,exports){
+},{"./authorReducer":363,"./bookReducer":364,"./borrowerReducer":365,"./branchReducer":366,"./copiesReducer":367,"./genreReducer":368,"./loanReducer":370,"./publisherReducer":371,"redux":271}],370:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -75143,7 +75385,7 @@ function loanReducer() {
 	}
 }
 
-},{"../constants/actionTypes":357}],368:[function(require,module,exports){
+},{"../constants/actionTypes":359}],371:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -75292,7 +75534,7 @@ function publisherReducer() {
 	}
 }
 
-},{"../constants/actionTypes":357}],369:[function(require,module,exports){
+},{"../constants/actionTypes":359}],372:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -75325,4 +75567,4 @@ function configureStore(initialState) {
 
 exports.default = configureStore;
 
-},{"../reducers":366,"redux":271,"redux-immutable-state-invariant":267,"redux-thunk":270}]},{},[359]);
+},{"../reducers":369,"redux":271,"redux-immutable-state-invariant":267,"redux-thunk":270}]},{},[362]);

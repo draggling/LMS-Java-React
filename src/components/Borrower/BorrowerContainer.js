@@ -170,7 +170,9 @@ const BorrowerContainer = (props) => {
 		<div>
 			<BorrowerHeader />
 			<div className="jumbotron">
-				<h1>Borrower Dashboard</h1>
+				<img width="65px" height="65px" src="../images/borrower.png" />
+				<h1>&nbsp;&nbsp;Borrower Dashboard&nbsp;&nbsp;</h1>
+				<img width="65px" height="65px" src="../images/borrower.png" />
 			</div>
 			{content}
 		</div>
