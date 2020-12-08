@@ -70793,6 +70793,8 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
 var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
@@ -70804,15 +70806,31 @@ var _RingLoader2 = _interopRequireDefault(_RingLoader);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var Spinner = function Spinner() {
-	return _react2.default.createElement(
+	for (var _len = arguments.length, key = Array(_len), _key = 0; _key < _len; _key++) {
+		key[_key] = arguments[_key];
+	}
+
+	var content = "";
+	key && _typeof(key[0] === 'number' || key[0] === 'string') ? content = _react2.default.createElement(
+		'div',
+		{ className: 'd-flex justify-content-center', key: key },
+		_react2.default.createElement(_RingLoader2.default, {
+			size: 150,
+			color: "#00ccff",
+			loading: true
+		}),
+		')'
+	) : content = _react2.default.createElement(
 		'div',
 		{ className: 'd-flex justify-content-center' },
 		_react2.default.createElement(_RingLoader2.default, {
 			size: 150,
 			color: "#00ccff",
 			loading: true
-		})
+		}),
+		')'
 	);
+	return content;
 };
 
 exports.default = Spinner;
