@@ -22,7 +22,9 @@ const AdminBookContainer = (props) => {
 		<div>
 			<AdminHeader />
 			<div className="jumbotron">
-				<h1>Books</h1>
+				<img width="65pxpx" height="65px" src="../../images/admin.png" />
+					<h1>&nbsp;&nbsp;Books&nbsp;&nbsp;</h1>
+				<img width="65pxpx" height="65px" src="../../images/admin.png" />
 			</div>
 			<AdminBookRender
 				{...props}

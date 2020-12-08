@@ -19,7 +19,9 @@ const AdminLoanContainer = (props) => {
 		<div>
 			<AdminHeader />
 			<div className="jumbotron">
-				<h1>Loans</h1>
+				<img width="65pxpx" height="65px" src="../../images/admin.png" />
+					<h1>&nbsp;&nbsp;Loans&nbsp;&nbsp;</h1>
+				<img width="65pxpx" height="65px" src="../../images/admin.png" />
 			</div>
 			<AdminLoanRender
 				{...props}

@@ -19,7 +19,9 @@ const AdminGenreContainer = (props) => {
 		<div>
 			<AdminHeader />
 			<div className="jumbotron">
-				<h1>Genres</h1>
+				<img width="65pxpx" height="65px" src="../../images/admin.png" />
+					<h1>&nbsp;&nbsp;Genres&nbsp;&nbsp;</h1>
+				<img width="65pxpx" height="65px" src="../../images/admin.png" />
 			</div>
 			<AdminGenreRender
 				{...props}

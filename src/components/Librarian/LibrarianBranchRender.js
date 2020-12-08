@@ -8,7 +8,7 @@ import UpdateModal from '../Modal/Librarian/UpdateModal';
 import UpdateBookCopiesModal from '../Modal/Librarian/UpdateBookCopiesModal'
 import LibrarianCopiesRender from './LibrarianCopiesRender';
 import LibrarianNonCopiesRender from './LibrarianNonCopiesRender';
-import Spinner from '../Util/Spinner'
+import Spinner from '../Util/Spinner';
 
 
 const LibrarianBranchRender =  ({
@@ -34,7 +34,7 @@ const LibrarianBranchRender =  ({
 	if(selectedBranch > 0 && bookCopies === undefined && !requestInfoCopies.readCopiesPending && !requestInfoCopies.readCopiesSuccessful) {
 		startReadCopies(selectedBranch);
 	}
-	if(selectedBranch > 0 && bookNonCopies === undefined && !requestInfoCopies.readNonCopiesPending && !requestInfoCopies.readNonCopiesSuccessful) {
+	if(selectedBranch > 0 && bookNonCopies === undefined && !requestInfoCopies.readNonCopiesPending && !requestInfoCopies.readNonCopiesSuccessful &&requestInfoCopies.readCopiesSuccessful) {
 		startReadNonCopies(selectedBranch);
 	}
 
@@ -136,17 +136,22 @@ const LibrarianBranchRender =  ({
 	function showNonBookCopies() {
 		return(
 			<div>
-				<Button color="warning" onClick={test}> Branch Selector </Button>
-				<Button color="primary" onClick={changeView}> View Books In Library </Button>
-				<Button color="info" disabled> View Books not in Library</Button>
-				<LibrarianNonCopiesRender
-				branchData = {branchData}
-				selectedBranch = {selectedBranch}
-				handleRefresh = {handleRefresh}
-				setNonCopies = {setNonCopies}
-				requestInfoCopies = {requestInfoCopies} 
-				bookNonCopies = {bookNonCopies}
-				/>
+				<div>
+					<Button color="warning" onClick={test}> Return </Button>
+				</div>
+				<div className = "librarianBranch">
+					<Button color="primary" onClick={changeView}> View Books In Library </Button> &nbsp;&nbsp;
+					<Button color="info" disabled> View Books not in Library</Button>
+
+					<LibrarianNonCopiesRender
+					branchData = {branchData}
+					selectedBranch = {selectedBranch}
+					handleRefresh = {handleRefresh}
+					setNonCopies = {setNonCopies}
+					requestInfoCopies = {requestInfoCopies} 
+					bookNonCopies = {bookNonCopies}
+					/>
+				</div>
 			</div>
 		);
 	}
@@ -155,17 +160,22 @@ const LibrarianBranchRender =  ({
 	function showBookCopies() {
 		return(
 			<div>
-				<Button color="warning" onClick={test}> Branch Selector </Button>
-				<Button color="info" disabled> View Books In Library </Button>
-				<Button color="primary" onClick={changeView}> View Books not in Library</Button>
-				<LibrarianCopiesRender
-				branchData = {branchData}
-				selectedBranch = {selectedBranch}
-				handleRefresh = {handleRefresh}
-				setCopies = {setCopies}
-				requestInfoCopies = {requestInfoCopies} 
-				bookCopies = {bookCopies}
+				<div className = "librarianBranch">
+					<Button color="warning" onClick={test}> Return </Button>
+				</div>
+				<div className = "librarianBranch">
+					<Button color="info" disabled> View Books In Library </Button> &nbsp;&nbsp;
+					<Button color="primary" onClick={changeView}> View Books not in Library</Button>
+
+					<LibrarianCopiesRender
+					branchData = {branchData}
+					selectedBranch = {selectedBranch}
+					handleRefresh = {handleRefresh}
+					setCopies = {setCopies}
+					requestInfoCopies = {requestInfoCopies} 
+					bookCopies = {bookCopies}
 				/>
+				</div>
 			</div>
 		);
 	}
@@ -187,7 +197,7 @@ const LibrarianBranchRender =  ({
 	}
 
 	return (
-		<div>
+		<div className = "mainblock">
 			{content}
 			{showTable()}
 		</div>

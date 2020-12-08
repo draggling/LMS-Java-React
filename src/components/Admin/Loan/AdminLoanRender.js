@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button } from 'reactstrap';
 import { MDBDataTable } from 'mdbreact';
 import ExtendModal from '../../Modal/AdminLoan/ExtendModal';
 import Spinner from '../../Util/Spinner'
@@ -54,9 +53,6 @@ const AdminLoanRender = ({
 		return (
 			<React.Fragment>
 				<div className="mainblock">
-					<Button onClick={() => handleRefresh()}>
-						Refresh Data
-					</Button>{' '}
 					<MDBDataTable
 						striped
 						//bordered

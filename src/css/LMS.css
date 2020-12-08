@@ -7,7 +7,9 @@
     margin: 0 auto;
 }
 
-
+.container-fluid {
+    align-items: "center"
+}
 /* background color */
 html, body, #app, #app>div {
     height: 100%;
@@ -21,11 +23,14 @@ html, body, #app, #app>div {
     padding: 1rem 2rem;
     background-color: #95ABBA;
     text-align: center;
+    display: flex;
+    justify-content: center;
 }
 
+/* header */
 .navbar a{
-    font-family: 'Monaco';
-    font-size: 20px;
+    font-family: 'Times New Roman', Times;
+    font-size: 24px;
     color: teal;
     line-height: 1.15;
     margin: 7px;
@@ -34,7 +39,7 @@ html, body, #app, #app>div {
 
 .header-dropdown{
     font-family: 'Monaco';
-    font-size: 20px;
+    font-size: 24px;
     color: teal;
     height: 20px;
     line-height: 1.15;
@@ -50,6 +55,11 @@ html, body, #app, #app>div {
     cursor: pointer,
 }
 
+/* header home button */
+.svg{
+    height: 2em;
+    width: 2em;
+}
 /* mdbdatatable */
 .table thead th {
     border-bottom: 0px;
@@ -60,7 +70,7 @@ html, body, #app, #app>div {
 }
 
 .dataTables_wrapper dt-bootstrap4 table {
-    padding-left:25px;
+    padding-left:15px;
     padding-right:15px;
 }
 
@@ -84,4 +94,8 @@ html, body, #app, #app>div {
     text-decoration: underline;
 }
 
+/* librarian */
 
+.librarianBranch {
+    padding-bottom: 12px;
+}

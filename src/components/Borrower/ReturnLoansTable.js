@@ -153,7 +153,7 @@ const ReturnLoansTable = ({ handleReturn, loans }) => {
 		<React.Fragment>
 			<div className="mainblock" key={2}>
 				{/* <Button onClick={() => handleRefresh()}>Refresh Data</Button>{' '} */}
-				<MDBDataTable striped bordered small responsive data={data} />
+				<MDBDataTable striped small responsive data={data} />
 			</div>
 		</React.Fragment>
 	);

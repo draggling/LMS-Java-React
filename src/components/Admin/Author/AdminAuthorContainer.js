@@ -19,7 +19,9 @@ const AdminAuthorContainer = (props) => {
 		<div>
 			<AdminHeader />
 			<div className="jumbotron">
-				<h1>Authors</h1>
+				<img width="65pxpx" height="65px" src="../../images/admin.png" />
+					<h1>&nbsp;&nbsp;Authors&nbsp;&nbsp;</h1>
+				<img width="65pxpx" height="65px" src="../../images/admin.png" />
 			</div>
 			<AdminAuthorRender
 				{...props}

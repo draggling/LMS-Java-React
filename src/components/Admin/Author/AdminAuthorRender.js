@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button } from 'reactstrap';
 import { MDBDataTable } from 'mdbreact';
 import DeleteModal from '../../Modal/AdminAuthor/DeleteModal';
 import UpdateModal from '../../Modal/AdminAuthor/UpdateModal';
@@ -55,12 +54,8 @@ const AdminAuthorRender = ({
 						handleCreate={handleCreate}
 						handleRefresh={handleRefresh}
 					/>
-					<Button onClick={() => handleRefresh()}>
-						Refresh Data
-					</Button>{' '}
 					<MDBDataTable
 						striped
-						bordered
 						small
 						responsive
 						data={data}
