@@ -2,7 +2,6 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button } from 'reactstrap';
 import { MDBDataTable } from 'mdbreact';
 import DeleteModal from '../../Modal/AdminPublisher/DeleteModal';
 import UpdateModal from '../../Modal/AdminPublisher/UpdateModal';
@@ -67,12 +66,9 @@ const AdminPublisherRender = ({
 						handleCreate={handleCreate}
 						handleRefresh={handleRefresh}
 					/>
-					<Button onClick={() => handleRefresh()}>
-						Refresh Data
-					</Button>{' '}
 					<MDBDataTable
 						striped
-						bordered
+						//bordered
 						small
 						responsive
 						data={data}
@@ -126,7 +122,6 @@ const AdminPublisherRender = ({
 	}
 	return (
 		<div>
-			<h1>Publishers</h1>
 			{content}
 		</div>
 	);

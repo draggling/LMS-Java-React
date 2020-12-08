@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button } from 'reactstrap';
 import { MDBDataTable, Alert} from 'mdbreact';
 import DeleteModal from '../../Modal/AdminGenre/DeleteModal';
 import UpdateModal from '../../Modal/AdminGenre/UpdateModal';
@@ -78,12 +77,9 @@ const AdminGenreRender = ({
 						handleCreate={handleCreate}
 						handleRefresh={handleRefresh}
 					/>
-					<Button onClick={() => handleRefresh()}>
-						Refresh Data
-					</Button>{' '}
 					<MDBDataTable
 						striped
-						bordered
+						//bordered
 						small
 						responsive
 						data={data}
@@ -133,7 +129,6 @@ const AdminGenreRender = ({
 	}
 	return (
 		<div>
-			<h1>Genres</h1>
 			{content}
 		</div>
 	);

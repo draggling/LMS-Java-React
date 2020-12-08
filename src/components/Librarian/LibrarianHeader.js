@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { AiFillHome } from 'react-icons/ai';
 
 const LibrarianHeader = () => {
 	return (
@@ -9,15 +10,10 @@ const LibrarianHeader = () => {
 			<div className="container-fluid">
 				<ul className="list-inline">
 					<li className="list-inline-item">
-						<Link to="/" className="navbar-brand">
-							<img width="65px" height="65px" src="images/books.png" />
-						</Link>
-					</li>
-					<li className="list-inline-item">
 						<Link to="/" replace>
-							Home
+							<AiFillHome color = "#95ABBA" />
 						</Link>
-					</li>
+					</li> &nbsp;
 				</ul>
 			</div>
 		</nav>

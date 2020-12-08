@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button } from 'reactstrap';
-import { MDBDataTable } from 'mdbreact';
+import {MDBDataTable} from 'mdbreact';
 import DeleteModal from '../../Modal/AdminBook/DeleteModal';
 import UpdateModal from '../../Modal/AdminBook/UpdateModal';
 import CreateModal from '../../Modal/AdminBook/CreateModal';
@@ -25,27 +24,8 @@ const AdminBookRender = ({
 	}
 	if (bookData && requestInfo.readSuccessful && requestInfo.readPublisherSuccessful
 		&& requestInfo.readAuthorSuccessful && requestInfo.readGenreSuccessful) {
-		/*
-		console.log("Book Data");
-		console.log(bookData);
-		console.log("Publisher Data");
-		console.log(publisherData);
-		console.log("Author Data");
-		console.log(authorData);
-		console.log("Genre Data");
-		console.log(genreData);
-		console.log("requestInfo:");
-		console.log(requestInfo);
-		*/
 		let data = {
 			columns: [
-				/*
-				{
-					label: 'Book Id',
-					field: 'bookId',
-					sort: 'asc',
-				},
-				*/
 				{
 					label: 'Book Name',
 					field: 'title',
@@ -53,27 +33,23 @@ const AdminBookRender = ({
                 },
                 {
                     label: 'Publisher',
-                    field: 'publisherName',
+					field: 'publisherName',
                 },
                 {
                     label: 'Authors',
-                    field: 'authorInfo',
-                    sort: 'asc',
+					field: 'authorInfo',
                 },
                 {
                     label: 'Genres',
-                    field: 'genreInfo',
-                    sort: 'asc',
+					field: 'genreInfo',
                 },
 				{
 					label: 'Update',
 					field: 'update',
-					sort: 'asc',
 				},
 				{
 					label: 'Delete',
 					field: 'delete',
-					sort: 'asc',
 				},
 			],
 			rows: getTableBodyContent(),
@@ -89,12 +65,8 @@ const AdminBookRender = ({
 						handleCreate={handleCreate}
 						handleRefresh={handleRefresh}
 					/>
-					<Button onClick={() => handleRefresh()}>
-						Refresh Data
-					</Button>{' '}
-					<MDBDataTable
+					<MDBDataTable className="table"
 						striped
-						bordered
 						small
 						responsive
 						data={data}

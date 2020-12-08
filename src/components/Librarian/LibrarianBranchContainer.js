@@ -18,7 +18,9 @@ const LibrarianBranchContainer = (props) => {
 		<div>
 			<LibrarianHeader />
 			<div className="jumbotron">
-				<h1>Librarian Branch Management</h1>
+				<img width="65px" height="65px" src="images/books.png" />
+				<h1>&nbsp;&nbsp;Librarian Branch Management&nbsp;&nbsp;</h1>
+				<img width="65px" height="65px" src="images/books.png" />
 			</div>
 			<LibrarianBranchRender
 				{...props}

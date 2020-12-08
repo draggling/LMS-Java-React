@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
+import { AiFillHome } from 'react-icons/ai';
 
 
 const Header = () => {
@@ -13,15 +14,10 @@ const Header = () => {
 			<div className="container-fluid">
 				<ul className="list-inline">
 					<li className="list-inline-item">
-						<Link to="/" className="navbar-brand">
-							<img width="90px" height="65px" src="images/home.png" />
-						</Link>
-					</li>
-					<li className="list-inline-item">
 						<Link to="/" replace>
-							Home
+							<AiFillHome color = "#95ABBA" />
 						</Link>
-					</li>
+					</li> &nbsp;
 					<li className="list-inline-item">
 						<Link to="/LibrarianBranch" replace>
 							Librarian
@@ -47,8 +43,9 @@ const Header = () => {
 							<DropdownItem tag={Link} to="/AdminAuthor">Authors</DropdownItem>
 							<DropdownItem tag={Link} to="/AdminBook">Books</DropdownItem>
 							<DropdownItem tag={Link} to="/AdminBorrower">Borrowers</DropdownItem>
+							<DropdownItem tag={Link} to="/AdminBranch">	Branches</DropdownItem>
 							<DropdownItem tag={Link} to="/AdminGenre">Genres</DropdownItem>
-							<DropdownItem tag={Link} to="/AdminBranch">Publishers</DropdownItem>
+							<DropdownItem tag={Link} to="/AdminPublisher">Publishers</DropdownItem>
 							<DropdownItem divider/>
 							<DropdownItem tag={Link} to="/AdminLoan">Loaned Books</DropdownItem>
 							<DropdownItem> </DropdownItem>

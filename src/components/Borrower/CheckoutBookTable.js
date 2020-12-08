@@ -88,7 +88,7 @@ const CheckoutBookTable = ({ books, borrower, branch, handleCheckout }) => {
 		<React.Fragment>
 			<div className="mainblock">
 				{/* <Button onClick={() => handleRefresh()}>Refresh Books</Button>{' '} */}
-				<MDBDataTable striped bordered small responsive data={data} />
+				<MDBDataTable striped small responsive data={data} />
 			</div>
 		</React.Fragment>
 	);

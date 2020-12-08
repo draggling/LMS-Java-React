@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { AiFillHome } from 'react-icons/ai';
 
 const AdminHeader = () => {
 	return (
@@ -9,13 +10,8 @@ const AdminHeader = () => {
 			<div className="container-fluid">
 				<ul className="list-inline">
 					<li className="list-inline-item">
-						<Link to="/" className="navbar-brand">
-							<img width="65pxpx" height="65px" src="../images/admin.png" />
-						</Link>
-					</li>
-					<li className="list-inline-item">
 						<Link to="/" replace>
-							Home
+							<AiFillHome color = "#95ABBA" />
 						</Link>
 					</li>
 					<li className="list-inline-item">

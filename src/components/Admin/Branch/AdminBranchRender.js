@@ -2,7 +2,6 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button } from 'reactstrap';
 import { MDBDataTable } from 'mdbreact';
 import DeleteModal from '../../Modal/AdminBranch/DeleteModal';
 import UpdateModal from '../../Modal/AdminBranch/UpdateModal';
@@ -62,12 +61,9 @@ const AdminBranchRender = ({
 						handleCreate={handleCreate}
 						handleRefresh={handleRefresh}
 					/>
-					<Button onClick={() => handleRefresh()}>
-						Refresh Data
-					</Button>{' '}
 					<MDBDataTable
 						striped
-						bordered
+						//bordered
 						small
 						responsive
 						data={data}
@@ -119,7 +115,6 @@ const AdminBranchRender = ({
 	}
 	return (
 		<div>
-			<h1>Branches</h1>
 			{content}
 		</div>
 	);

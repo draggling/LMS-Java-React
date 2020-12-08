@@ -62,7 +62,6 @@ const LibrarianCopiesRender = ({
 				</Button>{' '}
 				<MDBDataTable
 					striped
-					bordered
 					small
 					responsive
 					data={data}
