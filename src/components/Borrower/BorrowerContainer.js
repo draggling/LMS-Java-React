@@ -10,22 +10,32 @@ import * as borrowerActions from '../../actions/borrowerActions';
 import BorrowerLoginForm from './BorrowerLoginForm';
 import CheckoutBranchTable from './CheckoutBranchTable';
 import CheckoutBookTable from './CheckoutBookTable';
+import CheckoutConfirmationModal from './CheckoutConfirmationModal';
+import ReturnConfirmationModal from './ReturnConfirmationModal';
 import ReturnLoansTable from './ReturnLoansTable';
 import BorrowerHeader from './BorrowerHeader';
 import Spinner from '../Util/Spinner';
-
 
 const BorrowerContainer = (props) => {
 	const { actions, borrower, borrowerDashboardInfo, requestInfo } = props;
 	useEffect(() => {
 		//actions.readBranches();
 	}, []);
-	let content = '';
+	let content = [];
 	function handleCheckout(book, borrower, branch) {
 		actions.processCheckout(book, borrower, branch);
 	}
+	function handleCloseCheckoutModal() {
+		actions.handleCloseCheckoutModal();
+	}
+	function handleCloseReturnModal() {
+		actions.handleCloseReturnModal();
+	}
 	function handleLoginAttempt(cardNo) {
 		actions.attemptLogin(cardNo);
+	}
+	function handleLogout() {
+		console.log('Logout to be implemented');
 	}
 	function handleReturn(loan) {
 		actions.processReturn(loan);
@@ -39,17 +49,15 @@ const BorrowerContainer = (props) => {
 	function startReturn() {
 		actions.startReturn(borrower.borrowerCardNo);
 	}
-
+	console.log(requestInfo);
 	let doesRequestInfoExist = requestInfo;
 	if (!borrower) {
 		if (!doesRequestInfoExist) {
-			content = <BorrowerLoginForm handleLoginAttempt={handleLoginAttempt} />;
-		}
-		if (doesRequestInfoExist && requestInfo.loginPending) {
-			content = Spinner();
-		}
-		if (doesRequestInfoExist && requestInfo.loginFailed) {
-			content = (
+			content.push(<BorrowerLoginForm handleLoginAttempt={handleLoginAttempt} />);
+		} else if (doesRequestInfoExist && requestInfo.loginPending) {
+			content.push(Spinner()); //add Key
+		} else if (doesRequestInfoExist && requestInfo.loginFailed) {
+			content.push(
 				<div>
 					<Alert color="danger">
 						The entered card number does not exist in our system please try
@@ -60,17 +68,19 @@ const BorrowerContainer = (props) => {
 			);
 		}
 	} else if (borrower && doesRequestInfoExist && requestInfo.loginSuccessful) {
-		content = [
+		content.push(
 			//Make into its own component in the future
 			<div key={0}>
+				<h4>Welcome {borrower.borrowerName}</h4>
 				<Button onClick={startCheckout}>Check-out</Button>
 				<Button onClick={startReturn}>Return</Button>
-			</div>,
-		];
+				<Button onClick={handleLogout}>Logout</Button>
+			</div>
+		);
 		if (borrowerDashboardInfo.isCheckingOut) {
 			if (!borrowerDashboardInfo.selectedBranch) {
 				if (requestInfo.branchesPending) {
-					content.push(<Spinner type="grow" color="primary" key={1} />);
+					content.push(Spinner()); //add Key
 				} else if (requestInfo.branchesSuccessful) {
 					content.push(
 						<CheckoutBranchTable
@@ -89,8 +99,21 @@ const BorrowerContainer = (props) => {
 				}
 			} else if (borrowerDashboardInfo.selectedBranch) {
 				if (requestInfo.booksPending) {
-					content.push(<Spinner type="grow" color="primary" key={1} />);
+					content.push(Spinner());
 				} else if (requestInfo.booksSuccessful) {
+					if (requestInfo.checkoutPending) {
+						console.log('checkout pending');
+					} else if (requestInfo.checkoutSuccessful) {
+						content.push(
+							<CheckoutConfirmationModal
+								key={2}
+								handleClose={handleCloseCheckoutModal}
+								newestLoan={borrowerDashboardInfo.newestLoan}
+							/>
+						);
+					} else if (requestInfo.checkoutFailed) {
+						console.log('checkout failed');
+					}
 					content.push(
 						<CheckoutBookTable
 							books={borrowerDashboardInfo.books}
@@ -110,10 +133,22 @@ const BorrowerContainer = (props) => {
 				}
 			}
 		} else if (borrowerDashboardInfo.isReturning) {
-			content.push('return clicked!');
 			if (requestInfo.loansPending) {
-				content.push(<Spinner type="grow" color="primary" key={1} />);
+				content.push(Spinner());
 			} else if (requestInfo.loansSuccessful) {
+				if (requestInfo.returnPending) {
+					console.log('return pending');
+				} else if (requestInfo.returnSuccessful) {
+					content.push(
+						<ReturnConfirmationModal
+							key={2}
+							handleClose={handleCloseReturnModal}
+							newestReturn={borrowerDashboardInfo.updatedLoan}
+						/>
+					);
+				} else if (requestInfo.returnFailed) {
+					console.log('return failed');
+				}
 				content.push(
 					<ReturnLoansTable
 						handleReturn={handleReturn}
@@ -121,11 +156,6 @@ const BorrowerContainer = (props) => {
 						key={1}
 					/>
 				);
-				//Have Popup for return date if loan
-				//
-				//
-				//
-				//
 			} else if (requestInfo.loansFailed) {
 				content.push(
 					<Alert color="danger" key={1}>

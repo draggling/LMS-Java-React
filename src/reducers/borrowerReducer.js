@@ -1,4 +1,3 @@
-
 import {
 	READ_BORROWERS_SUCCESSFUL,
 	READ_BORROWERS_PENDING,
@@ -15,6 +14,8 @@ import {
 	BORROWER_CHECKOUT_PENDING,
 	BORROWER_CHECKOUT_FAILURE,
 	BORROWER_CHECKOUT_SUCCESSFUL,
+	BORROWER_CLOSE_CHECKOUT_MODAL,
+	BORROWER_CLOSE_RETURN_MODAL,
 	BORROWER_DASHBOARD_READ_BOOKS_FAILED,
 	BORROWER_DASHBOARD_READ_BOOKS_SUCCESSFUL,
 	BORROWER_DASHBOARD_SELECT_BRANCH,
@@ -61,6 +62,7 @@ export default function borrowerReducer(state = {}, action) {
 					readPending: false,
 				},
 			};
+
 		case DELETE_BORROWER_REQUEST:
 			return {
 				...state,
@@ -128,7 +130,7 @@ export default function borrowerReducer(state = {}, action) {
 					updating: false,
 				},
 			};
-		case UPDATE_BORROWER_SUCCESSFUL: {
+		case UPDATE_BORROWER_SUCCESSFUL:
 			if (state.borrowerData.readPending) {
 				/* Not needed if we continue to use toggle instead of handle refresh*/
 				return {
@@ -161,7 +163,6 @@ export default function borrowerReducer(state = {}, action) {
 					},
 				};
 			}
-		}
 		case CREATE_BORROWER_REQUEST:
 			return {
 				...state,
@@ -205,7 +206,7 @@ export default function borrowerReducer(state = {}, action) {
 				},
 			};
 		}
-		case BORROWER_LOGIN_PENDING: {
+		case BORROWER_LOGIN_PENDING:
 			return {
 				...state,
 				borrowerDashboardInfo: null,
@@ -217,8 +218,7 @@ export default function borrowerReducer(state = {}, action) {
 					loginFailed: false,
 				},
 			};
-		}
-		case BORROWER_LOGIN_FAILURE: {
+		case BORROWER_LOGIN_FAILURE:
 			return {
 				...state,
 				borrowerDashboardInfo: null,
@@ -230,8 +230,7 @@ export default function borrowerReducer(state = {}, action) {
 					loginFailed: true,
 				},
 			};
-		}
-		case BORROWER_LOGIN_SUCCESSFUL: {
+		case BORROWER_LOGIN_SUCCESSFUL:
 			return {
 				...state,
 				borrowerDashboardInfo: {
@@ -246,8 +245,8 @@ export default function borrowerReducer(state = {}, action) {
 					loginFailed: false,
 				},
 			};
-		}
-		case BORROWER_START_CHECKOUT: {
+
+		case BORROWER_START_CHECKOUT:
 			return {
 				...state,
 				borrowerDashboardInfo: {
@@ -261,37 +260,7 @@ export default function borrowerReducer(state = {}, action) {
 					branchesFailed: false,
 				},
 			};
-		}
-		case BORROWER_READ_ACTIVE_LOANS_FAILED: {
-			return {
-				...state,
-				borrowerDashboardInfo: {
-					...state.borrowerDashboardInfo,
-				},
-				requestInfo: {
-					...state.requestInfo,
-					loansPending: false,
-					loansSuccessful: false,
-					loansFailed: true,
-				},
-			};
-		}
-		case BORROWER_READ_ACTIVE_LOANS_SUCCESSFUL: {
-			return {
-				...state,
-				borrowerDashboardInfo: {
-					...state.borrowerDashboardInfo,
-					loans: action.loans,
-				},
-				requestInfo: {
-					...state.requestInfo,
-					loansPending: false,
-					loansSuccessful: true,
-					loansFailed: false,
-				},
-			};
-		}
-		case BORROWER_READ_ALL_BRANCHES_FAILED: {
+		case BORROWER_READ_ALL_BRANCHES_FAILED:
 			return {
 				...state,
 				borrowerDashboardInfo: {
@@ -304,8 +273,7 @@ export default function borrowerReducer(state = {}, action) {
 					branchesFailed: true,
 				},
 			};
-		}
-		case BORROWER_READ_ALL_BRANCHES_SUCCESSFUL: {
+		case BORROWER_READ_ALL_BRANCHES_SUCCESSFUL:
 			return {
 				...state,
 				borrowerDashboardInfo: {
@@ -319,8 +287,110 @@ export default function borrowerReducer(state = {}, action) {
 					branchesFailed: false,
 				},
 			};
+
+		case BORROWER_DASHBOARD_SELECT_BRANCH:
+			return {
+				...state,
+				borrowerDashboardInfo: {
+					...state.borrowerDashboardInfo,
+					selectedBranch: action.selectedBranch,
+				},
+				requestInfo: {
+					...state.requestInfo,
+					booksPending: true,
+					booksSuccessful: false,
+					booksFailed: false,
+				},
+			};
+		case BORROWER_DASHBOARD_READ_BOOKS_SUCCESSFUL:
+			return {
+				...state,
+				borrowerDashboardInfo: {
+					...state.borrowerDashboardInfo,
+					books: action.booksAvailable,
+				},
+				requestInfo: {
+					...state.requestInfo,
+					booksPending: false,
+					booksSuccessful: true,
+					booksFailed: false,
+				},
+			};
+		case BORROWER_DASHBOARD_READ_BOOKS_FAILED:
+			return {
+				...state,
+				borrowerDashboardInfo: {
+					...state.borrowerDashboardInfo,
+				},
+				requestInfo: {
+					...state.requestInfo,
+					booksPending: false,
+					booksSuccessful: false,
+					booksFailed: true,
+				},
+			};
+
+		case BORROWER_CHECKOUT_PENDING:
+			return {
+				...state,
+				borrowerDashboardInfo: {
+					...state.borrowerDashboardInfo,
+				},
+				requestInfo: {
+					...state.requestInfo,
+					checkoutPending: true,
+					checkoutSuccessful: false,
+					checkoutFailed: false,
+				},
+			};
+		case BORROWER_CHECKOUT_FAILURE:
+			return {
+				...state,
+				borrowerDashboardInfo: {
+					...state.borrowerDashboardInfo,
+				},
+				requestInfo: {
+					...state.requestInfo,
+					checkoutPending: false,
+					checkoutSuccessful: false,
+					checkoutFailed: true,
+				},
+			};
+		case BORROWER_CHECKOUT_SUCCESSFUL: {
+			let updateAvailableBookList = state.borrowerDashboardInfo.books.filter(
+				(book) => {
+					return book.bookId != action.newLoan.key.bookId;
+				}
+			);
+			return {
+				...state,
+				borrowerDashboardInfo: {
+					...state.borrowerDashboardInfo,
+					books: updateAvailableBookList,
+					newestLoan: action.newLoan,
+				},
+				requestInfo: {
+					...state.requestInfo,
+					checkoutPending: false,
+					checkoutSuccessful: true,
+					checkoutFailed: false,
+				},
+			};
 		}
-		case BORROWER_START_RETURN: {
+		case BORROWER_CLOSE_CHECKOUT_MODAL: {
+			return {
+				...state,
+				borrowerDashboardInfo: {
+					...state.borrowerDashboardInfo,
+					newestLoan: null,
+				},
+				requestInfo: {
+					...state.requestInfo,
+					checkoutSuccessful: false,
+				},
+			};
+		}
+		case BORROWER_START_RETURN:
 			return {
 				...state,
 				borrowerDashboardInfo: {
@@ -335,38 +405,7 @@ export default function borrowerReducer(state = {}, action) {
 					loansFailed: false,
 				},
 			};
-		}
-		case BORROWER_DASHBOARD_SELECT_BRANCH: {
-			return {
-				...state,
-				borrowerDashboardInfo: {
-					...state.borrowerDashboardInfo,
-					selectedBranch: action.selectedBranch,
-				},
-				requestInfo: {
-					...state.requestInfo,
-					booksPending: true,
-					booksSuccessful: false,
-					booksFailed: false,
-				},
-			};
-		}
-		case BORROWER_DASHBOARD_READ_BOOKS_SUCCESSFUL: {
-			return {
-				...state,
-				borrowerDashboardInfo: {
-					...state.borrowerDashboardInfo,
-					books: action.booksAvailable,
-				},
-				requestInfo: {
-					...state.requestInfo,
-					booksPending: false,
-					booksSuccessful: true,
-					booksFailed: false,
-				},
-			};
-		}
-		case BORROWER_DASHBOARD_READ_BOOKS_FAILED: {
+		case BORROWER_READ_ACTIVE_LOANS_FAILED:
 			return {
 				...state,
 				borrowerDashboardInfo: {
@@ -374,62 +413,27 @@ export default function borrowerReducer(state = {}, action) {
 				},
 				requestInfo: {
 					...state.requestInfo,
-					booksPending: false,
-					booksSuccessful: false,
-					booksFailed: true,
+					loansPending: false,
+					loansSuccessful: false,
+					loansFailed: true,
 				},
 			};
-		}
-		case BORROWER_CHECKOUT_PENDING: {
+		case BORROWER_READ_ACTIVE_LOANS_SUCCESSFUL:
 			return {
 				...state,
 				borrowerDashboardInfo: {
 					...state.borrowerDashboardInfo,
+					loans: action.loans,
 				},
 				requestInfo: {
 					...state.requestInfo,
-					checkoutPending: true,
-					checkoutSuccessful: false,
-					checkoutFailed: false,
+					loansPending: false,
+					loansSuccessful: true,
+					loansFailed: false,
 				},
 			};
-		}
-		case BORROWER_CHECKOUT_FAILURE: {
-			return {
-				...state,
-				borrowerDashboardInfo: {
-					...state.borrowerDashboardInfo,
-				},
-				requestInfo: {
-					...state.requestInfo,
-					checkoutPending: false,
-					checkoutSuccessful: false,
-					checkoutFailed: true,
-				},
-			};
-		}
-		case BORROWER_CHECKOUT_SUCCESSFUL: {
-			let updateAvailableBookList = state.borrowerDashboardInfo.books.filter(
-				(book) => {
-					return book.bookId != action.newLoan.key.bookId;
-				}
-			);
-			return {
-				...state,
-				borrowerDashboardInfo: {
-					...state.borrowerDashboardInfo,
-					books: updateAvailableBookList,
-					newLoan: action.newLoan,
-				},
-				requestInfo: {
-					...state.requestInfo,
-					checkoutPending: false,
-					checkoutSuccessful: true,
-					checkoutFailed: false,
-				},
-			};
-		}
-		case BORROWER_RETURN_PENDING: {
+
+		case BORROWER_RETURN_PENDING:
 			return {
 				...state,
 				borrowerDashboardInfo: {
@@ -442,8 +446,7 @@ export default function borrowerReducer(state = {}, action) {
 					returnFailed: false,
 				},
 			};
-		}
-		case BORROWER_RETURN_FAILURE: {
+		case BORROWER_RETURN_FAILURE:
 			return {
 				...state,
 				borrowerDashboardInfo: {
@@ -451,12 +454,11 @@ export default function borrowerReducer(state = {}, action) {
 				},
 				requestInfo: {
 					...state.requestInfo,
-					checkoutPending: false,
-					checkoutSuccessful: false,
-					checkoutFailed: true,
+					returnPending: false,
+					returnSuccessful: false,
+					returnFailed: true,
 				},
 			};
-		}
 		case BORROWER_RETURN_SUCCESSFUL: {
 			const newLoanList = state.borrowerDashboardInfo.loans.filter((loan) => {
 				return (
@@ -474,9 +476,22 @@ export default function borrowerReducer(state = {}, action) {
 				},
 				requestInfo: {
 					...state.requestInfo,
-					checkoutPending: false,
-					checkoutSuccessful: true,
-					checkoutFailed: false,
+					returnPending: false,
+					returnSuccessful: true,
+					returnFailed: false,
+				},
+			};
+		}
+		case BORROWER_CLOSE_RETURN_MODAL: {
+			return {
+				...state,
+				borrowerDashboardInfo: {
+					...state.borrowerDashboardInfo,
+					updatedLoan: null,
+				},
+				requestInfo: {
+					...state.requestInfo,
+					returnSuccessful: false,
 				},
 			};
 		}

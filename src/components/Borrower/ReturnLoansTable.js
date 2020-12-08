@@ -11,7 +11,7 @@ const ReturnLoansTable = ({ handleReturn, loans }) => {
 	function parseBranchInfo(newObj) {
 		let rawData = newObj['branch.branchName'] + '\n' + newObj['branch.branchAddress'];
 		rawData = rawData.split('\n');
-		let parsedBranch = rawData.map((line) => <div key={line.	id}>{line}</div>);
+		let parsedBranch = rawData.map((line) => <div key={line.id}>{line}</div>);
 		return parsedBranch;
 	}
 
@@ -115,7 +115,7 @@ const ReturnLoansTable = ({ handleReturn, loans }) => {
 			loanCopy.branchInfo = parseBranchInfo(loanCopy);
 			loanCopy.parsedDueDate = formatDate(loanCopy.dueDate);
 			loanCopy.parsedDateOut = formatDate(loanCopy.dateOut);
-			loanCopy.return = <Button onClick={() => handleReturn(loan)}>Select</Button>;
+			loanCopy.return = <Button onClick={() => handleReturn(loan)}>Return</Button>;
 			return loanCopy;
 		});
 	}
@@ -132,12 +132,12 @@ const ReturnLoansTable = ({ handleReturn, loans }) => {
 				sort: 'asc',
 			},
 			{
-				label: 'dateOut',
+				label: 'Checkout Date',
 				field: 'parsedDateOut',
 				sort: 'asc',
 			},
 			{
-				label: 'dueDate',
+				label: 'Due Date',
 				field: 'parsedDueDate',
 				sort: 'asc',
 			},

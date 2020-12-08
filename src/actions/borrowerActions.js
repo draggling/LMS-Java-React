@@ -4,6 +4,8 @@ import {
 	BORROWER_CHECKOUT_PENDING,
 	BORROWER_CHECKOUT_FAILURE,
 	BORROWER_CHECKOUT_SUCCESSFUL,
+	BORROWER_CLOSE_CHECKOUT_MODAL,
+	BORROWER_CLOSE_RETURN_MODAL,
 	BORROWER_DASHBOARD_READ_BOOKS_FAILED,
 	BORROWER_DASHBOARD_READ_BOOKS_SUCCESSFUL,
 	BORROWER_DASHBOARD_SELECT_BRANCH,
@@ -37,24 +39,15 @@ export const attemptLogin = (cardNo) => {
 	};
 };
 
-export const selectBranchForCheckout = (branch, cardNo) => {
+export const handleCloseCheckoutModal = () => {
 	return (dispatch) => {
-		dispatch(_selectBranch(branch));
-		return axios
-			.get(
-				BORROWER_PORT +
-					'borrower/getBooksAvailableFromBranchForBorrower/' +
-					branch.branchId +
-					'/' +
-					cardNo
-			)
-			.then((response) => {
-				dispatch(_readBooksAtBranchSuccess(response));
-			})
-			.catch((error) => {
-				console.log(error);
-				dispatch(_readBooksAtBranchFailed(error));
-			});
+		dispatch(_closeCheckoutModal());
+	};
+};
+
+export const handleCloseReturnModal = () => {
+	return (dispatch) => {
+		dispatch(_closeReturnModal());
 	};
 };
 
@@ -84,7 +77,6 @@ export const processCheckout = (book, borrower, branch) => {
 			});
 	};
 };
-
 export const processReturn = (loanToReturn) => {
 	return (dispatch) => {
 		dispatch(_processReturn());
@@ -96,6 +88,27 @@ export const processReturn = (loanToReturn) => {
 			.catch((error) => {
 				console.log(error);
 				dispatch(_processReturnFailed(error));
+			});
+	};
+};
+
+export const selectBranchForCheckout = (branch, cardNo) => {
+	return (dispatch) => {
+		dispatch(_selectBranch(branch));
+		return axios
+			.get(
+				BORROWER_PORT +
+					'borrower/getBooksAvailableFromBranchForBorrower/' +
+					branch.branchId +
+					'/' +
+					cardNo
+			)
+			.then((response) => {
+				dispatch(_readBooksAtBranchSuccess(response));
+			})
+			.catch((error) => {
+				console.log(error);
+				dispatch(_readBooksAtBranchFailed(error));
 			});
 	};
 };
@@ -129,57 +142,26 @@ export const startReturn = (borrowerCardNo) => {
 	};
 };
 
-const _readBooksAtBranchSuccess = (res) => {
+const _closeCheckoutModal = () => {
 	return {
-		type: BORROWER_DASHBOARD_READ_BOOKS_SUCCESSFUL,
-		booksAvailable: res.data,
+		type: BORROWER_CLOSE_CHECKOUT_MODAL,
 	};
 };
-const _readBooksAtBranchFailed = (error) => {
+const _closeReturnModal = () => {
 	return {
-		type: BORROWER_DASHBOARD_READ_BOOKS_FAILED,
-		error,
-	};
-};
-const _loginAttemptInitiated = () => {
-	return {
-		type: BORROWER_LOGIN_PENDING,
-	};
-};
-const _loginAttemptFailed = (error) => {
-	return {
-		type: BORROWER_LOGIN_FAILURE,
-		error,
-	};
-};
-const _loginAttemptSuccessful = (res) => {
-	return {
-		type: BORROWER_LOGIN_SUCCESSFUL,
-		data: res.data,
-	};
-};
-
-const _selectBranch = (branch) => {
-	return {
-		type: BORROWER_DASHBOARD_SELECT_BRANCH,
-		selectedBranch: branch,
-	};
-};
-const _startCheckout = () => {
-	return {
-		type: BORROWER_START_CHECKOUT,
-	};
-};
-const _getActiveLoansForBorrowerSuccessful = (res) => {
-	return {
-		type: BORROWER_READ_ACTIVE_LOANS_SUCCESSFUL,
-		loans: res.data,
+		type: BORROWER_CLOSE_RETURN_MODAL,
 	};
 };
 const _getActiveLoansForBorrowerFailed = (error) => {
 	return {
 		type: BORROWER_READ_ACTIVE_LOANS_FAILED,
 		error,
+	};
+};
+const _getActiveLoansForBorrowerSuccessful = (res) => {
+	return {
+		type: BORROWER_READ_ACTIVE_LOANS_SUCCESSFUL,
+		loans: res.data,
 	};
 };
 const _getAllBranchesFailed = (error) => {
@@ -191,6 +173,23 @@ const _getAllBranchesFailed = (error) => {
 const _getAllBranchesSuccessful = (res) => {
 	return {
 		type: BORROWER_READ_ALL_BRANCHES_SUCCESSFUL,
+		data: res.data,
+	};
+};
+const _loginAttemptFailed = (error) => {
+	return {
+		type: BORROWER_LOGIN_FAILURE,
+		error,
+	};
+};
+const _loginAttemptInitiated = () => {
+	return {
+		type: BORROWER_LOGIN_PENDING,
+	};
+};
+const _loginAttemptSuccessful = (res) => {
+	return {
+		type: BORROWER_LOGIN_SUCCESSFUL,
 		data: res.data,
 	};
 };
@@ -212,7 +211,6 @@ const _processCheckoutSuccess = (res) => {
 		newLoan: res.data,
 	};
 };
-
 const _processReturn = () => {
 	return {
 		type: BORROWER_RETURN_PENDING,
@@ -228,6 +226,29 @@ const _processReturnSuccess = (res) => {
 	return {
 		type: BORROWER_RETURN_SUCCESSFUL,
 		loan: res.data,
+	};
+};
+const _readBooksAtBranchFailed = (error) => {
+	return {
+		type: BORROWER_DASHBOARD_READ_BOOKS_FAILED,
+		error,
+	};
+};
+const _readBooksAtBranchSuccess = (res) => {
+	return {
+		type: BORROWER_DASHBOARD_READ_BOOKS_SUCCESSFUL,
+		booksAvailable: res.data,
+	};
+};
+const _selectBranch = (branch) => {
+	return {
+		type: BORROWER_DASHBOARD_SELECT_BRANCH,
+		selectedBranch: branch,
+	};
+};
+const _startCheckout = () => {
+	return {
+		type: BORROWER_START_CHECKOUT,
 	};
 };
 const _startReturn = () => {
