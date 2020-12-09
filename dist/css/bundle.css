@@ -28,7 +28,7 @@ html, body, #app, #app>div {
 .jumbotron {
     /* background-color: #86A5BA; */
     padding: 1rem 2rem;
-    background-color: #95ABBA;
+    background-color: ghostwhite;
     text-align: center;
     display: flex;
     justify-content: center;
@@ -41,7 +41,12 @@ html, body, #app, #app>div {
     color: teal;
     line-height: 1.15;
     margin: 7px;
+
     padding-bottom: 10px;
+}
+
+.navbar navbar-inverse {
+    padding-left:45px;
 }
 
 .header-dropdown{
@@ -78,7 +83,7 @@ html, body, #app, #app>div {
 
 .dataTables_wrapper dt-bootstrap4 table {
     padding-left:15px;
-    padding-right:15px;
+    padding-right:45px;
 }
 
 .table-striped tbody tr:nth-of-type(odd) {
@@ -106,3 +111,78 @@ html, body, #app, #app>div {
 .librarianBranch {
     padding-bottom: 12px;
 }
+
+/* navbar */
+
+.sidebar {
+    justify-content: start;
+    align-items: center;
+  }
+  
+  .menu-bars {
+    padding-left: 15px;
+    font-size: 2rem;
+    background: none;
+  }
+  
+  .nav-menu {
+    /* nav menu color */
+    background-color: cadetblue;
+    width: 250px;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    position: fixed;
+    top: 0;
+    left: -100%;
+    transition: 850ms;
+  }
+  
+  .nav-menu.active {
+    left: 0;
+    transition: 350ms;
+  }
+  
+  .nav-text {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    padding: 8px 0px 8px 16px;
+    list-style: none;
+    height: 60px;
+  }
+  
+  .nav-text a {
+    text-decoration: none;
+    /* text color for sidebar options */
+    color: #f5f5f5;
+    font-size: 18px;
+    width: 95%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    border-radius: 4px;
+  }
+  
+  .nav-text a:hover {
+    background-color: #1a83ff;
+  }
+  
+  .nav-menu-items {
+    width: 100%;
+  }
+  
+  .navbar-toggle {
+    background-color: cadetblue;
+    width: 100%;
+    height: 80px;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+  }
+  
+  span {
+    margin-left: 16px;
+  }
+  

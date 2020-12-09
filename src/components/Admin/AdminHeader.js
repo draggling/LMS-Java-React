@@ -3,12 +3,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { AiFillHome } from 'react-icons/ai';
+import AdminNavbar from './navbar/navbar';
 
 const AdminHeader = () => {
 	return (
 		<nav className="navbar navbar-inverse">
 			<div className="container-fluid">
 				<ul className="list-inline">
+					<li className="list-inline-item">
+						<AdminNavbar/>
+					</li>
 					<li className="list-inline-item">
 						<Link to="/" replace>
 							<AiFillHome color = "#95ABBA" />
