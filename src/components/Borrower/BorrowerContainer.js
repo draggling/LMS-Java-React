@@ -2,6 +2,7 @@
 
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { AiOutlineArrowLeft } from 'react-icons/ai';
 import { connect } from 'react-redux';
 import { Alert, Button } from 'reactstrap';
 import { bindActionCreators } from 'redux';
@@ -22,6 +23,9 @@ const BorrowerContainer = (props) => {
 		//actions.readBranches();
 	}, []);
 	let content = [];
+	function goBackToBranchSelect() {
+		actions.returnToBranchSelect();
+	}
 	function handleCheckout(book, borrower, branch) {
 		actions.processCheckout(book, borrower, branch);
 	}
@@ -35,7 +39,7 @@ const BorrowerContainer = (props) => {
 		actions.attemptLogin(cardNo);
 	}
 	function handleLogout() {
-		console.log('Logout to be implemented');
+		actions.logoutBorrower();
 	}
 	function handleReturn(loan) {
 		actions.processReturn(loan);
@@ -50,15 +54,17 @@ const BorrowerContainer = (props) => {
 		actions.startReturn(borrower.borrowerCardNo);
 	}
 	console.log(requestInfo);
-	let doesRequestInfoExist = requestInfo;
+	let spinner = Spinner(-1);
 	if (!borrower) {
-		if (!doesRequestInfoExist) {
-			content.push(<BorrowerLoginForm handleLoginAttempt={handleLoginAttempt} />);
-		} else if (doesRequestInfoExist && requestInfo.loginPending) {
-			content.push(Spinner()); //add Key
-		} else if (doesRequestInfoExist && requestInfo.loginFailed) {
+		if (!requestInfo) {
 			content.push(
-				<div>
+				<BorrowerLoginForm handleLoginAttempt={handleLoginAttempt} key={1} />
+			);
+		} else if (requestInfo.loginPending) {
+			content.push(spinner); //add Key
+		} else if (requestInfo.loginFailed) {
+			content.push(
+				<div key={1}>
 					<Alert color="danger">
 						The entered card number does not exist in our system please try
 						again or contact an administrator
@@ -67,7 +73,7 @@ const BorrowerContainer = (props) => {
 				</div>
 			);
 		}
-	} else if (borrower && doesRequestInfoExist && requestInfo.loginSuccessful) {
+	} else if (borrower && requestInfo.loginSuccessful) {
 		content.push(
 			//Make into its own component in the future
 			<div key={0}>
@@ -80,7 +86,7 @@ const BorrowerContainer = (props) => {
 		if (borrowerDashboardInfo.isCheckingOut) {
 			if (!borrowerDashboardInfo.selectedBranch) {
 				if (requestInfo.branchesPending) {
-					content.push(Spinner()); //add Key
+					content.push(spinner); //add Key
 				} else if (requestInfo.branchesSuccessful) {
 					content.push(
 						<CheckoutBranchTable
@@ -99,7 +105,7 @@ const BorrowerContainer = (props) => {
 				}
 			} else if (borrowerDashboardInfo.selectedBranch) {
 				if (requestInfo.booksPending) {
-					content.push(Spinner());
+					content.push(spinner);
 				} else if (requestInfo.booksSuccessful) {
 					if (requestInfo.checkoutPending) {
 						console.log('checkout pending');
@@ -114,6 +120,15 @@ const BorrowerContainer = (props) => {
 					} else if (requestInfo.checkoutFailed) {
 						console.log('checkout failed');
 					}
+					content.push(
+						<Button
+							key="b1"
+							className="round-back-btn"
+							onClick={goBackToBranchSelect}
+						>
+							<AiOutlineArrowLeft />
+						</Button>
+					);
 					content.push(
 						<CheckoutBookTable
 							books={borrowerDashboardInfo.books}
@@ -134,7 +149,7 @@ const BorrowerContainer = (props) => {
 			}
 		} else if (borrowerDashboardInfo.isReturning) {
 			if (requestInfo.loansPending) {
-				content.push(Spinner());
+				content.push(spinner);
 			} else if (requestInfo.loansSuccessful) {
 				if (requestInfo.returnPending) {
 					console.log('return pending');
