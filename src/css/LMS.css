@@ -40,7 +40,7 @@ html, body, #app, #app>div {
 .header-dropdown{
     font-family: 'Monaco';
     font-size: 24px;
-    color: teal;
+    color: slategrey;
     height: 20px;
     line-height: 1.15;
 }
