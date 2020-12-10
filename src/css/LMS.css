@@ -134,6 +134,7 @@ html, body, #app, #app>div {
   .nav-menu.active {
     left: 0;
     transition: 350ms;
+    z-index: 9999;
   }
   
   .nav-text {

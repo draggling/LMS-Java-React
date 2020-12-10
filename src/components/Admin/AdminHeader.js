@@ -18,6 +18,7 @@ const AdminHeader = () => {
 							<AiFillHome color = "#95ABBA" />
 						</Link>
 					</li>
+					{/*
 					<li className="list-inline-item">
 						<Link to="/AdminAuthor" replace>
 							Authors
@@ -53,6 +54,7 @@ const AdminHeader = () => {
 							Loans
 						</Link>
 					</li>
+					*/}
 				</ul>
 			</div>
 		</nav>
