@@ -136,7 +136,7 @@ const LibrarianBranchRender =  ({
 	function showNonBookCopies() {
 		return(
 			<div>
-				<div>
+				<div className = "librarianBranch">
 					<Button color="warning" onClick={test}> Return </Button>
 				</div>
 				<div className = "librarianBranch">
