@@ -135,7 +135,7 @@ const UpdateModal = (props) => {
 				{buttonLabel}
 			</Button>
 			<Modal isOpen={modal} toggle={toggle}>
-				<ModalHeader toggle={toggle}>Create Book</ModalHeader>
+				<ModalHeader toggle={toggle}>Update Book</ModalHeader>
 				<ModalBody>
 					{alertMessage}
 					<Form>

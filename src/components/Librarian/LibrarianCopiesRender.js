@@ -116,7 +116,7 @@ const LibrarianCopiesRender = ({
 
 	return (
 		<div>
-			<h1>Books In {branchName}</h1>
+			<h1 className="bookCopiesTab">Books In {branchName}</h1>
 			{content}
 		</div>
 	);

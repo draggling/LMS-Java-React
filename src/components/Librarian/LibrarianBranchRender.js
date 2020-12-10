@@ -141,17 +141,16 @@ const LibrarianBranchRender =  ({
 				</div>
 				<div className = "librarianBranch">
 					<Button color="primary" onClick={changeView}> View Books In Library </Button> &nbsp;&nbsp;
-					<Button color="info" disabled> View Books not in Library</Button>
-
-					<LibrarianNonCopiesRender
-					branchData = {branchData}
-					selectedBranch = {selectedBranch}
-					handleRefresh = {handleRefresh}
-					setNonCopies = {setNonCopies}
-					requestInfoCopies = {requestInfoCopies} 
-					bookNonCopies = {bookNonCopies}
-					/>
+					<Button color="info" disabled> View Books Not In Library</Button>
 				</div>
+					<LibrarianNonCopiesRender
+						branchData = {branchData}
+						selectedBranch = {selectedBranch}
+						handleRefresh = {handleRefresh}
+						setNonCopies = {setNonCopies}
+						requestInfoCopies = {requestInfoCopies} 
+						bookNonCopies = {bookNonCopies}
+					/>
 			</div>
 		);
 	}
@@ -165,17 +164,16 @@ const LibrarianBranchRender =  ({
 				</div>
 				<div className = "librarianBranch">
 					<Button color="info" disabled> View Books In Library </Button> &nbsp;&nbsp;
-					<Button color="primary" onClick={changeView}> View Books not in Library</Button>
-
-					<LibrarianCopiesRender
-					branchData = {branchData}
-					selectedBranch = {selectedBranch}
-					handleRefresh = {handleRefresh}
-					setCopies = {setCopies}
-					requestInfoCopies = {requestInfoCopies} 
-					bookCopies = {bookCopies}
-				/>
+					<Button color="primary" onClick={changeView}> View Books Not In Library</Button>
 				</div>
+					<LibrarianCopiesRender
+						branchData = {branchData}
+						selectedBranch = {selectedBranch}
+						handleRefresh = {handleRefresh}
+						setCopies = {setCopies}
+						requestInfoCopies = {requestInfoCopies} 
+						bookCopies = {bookCopies}
+					/>
 			</div>
 		);
 	}
