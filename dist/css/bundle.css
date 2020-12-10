@@ -67,6 +67,11 @@ html, body, #app, #app>div {
     cursor: pointer,
 }
 
+.round-back-btn {
+    background-color: #e6ebe9;
+    color: #95ABBA;
+    border-radius: 50%;
+}
 /* header home button */
 .svg{
     height: 2em;
