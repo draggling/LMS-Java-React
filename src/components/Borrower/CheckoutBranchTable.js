@@ -10,7 +10,9 @@ const CheckoutBranchTable = ({ branches, selectBranch }) => {
 		return branches.map((branch) => {
 			let deepCopyBranch = JSON.parse(JSON.stringify(branch));
 			deepCopyBranch.select = (
-				<Button onClick={() => selectBranch(branch)}>Select</Button>
+				<Button className="mdbtable-btn" onClick={() => selectBranch(branch)}>
+					Select
+				</Button>
 			);
 			return deepCopyBranch;
 		});
@@ -36,7 +38,9 @@ const CheckoutBranchTable = ({ branches, selectBranch }) => {
 		rows: createBranchRows(),
 	};
 	return (
-		<div className="mainblock">
+		<div>
+			<h4 className="centered-text">Checkout a book from any of these branches </h4>
+			<br></br>
 			<MDBDataTable striped small responsive data={data} />
 		</div>
 	);

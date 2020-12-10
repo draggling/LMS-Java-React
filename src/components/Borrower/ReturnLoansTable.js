@@ -45,7 +45,11 @@ const ReturnLoansTable = ({ handleReturn, loans }) => {
 			loanCopy.branchInfo = parseBranchInfo(loanCopy);
 			loanCopy.parsedDueDate = formatDate(loanCopy.dueDate);
 			loanCopy.parsedDateOut = formatDate(loanCopy.dateOut);
-			loanCopy.return = <Button onClick={() => handleReturn(loan)}>Return</Button>;
+			loanCopy.return = (
+				<Button className="mdbtable-btn" onClick={() => handleReturn(loan)}>
+					Return
+				</Button>
+			);
 			return loanCopy;
 		});
 	}
@@ -81,8 +85,9 @@ const ReturnLoansTable = ({ handleReturn, loans }) => {
 	};
 	return (
 		<React.Fragment>
-			<div className="mainblock" key={2}>
-				{/* <Button onClick={() => handleRefresh()}>Refresh Data</Button>{' '} */}
+			<div>
+				<h4 className="centered-text">Return a book</h4>
+				<br></br>
 				<MDBDataTable striped small responsive data={data} />
 			</div>
 		</React.Fragment>

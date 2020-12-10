@@ -4,7 +4,7 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { AiOutlineArrowLeft } from 'react-icons/ai';
 import { connect } from 'react-redux';
-import { Alert, Button } from 'reactstrap';
+import { Alert, Button, Col, Container, Row } from 'reactstrap';
 import { bindActionCreators } from 'redux';
 
 import * as borrowerActions from '../../actions/borrowerActions';
@@ -57,49 +57,89 @@ const BorrowerContainer = (props) => {
 	if (!borrower) {
 		if (!requestInfo) {
 			content.push(
-				<BorrowerLoginForm handleLoginAttempt={handleLoginAttempt} key={1} />
+				<Row key={1}>
+					<Col
+						xs={{ size: 10, offset: 1 }}
+						sm={{ size: 8, offset: 2 }}
+						md={{ size: 6, offset: 3 }}
+						lg={{ size: 4, offset: 4 }}
+					>
+						<BorrowerLoginForm handleLoginAttempt={handleLoginAttempt} />
+					</Col>
+				</Row>
 			);
 		} else if (requestInfo.loginPending) {
-			content.push(spinner); //add Key
+			content.push(spinner);
 		} else if (requestInfo.loginFailed) {
 			content.push(
-				<div key={1}>
-					<Alert color="danger">
-						The entered card number does not exist in our system please try
-						again or contact an administrator
-					</Alert>
-					<BorrowerLoginForm handleLoginAttempt={handleLoginAttempt} />
-				</div>
+				<Row key={1}>
+					<Col
+						xs={{ size: 10, offset: 1 }}
+						sm={{ size: 8, offset: 2 }}
+						md={{ size: 6, offset: 3 }}
+						lg={{ size: 4, offset: 4 }}
+					>
+						<Alert color="danger">
+							The entered card number does not exist in our system please
+							try again or contact an administrator
+						</Alert>
+						<BorrowerLoginForm handleLoginAttempt={handleLoginAttempt} />
+					</Col>
+				</Row>
 			);
 		}
 	} else if (borrower && requestInfo.loginSuccessful) {
 		content.push(
 			//Make into its own component in the future
-			<div key={0}>
-				<h4>Welcome {borrower.borrowerName}</h4>
-				<Button onClick={startCheckout}>Check-out</Button>
-				<Button onClick={startReturn}>Return</Button>
-				<Button onClick={handleLogout}>Logout</Button>
-			</div>
+			<Row key={0}>
+				<Col xs={{ size: 10, offset: 1 }} lg={{ size: 8, offset: 2 }}>
+					<h3>Welcome, {borrower.borrowerName}</h3>
+					<br></br>
+					<Button
+						color={borrowerDashboardInfo.isCheckingOut ? 'primary' : 'info'}
+						onClick={startCheckout}
+					>
+						Check-out
+					</Button>
+					&nbsp;&nbsp;
+					<Button
+						color={borrowerDashboardInfo.isReturning ? 'primary' : 'info'}
+						onClick={startReturn}
+					>
+						Return
+					</Button>
+					<Button className="btn-right" onClick={handleLogout}>
+						Logout
+					</Button>
+				</Col>
+			</Row>
 		);
 		if (borrowerDashboardInfo.isCheckingOut) {
 			if (!borrowerDashboardInfo.selectedBranch) {
 				if (requestInfo.branchesPending) {
-					content.push(spinner); //add Key
+					content.push(spinner);
 				} else if (requestInfo.branchesSuccessful) {
 					content.push(
-						<CheckoutBranchTable
-							branches={borrowerDashboardInfo.branches}
-							selectBranch={selectBranch}
-							key={1}
-						/>
+						<Row key={1}>
+							<Col xs={{ size: 10, offset: 1 }} lg={{ size: 8, offset: 2 }}>
+								<br></br>
+								<CheckoutBranchTable
+									branches={borrowerDashboardInfo.branches}
+									selectBranch={selectBranch}
+								/>
+							</Col>
+						</Row>
 					);
 				} else if (requestInfo.branchesFailed) {
 					content.push(
-						<Alert color="danger" key={1}>
-							Their was an error trying to access library branches please
-							try again later or contact and Admin
-						</Alert>
+						<Row key={1}>
+							<Col xs={{ size: 10, offset: 1 }} lg={{ size: 8, offset: 2 }}>
+								<Alert color="danger">
+									Their was an error trying to access library branches
+									please try again later or contact and Admin
+								</Alert>
+							</Col>
+						</Row>
 					);
 				}
 			} else if (borrowerDashboardInfo.selectedBranch) {
@@ -120,29 +160,44 @@ const BorrowerContainer = (props) => {
 						console.log('checkout failed');
 					}
 					content.push(
-						<Button
-							key="b1"
-							className="round-back-btn"
-							onClick={goBackToBranchSelect}
-						>
-							<AiOutlineArrowLeft />
-						</Button>
+						<Row key="b1">
+							<Col xs={{ size: 4, offset: 1 }} lg={{ size: 3, offset: 2 }}>
+								<br></br>
+								<Button
+									className="round-back-btn"
+									onClick={goBackToBranchSelect}
+								>
+									<AiOutlineArrowLeft /> Branch Select
+								</Button>
+							</Col>
+							<Col xs={{ size: 7, offset: 5 }} lg={{ size: 7, offset: 5 }}>
+								<br></br>
+							</Col>
+						</Row>
 					);
 					content.push(
-						<CheckoutBookTable
-							books={borrowerDashboardInfo.books}
-							borrower={borrower}
-							branch={borrowerDashboardInfo.selectedBranch}
-							handleCheckout={handleCheckout}
-							key={1}
-						/>
+						<Row key={1}>
+							<Col xs={{ size: 10, offset: 1 }} lg={{ size: 8, offset: 2 }}>
+								<CheckoutBookTable
+									books={borrowerDashboardInfo.books}
+									borrower={borrower}
+									branch={borrowerDashboardInfo.selectedBranch}
+									handleCheckout={handleCheckout}
+									key={1}
+								/>
+							</Col>
+						</Row>
 					);
 				} else if (requestInfo.booksFailed) {
 					content.push(
-						<Alert color="danger" key={1}>
-							Their was an error trying to access available books please try
-							again later or contact and Admin
-						</Alert>
+						<Row key={1}>
+							<Col xs={{ size: 10, offset: 1 }} lg={{ size: 8, offset: 2 }}>
+								<Alert color="danger" key={1}>
+									Their was an error trying to access available books
+									please try again later or contact and Admin
+								</Alert>
+							</Col>
+						</Row>
 					);
 				}
 			}
@@ -164,32 +219,40 @@ const BorrowerContainer = (props) => {
 					console.log('return failed');
 				}
 				content.push(
-					<ReturnLoansTable
-						handleReturn={handleReturn}
-						loans={borrowerDashboardInfo.loans}
-						key={1}
-					/>
+					<Row key={1}>
+						<Col xs={{ size: 10, offset: 1 }} lg={{ size: 8, offset: 2 }}>
+							<br></br>
+							<ReturnLoansTable
+								handleReturn={handleReturn}
+								loans={borrowerDashboardInfo.loans}
+							/>
+						</Col>
+					</Row>
 				);
 			} else if (requestInfo.loansFailed) {
 				content.push(
-					<Alert color="danger" key={1}>
-						Their was an error trying to access available books please try
-						again later or contact and Admin
-					</Alert>
+					<Row key={1}>
+						<Col xs={{ size: 10, offset: 1 }} lg={{ size: 8, offset: 2 }}>
+							<Alert color="danger">
+								Their was an error trying to access available books please
+								try again later or contact and Admin
+							</Alert>
+						</Col>
+					</Row>
 				);
 			}
 		}
 	}
 	return (
-		<div>
+		<Container fluid={true}>
 			<BorrowerHeader />
-			<div className="jumbotron">
+			<Row className="jumbotron">
 				<img width="65px" height="65px" src="../images/borrower.png" />
 				<h1>&nbsp;&nbsp;Borrower Dashboard&nbsp;&nbsp;</h1>
 				<img width="65px" height="65px" src="../images/borrower.png" />
-			</div>
+			</Row>
 			{content}
-		</div>
+		</Container>
 	);
 };
 

@@ -15,7 +15,9 @@ const BorrowerLoginForm = (props) => {
 		handleLoginAttempt(enteredCardNumber);
 	}
 	return (
-		<Form className="mainblock" onSubmit={submitLoginAttempt}>
+		<Form className="borrower-login" onSubmit={submitLoginAttempt}>
+			<h2 className="centered-text">Welcome to the Public Library!</h2>
+			<br></br>
 			<FormGroup>
 				<Label for="formBorrowerCardNo">Card Number</Label>
 				<Input
@@ -26,7 +28,9 @@ const BorrowerLoginForm = (props) => {
 					onChange={handleCardNoChange}
 				/>
 			</FormGroup>
-			<Button>Submit</Button>
+			<Button className="btn-right" color="primary" size="lg">
+				Login
+			</Button>
 		</Form>
 	);
 };

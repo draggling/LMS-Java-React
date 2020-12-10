@@ -23,7 +23,7 @@ const ReturnConfirmationModal = ({ handleClose, newestReturn }) => {
 				<p>{newestReturn.branch.branchName}</p>
 				<h4>Return date: </h4>
 				<p>{formatDate(newestReturn.dateIn)}</p>
-				<Button color="secondary" className="" onClick={toggle}>
+				<Button color="secondary" className="btn-right" onClick={toggle}>
 					Close
 				</Button>
 			</ModalBody>
