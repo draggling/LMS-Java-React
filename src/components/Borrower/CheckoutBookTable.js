@@ -48,7 +48,10 @@ const CheckoutBookTable = ({ books, borrower, branch, handleCheckout }) => {
 			bookDeepCopy.authorInfo = parseAuthors(bookDeepCopy);
 			bookDeepCopy.genreInfo = parseGenres(bookDeepCopy);
 			bookDeepCopy.select = (
-				<Button onClick={() => handleCheckout(book, borrower, branch)}>
+				<Button
+					className="mdbtable-btn"
+					onClick={() => handleCheckout(book, borrower, branch)}
+				>
 					Select
 				</Button>
 			);
@@ -86,8 +89,9 @@ const CheckoutBookTable = ({ books, borrower, branch, handleCheckout }) => {
 	};
 	return (
 		<React.Fragment>
-			<div className="mainblock">
-				{/* <Button onClick={() => handleRefresh()}>Refresh Books</Button>{' '} */}
+			<div>
+				<h4 className="centered-text">Checkout any book</h4>
+				<br></br>
 				<MDBDataTable striped small responsive data={data} />
 			</div>
 		</React.Fragment>

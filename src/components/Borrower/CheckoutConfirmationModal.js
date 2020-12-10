@@ -23,7 +23,7 @@ const CheckoutConfirmationModal = ({ handleClose, newestLoan }) => {
 				<p>{newestLoan.branch.branchName}</p>
 				<h4>Your Due Date is: </h4>
 				<p>{formatDate(newestLoan.dueDate)}</p>
-				<Button color="secondary" className="" onClick={toggle}>
+				<Button color="secondary" className="btn-right" onClick={toggle}>
 					Close
 				</Button>
 			</ModalBody>

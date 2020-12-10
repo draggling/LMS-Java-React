@@ -6,9 +6,23 @@
     position: static;
     margin: 0 auto;
 }
+.borrower-login {
+    margin: 0 auto;
+}
 
+.btn-right {
+    float: right;
+}
+
+.centered-text {
+    text-align: center;
+}
+
+.mdbtable-btn {
+    width: 100%;
+}
 .container-fluid {
-    align-items: "center"
+    align-items: "center";
 }
 /* background color */
 html, body, #app, #app>div {
@@ -63,7 +77,7 @@ html, body, #app, #app>div {
 .round-back-btn {
     background-color: #e6ebe9;
     color: #95ABBA;
-    border-radius: 50%;
+    border-radius: 5%;
 }
 /* header home button */
 .svg{

@@ -33,6 +33,7 @@ export const attemptLogin = (cardNo) => {
 			.get(BORROWER_PORT + 'borrower/getBorrowerById/' + cardNo)
 			.then((response) => {
 				dispatch(_loginAttemptSuccessful(response));
+				dispatch(startCheckout());
 			})
 			.catch((error) => {
 				console.log(error);
@@ -126,6 +127,7 @@ export const selectBranchForCheckout = (branch, cardNo) => {
 };
 
 export const startCheckout = () => {
+	console.log('in checkout');
 	return (dispatch) => {
 		dispatch(_startCheckout());
 		return axios
