@@ -1,32 +1,25 @@
 import axios from 'axios';
 
 import {
-
 	LIBRARIAN_SELECT_BRANCH,
 	READ_BRANCHES_PENDING,
 	READ_BRANCHES_FAILURE,
 	READ_BRANCHES_SUCCESSFUL,
-
 	UPDATE_BRANCH_REQUEST,
 	UPDATE_BRANCH_FAILURE,
 	UPDATE_BRANCH_SUCCESSFUL,
-
 	READ_COPIES_PENDING,
 	READ_COPIES_SUCCESSFUL,
 	READ_COPIES_FAILURE,
-
 	READ_NON_COPIES_PENDING,
 	READ_NON_COPIES_SUCCESSFUL,
 	READ_NON_COPIES_FAILURE,
-	
 	CREATE_COPIES_REQUEST,
 	CREATE_COPIES_SUCCESSFUL,
 	CREATE_COPIES_FAILURE,
-
 	CREATE_NON_COPIES_REQUEST,
 	CREATE_NON_COPIES_SUCCESSFUL,
 	CREATE_NON_COPIES_FAILURE,
-
 	LIBRARIAN_SWITCH,
 	BRANCH_SELECT,
 } from '../constants/actionTypes';
@@ -66,13 +59,13 @@ export const updateBranch = (id, branchName, branchAddress) => {
 	};
 };
 
-
 export const readCopies = (branchId) => {
 	return (dispatch) => {
 		dispatch(_readCopiesStarted());
-		return axios.get(LIBRARIAN_PORT + '/librarian/readBranchCopies', {
-			params: {branchId: branchId}
-		})
+		return axios
+			.get(LIBRARIAN_PORT + '/librarian/readBranchCopies', {
+				params: { branchId: branchId },
+			})
 			.then((res) => {
 				dispatch(_readCopiesSuccess(res));
 			})
@@ -81,38 +74,43 @@ export const readCopies = (branchId) => {
 				dispatch(_readCopiesFailed(error));
 			});
 	};
-};	
+};
 
 export const readNonCopies = (branchId) => {
 	return (dispatch) => {
 		dispatch(_readNonCopiesStarted());
-		return axios.get(LIBRARIAN_PORT + 'librarian/readNonBranchCopies', {
-			params: {branchId: branchId}
-		})
-		.then((res) => {
-			dispatch(_readNonCopiesSuccess(res));
-		})
-		.catch((error) => {
-			console.log(error);
-			dispatch(_readNonCopiesFailed(error));
-		})
-	}
- }
+		return axios
+			.get(LIBRARIAN_PORT + 'librarian/readNonBranchCopies', {
+				params: { branchId: branchId },
+			})
+			.then((res) => {
+				dispatch(_readNonCopiesSuccess(res));
+			})
+			.catch((error) => {
+				console.log(error);
+				dispatch(_readNonCopiesFailed(error));
+			});
+	};
+};
 
 export const setCopies = (bookId, branchId, numOfCopies) => {
 	return (dispatch) => {
 		dispatch(_createCopiesRequest());
 		return axios
 			.post(LIBRARIAN_PORT + 'librarian/setBookCopies', {
-				book: {bookId: bookId},
-				branch: {branchId: branchId},
+				book: { bookId: bookId },
+				branch: { branchId: branchId },
+				key: {
+					bookId: bookId,
+					branchId: branchId,
+				},
 				numberOfCopies: numOfCopies,
 			})
 			.then((res) => {
 				dispatch(_createCopiesSuccess(res));
 			})
 			.catch((error) => {
-				console.log(error); 
+				console.log(error);
 				dispatch(_createCopiesFailed(error));
 			});
 	};
@@ -123,43 +121,46 @@ export const setNonCopies = (bookId, branchId, numOfCopies) => {
 		dispatch(_createNonCopiesRequest());
 		return axios
 			.post(LIBRARIAN_PORT + 'librarian/setBookCopies', {
-				book: {bookId: bookId},
-				branch: {branchId: branchId},
+				book: { bookId: bookId },
+				branch: { branchId: branchId },
+				key: {
+					bookId: bookId,
+					branchId: branchId,
+				},
 				numberOfCopies: numOfCopies,
 			})
 			.then((res) => {
 				dispatch(_createNonCopiesSuccess(res));
 			})
 			.catch((error) => {
-				console.log(error); 
+				console.log(error);
 				dispatch(_createNonCopiesFailed(error));
 			});
 	};
 };
 
 export const selectBranch = (branch) => {
-	return (dispatch) => { 
+	return (dispatch) => {
 		dispatch(_selectBranch(branch));
-	}
+	};
 };
 
 export const Switch = () => {
 	return (dispatch) => {
 		dispatch(_SwitchRequest());
-	}
-}
+	};
+};
 
 /* resets branch information */
 export const branchSelect = () => {
-	return (dispatch) =>
-		dispatch(_branchSelect());
-}
+	return (dispatch) => dispatch(_branchSelect());
+};
 
 const _branchSelect = () => {
 	return {
 		type: BRANCH_SELECT,
 	};
-}
+};
 const _SwitchRequest = () => {
 	return {
 		type: LIBRARIAN_SWITCH,
@@ -215,10 +216,9 @@ const _updateBranchFailed = (error) => {
 
 const _readCopiesStarted = () => {
 	return {
-		type: READ_COPIES_PENDING
+		type: READ_COPIES_PENDING,
 	};
 };
-
 
 const _readCopiesSuccess = (res) => {
 	return {
@@ -236,10 +236,9 @@ const _readCopiesFailed = (error) => {
 
 const _readNonCopiesStarted = () => {
 	return {
-		type: READ_NON_COPIES_PENDING
+		type: READ_NON_COPIES_PENDING,
 	};
 };
-
 
 const _readNonCopiesSuccess = (res) => {
 	return {

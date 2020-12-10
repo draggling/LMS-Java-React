@@ -11,6 +11,7 @@ import {
 	CREATE_BORROWER_REQUEST,
 	CREATE_BORROWER_FAILURE,
 	CREATE_BORROWER_SUCCESSFUL,
+	BORROWER_BACK_TO_BRANCH_SELECT,
 	BORROWER_CHECKOUT_PENDING,
 	BORROWER_CHECKOUT_FAILURE,
 	BORROWER_CHECKOUT_SUCCESSFUL,
@@ -22,6 +23,7 @@ import {
 	BORROWER_LOGIN_PENDING,
 	BORROWER_LOGIN_FAILURE,
 	BORROWER_LOGIN_SUCCESSFUL,
+	BORROWER_LOGOUT,
 	BORROWER_READ_ACTIVE_LOANS_FAILED,
 	BORROWER_READ_ACTIVE_LOANS_SUCCESSFUL,
 	BORROWER_READ_ALL_BRANCHES_FAILED,
@@ -245,6 +247,12 @@ export default function borrowerReducer(state = {}, action) {
 					loginFailed: false,
 				},
 			};
+		case BORROWER_LOGOUT:
+			return {
+				borrowerDashboardInfo: null,
+				loggedInBorrower: null,
+				requestInfo: null,
+			};
 
 		case BORROWER_START_CHECKOUT:
 			return {
@@ -281,10 +289,26 @@ export default function borrowerReducer(state = {}, action) {
 					branches: action.data,
 				},
 				requestInfo: {
-					...state.requestInfo,
 					branchesPending: false,
 					branchesSuccessful: true,
 					branchesFailed: false,
+					loginPending: false,
+					loginSuccessful: true,
+					loginFailed: false,
+				},
+			};
+		case BORROWER_BACK_TO_BRANCH_SELECT:
+			return {
+				...state,
+				borrowerDashboardInfo: {
+					...state.borrowerDashboardInfo,
+					selectedBranch: action.selectedBranch,
+				},
+				requestInfo: {
+					...state.requestInfo,
+					booksPending: false,
+					booksSuccessful: false,
+					booksFailed: false,
 				},
 			};
 

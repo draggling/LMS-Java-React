@@ -26,19 +26,24 @@ export const readLoans = () => {
 };
 
 export const extendLoan = (bookId, branchId, cardNo, difference) => {
-	console.log("extendLoan Values");
-	console.log("bookId = " + bookId);
-	console.log("branchId = " + branchId);
-	console.log("cardNo = " + cardNo);
-	console.log("difference = " + difference);
+	console.log('extendLoan Values');
+	console.log('bookId = ' + bookId);
+	console.log('branchId = ' + branchId);
+	console.log('cardNo = ' + cardNo);
+	console.log('difference = ' + difference);
 	return (dispatch) => {
 		dispatch(_extendLoanRequest());
 		return axios
 			.put(ADMIN_PORT + 'extendBookLoan', {
 				bookLoan: {
-					book: {bookId: bookId},
-					branch: {branchId: branchId},
-					borrower: {borrowerCardNo: cardNo},
+					book: { bookId: bookId },
+					branch: { branchId: branchId },
+					borrower: { borrowerCardNo: cardNo },
+					key: {
+						bookId: bookId,
+						branchId: branchId,
+						cardNo: cardNo,
+					},
 				},
 				daysToExtend: difference,
 			})

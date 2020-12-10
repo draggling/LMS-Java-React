@@ -30,30 +30,10 @@ export const parseMonth = (string) => {
 	}
 };
 export const formatDate = (obj) => {
+	console.log(obj);
 	const concat = (accumulator, currentValue) => accumulator + currentValue;
-	//2020-09-14T04:00:00Z
 	let array = Array.from(obj);
-	//09-14-2020 : 04:00AM
-	var am = true;
-	if (array.slice(11, 13).reduce(concat) < 12) {
-		am = true;
-	} else {
-		am = false;
-	}
-	var time = '';
-	// Parse hours depending on AM or PM
-	if (array.slice(11, 13).reduce(concat) > 12) {
-		time =
-			array.slice(11, 13).reduce(concat) -
-			12 +
-			array.slice(13, 16).reduce(concat) +
-			(am ? 'AM' : 'PM');
-	} else {
-		time =
-			parseInt(array.slice(11, 13).reduce(concat)) +
-			array.slice(13, 16).reduce(concat) +
-			(am ? 'AM' : 'PM');
-	}
+	//Ex 2020-12-11
 	// Parse Months
 	var month = parseMonth(array.slice(5, 7).reduce(concat));
 	return (
@@ -61,8 +41,8 @@ export const formatDate = (obj) => {
 		' ' +
 		parseInt(array.slice(8, 10).reduce(concat)) +
 		', ' +
-		array.slice(0, 4).reduce(concat) +
-		' ' +
-		time
+		array.slice(0, 4).reduce(concat) //+
+		// ' ' +
+		// time
 	);
 };
