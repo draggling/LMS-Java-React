@@ -92,7 +92,7 @@ export default function borrowerReducer(state = {}, action) {
 			};
 		case DELETE_BORROWER_SUCCESSFUL: {
 			const newBorrowers = state.borrowerData.borrowers.filter((borrower) => {
-				return borrower.borrowerCardNo != action.deletedId;
+				return borrower.borrowerCardNo !== action.deletedId;
 			});
 			return {
 				...state,
@@ -383,7 +383,7 @@ export default function borrowerReducer(state = {}, action) {
 		case BORROWER_CHECKOUT_SUCCESSFUL: {
 			let updateAvailableBookList = state.borrowerDashboardInfo.books.filter(
 				(book) => {
-					return book.bookId != action.newLoan.key.bookId;
+					return book.bookId !== action.newLoan.key.bookId;
 				}
 			);
 			return {
@@ -486,9 +486,9 @@ export default function borrowerReducer(state = {}, action) {
 		case BORROWER_RETURN_SUCCESSFUL: {
 			const newLoanList = state.borrowerDashboardInfo.loans.filter((loan) => {
 				return (
-					loan.key.bookId != action.loan.key.bookId &&
-					loan.key.branchId != action.loan.key.branchId &&
-					loan.key.cardNo != action.loan.key.cardNo
+					loan.key.bookId !== action.loan.key.bookId ||
+					loan.key.branchId !== action.loan.key.branchId ||
+					loan.key.cardNo !== action.loan.key.cardNo
 				);
 			});
 			return {

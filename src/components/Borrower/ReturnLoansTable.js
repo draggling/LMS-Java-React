@@ -7,8 +7,6 @@ import { Button } from 'reactstrap';
 import { formatDate } from '../../helpers/dateHelpers';
 
 const ReturnLoansTable = ({ handleReturn, loans }) => {
-	//console.log(loans);
-
 	function parseBranchInfo(newObj) {
 		let rawData = newObj['branch.branchName'] + '\n' + newObj['branch.branchAddress'];
 		rawData = rawData.split('\n');
