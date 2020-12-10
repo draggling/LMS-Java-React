@@ -26,11 +26,6 @@ export const readLoans = () => {
 };
 
 export const extendLoan = (bookId, branchId, cardNo, difference) => {
-	console.log('extendLoan Values');
-	console.log('bookId = ' + bookId);
-	console.log('branchId = ' + branchId);
-	console.log('cardNo = ' + cardNo);
-	console.log('difference = ' + difference);
 	return (dispatch) => {
 		dispatch(_extendLoanRequest());
 		return axios

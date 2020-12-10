@@ -30,7 +30,6 @@ export const parseMonth = (string) => {
 	}
 };
 export const formatDate = (obj) => {
-	console.log(obj);
 	const concat = (accumulator, currentValue) => accumulator + currentValue;
 	let array = Array.from(obj);
 	//Ex 2020-12-11

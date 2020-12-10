@@ -53,7 +53,6 @@ const BorrowerContainer = (props) => {
 	function startReturn() {
 		actions.startReturn(borrower.borrowerCardNo);
 	}
-	console.log(requestInfo);
 	let spinner = Spinner(-1);
 	if (!borrower) {
 		if (!requestInfo) {
