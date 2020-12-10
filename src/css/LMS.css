@@ -108,8 +108,29 @@ html, body, #app, #app>div {
 
 .librarianBranch {
     padding-bottom: 12px;
+    padding-left: 25px;
 }
 
+.btn-primary {
+    border-color: dodgerblue;
+    background-color: royalblue;
+}
+.bookCopiesTab {
+    text-align: center;
+    background-color: #B4CEE0;
+    padding-top: 12px;
+    padding-bottom: 12px;
+}
+
+.librarianButton {
+    width: 100%;
+    border-color: dodgerblue;
+    background-color:royalblue;
+}
+
+.btn-info.disabled, .btn-info:disabled {
+    border-color: royalblue;
+}
 /* navbar */
 
 .sidebar {

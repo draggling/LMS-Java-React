@@ -7,7 +7,9 @@ const AdminHome = () => {
 		<div>
 			<AdminHeader />
 			<div className="jumbotron">
-				<h1>Administrator Library Home</h1>
+				<img width="65pxpx" height="65px" src="../../images/admin.png" />
+					<h1>&nbsp;&nbsp;Admin Home&nbsp;&nbsp;</h1>
+				<img width="65pxpx" height="65px" src="../../images/admin.png" />			
 			</div>
 		</div>
 	);

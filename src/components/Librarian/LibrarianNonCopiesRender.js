@@ -95,8 +95,8 @@ const LibrarianNonCopiesRender = ({
 			newObj.title = obj.title;
 			newObj.authors = getAuthors(obj.authors);
 			newObj.copies = (
-				<div>
-					<UpdateBookNonCopiesModal
+				<div className = "librarianButton" >
+					<UpdateBookNonCopiesModal 
 					buttonLabel="Copies"
 					bookId = {newObj.bookId}
 					branchId={selectedBranch}
@@ -113,7 +113,7 @@ const LibrarianNonCopiesRender = ({
 
 	return (
 		<div>
-			<h1>Books not in {branchName}</h1>
+			<h1 className="bookCopiesTab">Books not in {branchName}</h1>
 			{content}
 		</div>
 	);

@@ -43,5 +43,11 @@ export const SidebarData = [
     path: '/adminLoan',
     cName: 'nav-text',
     icon: <AiFillCaretRight />,
+  },
+  {
+    title: 'Publishers',
+    path: '/adminPublisher',
+    cName: 'nav-text',
+    icon: <AiFillCaretRight />,
   }
 ];

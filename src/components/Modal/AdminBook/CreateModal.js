@@ -16,7 +16,7 @@ const CreateModal = (props) => {
 	const {
 		buttonLabel,
 		handleCreate,
-		handleRefresh,
+		//handleRefresh,
 		publishers,
 		authors,
 		genres,
@@ -24,7 +24,7 @@ const CreateModal = (props) => {
 	/* deprecated errorAlerts */
 	let newBookName = '';
 	let newPubId = 0;
-	let newPub = '';
+	let newPub = null;
 	let authorKeys = [];
 	let genreKeys = [];
 	let errorHandler = errorHandler || {error: false, message: ""};
@@ -36,6 +36,8 @@ const CreateModal = (props) => {
 			genreKeys.length > 0
 		) {
 			/* push author objects into newAuthors variable */
+			errorHandler.error = false;
+			errorHandler.message = "";
 			let newAuthors = [];
 			for (let i = 0; i < authors.length; i++) {
 				if (authorKeys.includes(authors[i].authorId.toString())) {
@@ -60,9 +62,7 @@ const CreateModal = (props) => {
 					</UncontrolledAlert>
 				</div>
 			);
-			handleRefresh();
 		}
-		//handleRefresh();
 	}
 
 	function handleNameChange(e) {
@@ -107,7 +107,6 @@ const CreateModal = (props) => {
 
 	const [modal, setModal] = useState(false);
 	const toggle = () => setModal(!modal);
-
 	return (
 		<div>
 			<Button color="primary" onClick={toggle}>
@@ -116,7 +115,7 @@ const CreateModal = (props) => {
 			<Modal isOpen={modal} toggle={toggle}>
 				<ModalHeader toggle={toggle}>Create Book</ModalHeader>
 				<ModalBody>
-					{errorHandler && errorHandler.error && errorHandler.message}
+					{errorHandler && errorHandler.message}
 					<Form>
 						<FormGroup>
 							<Label form="formBookName"> Book Name </Label>
@@ -203,7 +202,7 @@ CreateModal.propTypes = {
 	authors: PropTypes.array,
 	genres: PropTypes.array,
 	buttonLabel: PropTypes.string,
-	handleRefresh: PropTypes.func,
+	//handleRefresh: PropTypes.func,
 	handleCreate: PropTypes.func,
 };
 

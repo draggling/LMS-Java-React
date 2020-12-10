@@ -54,7 +54,7 @@ const UpdateBookNonCopiesModal = (props) => {
     
     return (
         <div>
-            <Button color="primary" onClick={toggle}>
+            <Button color="primary" className="librarianButton" onClick={toggle}>
                 {buttonLabel}
             </Button>
             <Modal isOpen={modal} toggle={toggle} size = 'xl'>
