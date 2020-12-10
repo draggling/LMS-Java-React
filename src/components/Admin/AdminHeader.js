@@ -3,6 +3,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { AiFillHome } from 'react-icons/ai';
+import AdminNavbar from './navbar/navbar';
 
 const AdminHeader = () => {
 	return (
@@ -10,10 +11,14 @@ const AdminHeader = () => {
 			<div className="container-fluid">
 				<ul className="list-inline">
 					<li className="list-inline-item">
+						<AdminNavbar/>
+					</li>
+					<li className="list-inline-item">
 						<Link to="/" replace>
 							<AiFillHome color = "#95ABBA" />
 						</Link>
 					</li>
+					{/*
 					<li className="list-inline-item">
 						<Link to="/AdminAuthor" replace>
 							Authors
@@ -49,6 +54,7 @@ const AdminHeader = () => {
 							Loans
 						</Link>
 					</li>
+					*/}
 				</ul>
 			</div>
 		</nav>
