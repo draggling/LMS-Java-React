@@ -3,7 +3,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { MDBDataTable } from 'mdbreact';
-import { Button } from 'reactstrap';
+import { Button, Col, Row } from 'reactstrap';
 
 const CheckoutBranchTable = ({ branches, selectBranch }) => {
 	function createBranchRows() {
@@ -38,11 +38,16 @@ const CheckoutBranchTable = ({ branches, selectBranch }) => {
 		rows: createBranchRows(),
 	};
 	return (
-		<div>
-			<h4 className="centered-text">Checkout a book from any of these branches </h4>
-			<br></br>
-			<MDBDataTable striped small responsive data={data} />
-		</div>
+		<Row key={1}>
+			<Col xs={{ size: 10, offset: 1 }} lg={{ size: 8, offset: 2 }}>
+				<br></br>
+				<h4 className="centered-text">
+					Checkout a book from any of these branches{' '}
+				</h4>
+				<br></br>
+				<MDBDataTable striped small responsive data={data} />
+			</Col>
+		</Row>
 	);
 };
 

@@ -75,9 +75,8 @@ html, body, #app, #app>div {
 }
 
 .round-back-btn {
-    background-color: #e6ebe9;
-    color: #95ABBA;
     border-radius: 5%;
+    color: #000000;
 }
 /* header home button */
 .svg{

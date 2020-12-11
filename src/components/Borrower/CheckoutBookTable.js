@@ -3,9 +3,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { MDBDataTable } from 'mdbreact';
-import { Button } from 'reactstrap';
+import { AiOutlineArrowLeft } from 'react-icons/ai';
+import { Button, Col, Row } from 'reactstrap';
 
-const CheckoutBookTable = ({ books, borrower, branch, handleCheckout }) => {
+const CheckoutBookTable = ({
+	books,
+	borrower,
+	branch,
+	goBackToBranchSelect,
+	handleCheckout,
+}) => {
 	function parsePublisherInfo(bookCopy) {
 		return bookCopy.publisher.publisherName;
 	}
@@ -89,11 +96,29 @@ const CheckoutBookTable = ({ books, borrower, branch, handleCheckout }) => {
 	};
 	return (
 		<React.Fragment>
-			<div>
-				<h4 className="centered-text">Checkout any book</h4>
-				<br></br>
-				<MDBDataTable striped small responsive data={data} />
-			</div>
+			<Row>
+				<Col xs={{ size: 4, offset: 1 }} lg={{ size: 3, offset: 2 }}>
+					<br></br>
+					<Button
+						className="round-back-btn"
+						color="secondary"
+						onClick={goBackToBranchSelect}
+						outline
+					>
+						<AiOutlineArrowLeft /> Branch Select
+					</Button>
+				</Col>
+				<Col xs={{ size: 7, offset: 5 }} lg={{ size: 7, offset: 5 }}>
+					<br></br>
+				</Col>
+			</Row>
+			<Row>
+				<Col xs={{ size: 10, offset: 1 }} lg={{ size: 8, offset: 2 }}>
+					<h4 className="centered-text">Checkout any book</h4>
+					<br></br>
+					<MDBDataTable striped small responsive data={data} />
+				</Col>
+			</Row>
 		</React.Fragment>
 	);
 };
@@ -102,6 +127,7 @@ CheckoutBookTable.propTypes = {
 	books: PropTypes.array,
 	borrower: PropTypes.object,
 	branch: PropTypes.object,
+	goBackToBranchSelect: PropTypes.func,
 	handleCheckout: PropTypes.func,
 };
 export default CheckoutBookTable;
