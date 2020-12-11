@@ -127,7 +127,6 @@ export const selectBranchForCheckout = (branch, cardNo) => {
 };
 
 export const startCheckout = () => {
-	console.log('in checkout');
 	return (dispatch) => {
 		dispatch(_startCheckout());
 		return axios
