@@ -8,7 +8,7 @@ import {
 	FormGroup,
 	Label,
 	Input,
-	UncontrolledAlert,
+	FormFeedback,
 } from 'reactstrap';
 import PropTypes from 'prop-types';
 
@@ -20,7 +20,6 @@ const UpdateModal = (props) => {
 		currentAuthors,
 		currentGenres,
 		handleUpdate,
-		handleRefresh,
 		publishers,
 		authors,
 		genres,
@@ -30,6 +29,7 @@ const UpdateModal = (props) => {
 	let newBookName = currentTitle;
 	let newPub = currentPub;
 	let authorKeys = [];
+	const [titleCheck, checkTitle] = useState(true);
 	for (let i = 0; i < currentAuthors.length; i++) {
 		authorKeys.push(currentAuthors[i].authorId.toString());
 	}
@@ -38,9 +38,12 @@ const UpdateModal = (props) => {
 		genreKeys.push(currentGenres[i].genreId.toString());
 	}
 
-	let alertMessage = alertMessage || '';
+	function resetData() {
+		checkTitle(true);
+	}
 
 	function updateBook() {
+		checkTitle(newBookName.length > 0 && newBookName < 45);
 		if (
 			newBookName !== '' &&
 			newPubId > 0 &&
@@ -61,33 +64,15 @@ const UpdateModal = (props) => {
 					newGenres.push(genres[i]);
 				}
 			}
-			alertMessage = ""
 			handleUpdate(bookId, newBookName, newPub, newAuthors, newGenres);
 			toggle();
 		} else {
-			alertMessage = (
-				<div>
-					<UncontrolledAlert color="warning">
-						ERROR: Invalid Input!
-					</UncontrolledAlert>
-				</div>
-			);
-			handleRefresh();
+			console.log("submit failed");
 		}
 	}
 
 	function handleNameChange(e) {
-		if (!e.target.value || e.target.value.length > 45) {
-			alertMessage = (
-				<div>
-					<UncontrolledAlert color="warning">
-						ERROR: Invalid Book Title!
-					</UncontrolledAlert>
-				</div>
-			);
-		} else {
-			newBookName = e.target.value;
-		}
+		newBookName = e.target.value;
 	}
 	function handlePublisherChange(e) {
 		if (e.target.value > 0) {
@@ -97,8 +82,6 @@ const UpdateModal = (props) => {
 					newPub = publisher;
 				}
 			}
-		} else {
-			console.log('ERROR');
 		}
 	}
 
@@ -127,8 +110,10 @@ const UpdateModal = (props) => {
 	}
 
 	const [modal, setModal] = useState(false);
-	const toggle = () => setModal(!modal);
-
+	const toggle = () => {
+		setModal(!modal);
+		resetData();
+	}
 	return (
 		<div>
 			<Button color="primary" onClick={toggle}>
@@ -137,18 +122,37 @@ const UpdateModal = (props) => {
 			<Modal isOpen={modal} toggle={toggle}>
 				<ModalHeader toggle={toggle}>Update Book</ModalHeader>
 				<ModalBody>
-					{alertMessage}
 					<Form>
 						<FormGroup>
 							<Label form="formBookName"> Book Name </Label>
+							{titleCheck &&
 							<Input
 								type="text"
-								defaultValue={currentTitle}
 								id="formBookName"
+								minLength={1}
 								maxLength={45}
 								name="title"
 								onChange={handleNameChange}
+								defaultValue = {currentTitle}
+								required
 							/>
+							}
+							{!titleCheck &&
+								<React.Fragment>
+									<Input
+										type="text"
+										id="formBookName"
+										minLength={1}
+										maxLength={45}
+										name="title"
+										onChange={handleNameChange}
+										defaultValue = {currentTitle}
+										required
+										invalid
+										/>
+									<FormFeedback> Invalid Book Title </FormFeedback>
+								</React.Fragment>
+							}
 						</FormGroup>
 						<FormGroup>
 							<Label form="formPublisher"> Book Publisher </Label>
@@ -158,7 +162,6 @@ const UpdateModal = (props) => {
 								id="formPublisher"
 								name="publisher"
 								onChange={handlePublisherChange}
-								placeholder="New Publisher"
 							>
 								{publishers.map((publisher) => (
 									<option
@@ -224,7 +227,6 @@ UpdateModal.propTypes = {
 	authors: PropTypes.array,
 	genres: PropTypes.array,
 	buttonLabel: PropTypes.string,
-	handleRefresh: PropTypes.func,
 	handleUpdate: PropTypes.func,
 	currentTitle: PropTypes.string,
 	currentPub: PropTypes.object,

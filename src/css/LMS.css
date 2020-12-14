@@ -14,6 +14,11 @@
     float: right;
 }
 
+.btn-left {
+    float: left;
+    position: static;
+}
+
 .centered-text {
     text-align: center;
 }
@@ -122,6 +127,8 @@ html, body, #app, #app>div {
 .librarianBranch {
     padding-bottom: 12px;
     padding-left: 25px;
+    padding-right: 25px;
+    text-align: right;
 }
 
 .btn-primary {

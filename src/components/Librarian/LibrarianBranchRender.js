@@ -137,9 +137,7 @@ const LibrarianBranchRender =  ({
 		return(
 			<div>
 				<div className = "librarianBranch">
-					<Button color="warning" onClick={test}> Return </Button>
-				</div>
-				<div className = "librarianBranch">
+					<Button className = "btn-left" color="warning" onClick={test}> Return </Button>
 					<Button color="primary" onClick={changeView}> View Books In Library </Button> &nbsp;&nbsp;
 					<Button color="info" disabled> View Books Not In Library</Button>
 				</div>
@@ -160,9 +158,7 @@ const LibrarianBranchRender =  ({
 		return(
 			<div>
 				<div className = "librarianBranch">
-					<Button color="warning" onClick={test}> Return </Button>
-				</div>
-				<div className = "librarianBranch">
+					<Button className = "btn-left" color="warning" onClick={test}> Return </Button>
 					<Button color="info" disabled> View Books In Library </Button> &nbsp;&nbsp;
 					<Button color="primary" onClick={changeView}> View Books Not In Library</Button>
 				</div>

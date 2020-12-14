@@ -6,6 +6,7 @@ import {
 	ModalBody,
 	Form,
 	FormGroup,
+	FormFeedback,
 	Label,
 	Input,
 } from 'reactstrap';
@@ -16,28 +17,55 @@ const CreateModal = (props) => {
 	const {
 		buttonLabel,
 		handleCreate,
-		//handleRefresh,
 		publishers,
 		authors,
 		genres,
 	} = props;
-	/* deprecated errorAlerts */
-	let newBookName = '';
+	/* constant state values */
+	const [validData, alertMessage] = useState("");
+	const [titleCheck, checkTitle] = useState("");
+	const [publisherCheck, checkPublisher] = useState(null);
+	const [authorsCheck, checkAuthors] = useState([]);
+	const [genresCheck, checkGenres] = useState([]);
+
+	/* temporary state values */
+	let newBookName = titleCheck;
+	let newPub = publisherCheck;
 	let newPubId = 0;
-	let newPub = null;
-	let authorKeys = [];
-	let genreKeys = [];
-	let errorHandler = errorHandler || {error: false, message: ""};
+	if(publisherCheck !== null) {
+		newPubId = publisherCheck.publisherId;
+	}
+	let authorKeys = authorsCheck;
+	let genreKeys = genresCheck;
+	console.log("START");
+	console.log(titleCheck);
+	function resetData() {
+		alertMessage("");
+		checkTitle('');
+		checkPublisher(null);
+		checkAuthors([]);
+		checkGenres([]);
+	}
+	function checkData() {
+		(newBookName.length > 0 && newBookName.length < 45)
+		?	checkTitle(newBookName)
+		:	checkTitle(false);
+		(newPubId > 0)
+		?	checkPublisher(newPub)
+		:	checkPublisher(false);
+		(authorKeys.length > 0)
+		?	checkAuthors(authorKeys)
+		:	checkAuthors(false);
+		(genreKeys.length > 0)
+		?	checkGenres(genreKeys)
+		:	checkGenres(false);
+	}
 	function createBook() {
-		if (
-			newBookName !== '' &&
-			newPubId > 0 &&
-			authorKeys.length > 0 &&
-			genreKeys.length > 0
-		) {
+		checkData();
+		if (newBookName.length > 0 && newBookName.length < 45
+		&& newPubId > 0 && authorKeys.length > 0 && genreKeys.length > 0)
+			{
 			/* push author objects into newAuthors variable */
-			errorHandler.error = false;
-			errorHandler.message = "";
 			let newAuthors = [];
 			for (let i = 0; i < authors.length; i++) {
 				if (authorKeys.includes(authors[i].authorId.toString())) {
@@ -51,11 +79,11 @@ const CreateModal = (props) => {
 					newGenres.push(genres[i]);
 				}
 			}
-			handleCreate(newBookName, newPub, newAuthors, newGenres);
+			alertMessage("");
+			handleCreate(titleCheck, publisherCheck, newAuthors, newGenres);
 			toggle();
 		} else {
-			errorHandler.error = true;
-			errorHandler.message = (
+			alertMessage(
 				<div>
 					<UncontrolledAlert color="warning">
 						ERROR: Invalid Input!
@@ -76,8 +104,6 @@ const CreateModal = (props) => {
 					newPub = publisher;
 				}
 			}
-		} else {
-			console.log('ERROR');
 		}
 	}
 
@@ -106,7 +132,16 @@ const CreateModal = (props) => {
 	}
 
 	const [modal, setModal] = useState(false);
-	const toggle = () => setModal(!modal);
+	const toggle = () => {
+		setModal(!modal);
+		resetData();
+	}
+	console.log("name : ");
+	console.log(newBookName);
+	console.log("titleCheck : ");
+	console.log(titleCheck);
+	console.log("authorsCheck : ");
+	console.log(authorsCheck);
 	return (
 		<div>
 			<Button color="primary" onClick={toggle}>
@@ -115,45 +150,131 @@ const CreateModal = (props) => {
 			<Modal isOpen={modal} toggle={toggle}>
 				<ModalHeader toggle={toggle}>Create Book</ModalHeader>
 				<ModalBody>
-					{errorHandler && errorHandler.message}
+					{validData}
 					<Form>
 						<FormGroup>
 							<Label form="formBookName"> Book Name </Label>
-							<Input
-								type="text"
-								id="formBookName"
-								maxLength={45}
-								name="title"
-								onChange={handleNameChange}
-								placeholder="New Book Name"
+							{titleCheck !== false && titleCheck == ''  &&
+								<Input
+									type="text"
+									id="formBookName"
+									minLength={1}
+									maxLength={45}
+									name="title"
+									onChange={handleNameChange}
+									placeholder="New Book Name"
+									required
 							/>
+							}
+							{titleCheck && titleCheck != '' &&
+								<Input
+									type="text"
+									id="formBookName"
+									minLength={1}
+									maxLength={45}
+									name="title"
+									onChange={handleNameChange}
+									defaultValue={titleCheck}
+									required
+							/>
+							}
+							{titleCheck === false &&
+								<React.Fragment>
+									<Input
+										type="text"
+										id="formBookNameInvalid"
+										minLength={1}
+										maxLength={45}
+										name="title"
+										onChange={handleNameChange}
+										placeholder="New Book Name"
+										required
+										invalid
+									/>
+									<FormFeedback> Invalid Book Title </FormFeedback>
+								</React.Fragment>
+							}
 						</FormGroup>
 						<FormGroup>
 							<Label form="formPublisher"> Book Publisher </Label>
-							<Input
-								type="select"
-								id="formPublisher"
-								name="publisher"
-								onChange={handlePublisherChange}
-								placeholder="New Publisher"
-							>
-								<option key={0} value={0} unselectable="on">
-									SELECT
-								</option>
-								{publishers.map((publisher) => (
-									<option
-										key={publisher.publisherId}
-										value={publisher.publisherId}
+							{publisherCheck !== false && publisherCheck == null &&
+								<Input
+									type="select"
+									id="formPublisher"
+									name="publisher"
+									onChange={handlePublisherChange}
+									placeholder="New Publisher"
 									>
-										{publisher.publisherName +
-											', ' +
-											publisher.publisherAddress}
+									<option key={0} value={0} unselectable="on">
+										SELECT
 									</option>
-								))}
-							</Input>
+									{publishers.map((publisher) => (
+										<option
+											key={publisher.publisherId}
+											value={publisher.publisherId}
+										>
+											{publisher.publisherName +
+												', ' +
+												publisher.publisherAddress}
+									</option>
+									))}
+								</Input>
+							}
+							{publisherCheck !== false && publisherCheck !== null &&
+								<React.Fragment>
+								<Input
+									type="select"
+									id="formPublisher"
+									name="publisher"
+									onChange={handlePublisherChange}
+									defaultValue={newPubId}
+									>
+									<option key={0} value={0} unselectable="on">
+										SELECT
+									</option>
+									{publishers.map((publisher) => (
+										<option
+											key={publisher.publisherId}
+											value={publisher.publisherId}
+										>
+											{publisher.publisherName +
+												', ' +
+												publisher.publisherAddress}
+									</option>
+									))}
+								</Input>
+								</React.Fragment>
+							}
+							{publisherCheck === false &&
+								<React.Fragment>
+								<Input
+									type="select"
+									id="formPublisher"
+									name="publisher"
+									onChange={handlePublisherChange}
+									invalid
+									>
+									<option key={0} value={0} unselectable="on">
+										SELECT
+									</option>
+									{publishers.map((publisher) => (
+										<option
+											key={publisher.publisherId}
+											value={publisher.publisherId}
+										>
+											{publisher.publisherName +
+												', ' +
+												publisher.publisherAddress}
+									</option>
+									))}
+								</Input>
+								<FormFeedback> Publisher Required </FormFeedback>
+								</React.Fragment>
+							}
 						</FormGroup>
 						<FormGroup>
 							<Label form="formAuthors"> Authors (select at least 1)</Label>
+							{authorsCheck.length == 0 && authorKeys.length == 0 &&
 							<Input
 								type="select"
 								id="formAuthor"
@@ -167,9 +288,46 @@ const CreateModal = (props) => {
 									</option>
 								))}
 							</Input>
+							}
+							{authorsCheck.length > 0  &&
+							<Input
+								type="select"
+								id="formAuthor"
+								multiple
+								name="author"
+								defaultValue = {authorsCheck}
+								onChange={handleAuthorsChange}
+							>
+								{authors.map((author) => (
+									<option key={author.authorId} value={author.authorId}>
+										{author.authorName}
+									</option>
+								))}
+							</Input>
+							}
+							{!authorsCheck &&
+							<React.Fragment>
+							<Input
+								type="select"
+								id="formAuthor"
+								multiple
+								name="author"
+								onChange={handleAuthorsChange}
+								invalid
+							>
+								{authors.map((author) => (
+									<option key={author.authorId} value={author.authorId}>
+										{author.authorName}
+									</option>
+								))}
+							</Input>
+							<FormFeedback> At Least 1 Author Required </FormFeedback>
+							</React.Fragment>
+							}
 						</FormGroup>
 						<FormGroup>
 							<Label form="formGenres"> Genres (select at least 1)</Label>
+							{genresCheck.length == 0 && genreKeys.length == 0 &&
 							<Input
 								type="select"
 								id="formGenre"
@@ -183,6 +341,42 @@ const CreateModal = (props) => {
 									</option>
 								))}
 							</Input>
+							}
+							{genresCheck.length > 0 &&
+							<Input
+								type="select"
+								id="formGenre"
+								multiple
+								name="genre"
+								defaultValue = {genresCheck}
+								onChange={handleGenresChange}
+							>
+								{genres.map((genre) => (
+									<option key={genre.genreId} value={genre.genreId}>
+										{genre.genreName}
+									</option>
+								))}
+							</Input>
+							}
+							{!genresCheck &&
+								<React.Fragment>
+								<Input
+									type="select"
+									id="formGenre"
+									multiple
+									name="genre"
+									onChange={handleGenresChange}
+									invalid
+									>
+									{genres.map((genre) => (
+										<option key={genre.genreId} value={genre.genreId}>
+											{genre.genreName}
+										</option>
+									))}
+									</Input>
+									<FormFeedback> At Least 1 Genre Required </FormFeedback>
+								</React.Fragment>
+							}
 						</FormGroup>
 					</Form>
 					<Button color="primary" className="twobuttons" onClick={createBook}>
@@ -202,7 +396,6 @@ CreateModal.propTypes = {
 	authors: PropTypes.array,
 	genres: PropTypes.array,
 	buttonLabel: PropTypes.string,
-	//handleRefresh: PropTypes.func,
 	handleCreate: PropTypes.func,
 };
 
