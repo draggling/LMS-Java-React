@@ -31,15 +31,17 @@ const LibrarianBranchRender =  ({
 	let content = '';
 	let branchTable = '';
 
+/* read book copies and selected branch copies for the selected branch */
 	if(selectedBranch > 0 && bookCopies === undefined && !requestInfoCopies.readCopiesPending && !requestInfoCopies.readCopiesSuccessful) {
 		startReadCopies(selectedBranch);
+
 	}
 	if(selectedBranch > 0 && bookNonCopies === undefined && !requestInfoCopies.readNonCopiesPending && !requestInfoCopies.readNonCopiesSuccessful &&requestInfoCopies.readCopiesSuccessful) {
 		startReadNonCopies(selectedBranch);
 	}
 
 	if (!branchData || requestInfo.readPending || requestInfo.readCopiesPending || requestInfo.readNonCopiesPending) {
-		content = Spinner();
+		return Spinner();
 	}
 	if (branchData && requestInfo.readSuccessful) {
 		let data = {
@@ -146,7 +148,7 @@ const LibrarianBranchRender =  ({
 						selectedBranch = {selectedBranch}
 						handleRefresh = {handleRefresh}
 						setNonCopies = {setNonCopies}
-						requestInfoCopies = {requestInfoCopies} 
+						requestInfoCopies = {requestInfoCopies}
 						bookNonCopies = {bookNonCopies}
 					/>
 			</div>
@@ -167,7 +169,7 @@ const LibrarianBranchRender =  ({
 						selectedBranch = {selectedBranch}
 						handleRefresh = {handleRefresh}
 						setCopies = {setCopies}
-						requestInfoCopies = {requestInfoCopies} 
+						requestInfoCopies = {requestInfoCopies}
 						bookCopies = {bookCopies}
 					/>
 			</div>
@@ -175,7 +177,7 @@ const LibrarianBranchRender =  ({
 	}
 
 	function showTable() {
-		if(branchData && requestInfo 
+		if(branchData && requestInfo
 			&& requestInfoCopies
 			&& (requestInfoCopies.readCopiesSuccessful
 			&& requestInfoCopies.readNonCopiesSuccessful)) {

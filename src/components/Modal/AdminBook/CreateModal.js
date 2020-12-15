@@ -80,7 +80,7 @@ const CreateModal = (props) => {
 				}
 			}
 			alertMessage("");
-			handleCreate(titleCheck, publisherCheck, newAuthors, newGenres);
+			handleCreate(newBookName, newPub, newAuthors, newGenres);
 			toggle();
 		} else {
 			alertMessage(
