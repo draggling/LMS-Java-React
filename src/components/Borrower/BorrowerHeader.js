@@ -8,7 +8,7 @@ import { AiFillHome } from 'react-icons/ai';
 const BorrowerHeader = () => {
 	return (
 		<Row>
-			<Col xl={{ size: 8, offset: 2 }} sm={12}>
+			<Col sm={12}>
 				<nav className="navbar navbar-inverse">
 					<div className="container-fluid">
 						<ul className="list-inline">

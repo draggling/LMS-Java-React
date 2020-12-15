@@ -1,6 +1,6 @@
 'use strict';
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Alert, Col, Container, Row } from 'reactstrap';
@@ -19,40 +19,30 @@ import Spinner from '../Util/Spinner';
 
 const BorrowerContainer = (props) => {
 	const { actions, borrower, borrowerDashboardInfo, requestInfo } = props;
-	useEffect(() => {
-		//actions.readBranches();
-	}, []);
+
 	let content = [];
-	function goBackToBranchSelect() {
-		actions.returnToBranchSelect();
-	}
-	function handleCheckout(book, borrower, branch) {
+	const goBackToBranchSelect = () => actions.returnToBranchSelect();
+
+	const handleCheckout = (book, borrower, branch) =>
 		actions.processCheckout(book, borrower, branch);
-	}
-	function handleCloseCheckoutModal() {
-		actions.handleCloseCheckoutModal();
-	}
-	function handleCloseReturnModal() {
-		actions.handleCloseReturnModal();
-	}
-	function handleLoginAttempt(cardNo) {
-		actions.attemptLogin(cardNo);
-	}
-	function handleLogout() {
-		actions.logoutBorrower();
-	}
-	function handleReturn(loan) {
-		actions.processReturn(loan);
-	}
-	function selectBranch(branch) {
+
+	const handleCloseCheckoutModal = () => actions.handleCloseCheckoutModal();
+
+	const handleCloseReturnModal = () => actions.handleCloseReturnModal();
+
+	const handleLoginAttempt = (cardNo) => actions.attemptLogin(cardNo);
+
+	const handleLogout = () => actions.logoutBorrower();
+
+	const handleReturn = (loan) => actions.processReturn(loan);
+
+	const selectBranch = (branch) =>
 		actions.selectBranchForCheckout(branch, borrower.borrowerCardNo);
-	}
-	function startCheckout() {
-		actions.startCheckout();
-	}
-	function startReturn() {
-		actions.startReturn(borrower.borrowerCardNo);
-	}
+
+	const startCheckout = () => actions.startCheckout();
+
+	const startReturn = () => actions.startReturn(borrower.borrowerCardNo);
+
 	let spinner = Spinner(-1);
 	if (!borrower) {
 		if (!requestInfo) {
