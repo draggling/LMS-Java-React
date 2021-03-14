@@ -6,7 +6,7 @@
   "scripts": {
     "jest:init": "jest --init",
     "start": "gulp",
-    "test": "jest",
+    "test": "jest --silent",
     "test:watch": "npm run test -- --watch"
   },
   "author": "",
@@ -54,6 +54,7 @@
     "gulp-eslint": "^4.0.2",
     "gulp-open": "^3.0.0",
     "jest": "^26.6.3",
-    "react-test-render": "^1.1.2"
+    "react-test-render": "^1.1.2",
+    "redux-mock-store": "^1.5.4"
   }
 }
