@@ -302,7 +302,7 @@ export default function borrowerReducer(state = {}, action) {
 				...state,
 				borrowerDashboardInfo: {
 					...state.borrowerDashboardInfo,
-					selectedBranch: action.selectedBranch,
+					selectedBranch: null,
 				},
 				requestInfo: {
 					...state.requestInfo,
