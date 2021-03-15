@@ -1,0 +1,10 @@
+{
+  "coverageDirectory": "coverage",
+
+  "coveragePathIgnorePatterns": [
+     "/node_modules/"
+   ],
+
+   "verbose": false
+   
+}

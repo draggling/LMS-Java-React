@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders without crashing 1`] = `
+<DocumentFragment>
+  <div
+    class="d-flex justify-content-center"
+    data-testid="spinner-with-key"
+  >
+    <div
+      class="css-dyz6n"
+    >
+      <div
+        class="css-kpuief"
+      />
+      <div
+        class="css-1lkem5z"
+      />
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`renders without crashing with key 1`] = `
+<DocumentFragment>
+  <div
+    class="d-flex justify-content-center"
+    data-testid="spinner-with-key"
+  >
+    <div
+      class="css-dyz6n"
+    >
+      <div
+        class="css-kpuief"
+      />
+      <div
+        class="css-1lkem5z"
+      />
+    </div>
+  </div>
+</DocumentFragment>
+`;

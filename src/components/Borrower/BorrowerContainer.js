@@ -21,6 +21,7 @@ const BorrowerContainer = (props) => {
 	const { actions, borrower, borrowerDashboardInfo, requestInfo } = props;
 
 	let content = [];
+
 	const goBackToBranchSelect = () => actions.returnToBranchSelect();
 
 	const handleCheckout = (book, borrower, branch) =>

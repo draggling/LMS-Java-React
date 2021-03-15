@@ -4,16 +4,23 @@ import RingLoader from 'react-spinners/RingLoader';
 const Spinner = (...key) => {
 	let content = '';
 	key && typeof (key[0] === 'number' || key[0] === 'string')
-		?(content = (
-				<div className="d-flex justify-content-center" key={key}>
+		? (content = (
+				<div
+					className="d-flex justify-content-center"
+					data-testid="spinner-with-key"
+					key={key}
+				>
 					<RingLoader size={150} color={'#00ccff'} loading={true} />
 				</div>
-		))
+		  ))
 		: (content = (
-				<div className="d-flex justify-content-center">
+				<div
+					className="d-flex justify-content-center"
+					data-testid="spinner-keyless"
+				>
 					<RingLoader size={150} color={'#00ccff'} loading={true} />
 				</div>
-			));
+		  ));
 	return content;
 };
 export default Spinner;
